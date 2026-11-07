@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-label="Gothic 1 Remake">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0d15"/>
+      <stop offset=".55" stop-color="#121821"/>
+      <stop offset="1" stop-color="#2a1a0c"/>
+    </linearGradient>
+    <radialGradient id="barrierGlow" cx="50%" cy="100%" r="75%">
+      <stop offset="0" stop-color="#4a78d8" stop-opacity=".26"/>
+      <stop offset=".6" stop-color="#4a5fd0" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#4a5fd0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="horizon" cx="50%" cy="108%" r="60%">
+      <stop offset="0" stop-color="#e58b2a" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#e58b2a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="fireglow">
+      <stop offset="0" stop-color="#ff9d3c" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#ff9d3c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mtnFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b222c"/>
+      <stop offset="1" stop-color="#10141a"/>
+    </linearGradient>
+    <filter id="blur3" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.6"/></filter>
+    <filter id="blur10" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="10"/></filter>
+
+    <!-- Камень/бронза: рваный край, зерно, фаски, трещины с оранжевым светом -->
+    <filter id="stone" filterUnits="userSpaceOnUse" x="0" y="0" width="640" height="240" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="4" result="n1"/>
+      <feDisplacementMap in="SourceGraphic" in2="n1" scale="9" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".22" numOctaves="2" seed="11" result="n2"/>
+      <feDisplacementMap in="d1" in2="n2" scale="3.4" xChannelSelector="G" yChannelSelector="B" result="shape"/>
+
+      <feTurbulence type="fractalNoise" baseFrequency=".05 .1" numOctaves="5" seed="21" result="n3"/>
+      <feColorMatrix in="n3" type="matrix" values=".80 0 0 0 .05  .68 0 0 0 .05  .62 0 0 0 .07  0 0 0 0 1" result="tex"/>
+      <feDiffuseLighting in="n3" surfaceScale="2.6" diffuseConstant="1" lighting-color="#ffffff" result="grain"><feDistantLight azimuth="225" elevation="55"/></feDiffuseLighting>
+      <feComposite in="tex" in2="grain" operator="arithmetic" k1="1.0" k2="0" k3="0" k4="0" result="texg"/>
+
+      <feGaussianBlur in="shape" stdDeviation="2.2" result="hb"/>
+      <feDiffuseLighting in="hb" surfaceScale="8" diffuseConstant="1.25" lighting-color="#ffeedd" result="light"><feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
+      <feComposite in="texg" in2="light" operator="arithmetic" k1="1.18" k2="0" k3="0" k4="0" result="lit"/>
+      <feComposite in="lit" in2="shape" operator="in" result="body"/>
+
+      <feTurbulence type="turbulence" baseFrequency=".02 .045" numOctaves="2" seed="8" result="n4"/>
+      <feColorMatrix in="n4" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -24 0 0 0 2.0" result="crack0"/>
+      <feComposite in="crack0" in2="shape" operator="in" result="crack"/>
+      <feGaussianBlur in="crack" stdDeviation="1.7" result="crackb"/>
+      <feFlood flood-color="#ff7a1a" result="or"/>
+      <feComposite in="or" in2="crackb" operator="in" result="crackGlow0"/>
+      <feComposite in="crackGlow0" in2="shape" operator="in" result="crackGlow"/>
+      <feFlood flood-color="#150a05"/>
+      <feComposite in2="crack" operator="in" result="crackDark"/>
+
+      <feMorphology in="shape" operator="erode" radius="1.2" result="er"/>
+      <feComposite in="shape" in2="er" operator="out" result="rim0"/>
+      <feColorMatrix in="n1" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 6 0 0 -2.5" result="patch"/>
+      <feComposite in="rim0" in2="patch" operator="in" result="rim1"/>
+      <feGaussianBlur in="rim1" stdDeviation=".7" result="rim2"/>
+      <feFlood flood-color="#ff7a22" flood-opacity=".8"/>
+      <feComposite in2="rim2" operator="in" result="rim"/>
+
+      <feMorphology in="shape" operator="dilate" radius="1.4" result="dil"/>
+      <feFlood flood-color="#0b0604"/>
+      <feComposite in2="dil" operator="in" result="outline"/>
+      <feGaussianBlur in="shape" stdDeviation="7" result="gb"/>
+      <feFlood flood-color="#ff6a1a" flood-opacity=".18"/>
+      <feComposite in2="gb" operator="in" result="outer"/>
+
+      <feMerge>
+        <feMergeNode in="outer"/><feMergeNode in="outline"/><feMergeNode in="body"/>
+        <feMergeNode in="crackGlow"/><feMergeNode in="crackDark"/><feMergeNode in="rim"/>
+      </feMerge>
+    </filter>
+
+    <filter id="stoneS" filterUnits="userSpaceOnUse" x="0" y="0" width="640" height="240" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".12" numOctaves="2" seed="3" result="m1"/>
+      <feDisplacementMap in="SourceGraphic" in2="m1" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="shape"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".18 .35" numOctaves="4" seed="14" result="m3"/>
+      <feColorMatrix in="m3" type="matrix" values=".9 0 0 0 .20  .78 0 0 0 .17  .68 0 0 0 .15  0 0 0 0 1" result="tex"/>
+      <feGaussianBlur in="shape" stdDeviation=".6" result="hb"/>
+      <feDiffuseLighting in="hb" surfaceScale="3" diffuseConstant="1.15" lighting-color="#fff0dc" result="light"><feDistantLight azimuth="225" elevation="52"/></feDiffuseLighting>
+      <feComposite in="tex" in2="light" operator="arithmetic" k1="1.18" k2="0" k3="0" k4="0" result="lit"/>
+      <feComposite in="lit" in2="shape" operator="in" result="body"/>
+      <feMorphology in="shape" operator="dilate" radius=".8" result="dil"/>
+      <feFlood flood-color="#0b0604"/>
+      <feComposite in2="dil" operator="in" result="outline"/>
+      <feGaussianBlur in="shape" stdDeviation="3" result="gb"/>
+      <feFlood flood-color="#ff6a1a" flood-opacity=".3"/>
+      <feComposite in2="gb" operator="in" result="outer"/>
+      <feMerge><feMergeNode in="outer"/><feMergeNode in="outline"/><feMergeNode in="body"/></feMerge>
+    </filter>
+    <clipPath id="frame"><rect width="640" height="240"/></clipPath>
+  </defs>
+  <style>
+    .flicker { animation: flicker 3.2s steps(1, end) infinite; }
+    .flame { animation: flame 1.6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+    @keyframes flicker { 0%{opacity:.95} 8%{opacity:.35} 12%{opacity:1} 40%{opacity:.8} 44%{opacity:.3} 47%{opacity:1} 80%{opacity:.85} 100%{opacity:.95} }
+    @keyframes flame { from{opacity:.7;transform:scale(.9)} to{opacity:1;transform:scale(1.12)} }
+    @media (prefers-reduced-motion: reduce) { .flicker, .flame { animation: none; } }
+  </style>
+  <g clip-path="url(#frame)">
+    <rect width="640" height="240" fill="url(#sky)"/>
+    <rect width="640" height="240" fill="url(#barrierGlow)"/>
+    <rect width="640" height="240" fill="url(#horizon)"/>
+
+    <!-- Барьер: купол, радиальные линии и разряды -->
+    <g fill="none" stroke="#7fa8ff" stroke-opacity=".14" stroke-width="1"><path d="M320,246L-13.2,189.6"/><path d="M320,246L21.2,137.0"/><path d="M320,246L76.0,91.9"/><path d="M320,246L147.5,57.2"/><path d="M320,246L230.7,35.4"/><path d="M320,246L320.0,28.0"/><path d="M320,246L409.3,35.4"/><path d="M320,246L492.5,57.2"/><path d="M320,246L564.0,91.9"/><path d="M320,246L618.8,137.0"/><path d="M320,246L653.2,189.6"/></g>
+    <g fill="none" stroke="#7fa8ff" stroke-width="1.2" stroke-opacity=".26"><ellipse cx="320" cy="246" rx="345" ry="218"/><ellipse cx="320" cy="246" rx="283" ry="179"/><ellipse cx="320" cy="246" rx="221" ry="140"/><ellipse cx="320" cy="246" rx="159" ry="100"/><ellipse cx="320" cy="246" rx="97" ry="61"/></g>
+    <g fill="none" stroke="#9db8ff" stroke-width="2.4" stroke-opacity=".4" filter="url(#blur3)"><ellipse cx="320" cy="246" rx="345" ry="218"/></g>
+    <g class="flicker" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity=".85">
+      <g stroke="#6f9bff" stroke-width="7" opacity=".5" filter="url(#blur3)"><path d="M4.8,157.3 L8.3,138.8 L22.8,125.2 L49.7,120.6 L63.4,106.9 L82.5,97.6 L97.7,83.5 L111.6,65.9 L138.2,65.0 L158.0,53.5 M482.0,53.5 L506.0,58.3 L522.7,73.7 L541.5,84.6 L558.9,96.2 L585.8,99.0 L593.4,118.3 L606.4,132.1 L618.1,146.1 L635.2,157.3 M179.7,46.8 L196.5,38.9 L217.7,42.8 L235.7,37.3 L254.2,32.0 M385.8,32.0 L405.8,31.4 L422.9,40.8 L443.3,39.3 L460.3,46.8 M22.8,125.2 L42.3,132.0 L46.8,139.5 M82.5,97.6 L100.3,104.4 L106.9,116.3 M522.7,73.7 L508.0,84.2 L496.9,83.3 M585.8,99.0 L568.9,104.4 L556.4,99.3 M217.7,42.8 L228.0,57.5 L227.0,67.6 M422.9,40.8 L415.4,60.9 L406.3,66.1"/></g>
+      <g stroke="#cfe2ff" stroke-width="1.5"><path d="M4.8,157.3 L8.3,138.8 L22.8,125.2 L49.7,120.6 L63.4,106.9 L82.5,97.6 L97.7,83.5 L111.6,65.9 L138.2,65.0 L158.0,53.5 M482.0,53.5 L506.0,58.3 L522.7,73.7 L541.5,84.6 L558.9,96.2 L585.8,99.0 L593.4,118.3 L606.4,132.1 L618.1,146.1 L635.2,157.3 M179.7,46.8 L196.5,38.9 L217.7,42.8 L235.7,37.3 L254.2,32.0 M385.8,32.0 L405.8,31.4 L422.9,40.8 L443.3,39.3 L460.3,46.8"/></g>
+      <g stroke="#a9c7ff" stroke-width="1" opacity=".9"><path d="M22.8,125.2 L42.3,132.0 L46.8,139.5 M82.5,97.6 L100.3,104.4 L106.9,116.3 M522.7,73.7 L508.0,84.2 L496.9,83.3 M585.8,99.0 L568.9,104.4 L556.4,99.3 M217.7,42.8 L228.0,57.5 L227.0,67.6 M422.9,40.8 L415.4,60.9 L406.3,66.1"/></g>
+    </g>
+
+    <!-- Долина -->
+    <g transform="translate(552,62) scale(1.0)" fill="#0d1116"><rect x="0" y="26" width="54" height="40"/><rect x="-8" y="0" width="12" height="66"/><path d="M-10,0L-2.0,-16L6,0Z"/><rect x="20" y="8" width="12" height="58"/><path d="M18,8L26.0,-10L34,8Z"/><rect x="50" y="14" width="11" height="52"/><path d="M48,14L55.5,0L63,14Z"/><rect x="5" y="22" width="5" height="5"/><rect x="14" y="22" width="5" height="5"/><rect x="23" y="22" width="5" height="5"/><rect x="32" y="22" width="5" height="5"/><rect x="41" y="22" width="5" height="5"/><rect x="-4" y="12" width="2.2" height="4" rx=".6" fill="#ffb347"/><rect x="24.5" y="20" width="2.2" height="4" rx=".6" fill="#ffb347"/><rect x="54" y="24" width="2.2" height="4" rx=".6" fill="#ffb347"/><rect x="38" y="33" width="2.2" height="4" rx=".6" fill="#ffb347"/><rect x="10" y="34" width="2.2" height="4" rx=".6" fill="#ffb347"/></g>
+    <g transform="translate(82,80)" fill="#0d1116"><rect x="0" y="0" width="12" height="50"/><path d="M-3,0L6,-16L15,0Z"/><rect x="-2" y="6" width="16" height="4"/><rect x="4.8" y="14" width="2.4" height="5" rx=".6" fill="#ffb347"/></g>
+    <path d="M0,138L26,112L48,126L82,98L112,128L146,150L190,168L250,178L320,182L390,178L450,168L494,150L528,128L556,102L588,118L616,92L640,108V240H0Z" fill="url(#mtnFar)"/>
+    <path d="M0,138L26,112L48,126L82,98L112,128L146,150L190,168L250,178L320,182L390,178L450,168L494,150L528,128L556,102L588,118L616,92L640,108" fill="none" stroke="#6a86b8" stroke-opacity=".35" stroke-width="1.2" stroke-linejoin="round"/>
+    <g filter="url(#blur10)" fill="#e58b2a" opacity=".16"><ellipse cx="320" cy="196" rx="260" ry="12"/></g>
+    <path d="M0,186L34,164L62,176L96,150L128,178L176,198L246,210L320,214L394,210L464,198L512,178L544,152L576,170L610,146L640,160V240H0Z" fill="#07090b"/>
+    <circle cx="150" cy="207" r="12.6" fill="url(#fireglow)" class="flame"/><path d="M147.3,209.7Q147.3,204.3 150,199.8Q152.7,204.3 152.7,209.7Z" fill="#ffb347"/><path d="M148.65,209.7Q148.65,206.1 150,203.4Q151.35,206.1 151.35,209.7Z" fill="#fff0c2"/><circle cx="490" cy="208" r="12.6" fill="url(#fireglow)" class="flame"/><path d="M487.3,210.7Q487.3,205.3 490,200.8Q492.7,205.3 492.7,210.7Z" fill="#ffb347"/><path d="M488.65,210.7Q488.65,207.1 490,204.4Q491.35,207.1 491.35,210.7Z" fill="#fff0c2"/><circle cx="104" cy="194" r="9.8" fill="url(#fireglow)" class="flame"/><path d="M101.9,196.1Q101.9,191.9 104,188.4Q106.1,191.9 106.1,196.1Z" fill="#ffb347"/><path d="M102.95,196.1Q102.95,193.3 104,191.2Q105.05,193.3 105.05,196.1Z" fill="#fff0c2"/><circle cx="538" cy="192" r="9.8" fill="url(#fireglow)" class="flame"/><path d="M535.9,194.1Q535.9,189.9 538,186.4Q540.1,189.9 540.1,194.1Z" fill="#ffb347"/><path d="M536.95,194.1Q536.95,191.3 538,189.2Q539.05,191.3 539.05,194.1Z" fill="#fff0c2"/>
+    <circle cx="579" cy="109" r="1.0" fill="#ffb347" opacity="0.30"/><circle cx="236" cy="157" r="1.3" fill="#ffb347" opacity="0.24"/><circle cx="92" cy="131" r="0.6" fill="#ffb347" opacity="0.21"/><circle cx="433" cy="174" r="1.3" fill="#ffb347" opacity="0.36"/><circle cx="256" cy="177" r="0.6" fill="#ffb347" opacity="0.68"/><circle cx="239" cy="170" r="1.3" fill="#ffb347" opacity="0.24"/><circle cx="470" cy="115" r="0.8" fill="#ffb347" opacity="0.33"/><circle cx="553" cy="157" r="0.8" fill="#ffb347" opacity="0.41"/><circle cx="348" cy="202" r="1.3" fill="#ffb347" opacity="0.70"/><circle cx="196" cy="148" r="1.0" fill="#ffb347" opacity="0.50"/><circle cx="253" cy="127" r="0.6" fill="#ffb347" opacity="0.25"/><circle cx="170" cy="127" r="1.3" fill="#ffb347" opacity="0.52"/><circle cx="142" cy="132" r="0.8" fill="#ffb347" opacity="0.36"/><circle cx="247" cy="165" r="0.8" fill="#ffb347" opacity="0.53"/><circle cx="329" cy="171" r="0.6" fill="#ffb347" opacity="0.43"/><circle cx="528" cy="209" r="1.3" fill="#ffb347" opacity="0.46"/><circle cx="261" cy="155" r="1.3" fill="#ffb347" opacity="0.23"/><circle cx="78" cy="124" r="0.8" fill="#ffb347" opacity="0.22"/><circle cx="376" cy="112" r="0.8" fill="#ffb347" opacity="0.37"/><circle cx="571" cy="171" r="0.6" fill="#ffb347" opacity="0.63"/><circle cx="384" cy="117" r="1.0" fill="#ffb347" opacity="0.55"/><circle cx="377" cy="155" r="0.6" fill="#ffb347" opacity="0.59"/><circle cx="596" cy="154" r="1.3" fill="#ffb347" opacity="0.34"/><circle cx="121" cy="186" r="1.0" fill="#ffb347" opacity="0.47"/><circle cx="428" cy="159" r="0.8" fill="#ffb347" opacity="0.64"/><circle cx="336" cy="117" r="0.6" fill="#ffb347" opacity="0.47"/><circle cx="207" cy="174" r="0.6" fill="#ffb347" opacity="0.55"/><circle cx="186" cy="142" r="0.8" fill="#ffb347" opacity="0.35"/><circle cx="165" cy="162" r="1.0" fill="#ffb347" opacity="0.50"/><circle cx="383" cy="191" r="0.8" fill="#ffb347" opacity="0.64"/><circle cx="498" cy="185" r="0.8" fill="#ffb347" opacity="0.33"/><circle cx="316" cy="184" r="0.6" fill="#ffb347" opacity="0.62"/><circle cx="304" cy="122" r="1.0" fill="#ffb347" opacity="0.36"/><circle cx="565" cy="214" r="1.0" fill="#ffb347" opacity="0.29"/>
+
+    <!-- Название: выбитые в камне буквы -->
+    <g filter="url(#stone)"><g transform="translate(320,62) scale(0.92) "><g transform="translate(-270.5,0)"><path d="M84,24 C74,9 60,5 48,5 C22,5 8,28 8,52 C8,78 24,95 50,95 C66,95 80,89 90,80 V56 H58" fill="none" stroke="#fff" stroke-width="17" stroke-linejoin="round"/><path d="M64,12 L98,-10 L96,28 L80,30Z" fill="#fff"/><path d="M78,92 L106,98 L100,108 L72,102Z" fill="#fff"/><path d="M2,40 L-8,26 L16,30Z" fill="#fff"/></g><g transform="translate(-155.5,0)"><path d="M39,0 C62,0 78,22 78,52 C78,82 62,102 39,102 C16,102 0,82 0,52 C0,22 16,0 39,0Z M40,20 C50,28 54,42 54,54 C54,70 48,82 39,86 C30,80 25,68 25,54 C25,40 31,28 40,20Z" fill="#fff" fill-rule="evenodd"/></g><g transform="translate(-70.5,0)"><path d="M37,-34 L45,-24 L37,-14 L29,-24Z" fill="#fff"/><path d="M30,-18 H44 V16 H30Z" fill="#fff"/><path d="M-2,8 L8,3 H66 L76,8 L70,26 H4Z" fill="#fff"/><path d="M23,24 H51 L45,88 L37,114 L29,88Z" fill="#fff"/></g><g transform="translate(12.5,0)"><path d="M24,-22 V96" fill="none" stroke="#fff" stroke-width="17" stroke-linejoin="round"/><path d="M4,-4 L26,-36 L42,-30 L38,-6Z" fill="#fff"/><path d="M0,102 H50 L46,90 H6Z" fill="#fff"/><path d="M24,54 C30,34 46,30 58,34 C74,40 78,54 78,66 V96" fill="none" stroke="#fff" stroke-width="17" stroke-linejoin="round"/><path d="M54,102 H102 L98,90 H58Z" fill="#fff"/></g><g transform="translate(119.5,0)"><path d="M22,8 V92" fill="none" stroke="#fff" stroke-width="20" stroke-linejoin="round"/><path d="M0,-2 H44 L38,16 H6Z" fill="#fff"/><path d="M6,84 H38 L44,102 H0Z" fill="#fff"/></g><g transform="translate(170.5,0)"><path d="M88,24 C78,9 64,5 50,5 C24,5 8,28 8,52 C8,78 24,95 50,95 C66,95 80,89 90,78" fill="none" stroke="#fff" stroke-width="17" stroke-linejoin="round"/><path d="M68,12 L100,-10 L98,30 L82,32Z" fill="#fff"/><path d="M80,84 L100,70 L98,98 L82,102Z" fill="#fff"/></g></g></g>
+    <g transform="translate(320,62) scale(0.92) "><g transform="translate(-70.5,0)" fill="none" stroke="#120904" stroke-linecap="round" stroke-width="2.2" opacity=".9"><path d="M37,-12 V8M37,26 L37,96"/><path d="M14,17 H60"/></g></g>
+
+    <!-- REMAKE -->
+    <g filter="url(#stoneS)">
+      <g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="butt" stroke-linejoin="miter"><path d="M2,20V2H11L15,6V11L11,14H2M9,14L15,20" transform="translate(226.5,190)"/><path d="M15,2H2V20H15M2,11H12" transform="translate(260.5,190)"/><path d="M2,20V2L8.5,12L15,2V20" transform="translate(294.5,190)"/><path d="M2,20L8.5,2L15,20M5,14H12" transform="translate(328.5,190)"/><path d="M2,2V20M15,2L2,13M6,10L15,20" transform="translate(362.5,190)"/><path d="M15,2H2V20H15M2,11H12" transform="translate(396.5,190)"/></g>
+    </g>
+  </g>
+</svg>

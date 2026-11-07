@@ -1,0 +1,73 @@
+/* generated from games.icons font v1 - do not edit */
+@font-face {
+	font-family: 'icomoon';
+	src: url('icons.woff?v=1') format('woff'),
+		url('icons.ttf?v=1') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon' !important;
+	speak: never;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.icon-alchemy_station:before { content: "\e900"; color: #ffffff; }
+.icon-amulet:before { content: "\e901"; color: #ffffff; }
+.icon-armor:before { content: "\e902"; color: #ffffff; }
+.icon-bed:before { content: "\e903"; color: #ffffff; }
+.icon-blacksmith:before { content: "\e904"; color: #ffffff; }
+.icon-boots:before { content: "\e905"; color: #ffffff; }
+.icon-boss:before { content: "\e906"; color: #ffffff; }
+.icon-bounty_board:before { content: "\e907"; color: #ffffff; }
+.icon-chest:before { content: "\e908"; color: #ffffff; }
+.icon-cloak:before { content: "\e909"; color: #ffffff; }
+.icon-cooking_pot:before { content: "\e90a"; color: #ffffff; }
+.icon-cuirass:before { content: "\e90b"; color: #ffffff; }
+.icon-door:before { content: "\e90c"; color: #ffffff; }
+.icon-dungeon:before { content: "\e90d"; color: #ffffff; }
+.icon-easter_egg:before { content: "\e90e"; color: #ffffff; }
+.icon-enemy:before { content: "\e90f"; color: #ffffff; }
+.icon-ethereal_cobweb:before { content: "\e910"; color: #ffffff; }
+.icon-fast_travel:before { content: "\e911"; color: #ffffff; }
+.icon-gauntlets:before { content: "\e912"; color: #ffffff; }
+.icon-greaves:before { content: "\e913"; color: #ffffff; }
+.icon-grindstone:before { content: "\e914"; color: #ffffff; }
+.icon-helmet:before { content: "\e915"; color: #ffffff; }
+.icon-horse:before { content: "\e916"; color: #ffffff; }
+.icon-item:before { content: "\e917"; color: #ffffff; }
+.icon-location:before { content: "\e918"; color: #ffffff; }
+.icon-lore_entry:before { content: "\e919"; color: #ffffff; }
+.icon-lumbering_spot:before { content: "\e91a"; color: #ffffff; }
+.icon-magic_weapon:before { content: "\e91b"; color: #ffffff; }
+.icon-main_quest:before { content: "\e91c"; color: #ffffff; }
+.icon-melee_weapon:before { content: "\e91d"; color: #ffffff; }
+.icon-merchant:before { content: "\e91e"; color: #ffffff; }
+.icon-mineral:before { content: "\e91f"; color: #ffffff; }
+.icon-misc_quest:before { content: "\e920"; color: #ffffff; }
+.icon-miscellaneous:before { content: "\e921"; color: #ffffff; }
+.icon-note:before { content: "\e922"; color: #ffffff; }
+.icon-npc:before { content: "\e923"; color: #ffffff; }
+.icon-plant:before { content: "\e924"; color: #ffffff; }
+.icon-point_of_interest:before { content: "\e925"; color: #ffffff; }
+.icon-quest_item:before { content: "\e926"; color: #ffffff; }
+.icon-ranged_weapon:before { content: "\e927"; color: #ffffff; }
+.icon-recipe:before { content: "\e928"; color: #ffffff; }
+.icon-region_transition:before { content: "\e929"; color: #ffffff; }
+.icon-relic:before { content: "\e92a"; color: #ffffff; }
+.icon-ring:before { content: "\e92b"; color: #ffffff; }
+.icon-shield:before { content: "\e92c"; color: #ffffff; }
+.icon-shrine:before { content: "\e92d"; color: #ffffff; }
+.icon-side_quest:before { content: "\e92e"; color: #ffffff; }
+.icon-stash:before { content: "\e92f"; color: #ffffff; }
+.icon-statue:before { content: "\e930"; color: #ffffff; }
+.icon-supplies:before { content: "\e931"; color: #ffffff; }
+.icon-tool:before { content: "\e932"; color: #ffffff; }
+.icon-transition:before { content: "\e933"; color: #ffffff; }

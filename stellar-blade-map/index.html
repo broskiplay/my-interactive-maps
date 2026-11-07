@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="stellar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Интерактивная карта Stellar Blade: все 9 локаций — Эйдос-7, Ксион, Пустошь, Великая пустыня и другие. Карты памяти, банки, ядра, наносьюты, боссы и прогресс на всех устройствах.">
+    <meta name="theme-color" content="#090c12">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта Stellar Blade — BroskiPlay</title>
+    <link rel="canonical" href="https://broskiplay.ru/stellar-blade-map/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/stellar-blade-map/#app",
+          "name": "Интерактивная карта Stellar Blade",
+          "url": "https://broskiplay.ru/stellar-blade-map/",
+          "description": "Интерактивная карта Stellar Blade: все 9 локаций — Эйдос-7, Ксион, Пустошь, Великая пустыня и другие. Карты памяти, банки, ядра, наносьюты, боссы и прогресс на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "Stellar Blade"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта Stellar Blade",
+              "item": "https://broskiplay.ru/stellar-blade-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта Stellar Blade — BroskiPlay">
+    <meta property="og:description" content="Интерактивная карта Stellar Blade: все 9 локаций — Эйдос-7, Ксион, Пустошь, Великая пустыня и другие. Карты памяти, банки, ядра, наносьюты, боссы и прогресс на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/stellar-blade.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта Stellar Blade на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/stellar-blade-map/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/stellar-blade.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта Stellar Blade на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <script src="../vendor/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="images/icons/icons.css">
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="../css/map-nm.css?v=1">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=1">
+    <script src="../js/report-marker.js" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=4">
+    <script src="../js/support-toast.js?v=6" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=2">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=1">
+</head>
+<body>
+
+<!-- Загрузочный экран: техно-HUD в стиле Stellar Blade -->
+<div id="map-loader" role="status" aria-live="polite">
+    <div class="sbl-grid"></div>
+    <div class="sbl-scan"></div>
+    <div class="sbl-core">
+        <div class="sbl-reticle">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="sbl-ring sbl-ring-1" cx="60" cy="60" r="52"/>
+                <circle class="sbl-ring sbl-ring-2" cx="60" cy="60" r="40"/>
+                <circle class="sbl-ring sbl-ring-3" cx="60" cy="60" r="28"/>
+                <path class="sbl-cross" d="M60 2v14M60 104v14M2 60h14M104 60h14"/>
+            </svg>
+            <span class="sbl-dot"></span>
+        </div>
+        <div class="sbl-title">STELLAR BLADE</div>
+        <div id="map-loader-name" class="sbl-name">Загрузка карты</div>
+        <div class="sbl-bar"><span></span></div>
+        <div id="map-loader-status" class="sbl-status">Сканирование местности…</div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div class="sidebar-header">
+        <div class="header-top-row">
+            <h1><img class="logo-title" src="logo-title.png" alt="Stellar Blade"><span>Интерактивная карта</span></h1>
+            <span class="home-nav">
+                <a href="../" class="home-back-btn" title="На главную"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Главная</span></a>
+            </span>
+        </div>
+
+        <div class="social-links">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-twitch">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+                <span>Twitch</span>
+            </a>
+            <a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="social-btn social-youtube">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTube</span>
+            </a>
+            <a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-donate">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.8a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+        </div>
+
+        <div class="auth-mini-box">
+            <div class="auth-mini-info">
+                <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+                <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+            </div>
+            <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+        </div>
+    </div>
+
+    <div class="section">
+        <p class="section-label">Локация</p>
+        <select id="map-select" class="region-select" aria-label="Выбрать локацию"></select>
+
+        <div class="progress-card" aria-label="Общий прогресс">
+            <div class="progress-head"><span>Найдено меток</span><strong id="progress-value">0%</strong></div>
+            <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+            <div class="progress-count" id="progress-count"></div>
+        </div>
+
+        <div class="search-wrap">
+            <input type="search" id="search-input" placeholder="Поиск: название, предмет, враг…" autocomplete="off" aria-controls="search-results">
+            <div class="search-results" id="search-results" role="listbox" aria-label="Результаты поиска"></div>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" id="show-all-btn">Показать все</button>
+            <button type="button" id="hide-all-btn">Скрыть все</button>
+            <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+        </div>
+
+        <button type="button" id="add-marker-btn" class="add-marker-btn">＋ Добавить свою метку</button>
+
+        <div class="io-row">
+            <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки этой локации в JSON-файл">⬇ Экспорт прогресса</button>
+            <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+        </div>
+        <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+        <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="filters-list" id="filters-container"></div>
+
+    <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+    <details class="bp-about" id="bp-about">
+        <summary>О карте</summary>
+        <h2>Stellar Blade: что отмечено на карте «Эйдос-7»</h2>
+        <p>Интерактивная карта Stellar Blade на русском. На карте «Эйдос-7» отмечено 370 меток в 28 категориях. Все карты: Эйдос-7, Ксион, Пустошь, Левуар «Высь», Матрица-11, Великая пустыня, Левуар «Бездна», Шпиль-4, Эйдос-9. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+        <ul>
+            <li><strong>Локации</strong> (71): Лагерь (14), Быстрое перемещение (1), Достопримечательность (9), Паркур (47).</li>
+            <li><strong>Коллекционные предметы</strong> (87): Карта памяти (34), Банк данных (7), Банка (3), Ящик (35), Пароль (6), Рыба (2).</li>
+            <li><strong>Косметика</strong> (6): Наносьют (3), Серьги (2), Внешний вид дрона (1).</li>
+            <li><strong>Снаряжение</strong> (37): Ядро тела (5), Бета-ядро (5), Ядро оружия (3), Модуль для шейкера-дозатора (4), Модуль для улучшения дронов (3), Экзохребет (3), Гаджет (10), Омнизатвор (4).</li>
+            <li><strong>Задания</strong> (21): Основное задание (1), Побочное задание (2), Предмет задания (18).</li>
+            <li><strong>Враги</strong> (118): Босс (3), Биотив (115).</li>
+            <li><strong>Прочее</strong> (30): Пасхалка (2), Разное (28).</li>
+        </ul>
+    </details>
+    <!-- about:end -->
+
+    <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile">◀ Свернуть меню</button>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<div id="map"></div>
+<div id="map-empty"></div>
+<div class="sb-toast" id="sb-toast" role="status" aria-live="polite"></div>
+
+<script src="../js/smooth-zoom.js?v=1"></script>
+
+<script src="../js/marker-stack.js?v=1"></script>
+<script src="js/maps.js?v=2"></script>
+<script src="js/categories.js?v=1"></script>
+<script src="../js/nm-pin.js?v=1"></script>
+<script src="js/app.js?v=8"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="tainted">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта Tainted Grail — BroskiPlay</title>
+    <meta name="description" content="Интерактивная карта Tainted Grail: The Fall of Avalon: Рога Юга, Куанахт, Вершины Заброшенных мечей и Саррас, метки на русском и прогресс на всех устройствах.">
+    <link rel="canonical" href="https://broskiplay.ru/tainted-grail-map/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/tainted-grail-map/#app",
+          "name": "Интерактивная карта Tainted Grail",
+          "url": "https://broskiplay.ru/tainted-grail-map/",
+          "description": "Интерактивная карта Tainted Grail: The Fall of Avalon: Рога Юга, Куанахт, Вершины Заброшенных мечей и Саррас, метки на русском и прогресс на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "Tainted Grail: The Fall of Avalon"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта Tainted Grail",
+              "item": "https://broskiplay.ru/tainted-grail-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта Tainted Grail — BroskiPlay">
+    <meta property="og:description" content="Интерактивная карта Tainted Grail: The Fall of Avalon: Рога Юга, Куанахт, Вершины Заброшенных мечей и Саррас, метки на русском и прогресс на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/tainted-grail.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта Tainted Grail: The Fall of Avalon на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/tainted-grail-map/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/tainted-grail.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта Tainted Grail: The Fall of Avalon на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <script src="../vendor/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="images/icons/icons.css">
+    <link rel="stylesheet" href="css/style.css?v=16">
+    <link rel="stylesheet" href="../css/map-nm.css?v=1">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=1">
+    <script src="../js/report-marker.js" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=4">
+    <script src="../js/support-toast.js?v=6" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=2">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=1">
+</head>
+<body>
+
+<!-- Загрузочный экран: мрачное средневековье Авалона -->
+<div id="map-loader" role="status" aria-live="polite">
+    <div class="tgl-fog tgl-fog-1"></div>
+    <div class="tgl-fog tgl-fog-2"></div>
+    <div class="tgl-embers"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="tgl-core">
+        <div class="tgl-rune">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="tgl-circle tgl-circle-1" cx="60" cy="60" r="54"/>
+                <circle class="tgl-circle tgl-circle-2" cx="60" cy="60" r="44"/>
+                <path class="tgl-tree" d="M60 92V52M60 70c-8-2-14-8-16-16M60 62c8-2 14-8 16-16M60 52c-5-4-7-10-7-16M60 52c5-4 7-10 7-16M60 36V26"/>
+            </svg>
+        </div>
+        <div class="tgl-title">Tainted Grail</div>
+        <div class="tgl-sub">The Fall of Avalon</div>
+        <div class="tgl-divider"><span></span><b>✦</b><span></span></div>
+        <div class="tgl-status">Туман расходится…</div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div class="sidebar-header">
+        <div class="header-top-row">
+            <h1 class="header-banner-title"><img class="header-banner" src="logo-card.webp" width="180" height="84" alt="Tainted Grail: The Fall of Avalon"><span>Интерактивная карта</span></h1>
+            <span class="home-nav">
+                <a href="../" class="home-back-btn" title="На главную"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Главная</span></a>
+            </span>
+        </div>
+
+        <div class="social-links">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-twitch">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+                <span>Twitch</span>
+            </a>
+            <a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="social-btn social-youtube">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTube</span>
+            </a>
+            <a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-donate">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.8a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+        </div>
+
+        <div class="auth-mini-box">
+            <div class="auth-mini-info">
+                <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+                <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+            </div>
+            <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="map-switch" id="map-switch"></div>
+
+        <div class="btn-group">
+            <button type="button" id="show-all-btn">Показать все</button>
+            <button type="button" id="hide-all-btn">Скрыть все</button>
+            <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+        </div>
+
+        <button type="button" id="add-marker-btn" class="add-marker-btn">＋ Добавить свою метку</button>
+
+        <div class="io-row">
+            <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки в JSON-файл">⬇ Экспорт прогресса</button>
+            <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+        </div>
+        <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+        <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+
+        <input type="text" id="search-input" placeholder="Поиск...">
+    </div>
+
+    <div class="filters-list" id="filters-container"></div>
+
+    <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+    <details class="bp-about" id="bp-about">
+        <summary>О карте</summary>
+        <h2>Tainted Grail: что отмечено на карте «Рога Юга»</h2>
+        <p>Интерактивная карта Tainted Grail на русском. На карте «Рога Юга» отмечено 1 400 меток в 31 категории. Все карты: Рога Юга, Кунахт, Вершины Заброшенных мечей, Саррас. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+        <ul>
+            <li><strong>Локации</strong> (170): Быстрое перемещение (18), Переход (20), Святилище (10), Тайник (3), Подземелье (27), Место (91), Статуя (1).</li>
+            <li><strong>Службы и удобства</strong> (28): Алхимический стол (13), Котёл (5), Точило (3), Кровать (6), Доска заказов (1).</li>
+            <li><strong>Сбор и находки</strong> (603): Руда и минералы (202), Растения (130), Сундук (142), Записи и книги (61), Припасы (44), Рецепт (1), Инструмент (21), Место рубки (2).</li>
+            <li><strong>Снаряжение</strong> (255): Броня (116), Оружие ближнего боя (45), Дальнобойное оружие (14), Магия (38), Кольца и амулеты (42).</li>
+            <li><strong>Задания</strong> (52): Основное задание (2), Побочное задание (50).</li>
+            <li><strong>Существа</strong> (288): Босс (27), Враг (94), Персонаж (167).</li>
+            <li><strong>Прочее</strong> (4): Пасхалка (4).</li>
+        </ul>
+    </details>
+    <!-- about:end -->
+
+    <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile">◀ Свернуть меню</button>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<div id="map"></div>
+<div id="map-empty">Карта «<span id="map-empty-name"></span>» скоро появится</div>
+
+<script src="../js/smooth-zoom.js?v=1"></script>
+
+<script src="../js/marker-stack.js?v=1"></script>
+<script src="../js/nm-pin.js?v=1"></script>
+<script src="js/app.js?v=30"></script>
+</body>
+</html>

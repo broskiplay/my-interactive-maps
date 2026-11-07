@@ -1,0 +1,184 @@
+/* Единое неоморфное оформление карт: боковая панель, попапы меток, кнопки карты.
+   Подключается в каждом <game>/index.html после css/style.css игры; <html data-game="…"> выбирает палитру.
+   Каркас общий, цвета задаёт игра (переменные ниже). Префикс html[data-game] перебивает стили игр. */
+
+/* ---------- Палитры игр ---------- */
+html[data-game] { --nm-r: 14px; --nm-r-sm: 10px; --nm-hi: rgba(255, 255, 255, .05); --nm-lo: rgba(0, 0, 0, .6); }
+html[data-game="stellar"]  { --nm-base: #10161f; --nm-text: #e6edf6; --nm-muted: #8d9aab; --nm-accent: #54dcff; }
+html[data-game="palworld"] { --nm-base: #141a15; --nm-text: #ece9dc; --nm-muted: #9aa391; --nm-accent: #e0a63a; }
+html[data-game="tainted"]  { --nm-base: #200f0b; --nm-text: #f1e9e4; --nm-muted: #b39a8c; --nm-accent: #d9924f; }
+html[data-game="gothic"]   { --nm-base: #15191e; --nm-text: #e9e4da; --nm-muted: #9da3ab; --nm-accent: #d98f3d; }
+html[data-game="dimraeth"] { --nm-base: #161111; --nm-text: #f3e8cc; --nm-muted: #b0a283; --nm-accent: #e8c773; }
+html[data-game="witcher3"] { --nm-base: #17140f; --nm-text: #ddd7c9; --nm-muted: #a39d8c; --nm-accent: #c8372c; }
+/* свитки: светлая «бумага» своей игры */
+html[data-game="oblivion"] { --nm-base: #d8c393; --nm-text: #3a2610; --nm-muted: #6b5030; --nm-accent: #8d2b1c; --nm-hi: rgba(255, 248, 225, .75); --nm-lo: rgba(84, 58, 22, .38); }
+html[data-game="skyrim"]   { --nm-base: #d2c8ab; --nm-text: #2c2822; --nm-muted: #5c5243; --nm-accent: #2f5877; --nm-hi: rgba(255, 252, 238, .75); --nm-lo: rgba(66, 58, 44, .38); }
+
+html[data-game] {
+    --nm-raised: -6px -6px 14px var(--nm-hi), 7px 7px 16px var(--nm-lo);
+    --nm-raised-sm: -3px -3px 7px var(--nm-hi), 4px 4px 9px var(--nm-lo);
+    --nm-inset: inset -2px -2px 6px var(--nm-hi), inset 3px 3px 7px var(--nm-lo);
+}
+
+/* ---------- Панель ---------- */
+html[data-game] #sidebar, html[data-game] .scroll-body {
+    background: var(--nm-base); background-image: none; color: var(--nm-text);
+}
+html[data-game] #sidebar { box-shadow: 6px 0 28px rgba(0, 0, 0, .45); border: 0; }
+html[data-game] .scroll-body { box-shadow: none; }
+html[data-game] .scroll-rod { display: none; }
+html[data-game] .section::before, html[data-game] .filters-list::before, html[data-game] .section::after { display: none; }
+html[data-game] .section { gap: 14px; }
+html[data-game] .section-label { color: var(--nm-muted); }
+
+/* ---------- Кнопки: выпуклые, нажатое состояние — вдавленное ---------- */
+html[data-game] .home-back-btn, html[data-game] .btn-group button, html[data-game] .io-row button,
+html[data-game] .add-marker-btn, html[data-game] .map-select, html[data-game] .region-select,
+html[data-game] .social-btn, html[data-game] .auth-mini-btn, html[data-game] .group-toggle, html[data-game] .filter-locate,
+html[data-game] .map-switch-btn, html[data-game] .zone-btn {
+    --btn-inner: var(--nm-base);
+    background: var(--nm-base); background-image: none; border: 0; border-radius: var(--nm-r-sm);
+    color: var(--nm-text); text-shadow: none; box-shadow: var(--nm-raised-sm); animation: none;
+    transition: box-shadow .2s, color .2s, transform .15s;
+}
+html[data-game] .social-btn::before, html[data-game] .auth-mini-btn::before,
+html[data-game] .home-back-btn::before, html[data-game] .home-back-btn::after { display: none; }
+html[data-game] .home-back-btn:hover, html[data-game] .btn-group button:hover, html[data-game] .io-row button:hover,
+html[data-game] .add-marker-btn:hover, html[data-game] .map-select:hover, html[data-game] .region-select:hover,
+html[data-game] .social-btn:hover, html[data-game] .auth-mini-btn:hover, html[data-game] .group-toggle:hover, html[data-game] .filter-locate:hover,
+html[data-game] .map-switch-btn:hover, html[data-game] .zone-btn:hover {
+    background: var(--nm-base); color: var(--nm-accent); transform: translateY(-1px);
+    box-shadow: -4px -4px 9px var(--nm-hi), 5px 6px 12px var(--nm-lo);
+}
+html[data-game] .btn-group button:active, html[data-game] .io-row button:active, html[data-game] .home-back-btn:active,
+html[data-game] .btn-group button[aria-pressed="true"], html[data-game] .add-marker-btn.active,
+html[data-game] .map-switch-btn.active, html[data-game] .zone-btn.active {
+    background: var(--nm-base); color: var(--nm-accent); box-shadow: var(--nm-inset); transform: none;
+}
+html[data-game] .add-marker-btn { color: var(--nm-accent); }
+html[data-game] .map-select, html[data-game] .region-select { min-height: 46px; }
+html[data-game] .map-select option, html[data-game] .region-select option { background: var(--nm-base); color: var(--nm-text); }
+html[data-game] .map-switch::after { border-color: var(--nm-accent); }
+html[data-game] .filter-locate { border-radius: 50%; }
+html[data-game] .filter-locate.is-on { color: var(--nm-base); background: var(--nm-accent); box-shadow: var(--nm-inset), 0 0 10px color-mix(in srgb, var(--nm-accent) 60%, transparent); }
+
+/* ---------- Карточки: вход, прогресс ---------- */
+html[data-game] .auth-mini-box, html[data-game] .progress-card {
+    background: var(--nm-base); background-image: none; border: 0; border-radius: var(--nm-r); box-shadow: var(--nm-raised);
+}
+html[data-game] .progress-head strong { color: var(--nm-accent); }
+html[data-game] .progress-count, html[data-game] .progress-head { color: var(--nm-muted); }
+html[data-game] .progress-track { background: var(--nm-base); border: 0; border-radius: 999px; height: 10px; box-shadow: var(--nm-inset); }
+html[data-game] .progress-track span { border-radius: 999px; }
+
+/* ---------- Поиск: вдавленное поле ---------- */
+html[data-game] .section input[type="search"], html[data-game] .search-wrap input, html[data-game] .level-filter input {
+    background: var(--nm-base); border: 0; border-radius: var(--nm-r-sm); color: var(--nm-text); box-shadow: var(--nm-inset);
+}
+html[data-game] .section input[type="search"]:focus, html[data-game] .search-wrap input:focus {
+    box-shadow: var(--nm-inset), 0 0 0 2px color-mix(in srgb, var(--nm-accent) 45%, transparent);
+}
+
+/* ---------- Категории ---------- */
+html[data-game] .filter-group-head { border-bottom: 0; }
+html[data-game] .filter-group-head::after { display: none; }
+html[data-game] .filter-group-title { color: var(--nm-accent); }
+html[data-game] .filter-item { background: transparent; border: 0; border-radius: var(--nm-r-sm); color: var(--nm-text); }
+html[data-game] .filter-item::before { display: none; }
+html[data-game] .filter-item:hover { background: var(--nm-base); color: var(--nm-text); box-shadow: var(--nm-inset); }
+html[data-game] .filter-count { color: var(--nm-muted); }
+
+/* ---------- Управление картой ---------- */
+html[data-game] .leaflet-bar { border: 0; box-shadow: none; }
+html[data-game] .leaflet-bar a, html[data-game] #sidebar-toggle-btn {
+    background: var(--nm-base); color: var(--nm-text); border: 0; box-shadow: var(--nm-raised-sm);
+}
+html[data-game] .leaflet-bar a { border-radius: var(--nm-r-sm) !important; margin-bottom: 8px; }
+html[data-game] .leaflet-bar a:hover { color: var(--nm-accent); background: var(--nm-base); }
+
+/* ---------- Доводка ---------- */
+/* без разделительных линий и подложек между блоками — блоки и так отделены объёмом */
+html[data-game] .sidebar-header, html[data-game] .section, html[data-game] .filters-list { border: 0; background-image: none; }
+html[data-game] .sidebar-header { background: transparent; }
+html[data-game] .auth-mini-box::before, html[data-game] .auth-mini-box::after { display: none; }
+/* все поля ввода в панели — вдавленные (у Tainted Grail поиск type="text") */
+html[data-game] #sidebar input[type="text"], html[data-game] #sidebar input[type="search"], html[data-game] #sidebar input[type="number"] {
+    background: var(--nm-base); border: 0; border-radius: var(--nm-r-sm); color: var(--nm-text); box-shadow: var(--nm-inset);
+}
+html[data-game] #sidebar input:focus { outline: none; box-shadow: var(--nm-inset), 0 0 0 2px color-mix(in srgb, var(--nm-accent) 45%, transparent); }
+/* системная стрелка у выпадающего списка областей заменена своей */
+html[data-game] .region-select {
+    -webkit-appearance: none; appearance: none; padding-right: 40px;
+    background: var(--nm-base) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a8b4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px;
+}
+html[data-game] .region-select:hover { background: var(--nm-base) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a8b4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px; }
+
+/* =========================================================
+   ПОПАПЫ МЕТОК: общий каркас для всех игр (классы с префиксом игры: w3-, sk-, pw-…)
+   ========================================================= */
+html[data-game] .leaflet-popup .leaflet-popup-content-wrapper {
+    background: var(--nm-base); background-image: none; color: var(--nm-text);
+    border: 0; border-radius: 20px; padding: 2px;
+    box-shadow: -6px -6px 14px var(--nm-hi), 0 18px 44px rgba(0, 0, 0, .5), 0 0 0 1px color-mix(in srgb, var(--nm-accent) 22%, transparent);
+}
+html[data-game] .leaflet-popup .leaflet-popup-tip {
+    background: var(--nm-base); border: 0; box-shadow: 0 0 0 1px color-mix(in srgb, var(--nm-accent) 22%, transparent);
+}
+html[data-game] .leaflet-popup .leaflet-popup-content { margin: 16px 18px 18px; color: var(--nm-text); }
+/* крестик — круглая выпуклая кнопка */
+html[data-game] .leaflet-popup a.leaflet-popup-close-button {
+    top: 10px; right: 10px; width: 28px; height: 28px; display: grid; place-items: center; padding: 0;
+    border-radius: 50%; background: var(--nm-base); color: var(--nm-muted); font: 400 18px/1 system-ui, sans-serif;
+    box-shadow: var(--nm-raised-sm); text-decoration: none;
+}
+html[data-game] .leaflet-popup a.leaflet-popup-close-button:hover { color: var(--nm-accent); background: var(--nm-base); }
+html[data-game] .leaflet-popup a.leaflet-popup-close-button:active { box-shadow: var(--nm-inset); }
+
+/* заголовок и подписи */
+html[data-game] .leaflet-popup h3 { color: var(--nm-text); text-shadow: none; padding-right: 30px; }
+html[data-game] .leaflet-popup [class$="-popup-cat"] { padding-right: 32px; }
+html[data-game] .leaflet-popup [class$="-popup-meta"], html[data-game] .leaflet-popup [class$="-popup-en"] { color: var(--nm-muted); }
+html[data-game] .leaflet-popup [class$="-desc"], html[data-game] .leaflet-popup [class$="-body"] { color: color-mix(in srgb, var(--nm-text) 88%, var(--nm-muted)); }
+html[data-game] .leaflet-popup [class$="-desc"] a, html[data-game] .leaflet-popup [class$="-link"] { color: var(--nm-accent); }
+
+/* картинка — скруглённая, «утоплена» в карточку */
+html[data-game] .leaflet-popup [class$="-popup-img"] { border: 0; border-radius: 14px; box-shadow: var(--nm-raised-sm); }
+
+/* теги — вдавленные таблетки */
+html[data-game] .leaflet-popup [class$="-tags"] > span {
+    background: var(--nm-base); border: 0; border-radius: 999px; padding: 3px 10px; color: var(--nm-muted); box-shadow: var(--nm-inset);
+}
+
+/* кнопки: «Ссылка», «Удалить», главная «Отметить найденным» */
+html[data-game] .leaflet-popup [class*="-link-btn"], html[data-game] .leaflet-popup [class*="-del-btn"], html[data-game] .leaflet-popup [class*="-done-btn"] {
+    background: var(--nm-base); background-image: none; border: 0; color: var(--nm-text); text-shadow: none;
+    box-shadow: var(--nm-raised-sm); transition: box-shadow .2s, color .2s, transform .15s;
+}
+html[data-game] .leaflet-popup [class*="-link-btn"] { border-radius: 999px; padding: 4px 12px; color: var(--nm-accent); }
+html[data-game] .leaflet-popup [class*="-del-btn"] { border-radius: 12px; color: #e0525e; }
+html[data-game] .leaflet-popup [class*="-done-btn"] {
+    width: 100%; min-height: 44px; margin-top: 12px; border-radius: 14px; font-weight: 700; color: var(--nm-accent);
+}
+html[data-game] .leaflet-popup [class*="-link-btn"]:hover, html[data-game] .leaflet-popup [class*="-del-btn"]:hover,
+html[data-game] .leaflet-popup [class*="-done-btn"]:hover { transform: translateY(-1px); box-shadow: -4px -4px 9px var(--nm-hi), 5px 6px 12px var(--nm-lo); background: var(--nm-base); }
+/* найдено — кнопка вдавлена, с отметкой цвета акцента */
+html[data-game] .leaflet-popup [class*="-done-btn"].is-done {
+    color: var(--nm-muted); box-shadow: var(--nm-inset), inset 0 0 0 1.5px color-mix(in srgb, var(--nm-accent) 45%, transparent); transform: none;
+}
+
+/* переключатель меток «‹ 2 из 3 ›» */
+html[data-game] .leaflet-popup .ms-nav { background: var(--nm-base); box-shadow: var(--nm-inset); color: var(--nm-text); margin-right: 32px; }
+html[data-game] .leaflet-popup .ms-btn { background: var(--nm-base); box-shadow: var(--nm-raised-sm); color: var(--nm-accent); }
+html[data-game] .leaflet-popup .ms-btn:active { box-shadow: var(--nm-inset); }
+/* украшения кнопок из стилей игр (полоски, блики) — в едином стиле не нужны */
+html[data-game] .leaflet-popup [class*="-done-btn"]::before, html[data-game] .leaflet-popup [class*="-done-btn"]::after,
+html[data-game] .leaflet-popup [class*="-del-btn"]::before, html[data-game] .leaflet-popup [class*="-del-btn"]::after { display: none; }
+/* тени кнопок и картинок не должны обрезаться прокручиваемой областью попапа: отступ внутрь вместо внешнего */
+html[data-game] .leaflet-popup .leaflet-popup-content { margin: 6px 6px 8px; padding: 10px 12px 12px; box-sizing: border-box; }
+
+/* иконки категорий в панели и попапе — такие же выпуклые, как пины на карте */
+html[data-game] [class$="-filter-icon"], html[data-game] [class*="-filter-icon "], html[data-game] [class$="-popup-icon"] {
+    background-image: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 52%), radial-gradient(circle at 60% 75%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .3)) !important;
+    border-color: rgba(255, 255, 255, .55) !important;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, .4), inset 0 1px 1px rgba(255, 255, 255, .35) !important;
+}

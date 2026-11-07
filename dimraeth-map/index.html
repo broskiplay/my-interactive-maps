@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="dimraeth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Интерактивная карта Dimraeth: Эрлвуд, Затерянные пещеры, Святилище и Гоблинские пещеры — путевые врата, костры, боссы, сундуки, ресурсы, существа и прогресс на всех устройствах.">
+    <meta name="theme-color" content="#1b1513">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта Dimraeth — BroskiPlay</title>
+    <link rel="canonical" href="https://broskiplay.ru/dimraeth-map/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/dimraeth-map/#app",
+          "name": "Интерактивная карта Dimraeth",
+          "url": "https://broskiplay.ru/dimraeth-map/",
+          "description": "Интерактивная карта Dimraeth: Эрлвуд, Затерянные пещеры, Святилище и Гоблинские пещеры — путевые врата, костры, боссы, сундуки, ресурсы, существа и прогресс на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "Dimraeth"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта Dimraeth",
+              "item": "https://broskiplay.ru/dimraeth-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта Dimraeth — BroskiPlay">
+    <meta property="og:description" content="Интерактивная карта Dimraeth: Эрлвуд, Затерянные пещеры, Святилище и Гоблинские пещеры — путевые врата, костры, боссы, сундуки, ресурсы, существа и прогресс на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/dimraeth.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта Dimraeth на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/dimraeth-map/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/dimraeth.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта Dimraeth на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <script src="../vendor/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="images/icons/icons.css">
+    <link rel="stylesheet" href="css/style.css?v=6">
+    <link rel="stylesheet" href="../css/map-nm.css?v=1">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=1">
+    <script src="../js/report-marker.js" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=4">
+    <script src="../js/support-toast.js?v=6" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=2">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=1">
+</head>
+<body>
+
+<!-- Загрузочный экран: путевые врата Dimraeth -->
+<div id="map-loader" role="status" aria-live="polite">
+    <div class="dml-glow dml-glow-1"></div>
+    <div class="dml-glow dml-glow-2"></div>
+    <div class="dml-motes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="dml-core">
+        <div class="dml-gate">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="dml-circle dml-circle-1" cx="60" cy="60" r="54"/>
+                <circle class="dml-circle dml-circle-2" cx="60" cy="60" r="44"/>
+                <!-- вершина-ладья из логотипа и путевые врата -->
+                <path class="dml-peak" d="M60 24L72 62L60 52L48 62ZM40 94V76M80 94V76M40 76c0-22 8-26 20-26s20 4 20 26"/>
+            </svg>
+        </div>
+        <img class="dml-logo" src="logo.webp" alt="Dimraeth">
+        <div class="dml-sub">Интерактивная карта</div>
+        <div class="dml-divider"><span></span><b>✦</b><span></span></div>
+        <div class="dml-status">Открываем путевые врата…</div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div class="sidebar-header">
+        <div class="header-top-row">
+            <a class="brand" href="./" aria-label="Dimraeth — интерактивная карта"><img src="logo.webp" alt="Dimraeth"><span>Интерактивная карта</span></a>
+            <span class="home-nav">
+                <a href="../" class="home-back-btn" title="На главную"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Главная</span></a>
+            </span>
+        </div>
+
+        <div class="social-links">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-twitch">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+                <span>Twitch</span>
+            </a>
+            <a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="social-btn social-youtube">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTube</span>
+            </a>
+            <a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-donate">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.8a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+        </div>
+
+        <div class="auth-mini-box">
+            <div class="auth-mini-info">
+                <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+                <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+            </div>
+            <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="map-switch" id="map-switch"></div>
+
+        <div id="zone-block" hidden>
+            <p class="section-label">Области карты</p>
+            <div class="zone-switch" id="zone-switch" role="group" aria-label="Перейти к области"></div>
+        </div>
+
+        <div class="progress-card" aria-label="Общий прогресс">
+            <div class="progress-head"><span>Найдено меток</span><strong id="progress-value">0%</strong></div>
+            <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+            <div class="progress-count" id="progress-count"></div>
+        </div>
+
+        <div class="search-wrap">
+            <input type="search" id="search-input" placeholder="Существо, предмет или место…" autocomplete="off" spellcheck="false" aria-controls="search-results">
+            <div class="search-results" id="search-results" role="listbox" aria-label="Результаты поиска"></div>
+            <p class="search-hint">Введите предмет — карта покажет существ, сундуки и лавки, откуда он берётся.</p>
+        </div>
+
+        <div class="focus-banner" id="focus-banner" hidden>
+            <div class="focus-text"><span>Показаны источники</span><strong id="focus-label"></strong><em id="focus-count"></em></div>
+            <label class="focus-pct" id="focus-pct-wrap" hidden>Шанс
+                <select id="focus-pct">
+                    <option value="0">любой</option>
+                    <option value="5">от 5%</option>
+                    <option value="10">от 10%</option>
+                    <option value="25">от 25%</option>
+                    <option value="50">от 50%</option>
+                    <option value="100">100%</option>
+                </select>
+            </label>
+            <button type="button" id="focus-clear">Сбросить</button>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" id="show-all-btn">Показать все</button>
+            <button type="button" id="hide-all-btn">Скрыть все</button>
+            <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+        </div>
+
+        <div class="level-filter" id="level-filter">
+            <span class="level-title">Уровень существа</span>
+            <input type="number" id="lv-lo" inputmode="numeric" min="1" max="200" placeholder="1" aria-label="Минимальный уровень">
+            <span aria-hidden="true">—</span>
+            <input type="number" id="lv-hi" inputmode="numeric" min="1" max="200" placeholder="200" aria-label="Максимальный уровень">
+            <button type="button" id="lv-clear" hidden>Любой</button>
+        </div>
+
+        <button type="button" id="add-marker-btn" class="add-marker-btn">＋ Добавить свою метку</button>
+
+        <div class="io-row">
+            <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки в JSON-файл">⬇ Экспорт прогресса</button>
+            <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+        </div>
+        <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+        <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="filters-list" id="filters-container"></div>
+
+    <p class="credit">Данные карты и описания — <a href="https://dimraethdb.com/ru/map" target="_blank" rel="noopener noreferrer">Dimraeth Database Wiki</a>.</p>
+
+    <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+    <details class="bp-about" id="bp-about">
+        <summary>О карте</summary>
+        <h2>Dimraeth: что отмечено на карте «Эрлвуд»</h2>
+        <p>Интерактивная карта Dimraeth на русском. На карте «Эрлвуд» отмечено 2 744 метки в 20 категориях. Все карты: Эрлвуд, Затерянные пещеры, Святилище, Гоблинские пещеры. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+        <ul>
+            <li><strong>Переместиться</strong> (47): Путевые врата (26), Костры (21).</li>
+            <li><strong>Боссы</strong> (13): Боссы (2), Мини-боссы (11).</li>
+            <li><strong>Лавка и Изготовление</strong> (13): Лавки (12), Кузницы (1).</li>
+            <li><strong>Места</strong> (37): Люди (19), Рощи (6), Руины (7), Усадьбы (3), Логова (1), Пещеры (1).</li>
+            <li><strong>Коллекционные</strong> (54): Фрагменты карты (19), Книги заклинаний (20), Питомцы (9), Грузоподъёмность (6).</li>
+            <li><strong>Добыча</strong> (432): Сундуки (82), Ресурсы (350).</li>
+            <li><strong>Существа</strong> (2 148): Монстры (860), Монстры события (1 288).</li>
+        </ul>
+    </details>
+    <!-- about:end -->
+
+    <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile">◀ Свернуть меню</button>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<div id="map"></div>
+<div id="map-empty"></div>
+<div class="dr-toast" id="dr-toast" role="status" aria-live="polite"></div>
+
+<script src="../js/smooth-zoom.js?v=1"></script>
+
+<script src="../js/marker-stack.js?v=1"></script>
+<script src="js/categories.js?v=1"></script>
+<script src="../js/nm-pin.js?v=1"></script>
+<script src="js/app.js?v=11"></script>
+</body>
+</html>

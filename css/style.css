@@ -1,0 +1,915 @@
+/* =========================================================
+   ПЕРЕМЕННЫЕ И БАЗА
+   ========================================================= */
+:root {
+    --page: #090c12;
+    --panel: #151a22;
+    --panel-raised: #1b222c;
+    --line: #303945;
+    --text: #edf2f7;
+    --muted: #9aa8b8;
+    --acid: #c7ff3f;
+    --cyan: #54dcff;
+    --violet: #c084ff;
+    --orange: #ff9c45;
+    --red: #ff6274;
+
+    /* Скругления: мелкие элементы (бейджи, строки карт), кнопки и карточки, крупные блоки */
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+
+    /* Шрифты (локально, fonts/fonts.css): два семейства — Unbounded для заголовков, Manrope для всего остального.
+       --font-soft и --font-label оставлены как псевдонимы, чтобы не переписывать правила */
+    --font-fallback: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-display: "Unbounded", "Manrope", var(--font-fallback);  /* H1/H2, названия игр */
+    --font-body: "Manrope", var(--font-fallback);                  /* основной текст, кнопки */
+    --font-soft: var(--font-body);      /* подзаголовки, описания, поиск */
+    --font-label: var(--font-body);     /* карты, метки, бейджи, проценты */
+    --font-heading: var(--font-display);
+}
+
+/* =========================================================
+   СВЕТЛАЯ ТЕМА (data-theme="light")
+   ========================================================= */
+:root[data-theme="light"] {
+    /* «Сумеречная» светлая тема: приглушённый сине-лавандовый фон, карточки светлее фона, но не белые */
+    --page: #d9e0ee;
+    --panel: #e6ebf5;
+    --panel-raised: #eff2f9;
+    --line: #aeb9cf;
+    --text: #151c2c;
+    --muted: #455168;
+    /* фирменные неоновые акценты, затемнены для контраста на мягком фоне */
+    --acid: #4f7d00;
+    --cyan: #0a7ba0;
+    --violet: #7637c2;
+    --orange: #c2600c;
+    --red: #c42b44;
+    color-scheme: light;
+}
+:root:not([data-theme="light"]) { color-scheme: dark; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
+
+body {
+    font-family: var(--font-body);
+    min-height: 100vh;
+    background-color: var(--page);
+    /* Мягкое «северное сияние»: цветные туманности на тёмной основе */
+    background-image:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(84, 220, 255, .16), transparent 70%),
+        radial-gradient(ellipse 60% 50% at 92% 8%, rgba(192, 132, 255, .15), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 85% 78%, rgba(199, 255, 63, .07), transparent 70%),
+        radial-gradient(ellipse 65% 50% at 5% 95%, rgba(255, 156, 69, .08), transparent 70%),
+        linear-gradient(160deg, var(--page) 0%, var(--panel) 50%, var(--page) 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-weight: 400;
+    padding: 64px 24px;
+    isolation: isolate;
+}
+
+/* Сетка, плавно растворяющаяся к краям экрана */
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: linear-gradient(rgba(147, 168, 188, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(147, 168, 188, .05) 1px, transparent 1px);
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 25%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 25%, transparent 100%);
+}
+/* Виньетка по краям для глубины */
+body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 110% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .35) 100%);
+}
+:root[data-theme="light"] body {
+    background-image:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(10, 160, 210, .26), transparent 70%),
+        radial-gradient(ellipse 60% 50% at 92% 8%, rgba(150, 90, 230, .24), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 85% 78%, rgba(120, 190, 30, .15), transparent 70%),
+        radial-gradient(ellipse 65% 50% at 5% 95%, rgba(240, 130, 50, .17), transparent 70%),
+        linear-gradient(160deg, var(--page) 0%, #ccd5e8 50%, var(--page) 100%);
+}
+:root[data-theme="light"] body::before {
+    background-image: linear-gradient(rgba(60, 80, 130, .10) 1px, transparent 1px), linear-gradient(90deg, rgba(60, 80, 130, .10) 1px, transparent 1px);
+}
+:root[data-theme="light"] body::after {
+    background: radial-gradient(ellipse 110% 90% at 50% 40%, transparent 55%, rgba(40, 55, 100, .2) 100%);
+}
+
+.site-shell {
+    width: min(100%, 1080px);
+    margin: 0 auto;
+    position: relative;
+}
+
+/* =========================================================
+   ШАПКА И СОЦСЕТИ
+   ========================================================= */
+.hero { text-align: center; margin-bottom: 22px; }
+.eyebrow { font-family: var(--font-label); color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+.home-title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.6vw, 40px); font-weight: 700; color: var(--text);
+    letter-spacing: -.01em; line-height: 1.15; text-align: center; margin-bottom: 14px;
+    text-shadow: 0 0 28px rgba(84, 220, 255, .22);
+}
+:root[data-theme="light"] .home-title {
+    text-shadow: none;
+    background: linear-gradient(90deg, #151c2c 0%, #3a3f9e 55%, #7637c2 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+}
+.home-subtitle { font-family: var(--font-soft); font-size: 16px; line-height: 1.5; color: var(--muted); text-align: center; }
+
+.social-links { display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 18px; }
+
+.social-btn {
+    --btn-inner: #1b222c;
+    --ring: linear-gradient(90deg, #888, #ccc, #888);
+    --brand: currentColor;
+    position: relative; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 9px 18px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; letter-spacing: .1px;
+    text-decoration: none; color: var(--text);
+    /* В покое: спокойная рамка в оттенке бренда; фирменный градиент и свечение появляются при наведении */
+    --ring-rest: linear-gradient(color-mix(in srgb, var(--brand) 38%, var(--line)), color-mix(in srgb, var(--brand) 38%, var(--line)));
+    border: 1.5px solid transparent;
+    background:
+        linear-gradient(var(--btn-inner), var(--btn-inner)) padding-box,
+        var(--ring-rest) border-box;
+    background-size: 100% 100%, 200% 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+/* Мягкое цветное свечение вокруг кнопки (только при наведении) */
+.social-btn::before {
+    content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: calc(var(--r-md) + 3px);
+    background: var(--ring); background-size: 200% 100%;
+    filter: blur(9px); opacity: 0; transition: opacity .25s ease;
+}
+.social-btn:hover, .social-btn:focus-visible, .social-twitch.is-live, .donate-btn {
+    background:
+        linear-gradient(var(--btn-inner), var(--btn-inner)) padding-box,
+        var(--ring) border-box;
+    background-size: 100% 100%, 200% 100%;
+}
+.social-twitch.is-live::before, .donate-btn::before { opacity: .22; }
+.social-btn:hover { transform: translateY(-2px); animation: ring-shift 2.4s linear infinite; }
+.social-btn:hover::before { opacity: .5; animation: ring-shift 2.4s linear infinite; }
+.social-btn:active { transform: translateY(0); }
+@keyframes ring-shift { to { background-position: 0 0, -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .social-btn:hover, .social-btn:hover::before { animation: none; } }
+:root[data-theme="light"] .social-btn { --btn-inner: #eef1f9; box-shadow: 0 3px 10px rgba(40, 55, 100, .16); }
+:root[data-theme="light"] .social-btn:hover { --btn-inner: #f7f9fd; }
+.social-btn:focus-visible, .auth-btn:focus-visible, .map-link:focus-visible, .last-map-link:focus-visible, details.game-dropdown > summary:focus-visible {
+    outline: 2px solid var(--acid); outline-offset: 3px;
+}
+.social-btn svg { width: 17px; height: 17px; fill: var(--brand); flex-shrink: 0; }
+
+.social-twitch { --ring: linear-gradient(90deg, #9146FF, #BF94FF, #772CE8, #9146FF); --brand: #9146FF; }
+.social-twitch.is-live { --ring: linear-gradient(90deg, #ff4359, #ff8a98, #d4203a, #ff4359); --brand: #ff4359; box-shadow: 0 0 18px rgba(255, 67, 89, .22); }
+.social-twitch .live-indicator { display: none; }
+.social-twitch.is-live .live-indicator { display: inline-block; }
+.social-twitch .live-indicator { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #ff4359; box-shadow: 0 0 0 0 rgba(255, 67, 89, .65); animation: live-pulse 1.5s ease-out infinite; }
+@keyframes live-pulse { 70% { box-shadow: 0 0 0 7px rgba(255, 67, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 67, 89, 0); } }
+
+.social-youtube { --ring: linear-gradient(90deg, #FF0000, #FF7A7A, #CC0000, #FF0000); --brand: #FF0000; overflow: hidden; }
+.social-youtube .youtube-label, .social-youtube > svg { position: relative; z-index: 1; }
+.youtube-new-background { display: none; position: absolute; z-index: 0; inset: 0; align-items: center; justify-content: center; color: color-mix(in srgb, var(--text) 14%, transparent); font-family: var(--font-label); font-size: 11px; font-weight: 600; white-space: nowrap; }
+.social-youtube.has-new-video .youtube-new-background { display: flex; }
+.social-youtube.has-new-video .youtube-label { padding: 1px 3px; background: color-mix(in srgb, var(--btn-inner) 86%, transparent); }
+
+.social-donate { --ring: linear-gradient(90deg, #D97706, #FBBF24, #F97316, #D97706); --brand: #D97706; }
+.social-donate svg { fill: none; stroke: var(--brand); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* =========================================================
+   АВТОРИЗАЦИЯ GOOGLE
+   ========================================================= */
+.auth-card {
+    --card-inner: var(--panel-raised);
+    position: relative; isolation: isolate;
+    width: 100%; max-width: 520px;
+    /* Заливка внутри + тонкая градиентная рамка Google */
+    background:
+        linear-gradient(145deg, var(--card-inner), var(--panel)) padding-box,
+        linear-gradient(120deg, color-mix(in srgb, #4285F4 70%, transparent), color-mix(in srgb, #EA4335 55%, transparent), color-mix(in srgb, #FBBC05 55%, transparent), color-mix(in srgb, #34A853 70%, transparent)) border-box;
+    border: 1.5px solid transparent; border-radius: var(--r-lg);
+    padding: 14px 16px 14px 18px; margin: 0 auto 44px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    box-shadow: 0 8px 26px rgba(0,0,0,.35);
+    transition: box-shadow .3s ease, transform .3s ease;
+}
+/* Мягкое цветное свечение под карточкой */
+.auth-card::before {
+    content: ""; position: absolute; inset: 6px 14px -6px; z-index: -1; border-radius: var(--r-lg);
+    background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
+    filter: blur(16px); opacity: .16; transition: opacity .3s ease;
+}
+.auth-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.auth-card:hover::before { opacity: .3; }
+:root[data-theme="light"] .auth-card { --card-inner: #eef1f9; box-shadow: 0 8px 24px rgba(40, 55, 100, .18); }
+:root[data-theme="light"] .auth-card::before { opacity: .2; }
+:root[data-theme="light"] .auth-card:hover::before { opacity: .32; }
+:root[data-theme="light"] .auth-success-text { color: #0b7d66; }
+.auth-info { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 4px 0 4px 4px; }
+/* Значок гостя: скрывается, когда показан аватар вошедшего пользователя */
+.auth-info::before {
+    content: ""; flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa8b8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='3.6'/%3E%3Cpath d='M4.8 20c.9-3.6 3.6-5.4 7.2-5.4s6.3 1.8 7.2 5.4'/%3E%3C/svg%3E") center / 21px no-repeat,
+        color-mix(in srgb, var(--muted) 12%, transparent);
+    border: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+}
+.auth-info:has(.auth-avatar[style*="block"])::before { display: none; }
+.auth-avatar { box-sizing: border-box; width: 42px; height: 42px; min-width: 42px; min-height: 42px; aspect-ratio: 1 / 1; border-radius: 50%; border: 2px solid var(--acid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acid) 18%, transparent); object-fit: cover; object-position: center; display: none; flex: 0 0 42px; }
+.auth-text { min-width: 0; font-family: var(--font-soft); font-size: 12.5px; color: var(--muted); line-height: 1.35; overflow: hidden; text-overflow: ellipsis; }
+.auth-text b { color: var(--text); font-size: 13.5px; font-weight: 600; }
+.auth-success-text { color: #50e3c2; }
+.auth-btn {
+    --btn-inner: #1b222c;
+    --google-ring: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+    position: relative; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 9px 18px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; letter-spacing: .1px;
+    color: var(--text); cursor: pointer; flex-shrink: 0; white-space: nowrap;
+    /* Светлая заливка внутри + градиент Google на рамке */
+    border: 2px solid transparent;
+    background:
+        linear-gradient(var(--btn-inner), var(--btn-inner)) padding-box,
+        var(--google-ring) border-box;
+    background-size: 100% 100%, 200% 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+    transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+}
+/* Мягкое цветное свечение вокруг кнопки */
+.auth-btn::before {
+    content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: calc(var(--r-md) + 3px);
+    background: var(--google-ring); background-size: 200% 100%;
+    filter: blur(9px); opacity: .22; transition: opacity .25s ease;
+}
+.auth-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(66, 133, 244, .22);
+    animation: google-ring-shift 2.4s linear infinite;
+}
+.auth-btn:hover::before { opacity: .5; animation: google-ring-shift 2.4s linear infinite; }
+.auth-btn:active { transform: translateY(0); }
+@keyframes google-ring-shift { to { background-position: 0 0, -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .auth-btn:hover, .auth-btn:hover::before { animation: none; } }
+.auth-btn .google-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+:root[data-theme="light"] .auth-btn { --btn-inner: #eef1f9; color: #1F1F1F; box-shadow: 0 3px 10px rgba(40, 55, 100, .16); }
+:root[data-theme="light"] .auth-btn:hover { --btn-inner: #f7f9fd; }
+
+.auth-btn.logout, .auth-btn.logout:hover { animation: none; background: #54272d; border-color: #a3434d; color: #fff; box-shadow: none; }
+.auth-btn.logout::before { display: none; }
+:root[data-theme="light"] .auth-btn.logout { background: #fff; border-color: var(--red); color: var(--red); }
+.auth-btn.logout:hover { background: #71313a; }
+.auth-btn .logout-icon { flex-shrink: 0; transition: transform .25s ease; }
+.auth-btn.logout:hover .logout-icon { transform: translateX(2px); }
+.auth-btn.logout {
+    background: linear-gradient(145deg, #5c2a31, #3e1c22);
+    border: 1.5px solid #b5505b; border-radius: var(--r-md);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 4px 14px rgba(163,67,77,.22);
+}
+.auth-btn.logout:hover { background: linear-gradient(145deg, #7a3640, #52252c); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 6px 18px rgba(163,67,77,.38); }
+:root[data-theme="light"] .auth-btn.logout { background: #f6e6ea; box-shadow: 0 3px 10px rgba(40,55,100,.14); }
+:root[data-theme="light"] .auth-btn.logout:hover { background: #f9d9df; }
+
+/* Светлая тема: поиск и «продолжить» */
+:root[data-theme="light"] .game-search input { background: var(--panel-raised); box-shadow: 0 2px 8px rgba(40, 55, 100, .1); }
+:root[data-theme="light"] .game-search input:focus { box-shadow: 0 0 0 3px rgba(10, 123, 160, .22), 0 2px 8px rgba(40, 55, 100, .1); }
+:root[data-theme="light"] .last-map-link { background: rgba(79, 125, 0, .1); border-color: rgba(79, 125, 0, .38); }
+:root[data-theme="light"] .last-map-link:hover { background: rgba(79, 125, 0, .18); }
+
+/* =========================================================
+   БИБЛИОТЕКА ИГР
+   ========================================================= */
+.section-heading { margin-bottom: 18px; }
+.section-heading h2 { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.005em; margin-bottom: 7px; }
+.section-heading p { font-family: var(--font-soft); color: var(--muted); font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.game-search { margin-bottom: 16px; }
+.game-search input {
+    width: 100%; min-height: 46px; padding: 11px 14px;
+    color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md);
+    font-family: var(--font-soft); font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.game-search input::placeholder { color: var(--muted); }
+.game-search input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(84, 220, 255, .12); }
+.game-search input:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+.game-search-status { font-family: var(--font-label); min-height: 18px; margin-top: 7px; color: var(--muted); font-size: 12px; }
+.game-search-status:empty { display: none; }
+
+.last-map { margin-bottom: 16px; }
+.last-map[hidden] { display: none; }
+.last-map-link {
+    display: inline-flex; align-items: center; gap: 8px; color: var(--acid);
+    background: rgba(199, 255, 63, .07); border: 1px solid rgba(199, 255, 63, .28);
+    border-radius: var(--r-sm); padding: 9px 13px; text-decoration: none; font-size: 13px;
+}
+.last-map-link:hover { background: rgba(199, 255, 63, .13); }
+.last-map-link svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.games-container { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 18px; align-items: start; } /* колонки сами сворачиваются, когда карточке тесно */
+
+details.game-dropdown {
+    --game-accent: var(--cyan);
+    background: linear-gradient(145deg, var(--panel-raised), var(--panel));
+    border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,.38); transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+details.game-dropdown:hover, details.game-dropdown[open] { border-color: var(--game-accent); box-shadow: 0 14px 36px rgba(0,0,0,.5), 0 0 0 1px rgba(var(--game-glow, 84, 220, 255), .4), 0 0 26px rgba(var(--game-glow, 84, 220, 255), .3); }
+:root[data-theme="light"] details.game-dropdown,
+:root[data-theme="light"] .game-placeholder {
+    background: linear-gradient(145deg, var(--panel-raised), color-mix(in srgb, var(--game-accent) 9%, var(--panel)));
+    border-top: 3px solid var(--game-accent);
+    box-shadow: 0 10px 26px rgba(40, 55, 100, .2);
+}
+:root[data-theme="light"] details.game-dropdown:hover, :root[data-theme="light"] details.game-dropdown[open] { box-shadow: 0 14px 32px rgba(40, 55, 100, .26), 0 0 24px rgba(var(--game-glow, 84, 220, 255), .32); }
+:root[data-theme="light"] .maps-list { background: color-mix(in srgb, var(--game-accent) 6%, var(--panel)); }
+:root[data-theme="light"] .map-link { background: var(--panel-raised); box-shadow: 0 1px 3px rgba(40, 55, 100, .1); }
+:root[data-theme="light"] .map-link:hover { background: color-mix(in srgb, var(--game-accent) 12%, var(--panel-raised)); }
+:root[data-theme="light"] .game-progress-track { background: color-mix(in srgb, var(--line) 80%, transparent); }
+:root[data-theme="light"] .game-progress-track > span { box-shadow: none; }
+details.game-dropdown:hover { transform: translateY(-3px); }
+details.game-dropdown > summary { list-style: none; cursor: pointer; user-select: none; }
+details.game-dropdown > summary::-webkit-details-marker { display: none; }
+
+details.theme-stellar { --game-accent: var(--cyan); --game-glow: 84, 220, 255; }
+.game-banner {
+    height: auto; aspect-ratio: 16 / 9; background: var(--panel); /* баннер масштабируется вместе с карточкой: картинка всегда видна целиком */
+    position: relative; display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid var(--line); overflow: hidden;
+}
+.game-banner::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(8, 12, 18, .42), transparent 32%, transparent 68%, rgba(8, 12, 18, .42)); }
+.game-banner-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 38%; filter: saturate(.72) brightness(.52); opacity: .48; transform: scale(1.03); transition: opacity .45s, filter .45s, transform .65s; }
+.game-banner-image { position: relative; z-index: 2; width: min(62%, 340px); height: 74%; object-fit: contain; opacity: .84; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .45)); transition: transform .4s ease, opacity .4s; }
+details.game-dropdown:hover .game-banner-art, details.game-dropdown:focus-within .game-banner-art { opacity: .82; filter: saturate(.9) brightness(.72); transform: scale(1.08); }
+details.game-dropdown:hover .game-banner-image, details.game-dropdown:focus-within .game-banner-image { transform: scale(1.04); opacity: 1; }
+
+/* Светлая тема: убираем белый ореол вокруг логотипа */
+:root[data-theme="light"] .game-banner::after { background: none; }
+:root[data-theme="light"] .game-banner-image { filter: drop-shadow(0 2px 6px rgba(30, 45, 70, .18)); }
+/* Светлая тема: арт без серой дымки, при наведении только приближение */
+:root[data-theme="light"] .game-banner-art,
+:root[data-theme="light"] details.game-dropdown:hover .game-banner-art,
+:root[data-theme="light"] details.game-dropdown:focus-within .game-banner-art { opacity: 1; filter: none; }
+:root[data-theme="light"] .game-banner-image,
+:root[data-theme="light"] details.game-dropdown:hover .game-banner-image,
+:root[data-theme="light"] details.game-dropdown:focus-within .game-banner-image { opacity: 1; }
+/* Светлая тема: баннеры заглушек в цвете своей игры вместо тёмных плашек */
+:root[data-theme="light"] .placeholder-banner { background: linear-gradient(110deg, color-mix(in srgb, var(--game-accent) 22%, var(--panel-raised)), color-mix(in srgb, var(--game-accent) 6%, var(--panel))); }
+:root[data-theme="light"] .game-placeholder:hover { box-shadow: 0 14px 32px rgba(40, 55, 100, .26), 0 0 20px color-mix(in srgb, var(--game-accent) 25%, transparent); }
+/* Светлая тема: узор на баннере заглушек не усиливается при наведении */
+:root[data-theme="light"] .game-placeholder:hover .placeholder-banner::before { opacity: .34; animation: none; }
+
+.game-info { padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; }
+.stellar-banner { background: #02050b; }
+.stellar-banner { background: #02040a; }
+.stellar-banner .game-banner-art { object-fit: contain; object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-stellar:hover .stellar-banner .game-banner-art, .theme-stellar:focus-within .stellar-banner .game-banner-art { opacity: 1; filter: saturate(1.1) brightness(1.06); transform: scale(1.06); }
+:root[data-theme="light"] .stellar-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-stellar .game-info { gap: 14px; }
+.game-title-block { display: grid; gap: 8px; min-width: 0; }
+.game-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: -.005em; line-height: 1.25; color: var(--text); }
+
+.game-progress { width: min(220px, 46vw); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 10px; }
+.game-progress-heading { font-family: var(--font-label); display: flex; align-items: center; justify-content: space-between; gap: 10px; grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
+.game-progress-heading strong { color: var(--acid); font-family: var(--font-label); font-size: 13px; font-weight: 600; }
+.game-progress-track { height: 6px; overflow: hidden; background: var(--line); border-radius: 999px; }
+.game-progress-track > span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--acid)); box-shadow: 0 0 10px rgba(199, 255, 63, .42); transition: width .45s ease; }
+.game-progress-count { font-family: var(--font-label); color: var(--muted); font-size: 11px; white-space: nowrap; }
+/* Ничего не отмечено: вместо пустой полоски «0%» только объём карты */
+.game-progress.is-empty .game-progress-heading, .game-progress.is-empty .game-progress-track { display: none; }
+.game-progress.is-empty .game-progress-count { grid-column: 1 / -1; font-size: 13px; }
+/* Бейдж «Новое» на баннере недавно добавленной игры */
+.game-new {
+    position: absolute; top: 12px; left: 12px; z-index: 3;
+    padding: 5px 10px; border-radius: 999px;
+    font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: #10140a; background: var(--acid); box-shadow: 0 2px 10px rgba(0, 0, 0, .45);
+}
+:root[data-theme="light"] .game-new { color: #fff; }
+.game-arrow { display: flex; color: var(--game-accent); transition: transform .25s; }
+.game-arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+details.game-dropdown[open] .game-arrow { transform: rotate(180deg); }
+.game-indicators { display: flex; align-items: center; gap: 10px; }
+.game-badge {
+    color: var(--game-accent); background: color-mix(in srgb, var(--game-accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--game-accent) 35%, transparent);
+    border-radius: var(--r-sm); padding: 5px 9px; font-family: var(--font-label); font-size: 11px; font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase; white-space: nowrap;
+}
+
+/* Список карт */
+.maps-list { padding: 12px 16px 16px; background: var(--panel); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.map-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; background: var(--panel-raised); border: 1px solid var(--line);
+    border-radius: var(--r-sm); color: var(--text); text-decoration: none; font-family: var(--font-label); font-weight: 500;
+    font-size: 14px; transition: background .15s, border-color .15s, transform .1s, color .15s;
+}
+.map-link:hover { background: var(--panel); border-color: var(--game-accent); color: var(--game-accent); transform: translateX(4px); }
+.map-link span.status { display: flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 11px; color: var(--muted); font-weight: normal; }
+.map-link span.status svg { width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.map-progress { color: var(--game-accent); font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+.map-link.is-untouched .map-progress { color: var(--muted); font-weight: 500; }
+.map-name { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.map-marker { width: 16px; height: 16px; flex: 0 0 auto; fill: none; stroke: var(--game-accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Плейсхолдеры для будущих игр */
+.game-placeholder {
+    --game-accent: var(--violet);
+    min-width: 0; overflow: hidden; border-radius: var(--r-md);
+    background: linear-gradient(145deg, var(--panel-raised), var(--panel));
+    border: 1px solid var(--line); box-shadow: 0 8px 25px rgba(0,0,0,.3);
+    transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+details.theme-gothic { --game-accent: #d98f3d; --game-glow: 217, 143, 61; }
+.gothic-banner { background: linear-gradient(180deg, #0a0d15, #121821 55%, #0e1219); }
+.gothic-banner .game-banner-art { object-fit: contain; object-position: center; opacity: .92; filter: saturate(.92) brightness(.88); transform: scale(1.02); }
+.theme-gothic:hover .gothic-banner .game-banner-art, .theme-gothic:focus-within .gothic-banner .game-banner-art { opacity: 1; filter: saturate(1) brightness(1); transform: scale(1.08); }
+:root[data-theme="light"] .gothic-banner .game-banner-art { opacity: .9; filter: none; }
+.theme-gothic .game-info { gap: 14px; }
+.theme-gothic .game-progress-heading strong { color: var(--game-accent); }
+.theme-gothic .game-progress-track > span { background: linear-gradient(90deg, #a35f1e, var(--game-accent)); box-shadow: 0 0 10px rgba(217, 143, 61, .42); }
+.theme-gothic .game-continue { --cont-a: #d98f3d; --cont-b: #f2d3a6; --cont-bg: rgba(20, 23, 26, .88); }
+:root[data-theme="light"] .theme-gothic .game-continue { --cont-bg: rgba(38, 32, 24, .92); }
+/* Dimraeth: тёмный камень и золото, как в меню игры; логотип — по центру баннера, как у Stellar Blade */
+details.theme-dimraeth { --game-accent: #e8c773; --game-glow: 232, 199, 115; }
+.dimraeth-banner { background: radial-gradient(ellipse at 50% 60%, #2b211b, #17110f 70%); }
+.dimraeth-banner .game-banner-image { width: min(58%, 320px); height: 70%; opacity: .92; filter: drop-shadow(0 3px 12px rgba(0, 0, 0, .65)); }
+.theme-dimraeth:hover .dimraeth-banner .game-banner-image, .theme-dimraeth:focus-within .dimraeth-banner .game-banner-image { opacity: 1; transform: scale(1.06); }
+.theme-dimraeth .game-info { gap: 14px; }
+.theme-dimraeth .game-progress-heading strong { color: var(--game-accent); }
+.theme-dimraeth .game-progress-track > span { background: linear-gradient(90deg, #9c7a35, var(--game-accent)); box-shadow: 0 0 10px rgba(232, 199, 115, .4); }
+.theme-dimraeth .game-continue { --cont-a: #e8c773; --cont-b: #ffe6ce; --cont-bg: rgba(27, 21, 19, .88); }
+:root[data-theme="light"] .theme-dimraeth .game-continue { --cont-bg: rgba(48, 36, 24, .92); }
+
+details.theme-palworld { --game-accent: #e0a63a; --game-glow: 224, 166, 58; }
+.palworld-banner { background: radial-gradient(ellipse at 50% 60%, #26301a, #0e130f 72%); }
+.palworld-banner .game-banner-image { width: min(62%, 340px); height: 62%; opacity: .94; filter: drop-shadow(0 3px 12px rgba(0, 0, 0, .65)); }
+.theme-palworld:hover .palworld-banner .game-banner-image, .theme-palworld:focus-within .palworld-banner .game-banner-image { opacity: 1; transform: scale(1.06); }
+.theme-palworld .game-info { gap: 14px; }
+.theme-palworld .game-progress-heading strong { color: var(--game-accent); }
+.theme-palworld .game-progress-track > span { background: linear-gradient(90deg, #a8741a, var(--game-accent)); box-shadow: 0 0 10px rgba(224, 166, 58, .4); }
+.theme-palworld .game-continue { --cont-a: #e0a63a; --cont-b: #f9e6b8; --cont-bg: rgba(14, 19, 15, .88); }
+:root[data-theme="light"] .theme-palworld .game-continue { --cont-bg: rgba(40, 34, 16, .92); }
+
+/* Oblivion Remastered: тёмный багрянец и старое золото, как врата Обливиона над пергаментом */
+details.theme-oblivion { --game-accent: #d8742f; --game-glow: 216, 116, 47; }
+.oblivion-banner { background: radial-gradient(ellipse at 50% 62%, #4a1f10, #1b0d07 72%); }
+.oblivion-banner .game-banner-art { object-position: center 75%; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-oblivion:hover .oblivion-banner .game-banner-art, .theme-oblivion:focus-within .oblivion-banner .game-banner-art { opacity: 1; filter: saturate(1.08) brightness(1.05); transform: scale(1.06); }
+:root[data-theme="light"] .oblivion-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-oblivion .game-info { gap: 14px; }
+.theme-oblivion .game-progress-heading strong { color: var(--game-accent); }
+.theme-oblivion .game-progress-track > span { background: linear-gradient(90deg, #8d2b1c, var(--game-accent)); box-shadow: 0 0 10px rgba(216, 116, 47, .4); }
+.theme-oblivion .game-continue { --cont-a: #d8742f; --cont-b: #f6d9a8; --cont-bg: rgba(27, 13, 7, .88); }
+:root[data-theme="light"] .theme-oblivion .game-continue { --cont-bg: rgba(48, 24, 12, .92); }
+
+/* Skyrim: холодная сталь и льдистая синева, как нордский свиток над снегами */
+details.theme-skyrim { --game-accent: #6fa8d4; --game-glow: 111, 168, 212; }
+.skyrim-banner { background: radial-gradient(ellipse at 50% 55%, #26394b, #0f1822 72%); }
+.skyrim-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-skyrim:hover .skyrim-banner .game-banner-art, .theme-skyrim:focus-within .skyrim-banner .game-banner-art { opacity: 1; filter: brightness(1.1); transform: scale(1.05); }
+:root[data-theme="light"] .skyrim-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-skyrim .game-info { gap: 14px; }
+.theme-skyrim .game-progress-heading strong { color: var(--game-accent); }
+.theme-skyrim .game-progress-track > span { background: linear-gradient(90deg, #2f5877, var(--game-accent)); box-shadow: 0 0 10px rgba(111, 168, 212, .4); }
+.theme-skyrim .game-continue { --cont-a: #6fa8d4; --cont-b: #dcebf7; --cont-bg: rgba(15, 24, 34, .88); }
+:root[data-theme="light"] .theme-skyrim .game-continue { --cont-bg: rgba(18, 30, 44, .92); }
+/* Ведьмак 3: тёмная сталь и кровавый акцент, как меню игры */
+details.theme-witcher3 { --game-accent: #c8372c; --game-glow: 200, 55, 44; }
+.witcher3-banner { background: radial-gradient(ellipse at 50% 55%, #2a1512, #0c0807 72%); }
+.witcher3-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-witcher3:hover .witcher3-banner .game-banner-art, .theme-witcher3:focus-within .witcher3-banner .game-banner-art { opacity: 1; filter: brightness(1.1); transform: scale(1.05); }
+:root[data-theme="light"] .witcher3-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-witcher3 .game-info { gap: 14px; }
+.theme-witcher3 .game-progress-heading strong { color: var(--game-accent); }
+.theme-witcher3 .game-progress-track > span { background: linear-gradient(90deg, #6d1a14, var(--game-accent)); box-shadow: 0 0 10px rgba(200, 55, 44, .4); }
+.theme-witcher3 .game-continue { --cont-a: #c8372c; --cont-b: #f0d9d4; --cont-bg: rgba(20, 11, 9, .88); }
+:root[data-theme="light"] .theme-witcher3 .game-continue { --cont-bg: rgba(24, 12, 10, .92); }
+
+details.theme-tainted { --game-accent: #e0803a; --game-glow: 224, 104, 48; }
+.tainted-banner { background: linear-gradient(110deg, #2a110c, #1c0a07 70%); }
+/* Арт уже содержит логотип: приглушён в покое, при наведении раскрывается и приближается */
+.tainted-banner .game-banner-art { object-position: center; opacity: .7; filter: saturate(.75) brightness(.62); transform: scale(1.02); }
+.theme-tainted:hover .tainted-banner .game-banner-art, .theme-tainted:focus-within .tainted-banner .game-banner-art { opacity: 1; filter: saturate(1) brightness(.95); transform: scale(1.08); }
+:root[data-theme="light"] .tainted-banner .game-banner-art { opacity: .85; filter: none; }
+:root[data-theme="light"] .theme-tainted:hover .tainted-banner .game-banner-art,
+:root[data-theme="light"] .theme-tainted:focus-within .tainted-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-tainted .game-info { gap: 14px; }
+.theme-tainted .game-progress-heading strong { color: var(--game-accent); }
+.theme-tainted .game-progress-track > span { background: linear-gradient(90deg, #8e3b22, var(--game-accent)); box-shadow: 0 0 10px rgba(201, 138, 75, .42); }
+.game-continue {
+    --cont-a: var(--cyan); --cont-b: var(--acid); --cont-bg: rgba(8, 18, 26, .72);
+    position: relative; overflow: hidden; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 8px; justify-self: start; max-width: 100%;
+    color: #fff; background: linear-gradient(110deg, var(--cont-bg), color-mix(in srgb, var(--cont-a) 22%, var(--cont-bg)));
+    border: 1px solid color-mix(in srgb, var(--cont-a) 55%, transparent); border-radius: var(--r-sm);
+    padding: 7px 12px; font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: .03em; text-decoration: none;
+    box-shadow: 0 0 0 transparent; transition: transform .25s, box-shadow .3s, border-color .3s;
+}
+.game-continue::before { /* блик, как скан-линия на баннере */
+    content: ""; position: absolute; inset: 0; z-index: -1; transform: translateX(-120%);
+    background: linear-gradient(105deg, transparent 30%, color-mix(in srgb, var(--cont-a) 45%, transparent) 50%, transparent 70%);
+    transition: transform .65s ease;
+}
+.game-continue::after { /* нижняя линия-акцент */
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: -1;
+    background: linear-gradient(90deg, var(--cont-a), var(--cont-b)); opacity: .8;
+}
+.game-continue[hidden] { display: none; }
+.game-continue:hover, .game-continue:focus-visible { transform: translateY(-2px); border-color: var(--cont-a); box-shadow: 0 6px 18px color-mix(in srgb, var(--cont-a) 35%, transparent), 0 0 14px color-mix(in srgb, var(--cont-a) 30%, transparent); }
+.game-continue:hover::before, .game-continue:focus-visible::before { transform: translateX(120%); }
+.game-continue svg { width: 14px; height: 14px; flex: 0 0 auto; color: var(--cont-a); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.game-continue:hover svg, .game-continue:focus-visible svg { transform: translateX(4px); }
+.game-continue strong { font-weight: 700; color: var(--cont-b); }
+.game-continue span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.theme-tainted .game-continue { --cont-a: #c98a4b; --cont-b: #f1d3a8; --cont-bg: rgba(34, 12, 8, .85); }
+:root[data-theme="light"] .theme-stellar .game-continue { --cont-bg: rgba(14, 40, 58, .92); }
+:root[data-theme="light"] .theme-tainted .game-continue { --cont-bg: rgba(60, 22, 14, .92); }
+.theme-atomic { --game-accent: var(--orange); }
+.game-placeholder:hover { border-color: var(--game-accent); transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 20px color-mix(in srgb, var(--game-accent) 13%, transparent); }
+.placeholder-banner { background: var(--panel); }
+.placeholder-banner::before {
+    content: ""; position: absolute; inset: 0; opacity: .34;
+    background: repeating-linear-gradient(125deg, transparent 0 25px, color-mix(in srgb, var(--game-accent) 30%, transparent) 26px 27px, transparent 28px 54px);
+    background-size: 110px 100%; transition: opacity .35s;
+}
+.placeholder-tainted .placeholder-banner { background: linear-gradient(110deg, #17111e, #111720 64%); }
+.placeholder-atomic .placeholder-banner { background: linear-gradient(110deg, #21150f, #111720 64%); }
+.placeholder-atomic .placeholder-banner::before { background-image: linear-gradient(90deg, transparent 49.5%, color-mix(in srgb, var(--game-accent) 26%, transparent) 50%, transparent 50.5%), linear-gradient(transparent 49.5%, color-mix(in srgb, var(--game-accent) 26%, transparent) 50%, transparent 50.5%); background-size: 36px 36px; }
+.game-placeholder:hover .placeholder-banner::before { opacity: .76; animation: signal-sweep 14s linear infinite; }
+@keyframes signal-sweep { to { background-position: 110px 0; } }
+.placeholder-banner .game-badge { position: absolute; top: 14px; right: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 5px; }
+.game-badge svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.placeholder-lock { width: 38px; height: 38px; position: relative; z-index: 1; fill: none; stroke: var(--game-accent); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 12px color-mix(in srgb, var(--game-accent) 55%, transparent)); transition: transform .35s, filter .35s; }
+.game-placeholder:hover .placeholder-lock { transform: translateY(-3px); filter: drop-shadow(0 0 18px color-mix(in srgb, var(--game-accent) 85%, transparent)); }
+.game-placeholder .game-info { padding-bottom: 8px; }
+.game-placeholder .game-title { display: block; font-size: 15px; }
+.placeholder-copy { font-family: var(--font-soft); padding: 0 20px 19px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+/* Анимации появления */
+@keyframes card-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.game-dropdown, .game-placeholder { animation: card-arrive .45s ease both; }
+.game-placeholder:nth-child(2) { animation-delay: .08s; }
+.game-placeholder:nth-child(3) { animation-delay: .16s; }
+.game-placeholder:nth-child(4) { animation-delay: .24s; }
+
+/* =========================================================
+   ЭКРАН ЗАГРУЗКИ КАРТЫ
+   ========================================================= */
+.loading-screen {
+    position: fixed; inset: 0; z-index: 20000; display: grid; place-items: center;
+    padding: 20px; background: rgba(5, 8, 13, .94); backdrop-filter: blur(12px);
+}
+:root[data-theme="light"] .loading-screen { background: rgba(217, 224, 238, .95); }
+:root[data-theme="light"] .loading-panel { box-shadow: 0 10px 34px rgba(40, 55, 100, .24); }
+:root[data-theme="light"] .loading-caption { color: var(--muted); }
+.loading-screen[hidden] { display: none; }
+.loading-panel { width: min(100%, 430px); padding: 26px; border: 1px solid var(--line); border-left: 3px solid var(--cyan); border-radius: var(--r-md); background: linear-gradient(145deg, var(--panel-raised), var(--panel)); box-shadow: 0 0 42px rgba(84, 220, 255, .12); }
+.loading-eyebrow { margin-bottom: 10px; color: var(--cyan); font-family: var(--font-label); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.loading-title { color: var(--text); font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.25; }
+.loading-tip { font-family: var(--font-soft); min-height: 42px; margin-top: 12px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.loading-track { height: 4px; margin-top: 20px; overflow: hidden; background: var(--line); }
+.loading-track span { display: block; width: 38%; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--acid)); box-shadow: 0 0 14px rgba(84, 220, 255, .55); animation: loading-sweep .8s ease-in-out infinite alternate; }
+.loading-caption { display: block; margin-top: 10px; color: #708090; font-family: var(--font-label); font-size: 9px; font-weight: 400; letter-spacing: .12em; }
+@keyframes loading-sweep { to { transform: translateX(165%); } }
+
+/* =========================================================
+   О ПРОЕКТЕ, ПОДВАЛ, ЮРИДИЧЕСКИЕ СТРАНИЦЫ
+   ========================================================= */
+/* ---------- Поддержать проект ---------- */
+.donate-block { display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-top: 56px; padding: 22px 24px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg); }
+.donate-info { flex: 1; min-width: 0; }
+.donate-block h2 { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.005em; margin: 0 0 8px; }
+.donate-lead { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.6; max-width: 62ch; margin: 0; }
+.donate-goal { margin-top: 18px; max-width: 520px; }
+.donate-goal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.donate-goal-title { color: var(--text); font-family: var(--font-label); font-size: 13px; font-weight: 600; }
+.donate-goal-pct { color: var(--acid); font-family: var(--font-display); font-size: 14px; }
+.donate-goal-track { height: 10px; overflow: hidden; background: var(--line); border-radius: 999px; }
+.donate-goal-track > span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--acid)); box-shadow: 0 0 12px rgba(199, 255, 63, .42); border-radius: 999px; transition: width .6s ease; }
+.donate-goal-sum { margin: 8px 0 0; color: var(--muted); font-family: var(--font-soft); font-size: 13px; }
+.donate-goal-sum b { color: var(--text); font-weight: 700; }
+.donate-btn { flex: none; padding: 16px 30px; font-size: 16px; }
+.donate-btn svg { width: 20px; height: 20px; }
+:root[data-theme="light"] .donate-goal-track > span { box-shadow: none; }
+@media (max-width: 720px) {
+    .donate-block { flex-direction: column; align-items: stretch; gap: 20px; padding: 18px; }
+    .donate-btn { justify-content: center; }
+}
+
+/* ---------- Что нового ---------- */
+.updates { margin-top: 56px; }
+.updates-dropdown > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 18px; transition: border-color .2s, box-shadow .2s; }
+.updates-dropdown > summary::-webkit-details-marker { display: none; }
+.updates-dropdown > summary:hover, .updates-dropdown[open] > summary { border-color: var(--acid); }
+.updates-dropdown > summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.updates-dropdown h2 { display: inline-flex; align-items: center; gap: 9px; color: var(--text); font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -.005em; margin: 0; }
+.updates-dot { position: relative; width: 9px; height: 9px; margin-top: -9px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 8px var(--acid); flex: none; }
+.updates-dot[hidden] { display: none; }
+.updates-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--acid); animation: updates-ping 1.8s ease-out infinite; }
+@keyframes updates-ping { from { transform: scale(1); opacity: .8; } to { transform: scale(2.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .updates-dot::after { animation: none; } }
+.updates-arrow { display: flex; color: var(--acid); transition: transform .25s; }
+.updates-arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.updates-dropdown[open] .updates-arrow { transform: rotate(180deg); }
+.updates-body { padding-top: 12px; }
+.updates-list { list-style: none; display: grid; gap: 12px; padding: 0; margin: 0; }
+.update-entry { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px 18px; }
+.update-entry time { display: block; color: var(--cyan); font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 9px; }
+.update-entry ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.update-entry li { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.55; }
+.updates-more { margin-top: 12px; }
+.updates-more summary { cursor: pointer; color: var(--cyan); font-family: var(--font-soft); font-size: 13px; padding: 6px 2px; width: fit-content; }
+.updates-more summary:hover { color: var(--acid); }
+.updates-more .updates-list { margin-top: 10px; }
+
+.about { margin-top: 56px; }
+.about > h2 { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.005em; margin-bottom: 16px; }
+.about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.about-item { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px; }
+.about-item h3 { color: var(--text); font-family: var(--font-display); font-size: 14px; font-weight: 600; margin-bottom: 9px; }
+.about-item p { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.6; }
+.about-item a, .legal a { color: var(--cyan); text-underline-offset: 3px; }
+.about-item a:hover, .legal a:hover { color: var(--acid); }
+:root[data-theme="light"] .about-item { background: var(--panel-raised); box-shadow: 0 4px 14px rgba(40, 55, 100, .1); }
+
+.site-footer { width: min(100%, 1080px); margin: 56px auto 0; padding-top: 24px; border-top: 1px solid var(--line); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 14px; }
+.footer-links a { color: var(--text); font-family: var(--font-label); font-size: 13px; font-weight: 500; text-decoration: none; }
+.footer-links a:hover, .footer-links a:focus-visible { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+.footer-copy { color: var(--muted); font-family: var(--font-label); font-size: 12px; margin-bottom: 6px; }
+.footer-disclaimer { max-width: 760px; color: var(--muted); font-family: var(--font-soft); font-size: 12px; line-height: 1.6; opacity: .85; }
+
+.legal { max-width: 760px; }
+.legal .back-link { display: inline-block; margin-bottom: 28px; color: var(--muted); font-family: var(--font-label); font-size: 13px; text-decoration: none; }
+.legal .back-link:hover { color: var(--cyan); }
+.legal h1 { font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 10px; }
+.legal .legal-date { color: var(--muted); font-family: var(--font-label); font-size: 12px; margin-bottom: 28px; }
+.legal h2 { font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 28px 0 10px; }
+.legal p, .legal li { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.7; }
+.legal p { margin-bottom: 10px; }
+.legal ul { padding-left: 20px; margin-bottom: 10px; }
+.legal li { margin-bottom: 6px; }
+
+/* =========================================================
+   АДАПТИВНОСТЬ
+   ========================================================= */
+@media (max-width: 680px) {
+    body { padding: 44px 18px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about { margin-top: 44px; }
+    .games-container { grid-template-columns: 1fr; gap: 14px; }
+}
+@media (max-width: 480px) {
+    body { padding: 32px 14px 20px; }
+    .social-links { flex-wrap: wrap; gap: 8px; }
+    .auth-card { padding: 12px; gap: 8px; margin-bottom: 34px; }
+    .auth-btn { min-height: 44px; padding: 8px 10px; }
+    .map-link { min-height: 48px; padding: 10px; }
+    .map-link span.status { white-space: nowrap; margin-left: 8px; }
+    .theme-stellar .game-info, .theme-tainted .game-info, .theme-gothic .game-info, .theme-dimraeth .game-info, .theme-palworld .game-info { padding: 14px 12px; gap: 8px; }
+    .game-progress { width: min(160px, 42vw); }
+    .game-indicators { gap: 6px; }
+    .game-badge { padding: 5px 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* Блок «Мы в соцсетях» */
+.community-block { margin-top: 56px; padding: 22px 24px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg); }
+.community-block h2 { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.005em; margin: 0 0 8px; }
+.community-lead { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.6; max-width: 62ch; margin: 0 0 18px; }
+.community-links { flex-wrap: wrap; justify-content: flex-start; margin-bottom: 0; }
+.social-vk { --ring: linear-gradient(90deg, #0077FF, #5AA9FF, #0057C2, #0077FF); --brand: #0077FF; }
+.social-telegram { --ring: linear-gradient(90deg, #27A7E7, #7CCBF2, #1C89C2, #27A7E7); --brand: #27A7E7; }
+.social-discord { --ring: linear-gradient(90deg, #5865F2, #98A1FF, #4752C4, #5865F2); --brand: #5865F2; }
+.social-lolka { --ring: linear-gradient(90deg, #EB63A8, #F7A8CF, #C94A8C, #EB63A8); --brand: #EB63A8; }
+:root[data-theme="light"] .community-block { background: var(--panel-raised); box-shadow: 0 4px 14px rgba(40, 55, 100, .1); }
+@media (max-width: 640px) { .community-block { padding: 18px; margin-top: 44px; } }
+
+/* Карточка «Предложить игру»: пунктирная рамка; в нечётной позиции (рядом нет пары) растягивается на всю ширину строкой */
+.game-suggest { display: block; color: inherit; text-decoration: none; border-style: dashed; --game-accent: var(--acid); }
+.game-suggest .placeholder-lock { width: 46px; height: 46px; stroke-width: 1.6; }
+.game-suggest:focus-visible { outline: 2px solid var(--game-accent); outline-offset: 3px; }
+@media (min-width: 681px) {
+    .game-suggest:nth-child(odd) { grid-column: 1 / -1; display: flex; align-items: center; }
+    .game-suggest:nth-child(odd) .placeholder-banner { flex: 0 0 240px; height: 120px; }
+    .game-suggest:nth-child(odd) .game-suggest-text { flex: 1; padding: 0 16px 0 24px; }
+    .game-suggest:nth-child(odd) .game-info { padding-bottom: 4px; }
+    .game-suggest:nth-child(odd) .placeholder-copy { padding: 0 0 0; }
+}
+
+/* Логотип BroskiPlay в шапке главной */
+.hero-logo { display: block; width: 84px; height: 84px; margin: 0 auto 12px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(232, 185, 140, .4), 0 8px 28px rgba(0, 0, 0, .4), 0 0 34px rgba(232, 185, 140, .16); }
+@media (max-width: 480px) { .hero-logo { width: 72px; height: 72px; margin-bottom: 10px; } }
+
+/* Компактная строка входа под кнопками соцсетей: без радужной рамки и свечения, в одну строку */
+.auth-card {
+    width: fit-content; max-width: 100%; margin: 0 auto 36px; padding: 6px 6px 6px 12px; gap: 12px;
+    background: color-mix(in srgb, var(--panel) 70%, transparent); border: 1px solid var(--line); border-radius: 999px;
+    box-shadow: none;
+}
+.auth-card::before { display: none; }
+.auth-card:hover { box-shadow: none; }
+:root[data-theme="light"] .auth-card { background: color-mix(in srgb, var(--panel-raised) 80%, transparent); box-shadow: 0 2px 8px rgba(40, 55, 100, .1); }
+.auth-info { gap: 9px; padding: 0; }
+.auth-info::before { width: 26px; height: 26px; background-size: 15px, auto; }
+.auth-avatar { width: 28px; height: 28px; min-width: 28px; min-height: 28px; flex-basis: 28px; border-width: 1.5px; box-shadow: none; }
+.auth-text { font-size: 12.5px; white-space: nowrap; }
+.auth-text br { display: none; }
+.auth-text b { font-size: 13px; }
+.auth-text > span::before { content: " · "; color: var(--muted); }
+.auth-card .auth-btn { padding: 7px 14px; border-radius: 999px; font-size: 12.5px; }
+.auth-card .auth-btn::before { border-radius: 999px; }
+.auth-card .auth-btn.logout { border-radius: 999px; }
+@media (max-width: 560px) {
+    .auth-card { width: 100%; border-radius: var(--r-lg); padding: 8px 8px 8px 12px; margin-bottom: 28px; }
+    .auth-text { white-space: normal; }
+    .auth-text br { display: initial; }
+    .auth-text > span::before { content: none; }
+}
+
+/* =========================================================
+   ОФОРМЛЕНИЕ 2026: спокойная гамма, неоморфизм (выпуклые/вдавленные поверхности),
+   абстрактный фон с параллаксом (js/home-fx.js), объёмные иконки. Перекрывает правила выше.
+   ========================================================= */
+:root:not([data-theme="light"]) {
+    --page: #10131a; --panel: #161a22; --panel-raised: #1b2029; --line: #262c37;
+    --text: #e9edf3; --muted: #96a0ae;
+    --acid: #b9e86a; --cyan: #7cc8e0; --violet: #a993e6;
+    /* неоморфизм на тёмном: светлый блик сверху-слева и тень снизу-справа */
+    --nm-hi: rgba(255, 255, 255, .045); --nm-lo: rgba(0, 0, 0, .55);
+    --nm-raised: -6px -6px 14px var(--nm-hi), 8px 8px 20px var(--nm-lo);
+    --nm-raised-sm: -3px -3px 8px var(--nm-hi), 4px 4px 10px var(--nm-lo);
+    --nm-inset: inset -3px -3px 8px var(--nm-hi), inset 4px 4px 10px var(--nm-lo);
+}
+body { background: var(--page); background-image: none; }
+body::before, body::after { display: none; }
+
+/* --- Абстракции вместо фото: мягкие «капли», слои двигаются с разной скоростью (параллакс) --- */
+.abstract-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.abstract-bg span { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; will-change: transform; }
+.abstract-bg .b1 { width: 520px; height: 520px; left: -120px; top: -160px; background: radial-gradient(circle at 30% 30%, #3b6f86, transparent 70%); }
+.abstract-bg .b2 { width: 460px; height: 460px; right: -100px; top: 40px; background: radial-gradient(circle at 60% 40%, #5a4b8f, transparent 70%); }
+.abstract-bg .b3 { width: 380px; height: 380px; left: 38%; top: 520px; background: radial-gradient(circle, #2f5a4a, transparent 70%); opacity: .35; }
+.abstract-bg svg { position: absolute; left: 50%; top: 40px; width: 1100px; transform: translateX(-50%); opacity: .14; }
+
+/* --- Индикатор прокрутки: обратная связь на скролл --- */
+.scroll-meter { position: fixed; left: 0; top: 0; z-index: 10001; height: 3px; width: 0; border-radius: 0 3px 3px 0; background: linear-gradient(90deg, var(--cyan), var(--violet), var(--acid)); }
+
+/* --- Шапка --- */
+.hero { padding-top: 12px; margin-bottom: 26px; }
+.hero-logo { width: 92px; height: 92px; padding: 6px; background: var(--page); box-shadow: var(--nm-raised); }
+.eyebrow { color: var(--cyan); }
+.home-title { text-shadow: none; font-size: clamp(26px, 3.8vw, 44px); }
+.home-title .accent { background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+
+/* --- Кнопки: тиснение + объёмные иконки --- */
+.social-links { gap: 14px; margin-bottom: 22px; }
+.social-btn, .social-btn:hover, .social-btn:focus-visible, .donate-btn {
+    background: var(--page); border: 0; border-radius: 16px; padding: 8px 16px 8px 8px; box-shadow: var(--nm-raised-sm); animation: none;
+}
+.social-btn::before { display: none; }
+.social-btn:hover { transform: translateY(-2px); box-shadow: -4px -4px 12px var(--nm-hi), 6px 8px 16px var(--nm-lo); }
+.social-btn:active { box-shadow: var(--nm-inset); transform: none; }
+.social-btn > svg { box-sizing: content-box; width: 16px; height: 16px; padding: 7px; border-radius: 11px; fill: #fff;
+    background: radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--brand) 55%, #fff) 0%, var(--brand) 45%, color-mix(in srgb, var(--brand) 60%, #000) 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .45), inset 0 -2px 3px rgba(0, 0, 0, .3), 0 4px 10px color-mix(in srgb, var(--brand) 40%, transparent); }
+.social-donate svg { stroke: #fff; }
+
+.auth-card { background: var(--page); border: 0; box-shadow: var(--nm-raised-sm); padding: 7px 7px 7px 14px; }
+.auth-card .auth-btn { background: var(--panel-raised); border: 0; box-shadow: var(--nm-raised-sm); }
+.auth-card .auth-btn::before { display: none; }
+
+/* --- Поиск: вдавленное поле --- */
+.game-search input { background: var(--page); border: 0; border-radius: 16px; min-height: 52px; padding: 14px 18px; box-shadow: var(--nm-inset); }
+.game-search input:focus { box-shadow: var(--nm-inset), 0 0 0 2px color-mix(in srgb, var(--cyan) 45%, transparent); }
+
+.section-heading h2 { font-size: 24px; }
+
+/* --- Карточки игр: выпуклые плитки, баннер внутри со скруглением --- */
+.games-container { gap: 26px; }
+details.game-dropdown, .game-placeholder {
+    background: var(--page); border: 0; border-radius: 24px; padding: 10px; box-shadow: var(--nm-raised); overflow: visible;
+}
+details.game-dropdown:hover, details.game-dropdown[open] { box-shadow: -8px -8px 18px var(--nm-hi), 12px 14px 28px var(--nm-lo), 0 0 0 1px color-mix(in srgb, var(--game-accent) 35%, transparent); transform: translateY(-4px); }
+.game-banner { border-radius: 16px; border: 0; }
+.game-banner::after { border-radius: 16px; }
+.game-info { padding: 16px 12px 8px; }
+.game-title { font-size: 17px; }
+.game-badge { border: 0; border-radius: 999px; padding: 6px 11px; background: var(--page); box-shadow: var(--nm-raised-sm); }
+.game-arrow { width: 34px; height: 34px; border-radius: 50%; align-items: center; justify-content: center; background: var(--page); box-shadow: var(--nm-raised-sm); }
+.game-new { border-radius: 999px; background: linear-gradient(135deg, #d6f59a, var(--acid)); box-shadow: inset 0 1px 1px rgba(255,255,255,.6), 0 4px 12px rgba(0,0,0,.45); }
+.game-progress-track { background: var(--page); box-shadow: var(--nm-inset); height: 8px; }
+.maps-list { background: transparent; border: 0; padding: 6px 4px 8px; }
+.map-link { background: var(--page); border: 0; border-radius: 12px; box-shadow: var(--nm-raised-sm); }
+.map-link:hover { background: var(--page); box-shadow: var(--nm-inset); transform: none; }
+.game-suggest { border: 0; }
+.placeholder-banner { border-radius: 16px; }
+
+/* --- Нижние блоки --- */
+.community-block, .donate-block, .about-item, .updates-dropdown > summary, .update-entry {
+    background: var(--page); border: 0; border-radius: 22px; box-shadow: var(--nm-raised);
+}
+.donate-goal-track { background: var(--page); box-shadow: var(--nm-inset); }
+
+/* --- Появление карточек при прокрутке --- */
+.reveal { animation: none !important; opacity: 0; transform: translateY(26px) scale(.98); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+@media (max-width: 560px) {
+    details.game-dropdown { border-radius: 20px; padding: 8px; }
+}
+
+/* «Продолжить» поверх баннера: карточки в ряду одной высоты, без разрывов */
+.game-banner .game-continue {
+    position: absolute; left: 14px; bottom: 14px; z-index: 3; max-width: calc(100% - 28px);
+    padding: 9px 14px; border-radius: 12px; font-size: 12px;
+    background: color-mix(in srgb, #0b0e13 62%, transparent); border: 1px solid color-mix(in srgb, var(--cont-a) 55%, transparent);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .08);
+    opacity: .96; transform: translateY(0); transition: transform .25s, box-shadow .3s, opacity .25s;
+}
+.game-banner .game-continue::after { border-radius: 0 0 12px 12px; }
+.game-banner .game-continue:hover, .game-banner .game-continue:focus-visible { opacity: 1; transform: translateY(-2px); }
+/* затемнение низа баннера под кнопкой, чтобы она читалась на светлом арте */
+.game-banner:has(.game-continue:not([hidden]))::before {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 45%; z-index: 2; pointer-events: none;
+    background: linear-gradient(to top, rgba(6, 8, 12, .72), transparent); border-radius: 0 0 16px 16px;
+}
+
+/* =========================================================
+   СВЕТЛАЯ ТЕМА прототипа: мягкий серо-голубой фон, белый блик + синеватая тень
+   (префикс :root[data-theme="light"] перебивает светлые правила основного style.css)
+   ========================================================= */
+:root[data-theme="light"] {
+    --page: #e3e8f0; --panel: #e3e8f0; --panel-raised: #eaeef5; --line: #c9d1de;
+    --text: #1b2333; --muted: #5b6679;
+    --acid: #4f7d12; --cyan: #1f7fa3; --violet: #6a4fc0;
+    --nm-hi: rgba(255, 255, 255, .95); --nm-lo: rgba(132, 148, 180, .42);
+    --nm-raised: -7px -7px 16px var(--nm-hi), 8px 8px 18px var(--nm-lo);
+    --nm-raised-sm: -4px -4px 9px var(--nm-hi), 4px 4px 10px var(--nm-lo);
+    --nm-inset: inset -3px -3px 7px var(--nm-hi), inset 3px 3px 8px var(--nm-lo);
+}
+:root[data-theme="light"] body { background: var(--page); background-image: none; }
+:root[data-theme="light"] body::before, :root[data-theme="light"] body::after { display: none; }
+:root[data-theme="light"] .abstract-bg span { opacity: .55; filter: blur(80px); }
+:root[data-theme="light"] .abstract-bg .b1 { background: radial-gradient(circle at 30% 30%, #a9d6ea, transparent 70%); }
+:root[data-theme="light"] .abstract-bg .b2 { background: radial-gradient(circle at 60% 40%, #cbbdf3, transparent 70%); }
+:root[data-theme="light"] .abstract-bg .b3 { background: radial-gradient(circle, #c4e6a8, transparent 70%); opacity: .45; }
+:root[data-theme="light"] .abstract-bg svg { stroke: #6d8fb3; opacity: .22; }
+
+:root[data-theme="light"] .home-title { background: none; -webkit-text-fill-color: currentColor; color: var(--text); }
+:root[data-theme="light"] .home-title .accent { -webkit-text-fill-color: transparent; background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; }
+:root[data-theme="light"] .hero-logo { background: var(--page); box-shadow: var(--nm-raised); }
+
+:root[data-theme="light"] .social-btn, :root[data-theme="light"] .social-btn:hover { --btn-inner: var(--page); background: var(--page); box-shadow: var(--nm-raised-sm); color: var(--text); }
+:root[data-theme="light"] .social-btn:hover { box-shadow: -5px -5px 12px var(--nm-hi), 6px 7px 14px var(--nm-lo); }
+:root[data-theme="light"] .social-btn:active { box-shadow: var(--nm-inset); }
+:root[data-theme="light"] .auth-card { background: var(--page); box-shadow: var(--nm-raised-sm); }
+:root[data-theme="light"] .auth-card .auth-btn { --btn-inner: var(--panel-raised); background: var(--panel-raised); box-shadow: var(--nm-raised-sm); color: var(--text); }
+
+:root[data-theme="light"] .game-search input, :root[data-theme="light"] .game-search input:focus { background: var(--page); box-shadow: var(--nm-inset); }
+:root[data-theme="light"] .game-search input:focus { box-shadow: var(--nm-inset), 0 0 0 2px color-mix(in srgb, var(--cyan) 40%, transparent); }
+
+:root[data-theme="light"] details.game-dropdown, :root[data-theme="light"] .game-placeholder {
+    background: var(--page); border: 0; border-top: 0; box-shadow: var(--nm-raised);
+}
+:root[data-theme="light"] details.game-dropdown:hover, :root[data-theme="light"] details.game-dropdown[open] {
+    box-shadow: -9px -9px 20px var(--nm-hi), 12px 14px 26px var(--nm-lo), 0 0 0 1.5px color-mix(in srgb, var(--game-accent) 45%, transparent);
+}
+:root[data-theme="light"] .game-placeholder:hover { box-shadow: -9px -9px 20px var(--nm-hi), 12px 14px 26px var(--nm-lo); }
+:root[data-theme="light"] .placeholder-banner { background: linear-gradient(135deg, #d9e0eb, #e9edf4); box-shadow: var(--nm-inset); }
+:root[data-theme="light"] .game-badge, :root[data-theme="light"] .game-arrow { background: var(--page); box-shadow: var(--nm-raised-sm); border: 0; }
+:root[data-theme="light"] .game-progress-track { background: var(--page); box-shadow: var(--nm-inset); }
+:root[data-theme="light"] .maps-list { background: transparent; }
+:root[data-theme="light"] .map-link { background: var(--page); box-shadow: var(--nm-raised-sm); }
+:root[data-theme="light"] .map-link:hover { background: var(--page); box-shadow: var(--nm-inset); color: var(--game-accent); }
+:root[data-theme="light"] .game-new { color: #1f2a0c; background: linear-gradient(135deg, #e4f7b8, #b9e86a); }
+
+/* «Продолжить» в баннере: в светлой теме — светлое матовое стекло */
+:root[data-theme="light"] .game-banner .game-continue { color: var(--text); background: color-mix(in srgb, #f4f6fa 78%, transparent); border-color: color-mix(in srgb, var(--cont-a) 60%, transparent); box-shadow: 0 6px 16px rgba(40, 55, 100, .25), inset 0 1px 0 #fff; }
+:root[data-theme="light"] .game-banner .game-continue strong { color: color-mix(in srgb, var(--cont-a) 75%, #000); }
+:root[data-theme="light"] .game-banner:has(.game-continue:not([hidden]))::before { background: linear-gradient(to top, rgba(10, 14, 22, .45), transparent); }
+
+:root[data-theme="light"] .community-block, :root[data-theme="light"] .donate-block, :root[data-theme="light"] .about-item,
+:root[data-theme="light"] .updates-dropdown > summary, :root[data-theme="light"] .update-entry { background: var(--page); border: 0; box-shadow: var(--nm-raised); }
+:root[data-theme="light"] .donate-goal-track { background: var(--page); box-shadow: var(--nm-inset); }
+:root[data-theme="light"] .site-footer { border-top-color: var(--line); }
+/* светлая тема: акцент игры затемняется для текста, чтобы золото/голубой читались на светлом */
+:root[data-theme="light"] .game-badge, :root[data-theme="light"] .game-arrow,
+:root[data-theme="light"] .map-progress, :root[data-theme="light"] .map-link:hover { color: color-mix(in srgb, var(--game-accent) 62%, #1b2333); }
+:root[data-theme="light"] .map-marker { stroke: color-mix(in srgb, var(--game-accent) 62%, #1b2333); }
+:root[data-theme="light"] .game-banner .game-continue strong { color: color-mix(in srgb, var(--cont-a) 52%, #1b2333); }
+:root[data-theme="light"] .game-banner .game-continue svg { color: color-mix(in srgb, var(--cont-a) 60%, #1b2333); }

@@ -1,0 +1,61 @@
+/* Шрифт иконок Stellar Blade (из MapGenie) */
+@font-face {
+	font-family: 'icomoon';
+	src: url('icons.woff?v=1') format('woff'),
+		url('icons.ttf?v=1') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon' !important;
+	speak: never;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.icon-adams_clothes:before { content: "\e900"; color: #ffffff; }
+.icon-beta_core:before { content: "\e901"; color: #ffffff; }
+.icon-body_core:before { content: "\e902"; color: #ffffff; }
+.icon-boss:before { content: "\e903"; color: #ffffff; }
+.icon-box:before { content: "\e904"; color: #ffffff; }
+.icon-bulletin_board:before { content: "\e905"; color: #ffffff; }
+.icon-bulletin_board_request:before { content: "\e906"; color: #ffffff; }
+.icon-camp:before { content: "\e907"; color: #ffffff; }
+.icon-can:before { content: "\e908"; color: #ffffff; }
+.icon-data_bank:before { content: "\e909"; color: #ffffff; }
+.icon-drone_appearance:before { content: "\e90a"; color: #ffffff; }
+.icon-drone_upgrade_module:before { content: "\e90b"; color: #ffffff; }
+.icon-earrings:before { content: "\e90c"; color: #ffffff; }
+.icon-easter_egg:before { content: "\e90d"; color: #ffffff; }
+.icon-exospine:before { content: "\e90e"; color: #ffffff; }
+.icon-face_decoration:before { content: "\e90f"; color: #ffffff; }
+.icon-fast_travel:before { content: "\e910"; color: #ffffff; }
+.icon-fish:before { content: "\e911"; color: #ffffff; }
+.icon-gear:before { content: "\e912"; color: #ffffff; }
+.icon-hairstyle:before { content: "\e913"; color: #ffffff; }
+.icon-lilys_clothes:before { content: "\e914"; color: #ffffff; }
+.icon-lost_song:before { content: "\e915"; color: #ffffff; }
+.icon-main_quest:before { content: "\e916"; color: #ffffff; }
+.icon-memory_stick:before { content: "\e917"; color: #ffffff; }
+.icon-miscellaneous:before { content: "\e918"; color: #ffffff; }
+.icon-mission_item:before { content: "\e919"; color: #ffffff; }
+.icon-nano_suit:before { content: "\e91a"; color: #ffffff; }
+.icon-naytiba:before { content: "\e91b"; color: #ffffff; }
+.icon-omnibolt:before { content: "\e91c"; color: #ffffff; }
+.icon-passcode:before { content: "\e91d"; color: #ffffff; }
+.icon-photo_spot:before { content: "\e91e"; color: #ffffff; }
+.icon-point_of_interest:before { content: "\e91f"; color: #ffffff; }
+.icon-safehouse:before { content: "\e920"; color: #ffffff; }
+.icon-side_quest:before { content: "\e921"; color: #ffffff; }
+.icon-stellar_tear:before { content: "\e922"; color: #ffffff; }
+.icon-transition:before { content: "\e923"; color: #ffffff; }
+.icon-traversal:before { content: "\e924"; color: #ffffff; }
+.icon-tumbler_expansion_module:before { content: "\e925"; color: #ffffff; }
+.icon-vendor:before { content: "\e926"; color: #ffffff; }
+.icon-weapon_core:before { content: "\e927"; color: #ffffff; }

@@ -1,0 +1,52 @@
+/* Окошко «Поддержать проект» (js/support-toast.js). Оформление не зависит от темы карты. */
+.support-toast {
+    position: fixed; right: 18px; bottom: 18px; z-index: 3000;
+    width: min(340px, calc(100vw - 24px)); box-sizing: border-box;
+    padding: 16px 18px 14px;
+    background: #151a22; color: #edf2f7;
+    border: 1px solid #303945; border-top: 2px solid #c7ff3f; border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .55), 0 0 18px rgba(199, 255, 63, .12);
+    font-family: inherit; font-size: 14px; line-height: 1.5; text-align: left;
+    opacity: 0; transform: translateY(14px); transition: opacity .25s ease, transform .25s ease;
+}
+.support-toast.is-visible { opacity: 1; transform: none; }
+.support-toast-title { display: block; padding-right: 26px; margin-bottom: 6px; font-size: 15px; font-weight: 700; color: #fff; }
+.support-toast-body { margin: 0 0 10px; color: #b7c3d1; font-size: 13.5px; }
+.support-toast-note { margin: 0 0 14px; padding: 8px 10px; color: #dfeab8; font-size: 12.5px; line-height: 1.45; background: rgba(199, 255, 63, .08); border-left: 2px solid #c7ff3f; border-radius: 0 6px 6px 0; }
+.support-toast .support-toast-bye { margin: 0; color: #dfeab8; }
+.support-toast-close {
+    position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; padding: 0;
+    background: none; border: 0; border-radius: 6px; cursor: pointer;
+    color: #8a98a8; font: 20px/1 sans-serif;
+}
+.support-toast-close:hover { color: #fff; background: rgba(255, 255, 255, .08); }
+.support-toast-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.support-toast-donate, .support-toast-later { font: inherit; font-size: 13px; cursor: pointer; border-radius: 8px; }
+.support-toast-donate {
+    display: inline-block; padding: 8px 14px; text-decoration: none; font-weight: 700;
+    background: #c7ff3f; color: #10140a; border: 1px solid #c7ff3f;
+}
+.support-toast-donate:hover { background: #d9ff7a; }
+.support-toast-donate:disabled { opacity: .6; cursor: default; }
+.support-toast-later { padding: 8px 14px; background: transparent; color: #cdd7e2; border: 1px solid #3a4452; }
+.support-toast-later:hover { border-color: #8a98a8; color: #fff; }
+.support-toast-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 10px; }
+.support-toast-link { padding: 0; background: none; border: 0; cursor: pointer; font: inherit; font-size: 12px; color: #7d8a9a; text-decoration: underline; text-underline-offset: 3px; }
+.support-toast-link:hover { color: #cdd7e2; }
+.support-toast-form { display: grid; gap: 10px; }
+.support-toast-field { display: grid; gap: 4px; }
+.support-toast-field span { font-size: 12px; color: #9aa8b8; }
+.support-toast-field input {
+    box-sizing: border-box; width: 100%; padding: 8px 10px; font: inherit; font-size: 13.5px;
+    background: #0e1218; color: #edf2f7; border: 1px solid #3a4452; border-radius: 8px;
+}
+.support-toast-field input::placeholder { color: #667384; }
+.support-toast-field input:focus { outline: 2px solid #54dcff; outline-offset: 0; border-color: #54dcff; }
+.support-toast-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.support-toast-error { margin: 0; color: #ff9c8a; font-size: 12.5px; }
+.support-toast-error[hidden] { display: none; }
+.support-toast a:focus-visible, .support-toast button:focus-visible { outline: 2px solid #54dcff; outline-offset: 2px; }
+@media (max-width: 640px) {
+    .support-toast { right: 12px; left: 12px; bottom: 12px; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .support-toast { transition: none; transform: none; } }

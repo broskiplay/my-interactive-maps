@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://broskiplay.ru/sitemap.xml

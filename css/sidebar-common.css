@@ -1,0 +1,28 @@
+/* Общая геометрия служебных элементов сайдбара на всех картах: кнопка «Главная», соцсети, блок входа.
+   Здесь только размеры, отступы и положение. Цвета, рамки, скругления и шрифты остаются у темы каждой игры.
+   Подключается последним в <head> каждой карты. */
+.sidebar-header { gap: 12px; padding: 18px 16px 14px; }
+.header-top-row { align-items: flex-start; gap: 12px; }
+.home-nav { align-self: flex-start; gap: 0; }
+
+.header-top-row .home-back-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 34px; padding: 0 12px; font-size: 14px; line-height: 1; white-space: nowrap; }
+.header-top-row .home-back-btn svg { width: 14px; height: 14px; }
+
+.social-links { gap: 8px; }
+.social-links .social-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 10px; font-size: 13px; line-height: 1; white-space: nowrap; }
+.social-links .social-btn svg { width: 14px; height: 14px; }
+
+.auth-mini-box { gap: 10px; padding: 8px 10px; }
+.auth-mini-text { font-size: 12.5px; line-height: 1.3; }
+.auth-mini-text b { font-size: 13.5px; }
+.auth-mini-box .auth-mini-btn.auth-mini-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 34px; padding: 0 12px; font-size: 13px; line-height: 1; }
+
+/* Логотип или баннер игры сжимается, если месту тесно (узкий сайдбар на планшете и телефоне), и не залезает под «Главную» */
+.header-top-row h1, .header-top-row .brand { flex: 1 1 0; min-width: 0; }
+.header-top-row .home-nav { flex: 0 0 auto; }
+.header-banner-title .header-banner { width: 100%; max-width: 184px; height: auto; aspect-ratio: 184 / 86; }
+.header-top-row h1 .logo-title { width: auto; max-width: 100%; object-fit: contain; object-position: left center; }
+.header-top-row .brand img { max-width: 100%; }
+@media (max-width: 700px) {
+    .header-top-row h1 .logo-main { font-size: clamp(24px, 8vw, 32px); }
+}
