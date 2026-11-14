@@ -1,0 +1,30 @@
+/* Страницы категорий (scripts/category_pages.py): /<игра>/c/<категория>/ */
+.cp { max-width: 860px; }
+.cp-lead { font-size: 15px; line-height: 1.7; }
+.cp-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
+.cp-open { display: inline-flex; text-decoration: none; }
+/* «Открыть на карте»: как остальные неоморфные кнопки сайта, без радужной рамки Google */
+:root .cp-actions .cp-open.auth-btn { --btn-inner: var(--page); border: 0; background: var(--page); color: var(--text); border-radius: 16px; padding: 10px 18px; box-shadow: var(--sp-raise-sm); animation: none; transform: none; white-space: normal; }
+:root .cp-actions .cp-open.auth-btn::before { display: none; }
+:root .cp-actions .cp-open.auth-btn:hover { transform: translateY(-2px); color: var(--cyan); box-shadow: var(--sp-raise-sm-up); animation: none; }
+:root .cp-actions .cp-open.auth-btn:active { transform: none; box-shadow: var(--sp-press); }
+.cp h2 .cp-n, .cp-n { color: var(--muted); font-family: var(--font-label); font-size: .8em; font-weight: 500; }
+.cp-reg { color: var(--muted); font-size: 12px; margin-left: 4px; }
+.cp-list { columns: 2 260px; column-gap: 28px; padding-left: 18px; }
+.cp-list li { break-inside: avoid; }
+.cp-more { font-size: 13px; }
+.cp-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 22px; }
+.cp-chips a { padding: 6px 12px; border-radius: 999px; background: var(--page); box-shadow: var(--sp-raise-sm); color: var(--text); font-family: var(--font-label); font-size: 12px; text-decoration: none; }
+.cp-chips a:hover, .cp-chips a:focus-visible { color: var(--cyan); }
+.cp-foot { margin-top: 24px; font-size: 13px; }
+
+/* Журнал исправлений (scripts/fixes.py): /fixes/ */
+.fx-list { list-style: none; padding-left: 0; }
+.fx-list li { margin-bottom: 8px; }
+.fx-kind { display: inline-block; margin-right: 6px; padding: 1px 9px; border-radius: 999px; box-shadow: var(--sp-press); font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.fx-move { color: var(--orange); }
+.fx-error { color: var(--red); }
+.fx-where, .fx-note { color: var(--muted); font-size: 13px; }
+.fx-mine { color: var(--acid); font-weight: 600; }
+.fx-is-mine { box-shadow: inset 3px 0 0 var(--acid); padding-left: 10px; }
+.fx-empty { color: var(--muted); }

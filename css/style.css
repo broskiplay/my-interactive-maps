@@ -1,0 +1,1285 @@
+/* =========================================================
+   ПЕРЕМЕННЫЕ И БАЗА
+   ========================================================= */
+:root {
+    --page: #090c12;
+    --panel: #151a22;
+    --panel-raised: #1b222c;
+    --line: #303945;
+    --text: #edf2f7;
+    --muted: #9aa8b8;
+    --acid: #c7ff3f;
+    --cyan: #54dcff;
+    --violet: #c084ff;
+    --orange: #ff9c45;
+    --red: #ff6274;
+
+    /* Скругления: мелкие элементы (бейджи, строки карт), кнопки и карточки, крупные блоки */
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+
+    /* Шрифты (локально, fonts/fonts.css): два семейства — Unbounded для заголовков, Manrope для всего остального.
+       --font-soft и --font-label оставлены как псевдонимы, чтобы не переписывать правила */
+    --font-fallback: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-display: "Unbounded", "Manrope", var(--font-fallback);  /* H1/H2, названия игр */
+    --font-body: "Manrope", var(--font-fallback);                  /* основной текст, кнопки */
+    --font-soft: var(--font-body);      /* подзаголовки, описания, поиск */
+    --font-label: var(--font-body);     /* карты, метки, бейджи, проценты */
+    --font-heading: var(--font-display);
+}
+
+/* =========================================================
+   СВЕТЛАЯ ТЕМА (data-theme="light")
+   ========================================================= */
+:root[data-theme="light"] {
+    /* «Сумеречная» светлая тема: приглушённый сине-лавандовый фон, карточки светлее фона, но не белые */
+    --page: #d9e0ee;
+    --panel: #e6ebf5;
+    --panel-raised: #eff2f9;
+    --line: #aeb9cf;
+    --text: #151c2c;
+    --muted: #455168;
+    /* фирменные неоновые акценты, затемнены для контраста на мягком фоне */
+    --acid: #4f7d00;
+    --cyan: #0a7ba0;
+    --violet: #7637c2;
+    --orange: #c2600c;
+    --red: #c42b44;
+    color-scheme: light;
+}
+:root:not([data-theme="light"]) { color-scheme: dark; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
+
+body {
+    font-family: var(--font-body);
+    min-height: 100vh;
+    background-color: var(--page);
+    /* Мягкое «северное сияние»: цветные туманности на тёмной основе */
+    background-image:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(84, 220, 255, .16), transparent 70%),
+        radial-gradient(ellipse 60% 50% at 92% 8%, rgba(192, 132, 255, .15), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 85% 78%, rgba(199, 255, 63, .07), transparent 70%),
+        radial-gradient(ellipse 65% 50% at 5% 95%, rgba(255, 156, 69, .08), transparent 70%),
+        linear-gradient(160deg, var(--page) 0%, var(--panel) 50%, var(--page) 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-weight: 400;
+    padding: 64px 24px;
+    isolation: isolate;
+}
+
+/* Сетка, плавно растворяющаяся к краям экрана */
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: linear-gradient(rgba(147, 168, 188, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(147, 168, 188, .05) 1px, transparent 1px);
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 25%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 35%, #000 25%, transparent 100%);
+}
+/* Виньетка по краям для глубины */
+body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 110% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .35) 100%);
+}
+:root[data-theme="light"] body {
+    background-image:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(10, 160, 210, .26), transparent 70%),
+        radial-gradient(ellipse 60% 50% at 92% 8%, rgba(150, 90, 230, .24), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 85% 78%, rgba(120, 190, 30, .15), transparent 70%),
+        radial-gradient(ellipse 65% 50% at 5% 95%, rgba(240, 130, 50, .17), transparent 70%),
+        linear-gradient(160deg, var(--page) 0%, #ccd5e8 50%, var(--page) 100%);
+}
+:root[data-theme="light"] body::before {
+    background-image: linear-gradient(rgba(60, 80, 130, .10) 1px, transparent 1px), linear-gradient(90deg, rgba(60, 80, 130, .10) 1px, transparent 1px);
+}
+:root[data-theme="light"] body::after {
+    background: radial-gradient(ellipse 110% 90% at 50% 40%, transparent 55%, rgba(40, 55, 100, .2) 100%);
+}
+
+.site-shell {
+    width: min(100%, 1080px);
+    margin: 0 auto;
+    position: relative;
+}
+
+/* =========================================================
+   ШАПКА И СОЦСЕТИ
+   ========================================================= */
+.hero { text-align: center; margin-bottom: 22px; }
+.eyebrow { font-family: var(--font-label); color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+.home-title {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.6vw, 40px); font-weight: 700; color: var(--text);
+    letter-spacing: -.01em; line-height: 1.15; text-align: center; margin-bottom: 14px;
+    text-shadow: 0 0 28px rgba(84, 220, 255, .22);
+}
+:root[data-theme="light"] .home-title {
+    text-shadow: none;
+    background: linear-gradient(90deg, #151c2c 0%, #3a3f9e 55%, #7637c2 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+}
+/* Чем удобны карты: три выпуклые плашки вместо подзаголовка */
+.hero-perks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; list-style: none; margin: 4px 0 0; padding: 0; }
+.hero-perks .sp-chip { min-height: 36px; padding: 6px 15px 6px 11px; gap: 8px; background: var(--page); box-shadow: var(--sp-raise-sm); color: var(--text); font-family: var(--font-label); font-size: 13px; font-weight: 500; }
+:root:not([data-theme="light"]) .hero-perks .sp-chip { background: var(--sp-card); box-shadow: var(--sp-card-edge), var(--sp-raise-sm); }
+.hero-perks svg { width: 17px; height: 17px; flex: none; fill: none; stroke: var(--cyan); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* Последнее обновление (scripts/changelog.py → latest): ссылка раскрывает «Что нового» */
+.hero-latest { display: inline-flex; align-items: center; gap: 9px; max-width: 100%; margin-top: 18px; padding: 4px 6px; border-radius: var(--sp-r-pill); color: var(--muted); font-family: var(--font-soft); font-size: 13.5px; text-decoration: none; }
+.hero-latest-tag { flex: none; padding: 2px 9px; border-radius: var(--sp-r-pill); background: var(--page); box-shadow: var(--sp-press); color: var(--acid); font-family: var(--font-label); font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.hero-latest time { flex: none; color: var(--text); font-family: var(--font-label); font-weight: 600; }
+.hero-latest-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hero-latest-arr { flex: none; color: var(--cyan); transition: transform .2s; }
+.hero-latest:hover, .hero-latest:focus-visible { color: var(--text); }
+.hero-latest:hover .hero-latest-arr { transform: translateX(3px); }
+.hero-latest:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+@media (max-width: 480px) {
+    .hero-perks { gap: 8px; }
+    .hero-perks .sp-chip { min-height: 32px; gap: 6px; font-size: 11.5px; padding: 4px 10px 4px 8px; }
+    .hero-perks svg { width: 15px; height: 15px; }
+    .hero-latest-tag { display: none; }
+}
+
+.social-links { display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 18px; }
+
+.social-btn {
+    --btn-inner: #1b222c;
+    --ring: linear-gradient(90deg, #888, #ccc, #888);
+    --brand: currentColor;
+    position: relative; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 9px 18px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; letter-spacing: .1px;
+    text-decoration: none; color: var(--text);
+    /* В покое: спокойная рамка в оттенке бренда; фирменный градиент и свечение появляются при наведении */
+    --ring-rest: linear-gradient(color-mix(in srgb, var(--brand) 38%, var(--line)), color-mix(in srgb, var(--brand) 38%, var(--line)));
+    border: 1.5px solid transparent;
+    background:
+        linear-gradient(var(--btn-inner), var(--btn-inner)) padding-box,
+        var(--ring-rest) border-box;
+    background-size: 100% 100%, 200% 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+/* Мягкое цветное свечение вокруг кнопки (только при наведении) */
+.social-btn::before {
+    content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: calc(var(--r-md) + 3px);
+    background: var(--ring); background-size: 200% 100%;
+    filter: blur(9px); opacity: 0; transition: opacity .25s ease;
+}
+.social-btn:hover, .social-btn:focus-visible, .social-twitch.is-live, .donate-btn {
+    background:
+        linear-gradient(var(--btn-inner), var(--btn-inner)) padding-box,
+        var(--ring) border-box;
+    background-size: 100% 100%, 200% 100%;
+}
+.social-twitch.is-live::before, .donate-btn::before { opacity: .22; }
+.social-btn:hover { transform: translateY(-2px); animation: ring-shift 2.4s linear infinite; }
+.social-btn:hover::before { opacity: .5; animation: ring-shift 2.4s linear infinite; }
+.social-btn:active { transform: translateY(0); }
+@keyframes ring-shift { to { background-position: 0 0, -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .social-btn:hover, .social-btn:hover::before { animation: none; } }
+.social-btn:focus-visible, .auth-btn:focus-visible, .map-link:focus-visible, details.game-dropdown > summary:focus-visible {
+    outline: 2px solid var(--acid); outline-offset: 3px;
+}
+
+.social-twitch { --ring: linear-gradient(90deg, #9146FF, #BF94FF, #772CE8, #9146FF); --brand: #9146FF; }
+.social-twitch.is-live { --ring: linear-gradient(90deg, #ff4359, #ff8a98, #d4203a, #ff4359); --brand: #ff4359; box-shadow: 0 0 18px rgba(255, 67, 89, .22); }
+.social-twitch .live-indicator { display: none; }
+.social-twitch.is-live .live-indicator { display: inline-block; }
+.social-twitch .live-indicator { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #ff4359; box-shadow: 0 0 0 0 rgba(255, 67, 89, .65); animation: live-pulse 1.5s ease-out infinite; }
+@keyframes live-pulse { 70% { box-shadow: 0 0 0 7px rgba(255, 67, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 67, 89, 0); } }
+
+.social-youtube { --ring: linear-gradient(90deg, #FF0000, #FF7A7A, #CC0000, #FF0000); --brand: #FF0000; overflow: hidden; }
+
+.social-donate { --ring: linear-gradient(90deg, #D97706, #FBBF24, #F97316, #D97706); --brand: #D97706; }
+
+/* =========================================================
+   АВТОРИЗАЦИЯ GOOGLE
+   ========================================================= */
+.auth-card {
+    --card-inner: var(--panel-raised);
+    position: relative; isolation: isolate;
+    width: 100%; max-width: 520px;
+    /* Заливка внутри + тонкая градиентная рамка Google */
+    background:
+        linear-gradient(145deg, var(--card-inner), var(--panel)) padding-box,
+        linear-gradient(120deg, color-mix(in srgb, #4285F4 70%, transparent), color-mix(in srgb, #EA4335 55%, transparent), color-mix(in srgb, #FBBC05 55%, transparent), color-mix(in srgb, #34A853 70%, transparent)) border-box;
+    border: 1.5px solid transparent; border-radius: var(--r-lg);
+    padding: 14px 16px 14px 18px; margin: 0 auto 44px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    box-shadow: 0 8px 26px rgba(0,0,0,.35);
+    transition: box-shadow .3s ease, transform .3s ease;
+}
+/* Мягкое цветное свечение под карточкой */
+.auth-card::before {
+    content: ""; position: absolute; inset: 6px 14px -6px; z-index: -1; border-radius: var(--r-lg);
+    background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
+    filter: blur(16px); opacity: .16; transition: opacity .3s ease;
+}
+.auth-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.auth-card:hover::before { opacity: .3; }
+:root[data-theme="light"] .auth-card { --card-inner: #eef1f9; box-shadow: 0 8px 24px rgba(40, 55, 100, .18); }
+:root[data-theme="light"] .auth-card::before { opacity: .2; }
+:root[data-theme="light"] .auth-card:hover::before { opacity: .32; }
+:root[data-theme="light"] .auth-success-text { color: #0b7d66; }
+.auth-info { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 4px 0 4px 4px; }
+/* Значок гостя: скрывается, когда показан аватар вошедшего пользователя */
+.auth-info::before {
+    content: ""; flex: 0 0 auto; width: 38px; height: 38px; border-radius: 50%;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa8b8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='3.6'/%3E%3Cpath d='M4.8 20c.9-3.6 3.6-5.4 7.2-5.4s6.3 1.8 7.2 5.4'/%3E%3C/svg%3E") center / 21px no-repeat,
+        color-mix(in srgb, var(--muted) 12%, transparent);
+    border: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+}
+.auth-info.has-avatar::before { display: none; }
+.auth-info.has-avatar .auth-avatar { display: block; }
+.auth-avatar { box-sizing: border-box; width: 42px; height: 42px; min-width: 42px; min-height: 42px; aspect-ratio: 1 / 1; border-radius: 50%; border: 2px solid var(--acid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acid) 18%, transparent); object-fit: cover; object-position: center; display: none; flex: 0 0 42px; }
+.auth-text { min-width: 0; font-family: var(--font-soft); font-size: 12.5px; color: var(--muted); line-height: 1.35; overflow: hidden; text-overflow: ellipsis; }
+.auth-text b { color: var(--text); font-size: 13.5px; font-weight: 600; }
+.auth-success-text { color: #50e3c2; }
+.auth-btn {
+    --btn-inner: #1b222c;
+    --google-ring: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+    position: relative; isolation: isolate;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 9px 18px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; letter-spacing: .1px;
+    color: var(--text); cursor: pointer; flex-shrink: 0; white-space: nowrap;
+    /* Светлая заливка внутри + градиент Google на рамке */
+    border: 2px solid transparent;
+    background:
+        linear-gradient(var(--btn-inner), var(--btn-inner)) padding-box,
+        var(--google-ring) border-box;
+    background-size: 100% 100%, 200% 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+    transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+}
+/* Мягкое цветное свечение вокруг кнопки */
+.auth-btn::before {
+    content: ""; position: absolute; inset: -3px; z-index: -1; border-radius: calc(var(--r-md) + 3px);
+    background: var(--google-ring); background-size: 200% 100%;
+    filter: blur(9px); opacity: .22; transition: opacity .25s ease;
+}
+.auth-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(66, 133, 244, .22);
+    animation: google-ring-shift 2.4s linear infinite;
+}
+.auth-btn:hover::before { opacity: .5; animation: google-ring-shift 2.4s linear infinite; }
+.auth-btn:active { transform: translateY(0); }
+@keyframes google-ring-shift { to { background-position: 0 0, -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .auth-btn:hover, .auth-btn:hover::before { animation: none; } }
+.auth-btn .google-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+:root[data-theme="light"] .auth-btn { --btn-inner: #eef1f9; color: #1F1F1F; box-shadow: 0 3px 10px rgba(40, 55, 100, .16); }
+:root[data-theme="light"] .auth-btn:hover { --btn-inner: #f7f9fd; }
+
+.auth-btn.is-loading { cursor: progress; opacity: .7; }
+.auth-btn.logout, .auth-btn.logout:hover { animation: none; background: #54272d; border-color: #a3434d; color: #fff; box-shadow: none; }
+.auth-btn.logout::before { display: none; }
+:root[data-theme="light"] .auth-btn.logout { background: #fff; border-color: var(--red); color: var(--red); }
+.auth-btn.logout:hover { background: #71313a; }
+.auth-btn .logout-icon { flex-shrink: 0; transition: transform .25s ease; }
+.auth-btn.logout:hover .logout-icon { transform: translateX(2px); }
+.auth-btn.logout {
+    background: linear-gradient(145deg, #5c2a31, #3e1c22);
+    border: 1.5px solid #b5505b; border-radius: var(--r-md);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 4px 14px rgba(163,67,77,.22);
+}
+.auth-btn.logout:hover { background: linear-gradient(145deg, #7a3640, #52252c); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 6px 18px rgba(163,67,77,.38); }
+:root[data-theme="light"] .auth-btn.logout { background: #f6e6ea; box-shadow: 0 3px 10px rgba(40,55,100,.14); }
+:root[data-theme="light"] .auth-btn.logout:hover { background: #f9d9df; }
+
+/* Светлая тема: поиск и «продолжить» */
+:root[data-theme="light"] .game-search input { background: var(--panel-raised); box-shadow: 0 2px 8px rgba(40, 55, 100, .1); }
+:root[data-theme="light"] .game-search input:focus { box-shadow: 0 0 0 3px rgba(10, 123, 160, .22), 0 2px 8px rgba(40, 55, 100, .1); }
+
+/* =========================================================
+   БИБЛИОТЕКА ИГР
+   ========================================================= */
+.section-heading { margin-bottom: 18px; }
+.section-heading h2 { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.005em; margin-bottom: 7px; }
+.section-heading p { font-family: var(--font-soft); color: var(--muted); font-size: 13px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.game-search { margin-bottom: 16px; }
+.game-search input {
+    width: 100%; min-height: 46px; padding: 11px 14px;
+    color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md);
+    font-family: var(--font-soft); font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.game-search input::placeholder { color: var(--muted); }
+.game-search input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(84, 220, 255, .12); }
+.game-search input:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+.game-search-status { font-family: var(--font-label); min-height: 18px; margin-top: 7px; color: var(--muted); font-size: 12px; }
+.game-search-status:empty { display: none; }
+
+.games-container { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 18px; align-items: start; } /* колонки сами сворачиваются, когда карточке тесно */
+
+details.game-dropdown {
+    --game-accent: var(--cyan);
+    background: linear-gradient(145deg, var(--panel-raised), var(--panel));
+    border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,.38); transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+details.game-dropdown:hover, details.game-dropdown[open] { border-color: var(--game-accent); box-shadow: 0 14px 36px rgba(0,0,0,.5), 0 0 0 1px rgba(var(--game-glow, 84, 220, 255), .4), 0 0 26px rgba(var(--game-glow, 84, 220, 255), .3); }
+:root[data-theme="light"] details.game-dropdown,
+:root[data-theme="light"] .game-placeholder {
+    background: linear-gradient(145deg, var(--panel-raised), color-mix(in srgb, var(--game-accent) 9%, var(--panel)));
+    border-top: 3px solid var(--game-accent);
+    box-shadow: 0 10px 26px rgba(40, 55, 100, .2);
+}
+:root[data-theme="light"] details.game-dropdown:hover, :root[data-theme="light"] details.game-dropdown[open] { box-shadow: 0 14px 32px rgba(40, 55, 100, .26), 0 0 24px rgba(var(--game-glow, 84, 220, 255), .32); }
+:root[data-theme="light"] .maps-list { background: color-mix(in srgb, var(--game-accent) 6%, var(--panel)); }
+:root[data-theme="light"] .map-link { background: var(--panel-raised); box-shadow: 0 1px 3px rgba(40, 55, 100, .1); }
+:root[data-theme="light"] .map-link:hover { background: color-mix(in srgb, var(--game-accent) 12%, var(--panel-raised)); }
+:root[data-theme="light"] .game-progress-track { background: color-mix(in srgb, var(--line) 80%, transparent); }
+:root[data-theme="light"] .game-progress-track > span { box-shadow: none; }
+details.game-dropdown:hover { transform: translateY(-3px); }
+details.game-dropdown > summary { list-style: none; cursor: pointer; user-select: none; }
+details.game-dropdown > summary::-webkit-details-marker { display: none; }
+
+details.theme-stellar { --game-accent: var(--cyan); --game-glow: 84, 220, 255; }
+.game-banner {
+    height: auto; aspect-ratio: 16 / 9; background: var(--panel); /* баннер масштабируется вместе с карточкой: картинка всегда видна целиком */
+    position: relative; display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid var(--line); overflow: hidden;
+}
+.game-banner::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(8, 12, 18, .42), transparent 32%, transparent 68%, rgba(8, 12, 18, .42)); }
+.game-banner-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 38%; filter: saturate(.72) brightness(.52); opacity: .48; transform: scale(1.03); transition: opacity .45s, filter .45s, transform .65s; }
+.game-banner-image { position: relative; z-index: 2; width: min(62%, 340px); height: 74%; object-fit: contain; opacity: .84; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .45)); transition: transform .4s ease, opacity .4s; }
+details.game-dropdown:hover .game-banner-art, details.game-dropdown:focus-within .game-banner-art { opacity: .82; filter: saturate(.9) brightness(.72); transform: scale(1.08); }
+details.game-dropdown:hover .game-banner-image, details.game-dropdown:focus-within .game-banner-image { transform: scale(1.04); opacity: 1; }
+
+/* Светлая тема: убираем белый ореол вокруг логотипа */
+:root[data-theme="light"] .game-banner::after { background: none; }
+:root[data-theme="light"] .game-banner-image { filter: drop-shadow(0 2px 6px rgba(30, 45, 70, .18)); }
+/* Светлая тема: арт без серой дымки, при наведении только приближение */
+:root[data-theme="light"] .game-banner-art,
+:root[data-theme="light"] details.game-dropdown:hover .game-banner-art,
+:root[data-theme="light"] details.game-dropdown:focus-within .game-banner-art { opacity: 1; filter: none; }
+:root[data-theme="light"] .game-banner-image,
+:root[data-theme="light"] details.game-dropdown:hover .game-banner-image,
+:root[data-theme="light"] details.game-dropdown:focus-within .game-banner-image { opacity: 1; }
+/* Светлая тема: баннеры заглушек в цвете своей игры вместо тёмных плашек */
+:root[data-theme="light"] .placeholder-banner { background: linear-gradient(110deg, color-mix(in srgb, var(--game-accent) 22%, var(--panel-raised)), color-mix(in srgb, var(--game-accent) 6%, var(--panel))); }
+:root[data-theme="light"] .game-placeholder:hover { box-shadow: 0 14px 32px rgba(40, 55, 100, .26), 0 0 20px color-mix(in srgb, var(--game-accent) 25%, transparent); }
+/* Светлая тема: узор на баннере заглушек не усиливается при наведении */
+:root[data-theme="light"] .game-placeholder:hover .placeholder-banner::before { opacity: .34; animation: none; }
+
+.game-info { padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; }
+.stellar-banner { background: #02040a; /* sp-ok: подложка баннера в цвет игры */ }
+.stellar-banner .game-banner-art { object-fit: contain; object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-stellar:hover .stellar-banner .game-banner-art, .theme-stellar:focus-within .stellar-banner .game-banner-art { opacity: 1; filter: saturate(1.1) brightness(1.06); transform: scale(1.06); }
+:root[data-theme="light"] .stellar-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-stellar .game-info { gap: 14px; }
+.game-title-block { display: grid; gap: 8px; min-width: 0; }
+.game-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: -.005em; line-height: 1.25; color: var(--text); }
+
+.game-progress { width: min(220px, 46vw); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 10px; }
+.game-progress-heading { font-family: var(--font-label); display: flex; align-items: center; justify-content: space-between; gap: 10px; grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
+.game-progress-heading strong { color: var(--acid); font-family: var(--font-label); font-size: 13px; font-weight: 600; }
+.game-progress-track { height: 6px; overflow: hidden; background: var(--line); border-radius: 999px; }
+.game-progress-track > span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--acid)); box-shadow: 0 0 10px rgba(199, 255, 63, .42); transition: width .45s ease; }
+.game-progress-count { font-family: var(--font-label); color: var(--muted); font-size: 11px; white-space: nowrap; }
+/* Ничего не отмечено: вместо пустой полоски «0%» только объём карты */
+.game-progress.is-empty .game-progress-heading, .game-progress.is-empty .game-progress-track { display: none; }
+.game-progress.is-empty .game-progress-count { grid-column: 1 / -1; font-size: 13px; }
+/* Бейдж «Новое» / «Обновлено» на баннере (js/script.js → applyFreshBadges, держится неделю) */
+.game-new {
+    position: absolute; top: 12px; left: 12px; z-index: 3;
+    padding: 5px 10px; border-radius: 999px;
+    font-family: var(--font-label); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: #10140a; background: var(--acid); box-shadow: 0 2px 10px rgba(0, 0, 0, .45);
+}
+.game-arrow { display: flex; color: var(--game-accent); transition: transform .25s; }
+.game-arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+details.game-dropdown[open] .game-arrow { transform: rotate(180deg); }
+.game-indicators { display: flex; align-items: center; gap: 10px; }
+.game-badge {
+    color: var(--game-accent); background: color-mix(in srgb, var(--game-accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--game-accent) 35%, transparent);
+    border-radius: var(--r-sm); padding: 5px 9px; font-family: var(--font-label); font-size: 11px; font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase; white-space: nowrap;
+}
+
+/* Список карт */
+.maps-list { padding: 12px 16px 16px; background: var(--panel); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.map-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; background: var(--panel-raised); border: 1px solid var(--line);
+    border-radius: var(--r-sm); color: var(--text); text-decoration: none; font-family: var(--font-label); font-weight: 500;
+    font-size: 14px; transition: background .15s, border-color .15s, transform .1s, color .15s;
+}
+.map-link:hover { background: var(--panel); border-color: var(--game-accent); color: var(--game-accent); transform: translateX(4px); }
+.map-link span.status { display: flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 11px; color: var(--muted); font-weight: normal; }
+.map-link span.status svg { width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.map-progress { color: var(--game-accent); font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+.map-link.is-untouched .map-progress { color: var(--muted); font-weight: 500; }
+.map-name { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.map-marker { width: 16px; height: 16px; flex: 0 0 auto; fill: none; stroke: var(--game-accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Плейсхолдеры для будущих игр */
+.game-placeholder {
+    --game-accent: var(--violet);
+    min-width: 0; overflow: hidden; border-radius: var(--r-md);
+    background: linear-gradient(145deg, var(--panel-raised), var(--panel));
+    border: 1px solid var(--line); box-shadow: 0 8px 25px rgba(0,0,0,.3);
+    transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+details.theme-gothic { --game-accent: #d98f3d; --game-glow: 217, 143, 61; }
+.gothic-banner { background: linear-gradient(180deg, #0a0d15, #121821 55%, #0e1219); /* sp-ok: подложка баннера в цвет игры */ }
+.gothic-banner .game-banner-art { object-fit: contain; object-position: center; opacity: .92; filter: saturate(.92) brightness(.88); transform: scale(1.02); }
+.theme-gothic:hover .gothic-banner .game-banner-art, .theme-gothic:focus-within .gothic-banner .game-banner-art { opacity: 1; filter: saturate(1) brightness(1); transform: scale(1.08); }
+:root[data-theme="light"] .gothic-banner .game-banner-art { opacity: .9; filter: none; }
+.theme-gothic .game-info { gap: 14px; }
+.theme-gothic .game-progress-heading strong { color: var(--game-accent); }
+.theme-gothic .game-progress-track > span { background: linear-gradient(90deg, #a35f1e, var(--game-accent)); box-shadow: 0 0 10px rgba(217, 143, 61, .42); }
+/* Dimraeth: тёмный камень и золото, как в меню игры; логотип — по центру баннера, как у Stellar Blade */
+details.theme-dimraeth { --game-accent: #e8c773; --game-glow: 232, 199, 115; }
+.dimraeth-banner { background: radial-gradient(ellipse at 50% 60%, #2b211b, #17110f 70%); /* sp-ok: подложка баннера в цвет игры */ }
+.dimraeth-banner .game-banner-image { width: min(58%, 320px); height: 70%; opacity: .92; filter: drop-shadow(0 3px 12px rgba(0, 0, 0, .65)); }
+.theme-dimraeth:hover .dimraeth-banner .game-banner-image, .theme-dimraeth:focus-within .dimraeth-banner .game-banner-image { opacity: 1; transform: scale(1.06); }
+.theme-dimraeth .game-info { gap: 14px; }
+.theme-dimraeth .game-progress-heading strong { color: var(--game-accent); }
+.theme-dimraeth .game-progress-track > span { background: linear-gradient(90deg, #9c7a35, var(--game-accent)); box-shadow: 0 0 10px rgba(232, 199, 115, .4); }
+
+details.theme-palworld { --game-accent: #e0a63a; --game-glow: 224, 166, 58; }
+.palworld-banner { background: radial-gradient(ellipse at 50% 60%, #26301a, #0e130f 72%); /* sp-ok: подложка баннера в цвет игры */ }
+.palworld-banner .game-banner-image { width: min(62%, 340px); height: 62%; opacity: .94; filter: drop-shadow(0 3px 12px rgba(0, 0, 0, .65)); }
+.theme-palworld:hover .palworld-banner .game-banner-image, .theme-palworld:focus-within .palworld-banner .game-banner-image { opacity: 1; transform: scale(1.06); }
+.theme-palworld .game-info { gap: 14px; }
+.theme-palworld .game-progress-heading strong { color: var(--game-accent); }
+.theme-palworld .game-progress-track > span { background: linear-gradient(90deg, #a8741a, var(--game-accent)); box-shadow: 0 0 10px rgba(224, 166, 58, .4); }
+
+/* Oblivion Remastered: тёмный багрянец и старое золото, как врата Обливиона над пергаментом */
+details.theme-oblivion { --game-accent: #d8742f; --game-glow: 216, 116, 47; }
+.oblivion-banner { background: radial-gradient(ellipse at 50% 62%, #4a1f10, #1b0d07 72%); /* sp-ok: подложка баннера в цвет игры */ }
+.oblivion-banner .game-banner-art { object-position: center 75%; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-oblivion:hover .oblivion-banner .game-banner-art, .theme-oblivion:focus-within .oblivion-banner .game-banner-art { opacity: 1; filter: saturate(1.08) brightness(1.05); transform: scale(1.06); }
+:root[data-theme="light"] .oblivion-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-oblivion .game-info { gap: 14px; }
+.theme-oblivion .game-progress-heading strong { color: var(--game-accent); }
+.theme-oblivion .game-progress-track > span { background: linear-gradient(90deg, #8d2b1c, var(--game-accent)); box-shadow: 0 0 10px rgba(216, 116, 47, .4); }
+
+/* Skyrim: холодная сталь и льдистая синева, как нордский свиток над снегами */
+details.theme-skyrim { --game-accent: #6fa8d4; --game-glow: 111, 168, 212; }
+.skyrim-banner { background: radial-gradient(ellipse at 50% 55%, #26394b, #0f1822 72%); /* sp-ok: подложка баннера в цвет игры */ }
+.skyrim-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-skyrim:hover .skyrim-banner .game-banner-art, .theme-skyrim:focus-within .skyrim-banner .game-banner-art { opacity: 1; filter: brightness(1.1); transform: scale(1.05); }
+:root[data-theme="light"] .skyrim-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-skyrim .game-info { gap: 14px; }
+.theme-skyrim .game-progress-heading strong { color: var(--game-accent); }
+.theme-skyrim .game-progress-track > span { background: linear-gradient(90deg, #2f5877, var(--game-accent)); box-shadow: 0 0 10px rgba(111, 168, 212, .4); }
+/* Ведьмак 3: тёмная сталь и кровавый акцент, как меню игры */
+details.theme-witcher3 { --game-accent: #c8372c; --game-glow: 200, 55, 44; }
+.witcher3-banner { background: radial-gradient(ellipse at 50% 55%, #2a1512, #0c0807 72%); /* sp-ok: подложка баннера в цвет игры */ }
+.witcher3-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-witcher3:hover .witcher3-banner .game-banner-art, .theme-witcher3:focus-within .witcher3-banner .game-banner-art { opacity: 1; filter: brightness(1.1); transform: scale(1.05); }
+:root[data-theme="light"] .witcher3-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-witcher3 .game-info { gap: 14px; }
+.theme-witcher3 .game-progress-heading strong { color: var(--game-accent); }
+.theme-witcher3 .game-progress-track > span { background: linear-gradient(90deg, #6d1a14, var(--game-accent)); box-shadow: 0 0 10px rgba(200, 55, 44, .4); }
+/* Cyberpunk 2077: красный «HUD» игры, полоса прогресса уходит в фирменный жёлтый */
+details.theme-cyberpunk2077 { --game-accent: #ff5c57; --game-glow: 255, 92, 87; }
+.cyberpunk2077-banner { background: radial-gradient(ellipse at 60% 50%, #1a1c3a, #08070d 72%); /* sp-ok: подложка баннера в цвет игры */ }
+.cyberpunk2077-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-cyberpunk2077:hover .cyberpunk2077-banner .game-banner-art, .theme-cyberpunk2077:focus-within .cyberpunk2077-banner .game-banner-art { opacity: 1; filter: brightness(1.1); transform: scale(1.05); }
+:root[data-theme="light"] .cyberpunk2077-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-cyberpunk2077 .game-info { gap: 14px; }
+.theme-cyberpunk2077 .game-progress-heading strong { color: var(--game-accent); }
+.theme-cyberpunk2077 .game-progress-track > span { background: linear-gradient(90deg, var(--game-accent), #fcee0a); box-shadow: 0 0 10px rgba(255, 92, 87, .4); }
+/* Hogwarts Legacy: золото древней магии, полоса прогресса — «спектр заклинаний» (Протего, сила, контроль, урон, непростительные) */
+details.theme-hogwarts { --game-accent: #e2b660; --game-glow: 226, 182, 96; }
+.hogwarts-banner { background: radial-gradient(ellipse at 60% 40%, #1b2747, #070a12 72%); /* sp-ok: подложка баннера в цвет игры */ }
+.hogwarts-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-hogwarts:hover .hogwarts-banner .game-banner-art, .theme-hogwarts:focus-within .hogwarts-banner .game-banner-art { opacity: 1; filter: brightness(1.08); transform: scale(1.05); }
+:root[data-theme="light"] .hogwarts-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-hogwarts .game-info { gap: 14px; }
+.theme-hogwarts .game-progress-heading strong { color: var(--game-accent); }
+.theme-hogwarts .game-progress-track > span { background: linear-gradient(90deg, #3f8cff, #9a5cf5, #f2c230, #e2472f, #25b45c); box-shadow: 0 0 10px rgba(154, 92, 245, .4); /* sp-ok: свечение полосы прогресса в цвет игры, как у остальных карточек */ }
+details.theme-phantomblade { --game-accent: #d23c2e; --game-glow: 210, 60, 46; }
+.phantomblade-banner { background: radial-gradient(ellipse at 60% 40%, #2a1d16, #0a0908 72%); /* sp-ok: подложка баннера в цвет игры — тушь и киноварь */ }
+.phantomblade-banner .game-banner-art { object-position: center; opacity: .95; filter: none; transform: scale(1.02); }
+.theme-phantomblade:hover .phantomblade-banner .game-banner-art, .theme-phantomblade:focus-within .phantomblade-banner .game-banner-art { opacity: 1; filter: brightness(1.08); transform: scale(1.05); }
+:root[data-theme="light"] .phantomblade-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-phantomblade .game-info { gap: 14px; }
+.theme-phantomblade .game-progress-heading strong { color: var(--game-accent); }
+.theme-phantomblade .game-progress-track > span { background: linear-gradient(90deg, #8f1f17, #d23c2e, #d6a23c); box-shadow: 0 0 10px rgba(210, 60, 46, .4); /* sp-ok: свечение полосы прогресса в цвет игры, как у остальных карточек */ }
+
+details.theme-tainted { --game-accent: #e0803a; --game-glow: 224, 104, 48; }
+.tainted-banner { background: linear-gradient(110deg, #2a110c, #1c0a07 70%); /* sp-ok: подложка баннера в цвет игры */ }
+/* Арт уже содержит логотип: приглушён в покое, при наведении раскрывается и приближается */
+.tainted-banner .game-banner-art { object-position: center; opacity: .7; filter: saturate(.75) brightness(.62); transform: scale(1.02); }
+.theme-tainted:hover .tainted-banner .game-banner-art, .theme-tainted:focus-within .tainted-banner .game-banner-art { opacity: 1; filter: saturate(1) brightness(.95); transform: scale(1.08); }
+:root[data-theme="light"] .tainted-banner .game-banner-art { opacity: .85; filter: none; }
+:root[data-theme="light"] .theme-tainted:hover .tainted-banner .game-banner-art,
+:root[data-theme="light"] .theme-tainted:focus-within .tainted-banner .game-banner-art { opacity: 1; filter: none; }
+.theme-tainted .game-info { gap: 14px; }
+.theme-tainted .game-progress-heading strong { color: var(--game-accent); }
+.theme-tainted .game-progress-track > span { background: linear-gradient(90deg, #8e3b22, var(--game-accent)); box-shadow: 0 0 10px rgba(201, 138, 75, .42); }
+.game-placeholder:hover { border-color: var(--game-accent); transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 20px color-mix(in srgb, var(--game-accent) 13%, transparent); }
+.placeholder-banner { background: var(--panel); }
+.placeholder-banner::before {
+    content: ""; position: absolute; inset: 0; opacity: .34;
+    background: repeating-linear-gradient(125deg, transparent 0 25px, color-mix(in srgb, var(--game-accent) 30%, transparent) 26px 27px, transparent 28px 54px);
+    background-size: 110px 100%; transition: opacity .35s;
+}
+.game-placeholder:hover .placeholder-banner::before { opacity: .76; animation: signal-sweep 14s linear infinite; }
+@keyframes signal-sweep { to { background-position: 110px 0; } }
+.placeholder-banner .game-badge { position: absolute; top: 14px; right: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 5px; }
+.game-badge svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.placeholder-lock { width: 38px; height: 38px; position: relative; z-index: 1; fill: none; stroke: var(--game-accent); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 12px color-mix(in srgb, var(--game-accent) 55%, transparent)); transition: transform .35s, filter .35s; }
+.game-placeholder:hover .placeholder-lock { transform: translateY(-3px); filter: drop-shadow(0 0 18px color-mix(in srgb, var(--game-accent) 85%, transparent)); }
+.game-placeholder .game-info { padding-bottom: 8px; }
+.game-placeholder .game-title { display: block; font-size: 15px; }
+.placeholder-copy { font-family: var(--font-soft); padding: 0 20px 19px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+/* Анимации появления */
+@keyframes card-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.game-dropdown, .game-placeholder { animation: card-arrive .45s ease both; }
+.game-placeholder:nth-child(2) { animation-delay: .08s; }
+.game-placeholder:nth-child(3) { animation-delay: .16s; }
+.game-placeholder:nth-child(4) { animation-delay: .24s; }
+
+/* =========================================================
+   ЭКРАН ЗАГРУЗКИ КАРТЫ
+   ========================================================= */
+.loading-screen {
+    position: fixed; inset: 0; z-index: 20000; display: grid; place-items: center; overflow: hidden;
+    padding: 20px; background: color-mix(in srgb, var(--sp-base) 94%, transparent);
+    -webkit-backdrop-filter: var(--sp-blur); backdrop-filter: var(--sp-blur);
+}
+/* те же слои, что у загрузочного экрана карты (css/map-nm.css .spl): мягкое пятно акцента → карточка → вдавленная дорожка */
+.loading-screen::before {
+    content: ""; position: absolute; left: 50%; top: 50%; width: 90vmax; height: 90vmax; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, color-mix(in srgb, var(--sp-accent) 12%, transparent), transparent 60%);
+}
+.loading-screen[hidden] { display: none; }
+.loading-panel {
+    position: relative; width: min(100%, 400px); padding: 28px 26px 24px; text-align: center;
+    background: var(--sp-card); border-radius: var(--sp-r-lg); box-shadow: var(--sp-card-sh);
+    animation: loading-in .4s cubic-bezier(.2, .8, .2, 1) both;
+}
+@keyframes loading-in { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+.loading-eyebrow { margin-bottom: 10px; color: var(--sp-accent); font-family: var(--font-label); font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.loading-title { color: var(--sp-text); font-family: var(--font-display); font-size: 21px; font-weight: 600; line-height: 1.25; }
+.loading-tip { font-family: var(--font-soft); min-height: 42px; margin-top: 10px; color: var(--sp-muted); font-size: 13.5px; line-height: 1.5; }
+.loading-track { display: block; height: 8px; margin: 18px auto 0; width: min(260px, 90%); overflow: hidden; border-radius: var(--sp-r-pill); background: var(--sp-base); box-shadow: var(--sp-press); }
+.loading-track span { display: block; width: 38%; height: 100%; border-radius: inherit; background: var(--sp-accent); box-shadow: var(--sp-sheen); animation: loading-sweep 1.3s ease-in-out infinite; }
+.loading-caption { display: block; margin-top: 12px; color: var(--sp-muted); font-family: var(--font-label); font-size: 9.5px; font-weight: 500; letter-spacing: .14em; }
+@keyframes loading-sweep { from { transform: translateX(-100%); } to { transform: translateX(265%); } }
+@media (prefers-reduced-motion: reduce) { .loading-panel, .loading-track span { animation: none; } }
+
+/* =========================================================
+   О ПРОЕКТЕ, ПОДВАЛ, ЮРИДИЧЕСКИЕ СТРАНИЦЫ
+   ========================================================= */
+/* ---------- Поддержать проект ---------- */
+.donate-block { display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-top: 56px; padding: 22px 24px; }
+.donate-info { flex: 1; min-width: 0; }
+.donate-block h2, .community-block h2, .about > h2 { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -.005em; margin: 0 0 8px; }
+.about > h2 { margin-bottom: 16px; }
+.donate-lead { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.6; max-width: 62ch; margin: 0; }
+.donate-goal { margin-top: 18px; max-width: 520px; }
+.donate-goal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.donate-goal-title { color: var(--text); font-family: var(--font-label); font-size: 13px; font-weight: 600; }
+.donate-goal-pct { color: var(--acid); font-family: var(--font-display); font-size: 14px; }
+.donate-goal-track { height: 10px; overflow: hidden; background: var(--page); border-radius: 999px; box-shadow: var(--sp-press); }
+.donate-goal-track > span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--acid)); box-shadow: 0 0 12px color-mix(in srgb, var(--acid) 42%, transparent); border-radius: 999px; transition: width .6s ease; }
+.donate-goal-sum { margin: 8px 0 0; color: var(--muted); font-family: var(--font-soft); font-size: 13px; }
+.donate-goal-sum b { color: var(--text); font-weight: 700; }
+.donate-btn { flex: none; padding: 16px 30px; font-size: 16px; }
+.donate-btn svg { width: 20px; height: 20px; }
+:root[data-theme="light"] .donate-goal-track > span { box-shadow: none; }
+@media (max-width: 720px) {
+    .donate-block { flex-direction: column; align-items: stretch; gap: 20px; padding: 18px; }
+    .donate-btn { justify-content: center; }
+}
+
+/* ---------- Что нового ---------- */
+.updates { margin-top: 56px; }
+.updates-dropdown > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; padding: 14px 18px; transition: border-color .2s, box-shadow .2s; }
+.updates-dropdown > summary::-webkit-details-marker { display: none; }
+.updates-dropdown > summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.updates-dropdown h2 { display: inline-flex; align-items: center; gap: 9px; color: var(--text); font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -.005em; margin: 0; }
+.updates-dot { position: relative; width: 9px; height: 9px; margin-top: -9px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 8px var(--acid); flex: none; }
+.updates-dot[hidden] { display: none; }
+.updates-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--acid); animation: updates-ping 1.8s ease-out infinite; }
+@keyframes updates-ping { from { transform: scale(1); opacity: .8; } to { transform: scale(2.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .updates-dot::after { animation: none; } }
+.updates-arrow { display: flex; color: var(--acid); transition: transform .25s; }
+.updates-arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.updates-dropdown[open] .updates-arrow { transform: rotate(180deg); }
+.updates-body { padding-top: 12px; }
+.updates-list { list-style: none; display: grid; gap: 12px; padding: 0; margin: 0; }
+.update-entry { padding: 16px 18px; }
+.update-entry time { display: block; color: var(--cyan); font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 9px; }
+.update-entry ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.update-entry li { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.55; }
+.updates-all { display: inline-block; margin-top: 12px; color: var(--cyan); font-family: var(--font-soft); font-size: 13px; padding: 6px 2px; text-decoration: none; }
+.updates-all:hover { color: var(--acid); }
+.updates-page .updates-list { margin-top: 24px; }
+
+.about { margin-top: 56px; }
+.about-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.about-src { grid-column: 1 / -1; } /* «Откуда карты» — длинный текст во всю ширину под двумя короткими */
+.about-item { padding: 18px; }
+.about-item h3 { color: var(--text); font-family: var(--font-display); font-size: 14px; font-weight: 600; margin-bottom: 9px; }
+.about-item p { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.6; }
+.about-item a, .legal a { color: var(--cyan); text-underline-offset: 3px; }
+.about-item a:hover, .legal a:hover { color: var(--acid); }
+
+.site-footer { width: min(100%, 1080px); margin: 56px auto 0; padding-top: 24px; border-top: 1px solid var(--line); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 14px; }
+.footer-links a { color: var(--text); font-family: var(--font-label); font-size: 13px; font-weight: 500; text-decoration: none; }
+.footer-links a:hover, .footer-links a:focus-visible { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+.footer-copy { color: var(--muted); font-family: var(--font-label); font-size: 12px; margin-bottom: 6px; }
+
+.legal { max-width: 760px; }
+.legal .back-link { display: inline-block; margin-bottom: 28px; color: var(--muted); font-family: var(--font-label); font-size: 13px; text-decoration: none; }
+.legal .back-link:hover { color: var(--cyan); }
+.legal h1 { font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 10px; }
+.legal .legal-date { color: var(--muted); font-family: var(--font-label); font-size: 12px; margin-bottom: 28px; }
+.legal h2 { font-family: var(--font-display); font-size: 16px; font-weight: 600; margin: 28px 0 10px; }
+.legal p, .legal li { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.7; }
+.legal p { margin-bottom: 10px; }
+.legal ul { padding-left: 20px; margin-bottom: 10px; }
+.legal li { margin-bottom: 6px; }
+
+/* =========================================================
+   АДАПТИВНОСТЬ
+   ========================================================= */
+@media (max-width: 680px) {
+    body { padding: 44px 18px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about { margin-top: 44px; }
+    .games-container { grid-template-columns: 1fr; gap: 14px; }
+}
+@media (max-width: 480px) {
+    body { padding: 32px 14px 20px; }
+    .social-links { flex-wrap: wrap; gap: 8px; }
+    .auth-card { padding: 12px; gap: 8px; margin-bottom: 34px; }
+    .auth-btn { min-height: 44px; padding: 8px 10px; }
+    .map-link { min-height: 48px; padding: 10px; }
+    .map-link span.status { white-space: nowrap; margin-left: 8px; }
+    .theme-stellar .game-info, .theme-tainted .game-info, .theme-gothic .game-info, .theme-dimraeth .game-info, .theme-palworld .game-info { padding: 14px 12px; gap: 8px; }
+    .game-progress { width: min(160px, 42vw); }
+    .game-indicators { gap: 6px; }
+    .game-badge { padding: 5px 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* Блок «Мы в соцсетях» */
+.community-block { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; margin-top: 56px; padding: 20px 24px; }
+.community-copy { flex: 1 1 240px; min-width: 0; }
+.community-block h2 { margin-bottom: 4px; }
+.community-lead { color: var(--muted); font-family: var(--font-soft); font-size: 14px; line-height: 1.6; margin: 0; }
+.community-block .community-links { flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-bottom: 0; }
+.social-vk { --ring: linear-gradient(90deg, #0077FF, #5AA9FF, #0057C2, #0077FF); --brand: #0077FF; }
+.social-telegram { --ring: linear-gradient(90deg, #27A7E7, #7CCBF2, #1C89C2, #27A7E7); --brand: #27A7E7; }
+.social-discord { --ring: linear-gradient(90deg, #5865F2, #98A1FF, #4752C4, #5865F2); --brand: #5865F2; }
+.social-lolka { --ring: linear-gradient(90deg, #EB63A8, #F7A8CF, #C94A8C, #EB63A8); --brand: #EB63A8; }
+@media (max-width: 640px) {
+    .community-block { padding: 18px; margin-top: 44px; }
+    .community-block .community-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+}
+
+/* Логотип BroskiPlay в шапке главной */
+
+/* Компактная строка входа под кнопками соцсетей: без радужной рамки и свечения, в одну строку */
+.auth-card {
+    width: fit-content; max-width: 100%; margin: 0 auto 36px; padding: 6px 6px 6px 12px; gap: 12px;
+    background: color-mix(in srgb, var(--panel) 70%, transparent); border: 1px solid var(--line); border-radius: 999px;
+    box-shadow: none;
+}
+.auth-card::before { display: none; }
+.auth-card:hover { box-shadow: none; }
+:root[data-theme="light"] .auth-card { background: color-mix(in srgb, var(--panel-raised) 80%, transparent); box-shadow: 0 2px 8px rgba(40, 55, 100, .1); }
+.auth-info { gap: 9px; padding: 0; }
+.auth-info::before { width: 26px; height: 26px; background-size: 15px, auto; }
+.auth-avatar { width: 28px; height: 28px; min-width: 28px; min-height: 28px; flex-basis: 28px; border-width: 1.5px; box-shadow: none; }
+.auth-text { font-size: 12.5px; white-space: nowrap; }
+.auth-text br { display: none; }
+.auth-text b { font-size: 13px; }
+.auth-text > span::before { content: " · "; color: var(--muted); }
+.auth-card .auth-btn { padding: 7px 14px; border-radius: 999px; font-size: 12.5px; }
+.auth-card .auth-btn::before { border-radius: 999px; }
+.auth-card .auth-btn.logout { border-radius: 999px; }
+@media (max-width: 560px) {
+    .auth-card { width: 100%; border-radius: var(--r-lg); padding: 8px 8px 8px 12px; margin-bottom: 28px; }
+    .auth-text { white-space: normal; }
+    .auth-text br { display: initial; }
+    .auth-text > span::before { content: none; }
+}
+
+/* =========================================================
+   ОФОРМЛЕНИЕ 2026: спокойная гамма, неоморфизм (выпуклые/вдавленные поверхности),
+   абстрактный фон с параллаксом (js/home-fx.js), объёмные иконки. Перекрывает правила выше.
+   ========================================================= */
+:root:not([data-theme="light"]) {
+    /* фон, текст и акцент — из темы движка (css/spatial.css); объём, слои и тени — его токены --sp-* */
+    --page: var(--sp-base); --panel: #161a22; --panel-raised: #1b2029; --line: #262c37;
+    --text: var(--sp-text); --muted: var(--sp-muted);
+    --acid: #c7ff3f; --cyan: var(--sp-accent); --violet: #a993e6;   /* салатовый и голубой — фирменные цвета канала */
+}
+body { background: var(--sp-floor, var(--page)); background-image: none; }
+body::before, body::after { display: none; }
+
+/* --- Абстракции вместо фото: мягкие «капли», слои двигаются с разной скоростью (параллакс) --- */
+.abstract-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.abstract-bg span { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; will-change: transform; }
+.abstract-bg .b1 { width: 520px; height: 520px; left: -160px; top: -200px; background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--cyan) 40%, transparent), transparent 70%); opacity: .22; }
+.abstract-bg .b2 { width: 460px; height: 460px; right: -140px; top: 20px; background: radial-gradient(circle at 60% 40%, color-mix(in srgb, var(--acid) 32%, transparent), transparent 70%); opacity: .14; }
+.abstract-bg .b3 { display: none; }
+/* фон «карта» (рисует js/home-fx.js): сетка, горизонтали рельефа, маршрут к метке, роза ветров, вейпоинты — в цветах канала */
+.abstract-bg::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(to right, color-mix(in srgb, var(--muted) 9%, transparent) 1px, transparent 1px),
+                      linear-gradient(to bottom, color-mix(in srgb, var(--muted) 9%, transparent) 1px, transparent 1px);
+    background-size: 64px 64px; background-position: center top;
+    -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 18%, #000 20%, transparent 80%);
+    mask-image: radial-gradient(ellipse 75% 55% at 50% 18%, #000 20%, transparent 80%);
+}
+.abstract-bg svg { position: absolute; left: 0; top: 0; stroke: var(--muted); }   /* размер = окну, задаёт js/home-fx.js */
+.abstract-bg svg .c { opacity: .14; }
+.abstract-bg svg .ci { opacity: .26; stroke-width: 1.8; }
+.abstract-bg svg .cd { opacity: .14; stroke-dasharray: 3 7; }
+.abstract-bg svg .route { stroke-width: 2; stroke-dasharray: 2 9; opacity: .7; }
+.abstract-bg svg .rc { stroke: var(--cyan); }
+.abstract-bg svg .rl { stroke: var(--acid); }
+.abstract-bg svg .pin { fill: var(--acid); stroke: none; opacity: .85; }
+.abstract-bg svg .pin-eye { fill: var(--sp-floor, var(--page)); stroke: none; }
+.abstract-bg svg .pulse { fill: none; stroke: var(--acid); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; animation: bg-pin-pulse 2.6s ease-out infinite; }
+@keyframes bg-pin-pulse { from { transform: scale(.4); opacity: .8; } to { transform: scale(2.2); opacity: 0; } }
+.abstract-bg svg .xmark { stroke: var(--acid); stroke-width: 3; opacity: .75; }
+.abstract-bg svg .north { fill: var(--cyan); stroke: none; opacity: .8; }
+.abstract-bg svg .dl { fill: var(--acid); stroke: none; opacity: .75; }
+.abstract-bg svg .dc { fill: var(--cyan); stroke: none; opacity: .75; }
+.abstract-bg svg .sl { stroke: var(--acid); stroke-width: 2; opacity: .75; }
+.abstract-bg svg .sc { stroke: var(--cyan); stroke-width: 2; opacity: .75; }
+/* маршруты «бегут» к цели, по ним летит огонёк (animateMotion в js/home-fx.js) */
+.abstract-bg svg .route { animation: bg-march 1.5s linear infinite; }
+@keyframes bg-march { to { stroke-dashoffset: -11; } }
+.abstract-bg svg .trav { stroke: none; }
+.abstract-bg svg .trc { fill: var(--cyan); filter: drop-shadow(0 0 5px var(--cyan)); }
+.abstract-bg svg .trl { fill: var(--acid); filter: drop-shadow(0 0 5px var(--acid)); }
+/* «локации»: геймпад (игры), видеоплеер (YouTube), чат с плашкой LIVE (Twitch) */
+.abstract-bg svg .ic { stroke-width: 2; }
+.abstract-bg svg .ic.dim { opacity: .55; }
+.abstract-bg svg .ic .o { opacity: .5; }
+.abstract-bg svg .ic .al { stroke: var(--acid); stroke-width: 4; opacity: .85; }
+.abstract-bg svg .ic .oc { stroke: var(--cyan); opacity: .8; }
+.abstract-bg svg .ic .fl { fill: var(--acid); stroke: none; opacity: .9; }
+.abstract-bg svg .ic .fc { fill: var(--cyan); stroke: none; opacity: .9; }
+.abstract-bg svg .ic .live { stroke: var(--acid); stroke-width: 1.6; opacity: .85; }
+.abstract-bg svg .ic .live-t { fill: var(--acid); stroke: none; font: 800 11px/1 var(--font-body, inherit); letter-spacing: .06em; opacity: .9; }
+.abstract-bg svg .ic .play { transform-box: fill-box; transform-origin: center; animation: bg-play 3.2s ease-in-out infinite; }
+.abstract-bg svg .ic .blink { animation: bg-blink 1.6s steps(1, end) infinite; }
+.abstract-bg svg .ic .tw1 { animation: bg-twinkle 2.8s ease-in-out infinite; }
+.abstract-bg svg .ic .tw2 { animation: bg-twinkle 2.8s ease-in-out -1.4s infinite; }
+.abstract-bg svg .ic .m1, .abstract-bg svg .ic .m2, .abstract-bg svg .ic .m3 { animation: bg-chat 4.8s ease-in-out infinite; }
+.abstract-bg svg .ic .m2 { animation-delay: .5s; }
+.abstract-bg svg .ic .m3 { animation-delay: 1s; }
+@keyframes bg-play { 0%, 100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.14); opacity: 1; } }
+@keyframes bg-blink { 0%, 100% { opacity: .9; } 55% { opacity: .2; } }
+@keyframes bg-twinkle { 0%, 100% { opacity: .9; } 50% { opacity: .3; } }
+@keyframes bg-chat { 0%, 8% { opacity: 0; } 18%, 86% { opacity: .5; } 100% { opacity: 0; } }
+/* «туман войны»: яркая сетка в круге под курсором (двигает js/home-fx.js) */
+.abstract-bg .reveal-grid {
+    position: absolute; left: 0; top: 0; width: 460px; height: 460px; opacity: 0; transition: opacity .35s ease; will-change: transform;
+    background-image: linear-gradient(to right, color-mix(in srgb, var(--cyan) 34%, transparent) 1px, transparent 1px),
+                      linear-gradient(to bottom, color-mix(in srgb, var(--cyan) 34%, transparent) 1px, transparent 1px),
+                      radial-gradient(circle, color-mix(in srgb, var(--cyan) 9%, transparent), transparent 65%);
+    background-size: 64px 64px, 64px 64px, 100% 100%; background-repeat: repeat, repeat, no-repeat;
+    -webkit-mask-image: radial-gradient(circle, #000 0, transparent 68%); mask-image: radial-gradient(circle, #000 0, transparent 68%);
+}
+.abstract-bg .reveal-grid.on { opacity: 1; }
+@media (max-width: 700px) { .abstract-bg::before { background-size: 48px 48px; } .abstract-bg .reveal-grid { background-size: 48px 48px, 48px 48px, 100% 100%; } }
+@media (prefers-reduced-motion: reduce) {
+    .abstract-bg svg .pulse { animation: none; opacity: .5; }
+    .abstract-bg svg .route, .abstract-bg svg .ic * { animation: none; }
+}
+
+/* --- Индикатор прокрутки: обратная связь на скролл --- */
+.scroll-meter { position: fixed; left: 0; top: 0; z-index: 10001; height: 3px; width: 0; border-radius: 0 3px 3px 0; background: linear-gradient(90deg, var(--cyan), var(--acid)); }
+
+/* --- Шапка --- */
+.hero { padding-top: 12px; margin-bottom: 26px; }
+.eyebrow { color: var(--cyan); }
+.home-title { text-shadow: none; font-size: clamp(26px, 3.8vw, 44px); }
+/* «Broski» салатовым, «Play» голубым — как в логотипе канала */
+.home-title .accent { background: none; -webkit-text-fill-color: currentColor; }
+.home-title .accent-a { color: var(--acid); }
+.home-title .accent-b { color: var(--cyan); }
+
+
+/* --- Кнопки: тиснение + объёмные иконки --- */
+.social-links { gap: 14px; margin-bottom: 22px; }
+.social-btn, .social-btn:hover, .social-btn:focus-visible, .donate-btn {
+    background: var(--page); border: 0; border-radius: 16px; padding: 8px 16px 8px 8px; box-shadow: var(--sp-raise-sm); animation: none;
+}
+.social-btn::before { display: none; }
+.social-btn:hover { transform: translateY(-2px); box-shadow: var(--sp-raise-sm-up); }
+.social-btn:active { box-shadow: var(--sp-press); transform: none; }
+
+.auth-card { background: var(--page); border: 0; box-shadow: var(--sp-raise-sm); padding: 7px 7px 7px 14px; }
+.auth-card .auth-btn { background: var(--panel-raised); border: 0; box-shadow: var(--sp-raise-sm); }
+.auth-card .auth-btn::before { display: none; }
+
+/* --- Поиск: вдавленное поле --- */
+.game-search input { background: var(--page); border: 0; border-radius: 16px; min-height: 52px; padding: 14px 18px; box-shadow: var(--sp-press); }
+.game-search input:focus { box-shadow: var(--sp-press), 0 0 0 2px color-mix(in srgb, var(--cyan) 45%, transparent); }
+
+.section-heading h2 { font-size: 24px; }
+
+/* --- Карточки игр: выпуклые плитки, баннер внутри со скруглением --- */
+.games-container { gap: 26px; }
+details.game-dropdown, .game-placeholder {
+    background: var(--page); border: 0; border-radius: 24px; padding: 10px; box-shadow: var(--sp-raise); overflow: visible;
+}
+details.game-dropdown:hover, details.game-dropdown[open] { box-shadow: var(--sp-raise-up), 0 0 0 1px color-mix(in srgb, var(--game-accent) 35%, transparent); transform: translateY(-4px); }
+.game-banner { border-radius: 16px; border: 0; }
+.game-banner::after { border-radius: 16px; }
+.game-info { padding: 16px 12px 8px; }
+.game-title { font-size: 17px; }
+.game-badge { border: 0; border-radius: 999px; padding: 6px 11px; background: var(--page); box-shadow: var(--sp-raise-sm); }
+.game-arrow { width: 34px; height: 34px; border-radius: 50%; align-items: center; justify-content: center; background: var(--page); box-shadow: var(--sp-raise-sm); }
+.game-new { border-radius: 999px; background: linear-gradient(135deg, #d6f59a, var(--acid)); box-shadow: inset 0 1px 1px rgba(255,255,255,.6), 0 4px 12px rgba(0,0,0,.45); } /* sp-ok: бейдж «Новое» */
+.game-new.is-upd { color: #06222b; background: linear-gradient(135deg, color-mix(in srgb, var(--cyan) 45%, #fff), var(--cyan)); } /* sp-ok: бейдж «Обновлено» — голубой, чтобы не путать с «Новое» */
+.game-progress-track { background: var(--page); box-shadow: var(--sp-press); height: 8px; }
+.maps-list { background: transparent; border: 0; padding: 6px 4px 8px; }
+.map-link { background: var(--page); border: 0; border-radius: 12px; box-shadow: var(--sp-raise-sm); }
+.map-link:hover { background: var(--page); box-shadow: var(--sp-press); transform: none; }
+.placeholder-banner { border-radius: 16px; }
+
+/* --- Нижние блоки: общая поверхность (в тёмной теме — слой --sp-card, см. ниже) --- */
+.community-block, .donate-block, .about-item, .updates-dropdown > summary, .update-entry {
+    background: var(--page); border: 0; border-radius: 22px; box-shadow: var(--sp-raise);
+}
+
+/* --- Различимые кнопки на тёмной теме: поверхность чуть светлее фона, тонкий контур и блик сверху; нажатая — цвета фона --- */
+:root:not([data-theme="light"]) .social-btn, :root:not([data-theme="light"]) .donate-btn,
+:root:not([data-theme="light"]) .auth-card .auth-btn:not(.logout), :root:not([data-theme="light"]) .map-link,
+:root:not([data-theme="light"]) .game-arrow {
+    --btn-inner: var(--sp-btn); background: var(--sp-btn); box-shadow: var(--sp-btn-sh);
+}
+:root:not([data-theme="light"]) .social-btn:hover, :root:not([data-theme="light"]) .donate-btn:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand, var(--cyan)) 55%, transparent), var(--sp-sheen), var(--sp-raise-sm-up);
+}
+:root:not([data-theme="light"]) .auth-card .auth-btn:not(.logout):hover { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cyan) 55%, transparent), var(--sp-sheen), var(--sp-raise-sm); }
+:root:not([data-theme="light"]) .social-btn:active, :root:not([data-theme="light"]) .donate-btn:active,
+:root:not([data-theme="light"]) .map-link:hover { --btn-inner: var(--page); background: var(--page); box-shadow: var(--sp-press), inset 0 0 0 1px color-mix(in srgb, var(--game-accent, var(--cyan)) 40%, transparent); }
+:root:not([data-theme="light"]) details.game-dropdown[open] .game-arrow, :root:not([data-theme="light"]) details.game-dropdown:hover .game-arrow {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-accent, var(--cyan)) 55%, transparent), var(--sp-sheen), var(--sp-raise-sm);
+}
+
+/* --- Spatial: карточки и блоки — слой светлее фона страницы, с тонким контуром (тёмная тема) --- */
+:root:not([data-theme="light"]) details.game-dropdown, :root:not([data-theme="light"]) .game-placeholder,
+:root:not([data-theme="light"]) .community-block, :root:not([data-theme="light"]) .donate-block, :root:not([data-theme="light"]) .about-item,
+:root:not([data-theme="light"]) .updates-dropdown > summary, :root:not([data-theme="light"]) .auth-card {
+    background: var(--sp-card); box-shadow: var(--sp-card-edge), var(--sp-raise);
+}
+:root:not([data-theme="light"]) .auth-card { box-shadow: var(--sp-card-edge), var(--sp-raise-sm); }
+:root:not([data-theme="light"]) details.game-dropdown:hover, :root:not([data-theme="light"]) details.game-dropdown[open] {
+    box-shadow: inset 0 1px 0 var(--sp-card-gloss), var(--sp-raise-up), 0 0 0 1px color-mix(in srgb, var(--game-accent) 35%, transparent);
+}
+:root:not([data-theme="light"]) .game-progress-track { background: var(--page); }
+
+/* --- Появление карточек при прокрутке --- */
+.reveal { animation: none !important; opacity: 0; transform: translateY(26px) scale(.98); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+@media (max-width: 560px) {
+    details.game-dropdown { border-radius: 20px; padding: 8px; }
+}
+
+
+/* =========================================================
+   СВЕТЛАЯ ТЕМА прототипа: мягкий серо-голубой фон, белый блик + синеватая тень
+   (префикс :root[data-theme="light"] перебивает светлые правила основного style.css)
+   ========================================================= */
+:root[data-theme="light"] {
+    --page: var(--sp-base); --panel: #e3e8f0; --panel-raised: #eaeef5; --line: #c9d1de;
+    --text: var(--sp-text); --muted: var(--sp-muted);
+    --acid: #4f7d12; --cyan: var(--sp-accent); --violet: #6a4fc0;
+}
+:root[data-theme="light"] body { background: var(--page); background-image: none; }
+:root[data-theme="light"] body::before, :root[data-theme="light"] body::after { display: none; }
+:root[data-theme="light"] .abstract-bg span { opacity: .55; filter: blur(80px); }
+:root[data-theme="light"] .abstract-bg .b1 { background: radial-gradient(circle at 30% 30%, #a9d6ea, transparent 70%); }
+:root[data-theme="light"] .abstract-bg .b2 { background: radial-gradient(circle at 60% 40%, #d9efb0, transparent 70%); } /* sp-ok: светлое салатовое пятно фона */
+:root[data-theme="light"] .abstract-bg svg { stroke: #6d8fb3; } /* sp-ok: линии фона в светлой теме */
+:root[data-theme="light"] .abstract-bg svg .pin-eye { fill: var(--page); }
+
+:root[data-theme="light"] .home-title { background: none; -webkit-text-fill-color: currentColor; color: var(--text); }
+:root[data-theme="light"] .home-title .accent { background: none; -webkit-text-fill-color: currentColor; }
+
+:root[data-theme="light"] .social-btn, :root[data-theme="light"] .social-btn:hover { --btn-inner: var(--page); background: var(--page); box-shadow: var(--sp-raise-sm); color: var(--text); }
+:root[data-theme="light"] .social-btn:hover { box-shadow: var(--sp-raise-sm-up); }
+:root[data-theme="light"] .social-btn:active { box-shadow: var(--sp-press); }
+:root[data-theme="light"] .auth-card { background: var(--page); box-shadow: var(--sp-raise-sm); }
+:root[data-theme="light"] .auth-card .auth-btn { --btn-inner: var(--panel-raised); background: var(--panel-raised); box-shadow: var(--sp-raise-sm); color: var(--text); }
+
+:root[data-theme="light"] .game-search input, :root[data-theme="light"] .game-search input:focus { background: var(--page); box-shadow: var(--sp-press); }
+:root[data-theme="light"] .game-search input:focus { box-shadow: var(--sp-press), 0 0 0 2px color-mix(in srgb, var(--cyan) 40%, transparent); }
+
+:root[data-theme="light"] details.game-dropdown, :root[data-theme="light"] .game-placeholder {
+    background: var(--page); border: 0; border-top: 0; box-shadow: var(--sp-raise);
+}
+:root[data-theme="light"] details.game-dropdown:hover, :root[data-theme="light"] details.game-dropdown[open] {
+    box-shadow: var(--sp-raise-up), 0 0 0 1.5px color-mix(in srgb, var(--game-accent) 45%, transparent);
+}
+:root[data-theme="light"] .game-placeholder:hover { box-shadow: var(--sp-raise-up); }
+:root[data-theme="light"] .placeholder-banner { background: linear-gradient(135deg, #d9e0eb, #e9edf4); box-shadow: var(--sp-press); }
+:root[data-theme="light"] .game-badge, :root[data-theme="light"] .game-arrow { background: var(--page); box-shadow: var(--sp-raise-sm); border: 0; }
+:root[data-theme="light"] .game-progress-track { background: var(--page); box-shadow: var(--sp-press); }
+:root[data-theme="light"] .maps-list { background: transparent; }
+:root[data-theme="light"] .map-link { background: var(--page); box-shadow: var(--sp-raise-sm); }
+:root[data-theme="light"] .map-link:hover { background: var(--page); box-shadow: var(--sp-press); color: var(--game-accent); }
+:root[data-theme="light"] .game-new { color: #1f2a0c; background: linear-gradient(135deg, #e4f7b8, #b9e86a); }
+:root[data-theme="light"] .game-new.is-upd { color: #fff; background: linear-gradient(135deg, color-mix(in srgb, var(--cyan) 75%, #fff), var(--cyan)); } /* sp-ok: бейдж «Обновлено» */
+
+/* «Продолжить» в баннере: в светлой теме — светлое матовое стекло */
+
+:root[data-theme="light"] .site-footer { border-top-color: var(--line); }
+/* светлая тема: акцент игры затемняется для текста, чтобы золото/голубой читались на светлом */
+:root[data-theme="light"] .game-badge, :root[data-theme="light"] .game-arrow,
+:root[data-theme="light"] .map-progress, :root[data-theme="light"] .map-link:hover { color: color-mix(in srgb, var(--game-accent) 62%, #1b2333); }
+:root[data-theme="light"] .map-marker { stroke: color-mix(in srgb, var(--game-accent) 62%, #1b2333); }
+
+/* --- «Продолжить»: последние открытые карты (js/script.js → renderRecent) --- */
+.recent-maps { width: 100%; margin: 0 0 30px; }
+.recent-maps[hidden] { display: none; }
+.recent-heading { color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 14px; }
+.recent-list[hidden] { display: none; }
+.recent-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
+.recent-item { min-width: 0; height: 100%; box-sizing: border-box; padding-right: 44px !important; }
+.recent-cell { position: relative; min-width: 0; }
+.recent-dismiss {
+    position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; display: grid; place-items: center; padding: 0;
+    border: 0; border-radius: 50%; background: var(--page); color: var(--muted); box-shadow: var(--sp-raise-sm); cursor: pointer;
+    transition: color .2s, box-shadow .2s;
+}
+.recent-dismiss:hover { color: var(--text); }
+.recent-dismiss:active { box-shadow: var(--sp-press); }
+.recent-dismiss:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.recent-dismiss svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.recent-item {
+    --recent-accent: var(--cyan);
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 14px 16px; border-radius: 18px;
+    background: var(--page); box-shadow: var(--sp-raise-sm); color: var(--text); text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+}
+.recent-item:hover { transform: translateY(-2px); box-shadow: var(--sp-raise-sm-up), 0 0 0 1px color-mix(in srgb, var(--recent-accent) 40%, transparent); }
+.recent-item:active { box-shadow: var(--sp-press); transform: none; }
+.recent-item:focus-visible { outline: 2px solid var(--recent-accent); outline-offset: 3px; }
+.recent-game { grid-column: 1 / -1; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--recent-accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent-map { grid-column: 1 / -1; font-family: var(--font-display); font-size: 16px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recent-bar { grid-column: 1 / -1; height: 6px; margin-top: 6px; border-radius: 999px; background: var(--page); box-shadow: var(--sp-press); overflow: hidden; }
+.recent-bar i { display: block; height: 100%; border-radius: 999px; background: var(--recent-accent); }
+.recent-pct { grid-column: 1 / -1; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* --- Кнопка «Очередь правок» под карточкой входа (только у автора) --- */
+.admin-reports {
+    display: flex; align-items: center; gap: 8px; width: fit-content; margin: -26px auto 30px; padding: 8px 14px 8px 10px;
+    border-radius: 999px; background: var(--page); box-shadow: var(--sp-raise-sm); color: var(--text);
+    font: 600 13px var(--font-body); text-decoration: none; transition: transform .2s, box-shadow .2s;
+}
+.admin-reports[hidden] { display: none; }
+.admin-reports:hover { transform: translateY(-2px); box-shadow: var(--sp-raise-sm-up); }
+.admin-reports:active { box-shadow: var(--sp-press); transform: none; }
+.admin-reports svg { width: 18px; height: 18px; fill: none; stroke: var(--red); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.admin-reports b {
+    min-width: 20px; padding: 1px 6px; border-radius: 999px; background: var(--red); color: #fff;
+    font-size: 12px; line-height: 18px; text-align: center; font-variant-numeric: tabular-nums;
+}
+.admin-reports b[hidden] { display: none; }
+
+/* =========================================================
+   ВЕРХНЕЕ МЕНЮ ГЛАВНОЙ (js/topbar.js) в стиле spatial UI: полосы-фона нет, элементы парят над страницей «таблетками»
+   из мягкого стекла (объём слоя кнопок --sp-raise-sm, лёгкое размытие, блик по верхней кромке); пункты при наведении
+   приподнимаются, раскрытое — вдавлено. Выпадающие панели почти непрозрачные: за ними текст страницы.
+   Элементы входа и кнопки Twitch/YouTube те же, что были в шапке (id не менялись — js/script.js работает как раньше).
+   ========================================================= */
+:root { --tb-h: 68px; }
+body:has(> .topbar) { padding-top: calc(var(--tb-h) + 22px); }
+.topbar {
+    --tb-edge: color-mix(in srgb, var(--text) 15%, transparent);
+    --tb-gloss: rgba(255, 255, 255, .08);
+    --tb-lift: color-mix(in srgb, var(--text) 9%, transparent);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9000; height: var(--tb-h); pointer-events: none;
+}
+:root[data-theme="light"] .topbar { --tb-gloss: rgba(255, 255, 255, .9); --tb-lift: color-mix(in srgb, var(--text) 7%, transparent); }
+.topbar-inner { position: relative; display: flex; align-items: center; gap: 12px; max-width: 1360px; height: 100%; margin: 0 auto; padding: 0 22px; }
+.tb-pill, .tb-brand, .tb-nav, .tb-actions, .tb-burger, .tb-menu, .tb-panel > * { pointer-events: auto; }
+.tb-brand, .tb-nav, .tb-actions, .tb-burger {
+    background: var(--sp-glass-sheen), var(--sp-bar-glass);
+    -webkit-backdrop-filter: var(--sp-blur); backdrop-filter: var(--sp-blur);
+    box-shadow: var(--sp-raise-sm), inset 0 1px 0 var(--sp-glass-gloss);
+}
+.tb-brand { display: inline-flex; align-items: center; gap: 10px; flex: none; padding: 5px 16px 5px 5px; border-radius: 999px; color: var(--text); text-decoration: none; font: 700 15px var(--font-display); letter-spacing: -.01em; }
+.tb-brand img { width: 34px; height: 34px; border-radius: 50%; box-shadow: var(--sp-raise-sm); }
+.tb-panel { display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; pointer-events: none; }
+.tb-nav { display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px; }
+.tb-link {
+    position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 9px 15px; border: 0; border-radius: 999px;
+    background: none; box-shadow: none; transform: none; color: color-mix(in srgb, var(--text) 72%, transparent); font: 600 13.5px var(--font-body); text-decoration: none; white-space: nowrap; cursor: pointer;
+    transition: color .2s, background .2s, box-shadow .2s;
+}
+.tb-link:hover, .tb-link:focus-visible { color: var(--text); }
+.tb-link[aria-expanded="true"] { color: var(--cyan); }
+.tb-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.tb-link[aria-expanded="true"] svg { transform: rotate(180deg); }
+.tb-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 8px var(--acid); }
+.tb-dd { position: relative; }
+.tb-menu {
+    position: absolute; top: calc(100% + 14px); left: 0; z-index: 2; width: 300px; max-height: min(70vh, 560px); overflow: auto; padding: 8px; border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 50%), var(--sp-base);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
+    box-shadow: var(--sp-raise);
+}
+.tb-menu a { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 14px; border-radius: 14px; background: none; box-shadow: none; transform: none; color: var(--text); font: 600 13.5px var(--font-body); text-decoration: none; }
+.tb-menu a:hover, .tb-menu a:focus-visible { color: var(--cyan); }
+.tb-menu small { color: var(--muted); font: 500 11.5px var(--font-body); white-space: nowrap; }
+.tb-actions { display: flex; align-items: center; flex: none; gap: 4px; padding: 4px; border-radius: 999px; }
+.tb-icon {
+    display: grid; place-items: center; flex: none; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+    color: var(--text); transition: color .2s, background .2s;
+}
+.tb-icon:hover, .tb-icon:focus-visible { color: var(--cyan); }
+.tb-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+
+/* пункты меню: наведение — приподнятая кнопка, раскрытое / выбранное / текущее — вдавлено */
+.tb-link:hover, .tb-link:focus-visible, .tb-menu a:hover, .tb-menu a:focus-visible {
+    background: var(--sp-base); box-shadow: var(--sp-raise-sm); transform: var(--sp-lift-y);
+}
+.tb-link[aria-expanded="true"], .tb-menu a[aria-current="true"] { background: var(--sp-base); box-shadow: var(--sp-press); transform: none; }
+/* «Игры» и «Обновления» — кнопки и в покое, как иконки соцсетей справа (слой 2 на стекле меню), а не только при наведении;
+   наведение — приподнята с кольцом акцента, меню открыто — вдавлена. В «бургере» (≤1200px) остаются строками меню. */
+@media (min-width: 1201px) {
+    .tb-nav { gap: 4px; }
+    .tb-link { background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--text); }
+    .tb-link:hover, .tb-link:focus-visible { background: var(--sp-btn); box-shadow: var(--sp-btn-sh-up); color: var(--sp-accent); transform: var(--sp-lift-y); }
+    .tb-link[aria-expanded="true"], .tb-link:active { background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-accent); transform: none; }
+}
+
+/* Twitch / YouTube / «Поддержать»: иконки-чипы; подпись видна у доната и когда идёт стрим */
+.topbar .tb-social, .topbar .tb-social:hover, .topbar .tb-social:focus-visible { flex: none; padding: 3px; gap: 0; border-radius: 999px; animation: none; transform: none; }
+.topbar .tb-social:focus-visible { background: var(--tb-lift); box-shadow: inset 0 1px 0 var(--tb-gloss); }
+.tb-social > svg { width: 14px; height: 14px; padding: 6px; }
+.tb-social:not(.social-donate) > span:not(.live-indicator) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.tb-social.social-twitch.is-live > span:not(.live-indicator) { position: static; width: auto; height: auto; overflow: visible; clip-path: none; margin: 0 12px 0 2px; color: var(--text); font-size: 11.5px; font-weight: 800; letter-spacing: .05em; }
+.tb-social.social-twitch .live-indicator { margin: 0 4px 0 8px; width: 9px; height: 9px; }
+.tb-social.social-donate > span { margin: 0 12px 0 8px; font-size: 13px; }
+
+/* тема: кнопка из ui-feedback.js живёт в меню, а не в углу экрана */
+.topbar .ui-controls { position: static; z-index: auto; flex-direction: row; gap: 0; }
+.topbar .ui-theme-toggle { width: 38px; height: 38px; }
+
+/* вход: тот же блок, что был в шапке, без своей карточки */
+.topbar .auth-card, .topbar .auth-card:hover { width: auto; max-width: none; margin: 0; padding: 0 0 0 4px; gap: 6px; border: 0; border-radius: 999px; background: none; box-shadow: none; }
+.topbar .auth-card::before { display: none; }
+.topbar .auth-info { gap: 8px; padding: 0; }
+.topbar .auth-info::before { width: 30px; height: 30px; }
+.topbar .auth-avatar { width: 32px; height: 32px; min-width: 32px; min-height: 32px; border-width: 2px; }
+.topbar .auth-text { display: none; max-width: 150px; white-space: nowrap; }
+.topbar .auth-text br, .topbar .auth-text span { display: none; }
+.topbar .auth-card .auth-btn, .topbar .auth-card .auth-btn:hover { min-height: 38px; padding: 6px 14px; font-size: 13px; border: 0; border-radius: 999px; transform: none; }
+
+/* круглые кнопки меню (тема, соцсети, вход) — слой кнопок из стекла; наведение приподнимает, нажатие вдавливает */
+.tb-icon, .topbar .tb-social, .topbar .tb-social:hover, .topbar .auth-card .auth-btn, .topbar .auth-card .auth-btn:hover { background: var(--sp-base); box-shadow: var(--sp-raise-sm); }
+.tb-icon:hover, .topbar .tb-social:hover, .topbar .auth-card .auth-btn:hover { transform: translateY(-2px); box-shadow: var(--sp-raise-sm-up); }
+.tb-icon:active, .topbar .tb-social:active, .topbar .auth-card .auth-btn:active { transform: none; box-shadow: var(--sp-press); }
+.tb-icon, .topbar .tb-social, .topbar .auth-card .auth-btn { background: color-mix(in srgb, var(--sp-base) 90%, transparent); }
+/* стрим идёт: красная подсвеченная таблетка с пульсирующей точкой и подписью — заметна среди остальных кнопок */
+.topbar .tb-social.social-twitch.is-live, .topbar .tb-social.social-twitch.is-live:hover {
+    background: var(--sp-base); box-shadow: var(--sp-raise-sm), inset 0 0 0 1px color-mix(in srgb, #ff4359 70%, transparent), 0 0 20px rgba(255, 67, 89, .45); /* sp-ok: свечение эфира */
+}
+.topbar .tb-social.social-twitch.is-live:focus-visible {
+    background: color-mix(in srgb, #ff4359 24%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #ff4359 70%, transparent), inset 0 1px 0 var(--tb-gloss), 0 0 20px rgba(255, 67, 89, .45); /* sp-ok: свечение эфира */
+}
+.topbar .auth-card .auth-btn.logout, .topbar .auth-card .auth-btn.logout:hover { background: color-mix(in srgb, var(--red) 14%, var(--sp-base)); }
+@media (max-width: 1400px) { .tb-opt { display: none; } }
+
+.tb-burger { display: none; }
+section[id], #games-heading, .game-dropdown { scroll-margin-top: calc(var(--tb-h) + 16px); }
+
+/* узкие экраны: логотип и «бургер» парят по краям, меню раскрывается панелью; внутри неё блоки меню — просто колонки без «таблеток» */
+@media (max-width: 1200px) {
+    :root { --tb-h: 62px; }
+    .topbar-inner { padding: 0 14px; }
+    .tb-brand { margin-right: auto; }
+    .tb-burger { display: grid; place-content: center; gap: 4px; width: 42px; height: 42px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; pointer-events: auto; }
+    .tb-burger span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--text); transition: transform .2s, opacity .2s; }
+    .topbar.is-open .tb-burger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .topbar.is-open .tb-burger span:nth-child(2) { opacity: 0; }
+    .topbar.is-open .tb-burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .tb-panel {
+        display: none; position: fixed; top: calc(var(--tb-h) - 4px); left: 12px; right: 12px; max-height: calc(100vh - var(--tb-h) - 16px); overflow: auto;
+        flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; border-radius: 28px; pointer-events: auto;
+        background: var(--sp-base); -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
+        box-shadow: var(--sp-raise);
+    }
+    .topbar.is-open .tb-panel { display: flex; }
+    .tb-nav, .tb-actions { flex-direction: column; align-items: stretch; padding: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .tb-actions { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .tb-opt { display: inline-flex; }
+    .tb-link { padding: 12px 14px; font-size: 15px; }
+    .tb-dd .tb-menu { position: static; width: auto; max-height: none; margin: 4px 0 6px; background: var(--sp-base); box-shadow: var(--sp-press); -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .topbar .auth-card { flex: 1 1 100%; justify-content: space-between; order: 9; padding: 6px 6px 6px 10px; border-radius: 20px; }
+    .topbar .auth-text { display: block; max-width: none; white-space: normal; flex: 1; }
+    .topbar .auth-text span { display: inline; }
+    .tb-social:not(.social-donate) > span:not(.live-indicator) { position: static; width: auto; height: auto; overflow: visible; clip-path: none; margin: 0 12px 0 8px; }
+}
+@media (max-width: 480px) { body:has(> .topbar) { padding-top: calc(var(--tb-h) + 16px); } }
+/* широкий экран: меню крупнее и шире — выше таблетки, больше шрифт и кнопки, растягивается до 1600px */
+@media (min-width: 1201px) {
+    :root { --tb-h: 80px; }
+    .topbar-inner { max-width: 1600px; gap: 16px; padding: 0 28px; }
+    .tb-brand { gap: 12px; padding: 6px 20px 6px 6px; font-size: 17px; }
+    .tb-brand img { width: 40px; height: 40px; }
+    .tb-panel { gap: 16px; }
+    .tb-nav { gap: 6px; padding: 5px; }
+    .tb-link { gap: 8px; padding: 11px 20px; font-size: 15px; }
+    .tb-link svg { width: 16px; height: 16px; }
+    .tb-actions { gap: 6px; padding: 5px; }
+    .tb-icon, .topbar .ui-theme-toggle { width: 44px; height: 44px; }
+    .tb-icon svg { width: 20px; height: 20px; }
+    .tb-social > svg { width: 16px; height: 16px; padding: 8px; }
+    .tb-social.social-donate > span { margin: 0 16px 0 8px; font-size: 14.5px; }
+    .tb-social.social-twitch.is-live > span:not(.live-indicator) { font-size: 12.5px; }
+    .topbar .auth-card .auth-btn, .topbar .auth-card .auth-btn:hover { min-height: 44px; padding: 8px 18px; font-size: 14.5px; }
+    .topbar .auth-avatar { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
+    .tb-menu { width: 320px; }
+    .tb-menu a { padding: 12px 16px; font-size: 14.5px; }
+}
+@media (prefers-reduced-motion: reduce) { .tb-link svg, .tb-burger span { transition: none; } }
+
+/* =========================================================
+   ПРАВКИ 2026-11: вход без пустого кружка, «N карт ⌄» одной кнопкой, баннер «Здесь могла бы быть ваша игра»
+   ========================================================= */
+/* гостю в верхнем меню не показываем значок-заглушку рядом с «Войти с Google» (в раскрытом меню телефона карточка гостя остаётся) */
+@media (min-width: 1201px) { .topbar .auth-info:not(.has-avatar) { display: none; } }
+/* блок входа в верхнем меню — без своей подложки: правила карточки .auth-card для обеих тем (:root… .auth-card) специфичнее .topbar .auth-card
+   и рисовали вокруг «Войти с Google» лишнюю выпуклую таблетку, выступающую за меню */
+:root .topbar .auth-card, :root .topbar .auth-card:hover { background: none; box-shadow: none; }
+@media (max-width: 1200px) { :root .topbar .auth-card, :root .topbar .auth-card:hover { background: var(--page); box-shadow: var(--sp-press); } }
+
+/* низ карточки: название слева (переносится), «N карт ⌄» всегда справа — на телефоне не уезжает на новую строку */
+.game-info { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+/* «N карт» и стрелка — одна кнопка-таблетка */
+:root details.game-dropdown .game-indicators {
+    gap: 2px; padding: 3px 3px 3px 12px; border-radius: 999px; color: var(--game-accent);
+    background: var(--sp-btn); box-shadow: var(--sp-btn-sh); transition: box-shadow .2s;
+}
+:root[data-theme="light"] details.game-dropdown .game-indicators { background: var(--page); box-shadow: var(--sp-raise-sm); color: color-mix(in srgb, var(--game-accent) 62%, #1b2333); }
+:root details.game-dropdown .game-indicators .game-badge,
+:root details.game-dropdown .game-indicators .game-arrow,
+:root details.game-dropdown:hover .game-indicators .game-arrow,
+:root details.game-dropdown[open] .game-indicators .game-arrow { padding: 0; border: 0; background: none; box-shadow: none; color: inherit; }
+:root details.game-dropdown .game-indicators .game-arrow { width: 28px; height: 28px; }
+:root details.game-dropdown:hover .game-indicators {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 55%, transparent), var(--sp-raise-sm);
+}
+/* нажимается как остальные кнопки сайта: при наведении на саму таблетку чуть приподнимается, при нажатии и пока список карт открыт — вдавлена, цвета фона */
+:root details.game-dropdown .game-indicators { transition: box-shadow .2s, background .2s, transform .2s; }
+:root details.game-dropdown .game-indicators:hover {
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 55%, transparent), var(--sp-raise-sm-up);
+}
+:root details.game-dropdown .game-indicators:active, :root details.game-dropdown[open] .game-indicators {
+    transform: none; background: var(--page);
+    box-shadow: var(--sp-press), inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 40%, transparent);
+}
+
+/* Tainted Grail в тёмной теме — без лишнего затемнения, как остальные баннеры */
+.tainted-banner .game-banner-art { opacity: .95; filter: none; }
+.theme-tainted:hover .tainted-banner .game-banner-art, .theme-tainted:focus-within .tainted-banner .game-banner-art { opacity: 1; filter: saturate(1.08) brightness(1.05); }
+
+/* «Здесь могла бы быть ваша игра»: невысокий баннер во всю ширину сетки, ведёт на форму предложения игры */
+.game-suggest-banner {
+    position: relative; overflow: hidden; display: flex; align-items: center; gap: 18px;
+    padding: 22px 26px; border-radius: 24px; color: var(--text); text-decoration: none;
+    background: var(--sp-card); box-shadow: var(--sp-card-edge), var(--sp-raise);
+    transition: box-shadow .25s, transform .25s; animation: card-arrive .45s ease both;
+}
+:root[data-theme="light"] .game-suggest-banner { background: var(--page); box-shadow: var(--sp-raise); }
+.game-suggest-banner::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background: repeating-linear-gradient(125deg, transparent 0 25px, color-mix(in srgb, var(--acid) 16%, transparent) 26px 27px, transparent 28px 54px);
+}
+.game-suggest-banner:hover { transform: translateY(-3px); box-shadow: var(--sp-card-edge), var(--sp-raise-up), 0 0 0 1px color-mix(in srgb, var(--acid) 40%, transparent); }
+.game-suggest-banner:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
+.game-suggest-plus { position: relative; flex: none; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; background: var(--page); box-shadow: var(--sp-press); }
+.game-suggest-plus svg { width: 24px; height: 24px; fill: none; stroke: var(--acid); stroke-width: 2; stroke-linecap: round; }
+:root[data-theme="light"] .game-suggest-plus svg { stroke: color-mix(in srgb, var(--acid) 55%, #1b2333); }
+.game-suggest-copy { position: relative; display: grid; gap: 4px; min-width: 0; flex: 1; }
+.game-suggest-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.25; }
+.game-suggest-sub { color: var(--muted); font-family: var(--font-soft); font-size: 13.5px; line-height: 1.45; }
+.game-suggest-cta { position: relative; flex: none; padding: 9px 16px; border-radius: 999px; font: 600 13px var(--font-body); background: var(--sp-btn); box-shadow: var(--sp-btn-sh); }
+.game-suggest-banner:hover .game-suggest-cta { color: var(--acid); }
+:root[data-theme="light"] .game-suggest-cta { background: var(--page); box-shadow: var(--sp-raise-sm); }
+:root[data-theme="light"] .game-suggest-banner:hover .game-suggest-cta { color: color-mix(in srgb, var(--acid) 55%, #1b2333); }
+/* сколько клеток занять, решает js/script.js (fitSuggestBanner): span N или вся строка; без JS — вся строка.
+   .is-cell — свободна одна клетка рядом с последней игрой: баннер становится вертикальной карточкой */
+.game-suggest-banner { grid-column: 1 / -1; }
+.game-suggest-banner.is-cell { align-self: stretch; flex-direction: column; justify-content: center; text-align: center; gap: 14px; padding: 32px 28px; }
+.game-suggest-banner.is-cell .game-suggest-copy { flex: none; }
+.game-suggest-banner.is-cell .game-suggest-plus { width: 64px; height: 64px; }
+.game-suggest-banner.is-cell .game-suggest-title { font-size: 22px; }
+.games-page .game-suggest-banner.is-cell { padding: 24px 18px; border-radius: 20px; }
+.games-page .game-suggest-banner.is-cell .game-suggest-title { font-size: 18px; }
+@media (max-width: 560px) {
+    .game-suggest-banner { flex-wrap: wrap; gap: 14px; padding: 18px; }
+    .game-suggest-plus { width: 44px; height: 44px; }
+    .game-suggest-copy { flex: 1 1 calc(100% - 60px); }
+    .game-suggest-title { font-size: 17px; }
+    .game-suggest-cta { width: 100%; text-align: center; }
+}
+
+
+/* --- Страница «Все игры» (/games/, scripts/games_page.py): та же библиотека, плотнее --- */
+.games-page .game-library { margin-top: 8px; }
+.games-page .section-heading h1 { color: var(--text); font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 7px; }
+/* карточки строки одной высоты (align-items: stretch), низ у всех одинаковый: название на всю ширину (место под две строки),
+   под ним объём / прогресс слева и «N карт ⌄» справа — счётчик переносится, а не заезжает под кнопку */
+.games-page .games-container { grid-template-columns: repeat(auto-fill, minmax(min(100%, 232px), 1fr)); gap: 16px; align-items: stretch; }
+.games-page details.game-dropdown { padding: 7px; border-radius: 20px; }
+/* арт карточек — 16:9 (logo-card*.webp): баннер той же пропорции, логотипы не обрезаются */
+.games-page .game-banner { aspect-ratio: 16 / 9; border-radius: 14px; }
+.games-page .game-banner-art { object-position: center; }
+.games-page .game-info { grid-template-columns: minmax(0, 1fr) auto; align-items: end; padding: 11px 6px 6px 10px; gap: 8px 10px; }
+.games-page .game-title-block { display: contents; }
+.games-page .game-title { grid-column: 1 / -1; min-height: 2.5em; font-size: 14.5px; }
+.games-page .game-progress { width: 100%; min-width: 0; }
+.games-page .game-progress-count { white-space: normal; line-height: 1.3; }
+.games-page .game-progress.is-empty .game-progress-count { font-size: 12px; }
+.games-page .game-new { top: 8px; right: 8px; left: auto; padding: 4px 8px; font-size: 10px; }
+/* раскрытая игра растягивается на всю строку, чтобы список карт не был узким столбиком;
+   баннер остаётся 16:9 и встаёт слева от названия, список карт — под ними */
+.games-page details.game-dropdown[open] { grid-column: 1 / -1; }
+@media (min-width: 641px) {
+    .games-page details.game-dropdown[open] > summary { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); align-items: center; gap: 4px 18px; }
+    .games-page details.game-dropdown[open] .game-info { padding: 8px 10px 8px 0; grid-template-columns: minmax(0, 1fr) auto; }
+    .games-page details.game-dropdown[open] .game-title { min-height: 0; font-size: 20px; }
+    .games-page details.game-dropdown[open] .game-progress { max-width: 280px; }
+    .games-page details.game-dropdown[open] .maps-list { margin-top: 7px; }
+}
+.games-page .maps-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 8px; }
+/* горизонтальный баннер на /games/ — ниже и компактнее; вертикальная клетка (.is-cell) — выше, у правил .is-cell */
+.games-page .game-suggest-banner:not(.is-cell) { padding: 16px 22px; }
+.games-page .game-suggest-banner:not(.is-cell) .game-suggest-title { font-size: 17px; }
+.games-page .game-suggest-banner:not(.is-cell) .game-suggest-plus { width: 44px; height: 44px; }
+.games-page .game-suggest-banner.is-cell .game-suggest-plus { width: 52px; height: 52px; }
+@media (max-width: 560px) { .games-page .section-heading h1 { font-size: 22px; } }
+
+/* Широкий экран (от 1200px): главная шире, карточки игр — в три колонки. На /games/ своя сетка (.games-page .games-container) */
+@media (min-width: 1200px) {
+    .site-shell, .site-footer { width: min(100%, 1240px); }
+    .games-container { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

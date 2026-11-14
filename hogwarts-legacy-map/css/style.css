@@ -1,0 +1,314 @@
+/* Карта Hogwarts Legacy — меню в духе интерфейса игры: ночное синее небо над замком, золото древней магии,
+   пергамент для текста; шрифты Forum (заголовки — римская капитель, как надписи игры) и Alegreya (текст — книжная
+   антиква «учебника») из общей папки fonts. Цвета групп меток — «школы» заклинаний игры (tools/build_data.py):
+   Протего — синий, сила — фиолетовый, контроль — жёлтый, урон — красный, непростительные — зелёный, Люмос — серебро.
+   Полоса прогресса и разделители — тот же «спектр заклинаний». Объём и форма элементов — общий каркас css/map-nm.css
+   (палитра: html[data-game="hogwarts"] в css/spatial.css). Движок — копия Cyberpunk 2077. */
+:root {
+    --ink: #efe6d0;
+    --ink-soft: #b9ae95;
+    --ink-faint: #857c69;
+    --bg-0: #080b14;
+    --bg-1: #0d1220;
+    --bg-2: #131a2c;
+    --bg-3: #1b2439;
+    --steel: #8d846f;
+    --steel-light: #f0d9a4;
+    --steel-dark: #3a3a3c;
+    --line: rgba(217, 170, 79, .2);
+    --blood: #b8862f;
+    --blood-light: #e2b660;
+    --blood-dark: #5b3f12;
+    --gold: #e2b660;
+    --cyan: #9cc8ff;
+    --map-bg: #2c3039;
+    /* «спектр заклинаний»: Протего, Акцио, Левиосо, Инсендио, Авада Кедавра */
+    --spell-protego: #3f8cff;
+    --spell-force: #9a5cf5;
+    --spell-control: #f2c230;
+    --spell-damage: #e2472f;
+    --spell-curse: #25b45c;
+    --spell-lumos: #dfe5ef;
+    --spells: linear-gradient(90deg, var(--spell-protego), var(--spell-force), var(--spell-control), var(--spell-damage), var(--spell-curse));
+    --sidebar-width: 392px;
+    --font-display: "Forum", "Alegreya", Georgia, serif;
+    --font-latin: "Forum", "Alegreya", Georgia, serif;
+    --font-body: "Alegreya", Georgia, "Times New Roman", serif;
+    --noise-fine: radial-gradient(1px 1px at 20% 30%, rgba(255, 240, 200, .35), transparent 60%), radial-gradient(1px 1px at 70% 80%, rgba(255, 240, 200, .25), transparent 60%);
+    --noise-stain: none;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--map-bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font-family: inherit; }
+
+/* ---------- Карта ---------- */
+#map { position: fixed; inset: 0 0 0 var(--sidebar-width); z-index: 1; background: var(--map-bg); transition: left .3s ease; }
+body:has(#sidebar.collapsed) #map { left: 0; }
+#map-empty { position: fixed; inset: 0 0 0 var(--sidebar-width); z-index: 2; display: grid; place-items: center; pointer-events: none; color: var(--steel-light); font-family: var(--font-display); font-size: 20px; letter-spacing: .08em; text-align: center; padding: 16px; transition: left .3s ease; }
+#map-empty.is-note { place-items: end center; padding-bottom: 20px; font-size: 15px; text-shadow: 0 1px 3px #000; }
+body:has(#sidebar.collapsed) #map-empty { left: 0; }
+.leaflet-container { background: var(--map-bg); font-family: var(--font-body); }
+
+/* ---------- Меню ---------- */
+#sidebar {
+    position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); z-index: 10;
+    display: flex; flex-direction: column; background: var(--bg-0);
+    box-shadow: 6px 0 26px rgba(0, 0, 0, .75);
+    transition: transform .3s ease;
+}
+#sidebar.collapsed { transform: translateX(-100%); }
+
+.scroll-body {
+    position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden;
+    margin: 0; color: var(--ink);
+    background:
+        radial-gradient(ellipse 85% 22% at 50% 0%, rgba(63, 140, 255, .14), transparent 72%),
+        radial-gradient(ellipse 80% 24% at 50% 100%, rgba(154, 92, 245, .10), transparent 70%),
+        var(--noise-fine),
+        linear-gradient(180deg, #111a2e 0%, #0c1222 50%, #090d18 100%);
+    scrollbar-width: thin; scrollbar-color: #4a4433 rgba(0, 0, 0, .25);
+}
+.scroll-body::-webkit-scrollbar { width: 8px; }
+.scroll-body::-webkit-scrollbar-track { background: rgba(0, 0, 0, .3); }
+.scroll-body::-webkit-scrollbar-thumb { background: linear-gradient(90deg, #6b5d39, #3d3522); border-radius: 4px; border: 1px solid #090d18; }
+
+/* Язычок сворачивания */
+#sidebar-toggle-btn {
+    position: fixed; top: 50%; left: var(--sidebar-width); transform: translateY(-50%); z-index: 11;
+    width: 20px; height: 56px; padding: 0; display: grid; place-items: center; color: var(--steel-light); font-size: 10px; line-height: 1; cursor: pointer;
+    border: 1px solid #000; border-left: none; border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, #121a2c, #2a3550 50%, #141c2f);
+    transition: left .3s ease, width .2s ease, color .2s ease;
+}
+#sidebar-toggle-btn:hover { width: 24px; color: #fff; }
+#sidebar-toggle-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+body:has(#sidebar.collapsed) #sidebar-toggle-btn { left: 0; }
+
+/* ---------- Шапка: надпись в духе логотипа игры (шрифт свой, не фирменный) ---------- */
+.sidebar-header { display: flex; flex-direction: column; gap: 12px; padding: 20px 20px 14px; position: relative; }
+.sidebar-header > * { position: relative; z-index: 1; }
+.header-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.header-top-row h1 { flex: 1 1 auto; margin: 0; display: flex; flex-direction: column; align-items: center; line-height: 1; min-width: 0; text-align: center; }
+.logo-top { font: 400 12px/1 var(--font-latin); letter-spacing: .3em; padding-left: .3em; text-transform: uppercase; color: var(--ink-soft); }
+.logo-main {
+    margin: 8px 0 4px; font: 400 30px/1 var(--font-display); letter-spacing: .04em; white-space: nowrap; text-transform: uppercase;
+    color: transparent; background: linear-gradient(180deg, #fff3cf 0%, #f0cf86 38%, #c9973d 62%, #f3d58e 100%); -webkit-background-clip: text; background-clip: text;
+    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .8)) drop-shadow(0 0 10px rgba(226, 182, 96, .35));
+}
+.logo-sub { display: flex; align-items: center; gap: 10px; font: italic 500 15px/1.2 var(--font-body); color: var(--ink-soft); letter-spacing: .02em; }
+/* «след заклинания» по обе стороны подписи — спектр школ магии */
+.logo-sub::before, .logo-sub::after { content: ""; width: 42px; height: 2px; border-radius: 2px; background: var(--spells); box-shadow: 0 0 6px rgba(154, 92, 245, .6); }
+.logo-sub::after { transform: scaleX(-1); }
+
+/* Кнопки */
+.btn-group button, .io-row button, .add-marker-btn, .map-select, .social-btn, .auth-mini-btn { position: relative; color: var(--ink); cursor: pointer; border: 1px solid var(--steel-dark); border-radius: 6px; }
+.btn-group button:focus-visible, .io-row button:focus-visible, .map-select:focus-visible, .social-btn:focus-visible,
+.filter-item:focus-visible, .group-toggle:focus-visible, .auth-mini-btn:focus-visible, .add-marker-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.social-links { display: flex; gap: 7px; flex-wrap: wrap; }
+.social-btn { flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 5px 9px; min-height: 30px; font: 600 13px var(--font-body); white-space: nowrap; }
+.social-btn svg:not(.sp-ico) { width: 14px; height: 14px; flex-shrink: 0; fill: var(--brand, currentColor); }
+.social-twitch { --brand: #a77bf0; }
+.social-youtube { --brand: #ee4a43; }
+.social-donate { --brand: #e8a23a; }
+
+.auth-mini-box { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 8px; }
+.auth-mini-info { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.auth-mini-avatar { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; display: none; flex-shrink: 0; }
+.auth-mini-text { font-size: 13px; line-height: 1.3; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.auth-mini-text b { color: var(--ink); font-size: 14.5px; font-weight: 700; }
+.auth-online { color: #7fd99b; font-weight: 600; }
+.auth-mini-btn { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; padding: 5px 11px; min-height: 30px; font: 700 13px var(--font-body); line-height: 1; }
+.auth-mini-btn .google-icon { width: 14px; height: 14px; flex-shrink: 0; }
+@media (max-width: 700px) { .social-btn span { display: none; } .social-btn { padding: 7px 12px; } }
+
+/* ---------- Блоки ---------- */
+.section { position: relative; padding: 16px 20px 16px; display: flex; flex-direction: column; gap: 11px; }
+/* разделитель: тонкая золотая нить и «искра» заклинания посередине */
+.section::before, .filters-list::before {
+    content: ""; position: absolute; left: 18px; right: 18px; top: 0; height: 9px;
+    background:
+        linear-gradient(90deg, transparent, rgba(226, 182, 96, .55) 16%, rgba(226, 182, 96, .55) 44%, transparent 47%) 0 4px / 100% 1px no-repeat,
+        linear-gradient(90deg, transparent 53%, rgba(226, 182, 96, .55) 56%, rgba(226, 182, 96, .55) 84%, transparent) 0 4px / 100% 1px no-repeat,
+        radial-gradient(circle, #fff7dd 0 1.5px, rgba(242, 194, 48, .9) 2.5px, rgba(242, 194, 48, 0) 4.5px) 50% 0 / 9px 9px no-repeat;
+}
+.section-label { margin: 0; color: var(--steel-light); font: 400 14px/1 var(--font-display); letter-spacing: .3em; text-transform: uppercase; text-align: center; padding-left: .3em; }
+
+.map-switch { position: relative; }
+.map-select { -webkit-appearance: none; appearance: none; display: block; width: 100%; min-height: 44px; margin: 0; padding: 8px 40px 8px 14px; text-align: left; font: 400 19px/1.2 var(--font-display); letter-spacing: .06em; }
+.map-switch::after { content: ""; position: absolute; right: 16px; top: 50%; width: 8px; height: 8px; border-right: 2px solid var(--gold); border-bottom: 2px solid var(--gold); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.map-select option { background: #0d1220; color: var(--ink); }
+
+.btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.btn-group .wide { grid-column: 1 / -1; }
+.btn-group button { padding: 8px 8px; font: 400 15px var(--font-display); letter-spacing: .1em; text-transform: uppercase; }
+
+/* Прогресс: полоса — «спектр заклинаний» */
+.progress-card { padding: 9px 12px 10px; border-radius: 8px; }
+.progress-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; font-size: 15px; color: var(--ink-soft); }
+.progress-head strong { color: var(--steel-light); font: 400 24px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+.progress-track { height: 10px; overflow: hidden; border-radius: 5px; }
+.progress-track span { display: block; height: 100%; width: 0; background: var(--spells); background-size: 392px 100%; box-shadow: 0 0 8px rgba(154, 92, 245, .55); transition: width .35s ease; }
+.progress-count { margin-top: 6px; font-size: 14px; color: var(--ink-soft); font-variant-numeric: lining-nums tabular-nums; }
+
+/* Поиск */
+.search-wrap { position: relative; }
+.section input[type="search"] { width: 100%; padding: 9px 12px; color: var(--ink); font: 500 16px var(--font-body); outline: none; border-radius: 6px; }
+.section input[type="search"]::placeholder { color: var(--ink-faint); font-style: italic; }
+.search-results { display: none; flex-direction: column; max-height: 290px; margin-top: 6px; overflow-y: auto; border-radius: 8px; }
+.search-results.open { display: flex; }
+.search-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 10px; border: 0; border-bottom: 1px solid rgba(226, 182, 96, .1); background: transparent; color: var(--ink); font: 500 15.5px/1.25 var(--font-body); text-align: left; cursor: pointer; }
+.search-item:last-child { border-bottom: 0; }
+.search-item:hover, .search-item:focus-visible { background: rgba(226, 182, 96, .12); outline: none; }
+.search-item .hl-filter-icon { width: 22px; height: 22px; }
+.search-item .si-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-item .si-zone { flex: 0 1 auto; max-width: 42%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-faint); font-size: 13px; font-style: italic; }
+.search-item.is-done .si-title { text-decoration: line-through; opacity: .55; }
+.search-empty { padding: 10px; color: var(--ink-soft); font-size: 14px; }
+
+.add-marker-btn { width: 100%; padding: 8px 12px; font: 400 16px var(--font-display); letter-spacing: .06em; border-style: dashed; }
+.io-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.io-row button { padding: 7px 6px; font: 600 13.5px var(--font-body); }
+.io-status { margin: 0; min-height: 14px; color: var(--ink-soft); font-size: 13px; }
+#map.adding { cursor: crosshair; }
+
+/* ---------- Фильтры: у каждой группы свой цвет-«школа» (--g из app.js) ---------- */
+.filters-list { position: relative; padding: 20px 20px 28px; }
+.filter-group { --g: var(--gold); margin-bottom: 10px; }
+.filter-group-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 12px 0 6px; padding-bottom: 6px; }
+/* «след палочки» в цвет группы: яркая искра слева, гаснущий хвост вправо */
+.filter-group-head::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, #fff 0, var(--g) 6px, color-mix(in srgb, var(--g) 55%, transparent) 40%, transparent);
+    box-shadow: -2px 0 8px var(--g);
+}
+.filter-group-title { margin: 0; color: var(--steel-light); font: 400 18px/1.1 var(--font-display); letter-spacing: .12em; text-transform: uppercase; }
+.filter-group-title .filter-hint { margin-left: 6px; color: var(--ink-faint); font: 600 13px var(--font-body); letter-spacing: 0; text-transform: none; }
+.group-toggle { padding: 1px 9px; border-radius: 6px; color: var(--ink-soft); font: 600 12.5px var(--font-body); cursor: pointer; }
+.filter-item {
+    position: relative; display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 4px 8px 4px 10px; margin: 0;
+    color: var(--ink); font: 500 16.5px/1.2 var(--font-body); text-align: left; cursor: pointer;
+    background: transparent; border: 0; border-radius: 6px; transition: background .15s, opacity .15s, filter .15s;
+}
+.filter-item::before { content: ""; position: absolute; left: 0; top: 5px; bottom: 5px; width: 2px; border-radius: 2px; background: var(--g); opacity: 0; box-shadow: 0 0 6px var(--g); transition: opacity .15s; }
+.filter-item:hover { background: linear-gradient(90deg, color-mix(in srgb, var(--g) 16%, transparent), transparent 85%); color: #fff; }
+.filter-item:hover::before { opacity: 1; }
+.filter-item.disabled { opacity: .4; filter: grayscale(.9); }
+.filter-item.disabled .filter-name { text-decoration: line-through; text-decoration-color: rgba(226, 182, 96, .5); }
+.filter-item.is-empty { opacity: .38; }
+.filter-name { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.filter-count { color: var(--ink-soft); font: 600 14px var(--font-body); font-variant-numeric: lining-nums tabular-nums; flex-shrink: 0; }
+.filters-note { margin: 10px 0 0; color: var(--ink-faint); font-size: 14px; font-style: italic; line-height: 1.35; text-align: center; }
+
+/* Круглые медальоны с иконками, как значки на карте игры */
+.hl-filter-icon {
+    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center;
+    box-shadow: 0 0 0 1.5px rgba(240, 217, 164, .75), 0 0 0 2.5px rgba(0, 0, 0, .7), 0 1px 4px rgba(0, 0, 0, .6);
+}
+/* глиф из спрайта ../icons.png (одна строка ячеек 64×64): маска, цвет значка — фон (белый или ink); --gx/--gw — из categories.js */
+.hl-glyph { display: block; width: 19px; height: 19px; background: #fff;
+    -webkit-mask: url("../icons.png?v=1") var(--gx) 0 / var(--gw) 100% no-repeat; mask: url("../icons.png?v=1") var(--gx) 0 / var(--gw) 100% no-repeat; }
+.search-item .hl-glyph { width: 16px; height: 16px; }
+
+.sidebar-collapse-mobile { display: none; }
+@media (max-width: 700px) { :root { --sidebar-width: 340px; } }
+@media (max-width: 480px) {
+    :root { --sidebar-width: 100vw; }
+    .sidebar-collapse-mobile {
+        display: block; position: sticky; bottom: 0; margin-top: auto; width: 100%; padding: 12px; z-index: 2;
+        border: 0; border-top: 1px solid var(--steel-dark); cursor: pointer; background: #111a2e; color: var(--steel-light); font: 400 16px var(--font-display); letter-spacing: .08em;
+    }
+    #map, #map-empty { left: 0 !important; }
+    #sidebar { box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
+
+/* ---------- Метки, окна ---------- */
+.hl-tip { background: #0f1526; color: var(--ink); border: 1px solid rgba(226, 182, 96, .6); border-radius: 6px; box-shadow: 0 2px 10px rgba(0, 0, 0, .7); font: 600 15px/1.25 var(--font-body); padding: 3px 9px; }
+.hl-tip.leaflet-tooltip-top:before { border-top-color: rgba(226, 182, 96, .6); }
+
+.hl-popup-wrap .leaflet-popup-content { margin: 14px 16px; font-family: var(--font-body); }
+.hl-popup { --c: var(--gold); position: relative; min-width: 230px; }
+/* сверху окна — светящийся «луч» заклинания в цвет категории */
+.hl-popup-cat { display: flex; align-items: center; gap: 7px; font: 400 13px var(--font-display); text-transform: uppercase; letter-spacing: .14em; }
+.hl-popup-icon { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(240, 217, 164, .75), 0 0 0 2.5px rgba(0, 0, 0, .7); }
+.hl-popup-icon .hl-glyph { width: 15px; height: 15px; }
+.hl-popup h3 { margin: 6px 0 4px; font: 400 24px/1.12 var(--font-display); letter-spacing: .03em; color: #f6e7c1; text-shadow: 0 1px 6px rgba(0, 0, 0, .8); }
+.hl-popup-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 7px; color: var(--ink-faint); font-size: 13px; font-style: italic; }
+.hl-popup-en { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hl-link-btn { padding: 0; border: 0; background: none; color: var(--ink-soft); font: 600 13px var(--font-body); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; flex-shrink: 0; }
+.hl-link-btn:hover { color: var(--gold); }
+.hl-popup-img { display: block; width: 100%; height: 150px; object-fit: cover; border-radius: 6px; margin: 0 0 8px; cursor: zoom-in; }
+.hl-desc { max-height: 250px; overflow-y: auto; margin: 0 0 10px; padding-right: 5px; line-height: 1.4; color: var(--ink); }
+.hl-desc::-webkit-scrollbar { width: 6px; }
+.hl-desc::-webkit-scrollbar-thumb { background: #5b5038; border-radius: 3px; }
+.hl-desc p { margin: 0 0 6px; }
+.hl-desc b { color: #f0d091; font-weight: 700; }
+.hl-desc ul { margin: 2px 0 6px; padding-left: 18px; }
+.hl-desc ul ul { margin: 0; }
+.hl-desc li { margin: 1px 0; }
+.hl-desc li::marker { color: var(--gold); }
+.hl-desc i { color: var(--steel-light); font-style: italic; }
+/* описание категории (с etalongame) — под описанием метки, мелко, с полосой цвета категории */
+.hl-about { margin: 0 0 4px; padding: 6px 10px; border-left: 2px solid var(--c); border-radius: 0 8px 8px 0; background: color-mix(in srgb, var(--c) 8%, transparent); color: var(--ink-soft); font-size: 14px; font-style: italic; line-height: 1.35; }
+/* подписи регионов и залов на карте: видны в диапазоне зумов карты (app.js: hl-labels-on) */
+.hl-region-label { pointer-events: none; }
+.hl-region-label span {
+    display: none; position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+    font: 400 15px/1 var(--font-display); letter-spacing: .14em; text-transform: uppercase; color: #fff4d6;
+    text-shadow: 0 0 3px #1a1408, 0 0 8px #1a1408, 0 1px 2px #000;
+}
+.hl-labels-on .hl-region-label span { display: block; }
+.hl-desc .hl-qtag { display: inline-block; margin-left: 2px; padding: 0 7px; border-radius: 9px; font-size: 12.5px; line-height: 18px; font-weight: 700; font-style: normal; white-space: nowrap; vertical-align: 1px; }
+.hl-desc .hl-qtag-main { background: var(--spell-control); color: #2a1f00; }
+.hl-desc .hl-qtag-side { background: rgba(242, 194, 48, .14); color: var(--spell-control); box-shadow: inset 0 0 0 1px rgba(242, 194, 48, .55); }
+.hl-desc a.hl-link { color: #9cc8ff; font-weight: 600; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 2px; }
+.hl-desc a.hl-link:hover { color: #d2e6ff; text-decoration-style: solid; }
+.hl-desc table { width: 100%; margin: 4px 0 8px; border-collapse: collapse; font-size: 14px; }
+.hl-desc th, .hl-desc td { padding: 2px 6px; border: 1px solid var(--line); text-align: left; }
+.hl-done-btn, .hl-del-btn { width: 100%; padding: 7px 10px; border-radius: 8px; font: 400 16px var(--font-display); letter-spacing: .08em; cursor: pointer; transition: background .15s, box-shadow .15s; }
+.hl-done-btn { border: 1px solid #4a3410; color: #2a1d05; background: linear-gradient(180deg, #f6dc98, var(--gold) 55%, #b8862f); text-shadow: 0 1px 0 rgba(255, 240, 200, .5); box-shadow: inset 0 1px 0 rgba(255, 250, 230, .6), 0 2px 5px rgba(0, 0, 0, .55); }
+.hl-done-btn:hover { box-shadow: inset 0 1px 0 rgba(255, 250, 230, .7), 0 0 14px rgba(226, 182, 96, .55); }
+.hl-done-btn.is-done { border-color: #0d3a1f; color: #e6f7ea; background: linear-gradient(180deg, #3fc874, var(--spell-curse) 55%, #16723a); text-shadow: 0 1px 1px rgba(5, 30, 12, .7); }
+.hl-del-btn { margin-bottom: 8px; border: 1px solid #7a3028; background: transparent; color: #e08a80; }
+.hl-del-btn:hover { background: rgba(226, 71, 47, .16); }
+.hl-add-form select, .hl-add-form input, .hl-add-form textarea { display: block; width: 100%; margin: 6px 0; padding: 6px 8px; font: 500 15px var(--font-body); border-radius: 6px; border: 1px solid var(--steel-dark); background: rgba(0, 0, 0, .45); color: var(--ink); }
+
+#hl-lightbox { position: fixed; inset: 0; z-index: 10000; background: rgba(5, 7, 14, .92); display: grid; place-items: center; cursor: zoom-out; }
+#hl-lightbox img { max-width: 92vw; max-height: 92vh; border-radius: 6px; border: 2px solid var(--gold); box-shadow: 0 0 30px #000; }
+#hl-lightbox button { position: absolute; top: 14px; right: 20px; background: none; border: 0; color: var(--steel-light); font-size: 36px; line-height: 1; cursor: pointer; }
+.hl-toast { position: fixed; left: 50%; bottom: 28px; z-index: 10001; max-width: 90vw; padding: 9px 18px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; border: 1px solid rgba(226, 182, 96, .6); border-radius: 10px; background: #0f1526; color: var(--ink); font: 600 16px var(--font-body); box-shadow: 0 6px 20px rgba(0, 0, 0, .75); transition: opacity .25s, transform .25s; }
+.hl-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Загрузочный экран: каркас — css/map-nm.css (#map-loader.spl); здесь эмблема (палочка, рисующая
+   круг из пяти «школ» заклинаний, и искры древней магии) и шрифты игры ---------- */
+.hll-ring { fill: none; stroke-width: 3; stroke-linecap: round; transform-origin: 60px 60px; }
+.hll-orbit { transform-origin: 60px 60px; animation: hll-turn 7s linear infinite; }
+.hll-orbit-2 { animation-duration: 11s; animation-direction: reverse; }
+.hll-trail { fill: none; stroke: url(#hl-spells); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 250 400; filter: drop-shadow(0 0 4px rgba(154, 92, 245, .8)); animation: hll-draw 3.2s ease-in-out infinite; }
+.hll-wand { fill: #6b4a2b; stroke: #2b1b0c; stroke-width: 1; }
+.hll-wand-tip { fill: #fff7dd; filter: drop-shadow(0 0 5px #f2c230); animation: hll-pulse 1.6s ease-in-out infinite; }
+.hll-spark { fill: #fff2c4; animation: hll-pulse 2.2s ease-in-out infinite; }
+.hll-spark:nth-of-type(2n) { animation-delay: .7s; }
+.hll-spark:nth-of-type(3n) { animation-delay: 1.3s; }
+@keyframes hll-turn { to { transform: rotate(360deg); } }
+@keyframes hll-draw { 0% { stroke-dashoffset: 250; } 60%, 100% { stroke-dashoffset: -400; } }
+@keyframes hll-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.spl .spl-eyebrow { font-family: var(--font-latin); color: var(--ink-soft); letter-spacing: .45em; padding-left: .45em; }
+.spl .hll-title {
+    font-family: var(--font-display); font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: .08em; padding-left: .08em; text-transform: uppercase;
+    color: transparent; background: linear-gradient(180deg, #fff3cf 0%, #f0cf86 38%, #c9973d 62%, #f3d58e 100%); -webkit-background-clip: text; background-clip: text;
+}
+.spl .spl-status { font: italic 500 15px/1.4 var(--font-body); }
+@media (prefers-reduced-motion: reduce) { .hll-orbit, .hll-trail, .hll-wand-tip, .hll-spark { animation: none; } }
+
+/* Кнопка-лупа рядом с категорией: подсвечивает метки на карте */
+.filter-row { display: flex; align-items: stretch; gap: 4px; }
+.filter-row .filter-item { flex: 1 1 auto; width: auto; min-width: 0; }
+.filter-locate { flex: 0 0 30px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--ink-soft); border-radius: 6px; cursor: pointer; }
+.filter-locate.is-on { color: #2a1d00; background: #ffd54a; border-color: #a8741a; box-shadow: 0 0 8px rgba(255, 213, 74, .8); }
+.filter-locate:disabled { opacity: .3; cursor: default; pointer-events: none; }
+.filter-locate:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.locate-clear { font: 400 15px var(--font-display); letter-spacing: .1em; text-transform: uppercase; }
+.locate-clear:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

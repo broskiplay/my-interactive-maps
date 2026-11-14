@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="phantomblade">
+<head>
+    <meta charset="UTF-8">
+    <base href="../">
+    <!-- map-page: сгенерировано scripts/map_pages.py из ../index.html — не править вручную -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Долина Плачущего ручья — интерактивная карта Phantom Blade Zero на русском: все восемь локаций — от Долины Плачущего ручья до Горы Разбитых Душ. Колокола, боссы, оружие, книги, цветы памяти, материалы, задания и прогресс на всех устройствах.">
+    <meta name="theme-color" content="#0a0908">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта Phantom Blade Zero: Долина Плачущего ручья — BroskiPlay</title>
+    <link rel="canonical" href="https://broskiplay.ru/phantom-blade-zero-map/weeping-creek-valley/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/phantom-blade-zero-map/#app",
+          "name": "Интерактивная карта Phantom Blade Zero",
+          "url": "https://broskiplay.ru/phantom-blade-zero-map/",
+          "description": "Интерактивная карта Phantom Blade Zero на русском: все восемь локаций — от Долины Плачущего ручья до Горы Разбитых Душ. Колокола, боссы, оружие, книги, цветы памяти, материалы, задания и прогресс на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "Phantom Blade Zero"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта Phantom Blade Zero",
+              "item": "https://broskiplay.ru/phantom-blade-zero-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта Phantom Blade Zero: Долина Плачущего ручья — BroskiPlay">
+    <meta property="og:description" content="Долина Плачущего ручья — интерактивная карта Phantom Blade Zero на русском: все восемь локаций — от Долины Плачущего ручья до Горы Разбитых Душ. Колокола, боссы, оружие, книги, цветы памяти, материалы, задания и прогресс на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/phantom-blade-zero.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта Phantom Blade Zero на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/phantom-blade-zero-map/weeping-creek-valley/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/phantom-blade-zero.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта Phantom Blade Zero на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=3">
+    <!-- Тайлы и данные карты лежат на broskiplay.github.io: соединение открываем заранее -->
+    <link rel="preconnect" href="https://broskiplay.github.io">
+    <link rel="preconnect" href="https://broskiplay.github.io" crossorigin>
+    <!-- early-data:start — список тайлов (manifest.json) и данные меток запрашиваем сразу, не дожидаясь скриптов карты.
+         Карту выбираем так же, как js/app.js; адреса совпадают с его fetch(), поэтому браузер берёт уже скачанное.
+         Сгенерировано scripts/early_data.py по настройкам карты: после изменения списка карт или путей запустите его снова. -->
+    <script>
+        (function () {
+            var C = {"maps":{"weeping-creek-valley":["https://broskiplay.github.io/phantom-blade-assets/tiles/weeping-creek-valley/manifest.json","data/phantomblade_weeping-creek-valley_markers.json"],"crimson-forest":["https://broskiplay.github.io/phantom-blade-assets/tiles/crimson-forest/manifest.json","data/phantomblade_crimson-forest_markers.json"],"village-of-lu":["https://broskiplay.github.io/phantom-blade-assets/tiles/village-of-lu/manifest.json","data/phantomblade_village-of-lu_markers.json"],"pangzhen":["https://broskiplay.github.io/phantom-blade-assets/tiles/pangzhen/manifest.json","data/phantomblade_pangzhen_markers.json"],"the-mandates-encampment":["https://broskiplay.github.io/phantom-blade-assets/tiles/the-mandates-encampment/manifest.json","data/phantomblade_the-mandates-encampment_markers.json"],"meigu-lake":["https://broskiplay.github.io/phantom-blade-assets/tiles/meigu-lake/manifest.json","data/phantomblade_meigu-lake_markers.json"],"mountain-of-imprisonment":["https://broskiplay.github.io/phantom-blade-assets/tiles/mountain-of-imprisonment/manifest.json","data/phantomblade_mountain-of-imprisonment_markers.json"],"mount-soulrend":["https://broskiplay.github.io/phantom-blade-assets/tiles/mount-soulrend/manifest.json","data/phantomblade_mount-soulrend_markers.json"]},"def":"weeping-creek-valley","last":"pb_last_map"};
+            // Карта — из адреса /<игра>/<карта>/ (у страниц локаций <base href="../">, поэтому "." — папка игры)
+            var home = new URL(".", document.baseURI).pathname, seg = location.pathname.slice(home.length).split("/")[0];
+            var u = new URLSearchParams(location.search), q = u.get("map");
+            if (q !== null) {
+                // Старые ссылки ?map=<id>: переходим на страницу локации, у одной карты — просто убираем параметр
+                u.delete("map");
+                var rest = u.toString() ? "?" + u.toString() : "";
+                if (!C.single && C.maps[q] && !C.maps[seg]) { location.replace(home + q + "/" + rest + location.hash); return; }
+                try { history.replaceState(history.state, "", location.pathname + rest + location.hash); } catch (e) { /* без History API */ }
+            }
+            var id = C.single ? C.def : C.maps[seg] ? seg : null;
+            if (!id && C.last) { try { var l = localStorage.getItem(C.last); id = C.maps[l] ? l : (C.legacy && C.legacy[l]) || null; } catch (e) { /* нет доступа */ } }
+            (C.maps[id || C.def] || []).forEach(function (u) {
+                var e = document.createElement("link");
+                e.rel = "preload"; e.as = "fetch"; e.crossOrigin = "anonymous"; e.href = u;
+                document.head.appendChild(e);
+            });
+        })();
+    </script>
+    <!-- early-data:end -->
+    <!-- Основной шрифт (им набран список фильтров) — заранее, чтобы список не «прыгал» при подмене шрифта -->
+    <link rel="preload" href="../fonts/eb-garamond-cyrillic-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/oranienbaum-cyrillic-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="../css/spatial.css?v=4">
+    <link rel="stylesheet" href="../css/map-nm.css?v=29">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=1">
+    <script src="../js/report-marker.js?v=4" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=5">
+    <script src="../js/support-toast.js?v=8" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=3">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=6">
+</head>
+<body>
+
+<!-- Загрузочный экран: общий spatial-каркас (css/map-nm.css, .spl), эмблема (энсо-мазок, дао, луна, печать 刀) и шрифты игры — css/style.css -->
+<div id="map-loader" class="spl" role="status" aria-live="polite">
+    <div class="spl-card">
+        <div class="spl-emblem" aria-hidden="true">
+            <div class="spl-well pbl-emblem">
+            <svg viewBox="0 0 120 120">
+                <defs>
+                    <linearGradient id="pb-blade" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#fbf8f1"/><stop offset=".45" stop-color="#cfcac0"/><stop offset="1" stop-color="#77726b"/>
+                    </linearGradient>
+                    <radialGradient id="pb-moon"><stop offset="0" stop-color="#d9443a"/><stop offset=".8" stop-color="#b02a20"/><stop offset=".9" stop-color="#9c231b"/><stop offset="1" stop-color="#9c231b" stop-opacity="0"/></radialGradient>
+                    <mask id="pb-enso-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120">
+                        <circle class="pbl-enso-reveal" cx="60" cy="60" r="43" pathLength="100"/>
+                    </mask>
+                </defs>
+                <!-- кровавая луна за кругом -->
+                <circle class="pbl-moon" cx="80" cy="38" r="17" fill="url(#pb-moon)"/>
+                <!-- энсо: мазок кисти с нажимом и сухим хвостом; маска «проводит» его по кругу -->
+                <g class="pbl-enso" mask="url(#pb-enso-mask)">
+                    <path d="M75.4 17.8 L78.3 18.0 L81.3 18.4 L84.2 19.0 L87.2 19.9 L90.1 21.0 L92.7 22.7 L95.0 24.7 L97.1 26.9 L99.0 29.3 L100.8 31.8 L102.4 34.4 L103.9 37.1 L105.1 39.8 L106.2 42.7 L107.1 45.6 L107.7 48.6 L108.2 51.6 L108.5 54.6 L108.6 57.6 L108.6 60.6 L108.3 63.5 L107.9 66.5 L107.3 69.4 L106.5 72.3 L105.6 75.1 L104.5 77.9 L103.2 80.5 L101.8 83.1 L100.3 85.6 L98.6 88.1 L96.8 90.4 L94.8 92.6 L92.8 94.6 L90.6 96.6 L88.3 98.4 L85.8 100.1 L83.3 101.6 L80.7 103.0 L78.0 104.1 L75.3 105.2 L72.4 106.0 L69.6 106.6 L66.7 107.1 L63.8 107.3 L60.8 107.4 L57.9 107.3 L55.0 106.9 L52.1 106.4 L49.3 105.7 L46.6 104.8 L44.0 103.6 L41.4 102.3 L39.0 100.8 L36.7 99.2 L34.5 97.4 L32.4 95.5 L30.4 93.5 L28.6 91.4 L27.0 89.3 L25.4 87.0 L24.0 84.7 L22.8 82.3 L21.6 79.9 L20.7 77.4 L19.8 74.9 L19.1 72.4 L18.5 69.8 L18.1 67.2 L17.7 64.6 L17.5 62.0 L17.5 59.4 L17.6 56.7 L17.8 54.1 L18.1 51.5 L18.6 48.9 L19.2 46.3 L20.0 43.8 L20.9 41.3 L22.0 38.8 L23.2 36.4 L24.6 34.1 L26.1 31.8 L27.8 29.7 L29.6 27.6 L31.5 25.6 L33.6 23.8 L35.7 22.0 L38.0 20.5 L40.4 19.1 L43.0 17.8 L43.2 18.4 L40.7 19.6 L38.3 21.0 L36.1 22.6 L33.9 24.3 L31.9 26.1 L30.0 28.1 L28.3 30.2 L26.8 32.4 L25.4 34.7 L24.2 37.1 L23.2 39.5 L22.3 41.9 L21.6 44.4 L21.0 46.9 L20.5 49.4 L20.3 51.9 L20.1 54.4 L20.1 56.9 L20.2 59.4 L20.5 61.8 L20.8 64.3 L21.3 66.6 L21.9 69.0 L22.6 71.3 L23.5 73.5 L24.4 75.7 L25.5 77.9 L26.6 80.0 L27.9 82.0 L29.3 84.0 L30.8 85.8 L32.4 87.6 L34.1 89.3 L35.9 90.9 L37.9 92.4 L39.9 93.8 L42.0 95.0 L44.1 96.1 L46.4 97.1 L48.7 97.9 L51.0 98.6 L53.4 99.2 L55.8 99.6 L58.2 99.9 L60.7 99.9 L63.2 99.9 L65.6 99.6 L68.0 99.2 L70.4 98.6 L72.8 97.9 L75.1 97.0 L77.3 96.0 L79.5 94.8 L81.6 93.5 L83.6 92.1 L85.5 90.5 L87.3 88.9 L89.0 87.1 L90.6 85.3 L92.1 83.3 L93.5 81.3 L94.7 79.2 L95.9 77.0 L96.9 74.8 L97.8 72.5 L98.5 70.2 L99.1 67.8 L99.6 65.4 L99.9 62.9 L100.1 60.5 L100.2 58.0 L100.1 55.5 L99.8 53.0 L99.4 50.6 L98.8 48.1 L98.1 45.7 L97.2 43.4 L96.1 41.1 L94.9 38.9 L93.6 36.8 L92.1 34.8 L90.4 32.9 L88.7 31.1 L86.8 29.4 L84.9 27.7 L83.2 25.8 L81.2 24.1 L79.2 22.5 L77.0 21.0 L74.7 19.6Z"/>
+                    <path class="pbl-dry" d="M32.7 96.0A45.2 45.2 0 0 1 47.8 16.5 M21.5 80.0A43.4 43.4 0 0 1 55.4 16.8 M28.3 86.7A41.4 41.4 0 0 1 42.4 22.5 M43.5 96.4A40.0 40.0 0 0 1 27.7 36.4"/>
+                </g>
+                <!-- изогнутый дао наискось: остриё вверху справа, гарда золотом, рукоять в красной обмотке -->
+                <g class="pbl-sword" transform="translate(58 63) rotate(-42)">
+                    <path class="pbl-blade" d="M-19-2.9Q18-3.1 53-10Q23 2.2-19 3.3Z"/>
+                    <path class="pbl-fuller" d="M-17-.9Q14-1.3 40-6.2"/>
+                    <path class="pbl-glint" d="M-19-2.9Q18-3.1 53-10" pathLength="100"/>
+                    <ellipse class="pbl-guard" cx="-20.5" cy=".2" rx="2.4" ry="7"/>
+                    <rect class="pbl-hilt" x="-42" y="-2.1" width="20" height="4.6" rx="1.6"/>
+                    <path class="pbl-wrap" d="M-39-2v4.4M-35-2v4.4M-31-2v4.4M-27-2v4.4"/>
+                    <circle class="pbl-guard" cx="-43.6" cy=".2" r="2.4"/>
+                    <path class="pbl-tassel" d="M-45.5 1.6q-3 4-1.5 9.5M-44.4 2.2q-1 4.6 1.4 8.6"/>
+                </g>
+                <!-- красная печать с иероглифом 刀 «клинок», вырезанным в киновари -->
+                <g class="pbl-seal">
+                    <path class="pbl-seal-body" d="M83.6 82.4l17.6-.6.5 17.9-18.2.4z"/>
+                    <path class="pbl-seal-mark" d="M87.6 87.2h9.6v10.6l-2.2-1.4M91.8 87.3q-.2 6.6-4.6 10.4"/>
+                </g>
+            </svg>
+            </div>
+        </div>
+        <div class="spl-eyebrow">Кунфупанк · уся</div>
+        <div class="spl-title pbl-title">Phantom Blade Zero</div>
+        <div class="spl-track" aria-hidden="true"><i></i></div>
+        <div class="spl-status">Растираем тушь…</div>
+    </div>
+</div>
+
+<!-- mtb:start — верхнее меню карты: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="mtb" id="mtb">
+    <a class="mtb-pill mtb-home" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="30" height="30" alt=""><span>Главная</span></a>
+    <button type="button" class="mtb-burger mtb-pill" id="mtb-burger" aria-expanded="false" aria-controls="mtb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+    <div class="mtb-panel" id="mtb-panel">
+        <nav class="mtb-pill mtb-nav" aria-label="Разделы сайта">
+            <a class="mtb-link" href="/games/">Игры</a>
+        </nav>
+        <div class="mtb-pill mtb-actions">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+            <div class="auth-mini-box">
+    <div class="auth-mini-info">
+        <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+        <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+    </div>
+    <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+</div>
+        </div>
+    </div>
+</header>
+<!-- mtb:end -->
+
+<div id="sidebar">
+    <div class="scroll-body">
+        <div class="sidebar-header">
+<!-- mtb-side:start — кнопка меню сайта для телефона (генерируется scripts/site_menu.py) -->
+        <button type="button" class="mtb-side-btn" id="mtb-side-btn" aria-label="Меню сайта: игры, вход"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Меню сайта</span><small>игры · вход</small></button>
+        <!-- mtb-side:end -->
+            <div class="header-top-row">
+                <h1>
+                    <span class="logo-top">Долина · Панчжэнь · Озеро Мэйгу</span>
+                    <span class="logo-main">Phantom Blade Zero</span>
+                    <span class="logo-sub">Интерактивная карта</span>
+                </h1>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <p class="section-label">Карта</p>
+            <div id="map-switch" class="map-switch"></div>
+
+            <div class="progress-card" aria-label="Общий прогресс">
+                <div class="progress-head"><span>Найдено меток</span><strong id="progress-value">0%</strong></div>
+                <div class="progress-track" role="progressbar" aria-label="Прогресс исследования карты" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+                <div class="progress-count" id="progress-count"></div>
+            </div>
+
+            <div class="search-wrap">
+                <input type="search" id="search-input" placeholder="Поиск: колокол, босс, цветок памяти…" autocomplete="off" aria-controls="search-results">
+                <div class="search-results" id="search-results" role="listbox" aria-label="Результаты поиска"></div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="show-all-btn">Показать все</button>
+                <button type="button" id="hide-all-btn">Скрыть все</button>
+                <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+            </div>
+
+            <button type="button" id="add-marker-btn" class="add-marker-btn">＋ Добавить свою метку</button>
+
+            <div class="io-row">
+                <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки в JSON-файл">⬇ Экспорт прогресса</button>
+                <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+            </div>
+            <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+            <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="filters-list" id="filters-container"></div>
+
+        <p class="bp-credit">Метки основаны на открытых картах сообщества. Перевод, сверка и адаптация — BroskiPlay.</p>
+
+        <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+        <details class="bp-about" id="bp-about">
+            <summary>О карте</summary>
+            <h2>Phantom Blade Zero: что отмечено на карте «Долина Плачущего ручья»</h2>
+            <p>Интерактивная карта Phantom Blade Zero на русском. На карте «Долина Плачущего ручья» отмечено 316 меток в 45 категориях. Все карты: Долина Плачущего ручья, Багровый лес, Деревня Лу, Панчжэнь, Лагерь Союза, Озеро Мэйгу, Гора Заточения. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+            <ul>
+                <li><strong>Интересные места</strong> (44): Колокол (23), Переход (1), Объект взаимодействия (19), Испытание (1).</li>
+                <li><strong>Ключевые предметы</strong> (90): Оружие (4), Фантомный коготь (3), Аксессуар (10), Снадобье (2), Янтарь Ша-Ци (4), Чёрный камень (4), Ключ (5), Предмет задания (10) и ещё 3.</li>
+                <li><strong>Предметы</strong> (16): Печать перемещения (6), Талисман перековки оружия (6), Талисман перековки Фантомного когтя (4).</li>
+                <li><strong>Персонажи</strong> (15): Босс (7), Торговец (1), Кузнец (1), Персонаж (6).</li>
+                <li><strong>Задания</strong> (14): Основное сюжетное задание (2), Побочное сюжетное задание (5), История (7).</li>
+                <li><strong>Материалы</strong> (135): Пыль сознания (55), Кузнечный металл (11), Безупречный кузнечный металл (2), Парный металл (9), Листовой металл (11), Растворитель (12), Безупречный парный металл (2), Слиток аномальной меди (6) и ещё 11.</li>
+                <li><strong>Другое</strong> (2): Разное (2).</li>
+            </ul>
+        <!-- cats:start — генерируется: python3 scripts/category_pages.py -->
+        <h3>Все категории Phantom Blade Zero</h3>
+        <ul class="bp-cats">
+            <li><strong>Интересные места:</strong> <a href="c/bell/">Колокол</a>, <a href="c/transition/">Переход</a>, <a href="c/interactable/">Объект взаимодействия</a>, <a href="c/challenge/">Испытание</a>.</li>
+            <li><strong>Ключевые предметы:</strong> <a href="c/weapon/">Оружие</a>, <a href="c/phantom-edge/">Фантомный коготь</a>, <a href="c/accessory/">Аксессуар</a>, <a href="c/medicine/">Снадобье</a>, <a href="c/sha-chi-amber/">Янтарь Ша-Ци</a>, <a href="c/blackstone/">Чёрный камень</a>, <a href="c/key/">Ключ</a>, <a href="c/quest-item/">Предмет задания</a>, <a href="c/book/">Книга</a>, <a href="c/memory-flower/">Цветок памяти</a>, <a href="c/soul-tempering-material/">Материал для Закалки</a>, <a href="c/treasure/">Сокровище</a>, <a href="c/accessory-fragment/">Фрагмент аксессуара</a>.</li>
+            <li><strong>Предметы:</strong> <a href="c/traversal-talisman/">Печать перемещения</a>, <a href="c/weapon-reforge-talisman/">Талисман перековки оружия</a>, <a href="c/phantom-reforge-talisman/">Талисман перековки Фантомного когтя</a>.</li>
+            <li><strong>Персонажи:</strong> <a href="c/boss/">Босс</a>, <a href="c/merchant/">Торговец</a>, <a href="c/blacksmith/">Кузнец</a>, <a href="c/character/">Персонаж</a>.</li>
+            <li><strong>Задания:</strong> <a href="c/main-quest/">Основное сюжетное задание</a>, <a href="c/side-quest/">Побочное сюжетное задание</a>, <a href="c/tale/">История</a>, <a href="c/collection-quest/">Задание на сбор</a>.</li>
+            <li><strong>Материалы:</strong> <a href="c/remnant-dust/">Пыль сознания</a>, <a href="c/forged-metal/">Кузнечный металл</a>, <a href="c/flawless-forged-metal/">Безупречный кузнечный металл</a>, <a href="c/twinned-metal/">Парный металл</a>, <a href="c/broadplate-metal/">Листовой металл</a>, <a href="c/solvent/">Растворитель</a>, <a href="c/flawless-twinned-metal/">Безупречный парный металл</a>, <a href="c/exotic-copper-ingot/">Слиток аномальной меди</a>, <a href="c/darkfire-charcoal/">Уголь тёмного пламени</a>, <a href="c/mechanical-gear/">Механическая шестерня</a>, <a href="c/flawless-broadplate-metal/">Безупречный листовой металл</a>, <a href="c/ancient-timber/">Древняя древесина</a>, <a href="c/tainted-crystal-shard/">Осколок осквернённого кристалла</a>, <a href="c/universal-solvent/">Универсальный растворитель</a>, <a href="c/otherworldly-copper/">Внеземная медь</a>, <a href="c/concentrated-solvent/">Концентрированный растворитель</a>, <a href="c/polished-broadplate-metal/">Отполированный листовой металл</a>, <a href="c/polished-twinned-metal/">Отполированный парный металл</a>, <a href="c/precision-mechanical-gear/">Высокоточная механическая шестерня</a>, <a href="c/apprentice-healer-memory/">Воспоминание ученика лекаря</a>, <a href="c/incense-ash/">Пепел благовоний</a>, <a href="c/purified-indigo-crystal/">Очищенный кристалл цвета индиго</a>, <a href="c/polished-forged-metal/">Отполированный кузнечный металл</a>, <a href="c/forged-otherworldly-copper/">Кованая внеземная медь</a>, <a href="c/searing-darkfire-charcoal/">Обжигающий уголь тёмного пламени</a>, <a href="c/ying-clan-gear/">Шестерня рода Ин</a>, <a href="c/forbidden-camphor-wood/">Запретная камфорная древесина</a>, <a href="c/veil-mother-incense-ash/">Пепел благовоний Матери Завесы</a>, <a href="c/great-healer-memory/">Воспоминание великого лекаря</a>, <a href="c/camphor-wood/">Камфорная древесина</a>, <a href="c/blazing-darkfire-charcoal/">Пылающий уголь тёмного пламени</a>, <a href="c/phantom-incense-ash/">Призрачный пепел благовоний</a>, <a href="c/skilled-healer-memory/">Воспоминание опытного лекаря</a>.</li>
+            <li><strong>Другое:</strong> <a href="c/misc/">Разное</a>.</li>
+        </ul>
+        <!-- cats:end -->
+        </details>
+        <!-- about:end -->
+
+        <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg><span>Свернуть меню</span></button>
+    </div>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<main id="map" aria-label="Карта"></main>
+<div id="map-empty"></div>
+<div class="pb-toast" id="pb-toast" role="status" aria-live="polite"></div>
+
+<script src="../vendor/leaflet/leaflet.js" defer></script>
+<script src="../js/smooth-zoom.js?v=1" defer></script>
+<script src="../js/lightbox-zoom.js?v=3" defer></script>
+
+<script src="../js/marker-stack.js?v=1" defer></script>
+<script src="js/categories.js?v=1" defer></script>
+<script src="../js/nm-pin.js?v=2" defer></script>
+<script src="../js/firebase-lazy.js?v=1" defer></script>
+<script src="../js/map-extras.js?v=10" defer></script>
+<script src="../js/map-topbar.js?v=4" defer></script>
+<script src="../js/map-core.js?v=10" defer></script>
+<script src="js/app.js?v=1" defer></script>
+</body>
+</html>

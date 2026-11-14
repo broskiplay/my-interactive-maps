@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <script>
+        // Старые отдельные страницы локаций Stellar Blade (eidos7.html и т. п.) теперь живут по адресу /stellar-blade-map/<id>/
+        (function () {
+            var ids = { eidos7: "eidos7", xion: "xion", wasteland: "wasteland", altess_levoire: "altess-levoire", matrix11: "matrix-11",
+                great_desert: "great-desert", abyss_levoire: "abyss-levoire", spire4: "spire-4", eidos9: "eidos-9" };
+            var m = location.pathname.match(/\/stellar-blade-map\/([a-z0-9_]+)\.html$/);
+            if (m && ids[m[1]]) location.replace("/stellar-blade-map/" + ids[m[1]] + "/" + location.search + location.hash);
+        })();
+    </script>
+    <title>Страница не найдена — BroskiPlay</title>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="./fonts/fonts.css?v=1">
+    <link rel="stylesheet" href="/css/spatial.css?v=4">
+    <link rel="stylesheet" href="/css/style.css?v=50">
+    <script>
+        (function () {
+            // Тема по системе телефона: светлая → светлая, тёмная или не задана → тёмная.
+            // Ручной выбор переключателем действует, пока система сама не сменит тему.
+            var sys = "dark";
+            try { if (window.matchMedia("(prefers-color-scheme: light)").matches) sys = "light"; } catch (e) {}
+            var theme = sys;
+            try {
+                var saved = localStorage.getItem("bp_theme");
+                if ((saved === "light" || saved === "dark") && localStorage.getItem("bp_theme_sys") === sys) theme = saved;
+            } catch (e) {}
+            document.documentElement.setAttribute("data-theme", theme);
+        })();
+    </script>
+    <script src="/js/metrika.js?v=1" defer></script>
+</head>
+<body>
+<main class="site-shell legal" style="text-align:center;padding-top:12vh">
+    <p class="eyebrow" style="font-family:var(--font-label);color:var(--acid);letter-spacing:.2em;font-size:13px;margin-bottom:16px">ОШИБКА 404</p>
+    <h1>Такой страницы нет</h1>
+    <p style="margin:12px auto 28px">Возможно, ссылка устарела или в ней опечатка. Все карты собраны на главной.</p>
+    <a class="auth-btn" href="/" style="display:inline-flex;text-decoration:none"><span>Открыть библиотеку карт</span></a>
+</main>
+</body>
+</html>

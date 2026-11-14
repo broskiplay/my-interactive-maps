@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="dimraeth">
+<head>
+    <meta charset="UTF-8">
+    <base href="../">
+    <!-- map-page: сгенерировано scripts/map_pages.py из ../index.html — не править вручную -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Святилище — интерактивная карта Dimraeth: Эрлвуд, Затерянные пещеры, Святилище и Гоблинские пещеры — путевые врата, костры, боссы, сундуки, ресурсы, существа и прогресс на всех устройствах.">
+    <meta name="theme-color" content="#1b1513">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта Dimraeth: Святилище — BroskiPlay</title>
+    <link rel="canonical" href="https://broskiplay.ru/dimraeth-map/playerbase/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/dimraeth-map/#app",
+          "name": "Интерактивная карта Dimraeth",
+          "url": "https://broskiplay.ru/dimraeth-map/",
+          "description": "Интерактивная карта Dimraeth: Эрлвуд, Затерянные пещеры, Святилище и Гоблинские пещеры — путевые врата, костры, боссы, сундуки, ресурсы, существа и прогресс на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "Dimraeth"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта Dimraeth",
+              "item": "https://broskiplay.ru/dimraeth-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта Dimraeth: Святилище — BroskiPlay">
+    <meta property="og:description" content="Святилище — интерактивная карта Dimraeth: Эрлвуд, Затерянные пещеры, Святилище и Гоблинские пещеры — путевые врата, костры, боссы, сундуки, ресурсы, существа и прогресс на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/dimraeth.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта Dimraeth на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/dimraeth-map/playerbase/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/dimraeth.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта Dimraeth на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <!-- Тайлы и данные карты лежат на broskiplay.github.io: соединение открываем заранее -->
+    <link rel="preconnect" href="https://broskiplay.github.io">
+    <link rel="preconnect" href="https://broskiplay.github.io" crossorigin>
+    <!-- early-data:start — список тайлов (manifest.json) и данные меток запрашиваем сразу, не дожидаясь скриптов карты.
+         Карту выбираем так же, как js/app.js; адреса совпадают с его fetch(), поэтому браузер берёт уже скачанное.
+         Сгенерировано scripts/early_data.py по настройкам карты: после изменения списка карт или путей запустите его снова. -->
+    <script>
+        (function () {
+            var C = {"maps":{"wildwood":["https://broskiplay.github.io/dimraeth-assets/tiles/wildwood/manifest.json?v=2","data/dimraeth_wildwood_markers.json","data/dimraeth_db.json"],"thelostcaverns":["https://broskiplay.github.io/dimraeth-assets/tiles/thelostcaverns/manifest.json?v=2","data/dimraeth_thelostcaverns_markers.json","data/dimraeth_db.json"],"playerbase":["https://broskiplay.github.io/dimraeth-assets/tiles/playerbase/manifest.json?v=2","data/dimraeth_playerbase_markers.json","data/dimraeth_db.json"],"thegoblincaves":["https://broskiplay.github.io/dimraeth-assets/tiles/thegoblincaves/manifest.json?v=2","data/dimraeth_thegoblincaves_markers.json","data/dimraeth_db.json"]},"def":"wildwood"};
+            // Карта — из адреса /<игра>/<карта>/ (у страниц локаций <base href="../">, поэтому "." — папка игры)
+            var home = new URL(".", document.baseURI).pathname, seg = location.pathname.slice(home.length).split("/")[0];
+            var u = new URLSearchParams(location.search), q = u.get("map");
+            if (q !== null) {
+                // Старые ссылки ?map=<id>: переходим на страницу локации, у одной карты — просто убираем параметр
+                u.delete("map");
+                var rest = u.toString() ? "?" + u.toString() : "";
+                if (!C.single && C.maps[q] && !C.maps[seg]) { location.replace(home + q + "/" + rest + location.hash); return; }
+                try { history.replaceState(history.state, "", location.pathname + rest + location.hash); } catch (e) { /* без History API */ }
+            }
+            var id = C.single ? C.def : C.maps[seg] ? seg : null;
+            if (!id && C.last) { try { var l = localStorage.getItem(C.last); id = C.maps[l] ? l : (C.legacy && C.legacy[l]) || null; } catch (e) { /* нет доступа */ } }
+            (C.maps[id || C.def] || []).forEach(function (u) {
+                var e = document.createElement("link");
+                e.rel = "preload"; e.as = "fetch"; e.crossOrigin = "anonymous"; e.href = u;
+                document.head.appendChild(e);
+            });
+        })();
+    </script>
+    <!-- early-data:end -->
+    <!-- Основной шрифт (им набран список фильтров) — заранее, чтобы список не «прыгал» при подмене шрифта -->
+    <link rel="preload" href="../fonts/philosopher-cyrillic-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/philosopher-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="images/icons/icons.css">
+    <link rel="stylesheet" href="css/style.css?v=10">
+    <link rel="stylesheet" href="../css/spatial.css?v=4">
+    <link rel="stylesheet" href="../css/map-nm.css?v=29">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=1">
+    <script src="../js/report-marker.js?v=4" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=5">
+    <script src="../js/support-toast.js?v=8" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=3">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=5">
+</head>
+<body>
+
+<!-- Загрузочный экран: общий spatial-каркас (css/map-nm.css, .spl), эмблема и шрифты игры — css/style.css -->
+<div id="map-loader" class="spl" role="status" aria-live="polite">
+    <div class="spl-card">
+        <div class="spl-emblem" aria-hidden="true">
+            <div class="spl-well dml-gate">
+            <svg viewBox="0 0 120 120">
+                <defs>
+                    <radialGradient id="dm-portal" cx="50%" cy="62%" r="62%"><stop offset="0" stop-color="#eef7ff"/><stop offset=".4" stop-color="#7fb8ff"/><stop offset="1" stop-color="#1d3566"/></radialGradient>
+                </defs>
+                <circle class="dml-circle dml-circle-1" cx="60" cy="60" r="56"/>
+                <!-- путевые врата: каменная арка, в ней портал; над аркой — вершина из логотипа -->
+                <path class="dml-portal" d="M44 90V62c0-12 7-20 16-20s16 8 16 20v28z"/>
+                <circle class="dml-rune" cx="60" cy="68" r="9"/>
+                <path class="dml-stone" d="M32 90V60c0-18 12-30 28-30s28 12 28 30v30H76V62c0-12-7-20-16-20s-16 8-16 20v28z"/>
+                <path class="dml-stone" d="M28 90h20v5H28zM72 90h20v5H72z"/>
+                <path class="dml-joint" d="M32 72h12M76 72h12M37 47l8 6M83 47l-8 6"/>
+                <path class="dml-peak" d="M60 13l7 21-7-6-7 6z"/>
+            </svg>
+            </div>
+        </div>
+        <img class="spl-logo" src="logo.webp" alt="Dimraeth">
+        <div class="spl-sub">Интерактивная карта</div>
+        <div class="spl-track" aria-hidden="true"><i></i></div>
+        <div class="spl-status">Открываем путевые врата…</div>
+    </div>
+</div>
+
+<!-- mtb:start — верхнее меню карты: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="mtb" id="mtb">
+    <a class="mtb-pill mtb-home" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="30" height="30" alt=""><span>Главная</span></a>
+    <button type="button" class="mtb-burger mtb-pill" id="mtb-burger" aria-expanded="false" aria-controls="mtb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+    <div class="mtb-panel" id="mtb-panel">
+        <nav class="mtb-pill mtb-nav" aria-label="Разделы сайта">
+            <a class="mtb-link" href="/games/">Игры</a>
+        </nav>
+        <div class="mtb-pill mtb-actions">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+            <div class="auth-mini-box">
+    <div class="auth-mini-info">
+        <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+        <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+    </div>
+    <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+</div>
+        </div>
+    </div>
+</header>
+<!-- mtb:end -->
+
+<div id="sidebar">
+    <div class="sidebar-header">
+<!-- mtb-side:start — кнопка меню сайта для телефона (генерируется scripts/site_menu.py) -->
+        <button type="button" class="mtb-side-btn" id="mtb-side-btn" aria-label="Меню сайта: игры, вход"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Меню сайта</span><small>игры · вход</small></button>
+        <!-- mtb-side:end -->
+        <div class="header-top-row">
+            <a class="brand" href="./" aria-label="Dimraeth — интерактивная карта"><img src="logo.webp" alt="Dimraeth"><span>Интерактивная карта</span></a>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <div class="map-switch" id="map-switch"></div>
+
+        <div id="zone-block" hidden>
+            <p class="section-label">Области карты</p>
+            <div class="zone-switch" id="zone-switch" role="group" aria-label="Перейти к области"></div>
+        </div>
+        <script>
+            // «Области карты» есть только у Эрлвуда (карта по умолчанию) и приходят вместе с данными:
+            // место под блок держим сразу, иначе панель ниже прыгает на ~235 px (CLS)
+            (function () {
+                var id = location.pathname.slice(new URL(".", document.baseURI).pathname.length).split("/")[0] || new URLSearchParams(location.search).get("map") || "";
+                if (/^(thelostcaverns|playerbase|thegoblincaves)$/.test(id)) return;
+                document.getElementById("zone-block").hidden = false;
+                document.getElementById("zone-switch").style.minHeight = "214px";
+            })();
+        </script>
+
+        <div class="progress-card" aria-label="Общий прогресс">
+            <div class="progress-head"><span>Найдено меток</span><strong id="progress-value">0%</strong></div>
+            <div class="progress-track" role="progressbar" aria-label="Прогресс исследования карты" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+            <div class="progress-count" id="progress-count"></div>
+        </div>
+
+        <div class="search-wrap">
+            <input type="search" id="search-input" placeholder="Существо, предмет или место…" autocomplete="off" spellcheck="false" aria-controls="search-results">
+            <div class="search-results" id="search-results" role="listbox" aria-label="Результаты поиска"></div>
+            <p class="search-hint">Введите предмет — карта покажет существ, сундуки и лавки, откуда он берётся.</p>
+        </div>
+
+        <div class="focus-banner" id="focus-banner" hidden>
+            <div class="focus-text"><span>Показаны источники</span><strong id="focus-label"></strong><em id="focus-count"></em></div>
+            <label class="focus-pct" id="focus-pct-wrap" hidden>Шанс
+                <select id="focus-pct">
+                    <option value="0">любой</option>
+                    <option value="5">от 5%</option>
+                    <option value="10">от 10%</option>
+                    <option value="25">от 25%</option>
+                    <option value="50">от 50%</option>
+                    <option value="100">100%</option>
+                </select>
+            </label>
+            <button type="button" id="focus-clear">Сбросить</button>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" id="show-all-btn">Показать все</button>
+            <button type="button" id="hide-all-btn">Скрыть все</button>
+            <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+        </div>
+
+        <div class="level-filter" id="level-filter">
+            <span class="level-title">Уровень существа</span>
+            <input type="number" id="lv-lo" inputmode="numeric" min="1" max="200" placeholder="1" aria-label="Минимальный уровень">
+            <span aria-hidden="true">—</span>
+            <input type="number" id="lv-hi" inputmode="numeric" min="1" max="200" placeholder="200" aria-label="Максимальный уровень">
+            <button type="button" id="lv-clear" hidden>Любой</button>
+        </div>
+
+        <button type="button" id="add-marker-btn" class="add-marker-btn">＋ Добавить свою метку</button>
+
+        <div class="io-row">
+            <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки в JSON-файл">⬇ Экспорт прогресса</button>
+            <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+        </div>
+        <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+        <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="filters-list" id="filters-container"></div>
+
+    <p class="credit">Данные карты и описания — <a href="https://dimraethdb.com/ru/map" target="_blank" rel="noopener noreferrer">Dimraeth Database Wiki</a>.</p>
+
+    <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+    <details class="bp-about" id="bp-about">
+        <summary>О карте</summary>
+        <h2>Dimraeth: что отмечено на карте «Эрлвуд»</h2>
+        <p>Интерактивная карта Dimraeth на русском. На карте «Эрлвуд» отмечено 2 744 метки в 20 категориях. Все карты: Эрлвуд, Затерянные пещеры, Святилище, Гоблинские пещеры. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+        <ul>
+            <li><strong>Переместиться</strong> (47): Путевые врата (26), Костры (21).</li>
+            <li><strong>Боссы</strong> (13): Боссы (2), Мини-боссы (11).</li>
+            <li><strong>Лавка и Изготовление</strong> (13): Лавки (12), Кузницы (1).</li>
+            <li><strong>Места</strong> (37): Люди (19), Рощи (6), Руины (7), Усадьбы (3), Логова (1), Пещеры (1).</li>
+            <li><strong>Коллекционные</strong> (54): Фрагменты карты (19), Книги заклинаний (20), Питомцы (9), Грузоподъёмность (6).</li>
+            <li><strong>Добыча</strong> (432): Сундуки (82), Ресурсы (350).</li>
+            <li><strong>Существа</strong> (2 148): Монстры (860), Монстры события (1 288).</li>
+        </ul>
+        <!-- cats:start — генерируется: python3 scripts/category_pages.py -->
+        <h3>Все категории Dimraeth</h3>
+        <ul class="bp-cats">
+            <li><strong>Переместиться:</strong> <a href="c/waygates/">Путевые врата</a>, <a href="c/campfires/">Костры</a>.</li>
+            <li><strong>Боссы:</strong> <a href="c/minibosses/">Мини-боссы</a>.</li>
+            <li><strong>Лавка и Изготовление:</strong> <a href="c/shops/">Лавки</a>.</li>
+            <li><strong>Места:</strong> <a href="c/people/">Люди</a>, <a href="c/groves/">Рощи</a>, <a href="c/ruins/">Руины</a>, <a href="c/homesteads/">Усадьбы</a>.</li>
+            <li><strong>Коллекционные:</strong> <a href="c/fragments/">Фрагменты карты</a>, <a href="c/spellbooks/">Книги заклинаний</a>, <a href="c/pets/">Питомцы</a>, <a href="c/carry/">Грузоподъёмность</a>.</li>
+            <li><strong>Добыча:</strong> <a href="c/chests/">Сундуки</a>, <a href="c/resources/">Ресурсы</a>.</li>
+            <li><strong>Существа:</strong> <a href="c/monsters/">Монстры</a>, <a href="c/event-monsters/">Монстры события</a>.</li>
+        </ul>
+        <!-- cats:end -->
+    </details>
+    <!-- about:end -->
+
+    <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg><span>Свернуть меню</span></button>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<main id="map" aria-label="Карта"></main>
+<div id="map-empty"></div>
+<div class="dr-toast" id="dr-toast" role="status" aria-live="polite"></div>
+
+<script src="../vendor/leaflet/leaflet.js" defer></script>
+<script src="../js/smooth-zoom.js?v=1" defer></script>
+<script src="../js/lightbox-zoom.js?v=3" defer></script>
+
+<script src="../js/marker-stack.js?v=1" defer></script>
+<script src="js/categories.js?v=1" defer></script>
+<script src="../js/nm-pin.js?v=2" defer></script>
+<script src="../js/firebase-lazy.js?v=1" defer></script>
+<script src="../js/map-extras.js?v=10" defer></script>
+<script src="../js/map-topbar.js?v=4" defer></script>
+<script src="../js/map-core.js?v=10" defer></script>
+<script src="js/app.js?v=23" defer></script>
+</body>
+</html>

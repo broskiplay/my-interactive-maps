@@ -1,0 +1,810 @@
+/* Оформление карт в Spatial UI: боковая панель, попапы меток, кнопки карты, верхнее меню.
+   Все цвета, тени и слои — токены движка css/spatial.css (палитра игры там же, выбирается <html data-game="…">).
+   Подключается в каждом <game>/index.html после css/style.css игры. Префикс html[data-game] перебивает стили игр. */
+
+/* ---------- Панель ---------- */
+/* пятна цвета игры стоят на месте, пока список прокручивается — как параллакс фона на главной */
+html[data-game] #sidebar, html[data-game] .scroll-body {
+    background:
+        radial-gradient(120% 45% at 0% 0%, color-mix(in srgb, var(--sp-accent) 11%, transparent), transparent 62%),
+        radial-gradient(90% 38% at 100% 100%, color-mix(in srgb, var(--sp-accent) 8%, transparent), transparent 62%),
+        var(--sp-base);
+    color: var(--sp-text);
+}
+html[data-game] #sidebar { box-shadow: var(--sp-panel-sh); border: 0; }
+html[data-game] .scroll-body { box-shadow: none; }
+html[data-game] .section::before, html[data-game] .filters-list::before, html[data-game] .section::after { display: none; }
+html[data-game] .section { gap: 14px; }
+html[data-game] .section-label { color: var(--sp-muted); }
+
+/* ---------- Кнопки: выпуклые, нажатое состояние — вдавленное ---------- */
+html[data-game] .home-back-btn, html[data-game] .btn-group button, html[data-game] .io-row button,
+html[data-game] .add-marker-btn, html[data-game] .map-select, html[data-game] .region-select,
+html[data-game] .social-btn, html[data-game] .auth-mini-btn, html[data-game] .group-toggle, html[data-game] .filter-locate,
+html[data-game] .map-switch-btn, html[data-game] .zone-btn {
+    --btn-inner: var(--sp-base);
+    background: var(--sp-btn); background-image: none; border: 0; border-radius: var(--sp-r-sm);
+    color: var(--sp-text); text-shadow: none; box-shadow: var(--sp-btn-sh); animation: none;
+    transition: box-shadow .2s, color .2s, transform .15s;
+}
+html[data-game] .social-btn::before, html[data-game] .auth-mini-btn::before,
+html[data-game] .home-back-btn::before, html[data-game] .home-back-btn::after { display: none; }
+html[data-game] .home-back-btn:hover, html[data-game] .btn-group button:hover, html[data-game] .io-row button:hover,
+html[data-game] .add-marker-btn:hover, html[data-game] .map-select:hover, html[data-game] .region-select:hover,
+html[data-game] .social-btn:hover, html[data-game] .auth-mini-btn:hover, html[data-game] .group-toggle:hover, html[data-game] .filter-locate:hover,
+html[data-game] .map-switch-btn:hover, html[data-game] .zone-btn:hover {
+    background: var(--sp-btn); color: var(--sp-accent); transform: translateY(-1px);
+    box-shadow: var(--sp-btn-sh-up);
+}
+html[data-game] .btn-group button:active, html[data-game] .io-row button:active, html[data-game] .home-back-btn:active,
+html[data-game] .btn-group button[aria-pressed="true"], html[data-game] .add-marker-btn.active,
+html[data-game] .map-switch-btn.active, html[data-game] .zone-btn.active {
+    background: var(--sp-base); color: var(--sp-accent); box-shadow: var(--sp-press); transform: none;
+}
+html[data-game] .add-marker-btn { color: var(--sp-accent); }
+html[data-game] .map-select, html[data-game] .region-select { min-height: 46px; }
+html[data-game] .map-select option, html[data-game] .region-select option { background: var(--sp-base); color: var(--sp-text); }
+html[data-game] .map-switch::after { border-color: var(--sp-accent); }
+html[data-game] .filter-locate { border-radius: 50%; }
+html[data-game] .filter-locate.is-on { color: var(--sp-base); background: var(--sp-accent); box-shadow: var(--sp-press), 0 0 10px color-mix(in srgb, var(--sp-accent) 60%, transparent); }
+
+/* ---------- Карточки: вход, прогресс ---------- */
+html[data-game] .auth-mini-box, html[data-game] .progress-card { background-image: none; border: 0; border-radius: var(--sp-r); }
+html[data-game] .progress-head strong { color: var(--sp-accent); }
+html[data-game] .progress-count, html[data-game] .progress-head { color: var(--sp-muted); }
+html[data-game] .progress-track { background: var(--sp-base); border: 0; border-radius: 999px; height: 10px; box-shadow: var(--sp-press); }
+html[data-game] .progress-track span { border-radius: 999px; }
+
+/* ---------- Поиск: вдавленное поле ---------- */
+html[data-game] .section input[type="search"], html[data-game] .search-wrap input, html[data-game] .level-filter input {
+    background: var(--sp-base); border: 0; border-radius: var(--sp-r-sm); color: var(--sp-text); box-shadow: var(--sp-press);
+}
+html[data-game] .section input[type="search"]:focus, html[data-game] .search-wrap input:focus {
+    box-shadow: var(--sp-press), var(--sp-focus-ring);
+}
+
+/* ---------- Категории ---------- */
+html[data-game] .filter-group-head { border-bottom: 0; }
+html[data-game] .filter-group-head::after { display: none; }
+html[data-game] .filter-group-title { color: var(--sp-accent); }
+html[data-game] .filter-item { background: transparent; border: 0; border-radius: var(--sp-r-sm); color: var(--sp-text); }
+html[data-game] .filter-item::before { display: none; }
+html[data-game] .filter-item:hover { background: var(--sp-base); color: var(--sp-text); box-shadow: var(--sp-press); }
+html[data-game] .filter-count { color: var(--sp-muted); }
+
+/* ---------- Управление картой ---------- */
+html[data-game] .leaflet-bar { border: 0; box-shadow: none; }
+html[data-game] .leaflet-bar a, html[data-game] #sidebar-toggle-btn {
+    background: var(--sp-btn); color: var(--sp-text); border: 0; box-shadow: var(--sp-btn-sh);
+}
+html[data-game] .leaflet-bar a { border-radius: var(--sp-r-sm) !important; margin-bottom: 8px; }
+html[data-game] .leaflet-bar a:hover { color: var(--sp-accent); background: var(--sp-btn); }
+
+/* ---------- Доводка ---------- */
+/* без разделительных линий и подложек между блоками — блоки и так отделены объёмом */
+html[data-game] .sidebar-header, html[data-game] .section, html[data-game] .filters-list { border: 0; background-image: none; }
+html[data-game] .sidebar-header { background: transparent; }
+html[data-game] .auth-mini-box::before, html[data-game] .auth-mini-box::after { display: none; }
+/* все поля ввода в панели — вдавленные (у Tainted Grail поиск type="text") */
+html[data-game] #sidebar input[type="text"], html[data-game] #sidebar input[type="search"], html[data-game] #sidebar input[type="number"] {
+    background: var(--sp-base); border: 0; border-radius: var(--sp-r-sm); color: var(--sp-text); box-shadow: var(--sp-press);
+}
+html[data-game] #sidebar input:focus { outline: none; box-shadow: var(--sp-press), var(--sp-focus-ring); }
+/* системная стрелка у выпадающего списка областей заменена своей */
+html[data-game] .region-select {
+    -webkit-appearance: none; appearance: none; padding-right: 40px;
+    background: var(--sp-btn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a8b4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px;
+}
+html[data-game] .region-select:hover { background: var(--sp-btn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a8b4' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px; }
+
+/* =========================================================
+   ПОПАПЫ МЕТОК: общий каркас для всех игр (классы с префиксом игры: w3-, sk-, pw-…)
+   ========================================================= */
+/* стеклянная панель над картой (размытие под ней), тонкий контур и блик сверху, глубокая тень «парения», мягкое появление;
+   внутри слои — картинка приподнята, вдавленные плашки, выпуклые кнопки */
+html[data-game] .leaflet-popup .leaflet-popup-content-wrapper {
+    background: var(--sp-glass); color: var(--sp-text);
+    -webkit-backdrop-filter: var(--sp-blur-strong); backdrop-filter: var(--sp-blur-strong);
+    border: 0; border-radius: 22px; padding: 2px;
+    box-shadow: var(--sp-glass-edge), var(--sp-overlay);
+    animation: bp-pop-in .24s cubic-bezier(.2, .8, .2, 1);
+    transform-origin: 50% 100%;
+}
+/* хвостик — того же цвета, что стекло (размытие у повёрнутого квадрата не нужно — он маленький) */
+html[data-game] .leaflet-popup .leaflet-popup-tip {
+    background: color-mix(in srgb, var(--sp-card) 94%, transparent); border: 0; box-shadow: var(--sp-tip-sh);
+}
+@keyframes bp-pop-in { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { html[data-game] .leaflet-popup .leaflet-popup-content-wrapper { animation: none; } }
+/* браузеры без размытия фона — плотная панель, чтобы текст читался */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    html[data-game] .leaflet-popup .leaflet-popup-content-wrapper { background: var(--sp-card); }
+}
+html[data-game] .leaflet-popup .leaflet-popup-content { margin: 16px 18px 18px; color: var(--sp-text); }
+/* крестик — круглая выпуклая кнопка */
+html[data-game] .leaflet-popup a.leaflet-popup-close-button {
+    top: 10px; right: 10px; width: 28px; height: 28px; display: grid; place-items: center; padding: 0;
+    border-radius: 50%; background: var(--sp-btn); color: var(--sp-muted); font: 400 18px/1 system-ui, sans-serif;
+    box-shadow: var(--sp-btn-sh); text-decoration: none;
+}
+html[data-game] .leaflet-popup a.leaflet-popup-close-button:active { box-shadow: var(--sp-press); }
+
+/* заголовок и подписи */
+html[data-game] .leaflet-popup h3 { color: var(--sp-text); text-shadow: none; padding-right: 30px; }
+html[data-game] .leaflet-popup [class$="-popup-cat"] { padding-right: 32px; }
+html[data-game] .leaflet-popup [class$="-popup-meta"], html[data-game] .leaflet-popup [class$="-popup-en"] { color: var(--sp-muted); }
+html[data-game] .leaflet-popup [class$="-desc"], html[data-game] .leaflet-popup [class$="-body"] { color: color-mix(in srgb, var(--sp-text) 88%, var(--sp-muted)); }
+html[data-game] .leaflet-popup [class$="-desc"] a, html[data-game] .leaflet-popup [class$="-link"] { color: var(--sp-accent); }
+
+/* картинка — скруглённая, приподнята над стеклом */
+html[data-game] .leaflet-popup [class$="-popup-img"] { border: 0; border-radius: 16px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--sp-text) 12%, transparent), var(--sp-lifted); }
+
+/* теги — вдавленные таблетки */
+html[data-game] .leaflet-popup [class$="-tags"] > span { border: 0; border-radius: 999px; padding: 3px 10px; color: var(--sp-muted); }
+
+/* кнопки: «Ссылка», «Удалить», главная «Отметить найденным» */
+html[data-game] .leaflet-popup [class*="-link-btn"], html[data-game] .leaflet-popup [class*="-del-btn"], html[data-game] .leaflet-popup [class*="-done-btn"] {
+    background: var(--sp-btn); background-image: none; border: 0; color: var(--sp-text); text-shadow: none;
+    box-shadow: var(--sp-btn-sh); transition: box-shadow .2s, color .2s, transform .15s;
+}
+html[data-game] .leaflet-popup [class*="-link-btn"] { border-radius: 999px; padding: 4px 12px; color: var(--sp-accent); }
+html[data-game] .leaflet-popup [class*="-del-btn"] { border-radius: 12px; color: #e0525e; }
+html[data-game] .leaflet-popup [class*="-done-btn"] {
+    width: 100%; min-height: 44px; margin-top: 12px; border-radius: 14px; font-weight: 700; color: var(--sp-accent);
+}
+html[data-game] .leaflet-popup [class*="-link-btn"]:hover, html[data-game] .leaflet-popup [class*="-del-btn"]:hover,
+html[data-game] .leaflet-popup [class*="-done-btn"]:hover { transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); background: var(--sp-btn); }
+/* найдено — кнопка вдавлена, с отметкой цвета акцента */
+html[data-game] .leaflet-popup [class*="-done-btn"].is-done {
+    color: var(--sp-muted); box-shadow: var(--sp-press), inset 0 0 0 1.5px color-mix(in srgb, var(--sp-accent) 45%, transparent); transform: none;
+}
+
+/* переключатель меток «‹ 2 из 3 ›» */
+html[data-game] .leaflet-popup .ms-nav { background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-text); margin-right: 32px; }
+html[data-game] .leaflet-popup .ms-btn { background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-accent); }
+html[data-game] .leaflet-popup .ms-btn:active { box-shadow: var(--sp-press); }
+/* украшения кнопок из стилей игр (полоски, блики) — в едином стиле не нужны */
+html[data-game] .leaflet-popup [class*="-done-btn"]::before, html[data-game] .leaflet-popup [class*="-done-btn"]::after,
+html[data-game] .leaflet-popup [class*="-del-btn"]::before, html[data-game] .leaflet-popup [class*="-del-btn"]::after { display: none; }
+/* тени кнопок и картинок не должны обрезаться прокручиваемой областью попапа: отступ внутрь вместо внешнего */
+html[data-game] .leaflet-popup .leaflet-popup-content { margin: 6px 6px 8px; padding: 10px 12px 12px; box-sizing: border-box; }
+
+/* ---------- Размер и шрифт попапа: одна шкала для всех игр ----------
+   Ширина — постоянная (js/map-extras.js → popupWidth: 400 px на ПК, на смартфоне — экран минус поля), шрифт — в px,
+   а не «как получится»: раньше ширина подстраивалась под текст, и телефон сам увеличивал шрифт в широких окнах
+   (автоподстройка текста iOS/Android) — от метки к метке размер скакал. Шрифты игр сохраняются, меняется только кегль:
+   у антиквы (EB Garamond, Philosopher) глаз меньше, поэтому её кегль крупнее. */
+html[data-game] { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html[data-game] {
+    --pp-text: 15.5px;   /* описание */
+    --pp-title: 20px;    /* заголовок */
+    --pp-small: 13px;    /* категория, область, подписи */
+}
+html[data-game="oblivion"], html[data-game="skyrim"], html[data-game="witcher3"] { --pp-text: 17.5px; --pp-title: 24px; --pp-small: 14px; }
+html[data-game="dimraeth"] { --pp-text: 16px; --pp-title: 20px; }
+html[data-game="cyberpunk"] { --pp-title: 23px; }
+html[data-game="hogwarts"] { --pp-text: 17px; --pp-title: 25px; --pp-small: 14px; }
+html[data-game="phantomblade"] { --pp-text: 17.5px; --pp-title: 25px; --pp-small: 14px; }
+@media (max-width: 640px) {
+    html[data-game] { --pp-text: 15px; --pp-title: 18.5px; --pp-small: 12.5px; }
+    html[data-game="oblivion"], html[data-game="skyrim"], html[data-game="witcher3"] { --pp-text: 16.5px; --pp-title: 21px; --pp-small: 13.5px; }
+    html[data-game="dimraeth"] { --pp-text: 15.5px; }
+    html[data-game="cyberpunk"] { --pp-title: 21px; }
+    html[data-game="hogwarts"] { --pp-text: 16px; --pp-title: 22px; --pp-small: 13.5px; }
+    html[data-game="phantomblade"] { --pp-text: 16.5px; --pp-title: 22px; --pp-small: 13.5px; }
+}
+html[data-game] .leaflet-popup .leaflet-popup-content { font-size: var(--pp-text); line-height: 1.5; }
+html[data-game] .leaflet-popup h3 { font-size: var(--pp-title); line-height: 1.2; }
+html[data-game] .leaflet-popup [class$="-popup-cat"] { font-size: calc(var(--pp-small) - 1px); }
+html[data-game] .leaflet-popup [class$="-popup-meta"] { font-size: var(--pp-small); }
+html[data-game] .leaflet-popup [class$="-desc"], html[data-game] .leaflet-popup [class$="-body"] { font-size: var(--pp-text); line-height: 1.55; }
+html[data-game] .leaflet-popup p, html[data-game] .leaflet-popup [class$="-desc"] :is(p, ul, ol, li),
+html[data-game] .leaflet-popup [class$="-body"] :is(p, ul, ol, li) { font-size: inherit; line-height: inherit; }
+html[data-game] .leaflet-popup [class$="-desc"] table, html[data-game] .leaflet-popup [class$="-body"] table { font-size: .9em; }
+html[data-game] .leaflet-popup [class$="-desc"] { max-height: min(320px, 42vh); }
+html[data-game] .leaflet-popup [class$="-popup-img"] { height: 180px; }
+html[data-game] .leaflet-popup [class$="-tags"] > span { font-size: calc(var(--pp-small) - .5px); }
+html[data-game] .leaflet-popup [class*="-link-btn"] { font-size: calc(var(--pp-small) - .5px); }
+html[data-game] .leaflet-popup [class*="-done-btn"], html[data-game] .leaflet-popup [class*="-del-btn"] { font-size: calc(var(--pp-small) + 1.5px); }
+html[data-game] .leaflet-popup .bp-flag { font-size: var(--pp-small); }
+html[data-game] .leaflet-popup .bp-note .bp-note-add { font-size: var(--pp-small); }
+html[data-game] .leaflet-popup .bp-note-text { font-size: calc(var(--pp-small) + 1px); }
+@media (max-width: 640px) { html[data-game] .leaflet-popup [class$="-popup-img"] { height: 160px; } }
+
+/* иконки категорий в панели и попапе — такие же выпуклые, как пины на карте */
+html[data-game] [class$="-filter-icon"], html[data-game] [class*="-filter-icon "], html[data-game] [class$="-popup-icon"] {
+    background-image: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 52%), radial-gradient(circle at 60% 75%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .3)) !important;
+    border-color: rgba(255, 255, 255, .55) !important;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, .4), inset 0 1px 1px rgba(255, 255, 255, .35) !important; /* sp-ok: объём как у пинов js/nm-pin.js */
+}
+
+/* =========================================================
+   ПРОГРЕСС ПО РЕГИОНАМ / ЛОКАЦИЯМ (js/map-extras.js)
+   ========================================================= */
+.region-progress { margin: 12px 0 4px; border-radius: var(--sp-r); background: var(--sp-base); box-shadow: var(--sp-raise); color: var(--sp-text); }
+.region-progress > summary {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px; cursor: pointer; list-style: none;
+    font-size: 13px; font-weight: 700; color: var(--sp-text); user-select: none;
+}
+.region-progress > summary::-webkit-details-marker { display: none; }
+.region-progress > summary::after {
+    content: ""; width: 7px; height: 7px; margin-left: 2px; border: solid var(--sp-muted); border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translateY(-2px); transition: transform .2s;
+}
+.region-progress[open] > summary::after { transform: rotate(-135deg) translateY(-1px); }
+.region-progress .rp-sum { margin-left: auto; font-weight: 500; font-size: 12px; color: var(--sp-muted); }
+.region-progress .rp-list { display: grid; gap: 2px; padding: 0 8px 10px; max-height: 340px; overflow-y: auto; }
+.region-progress .rp-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; align-items: center; width: 100%;
+    padding: 7px 8px; border: 0; border-radius: var(--sp-r-sm); background: transparent; color: inherit;
+    font: inherit; font-size: 13px; text-align: left; box-shadow: none; cursor: default; transform: none; animation: none;
+}
+.region-progress button.rp-row { cursor: pointer; }
+html[data-game] .region-progress button.rp-row:hover { background: var(--sp-base); color: inherit; box-shadow: var(--sp-press); transform: none; }
+.region-progress .rp-row.is-current .rp-name { color: var(--sp-accent); font-weight: 700; }
+.region-progress .rp-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.region-progress .rp-num { font-size: 12px; color: var(--sp-muted); font-variant-numeric: tabular-nums; }
+.region-progress .rp-row.is-full .rp-num { color: var(--sp-accent); }
+.region-progress .rp-bar { grid-column: 1 / -1; height: 4px; border-radius: 999px; background: var(--sp-base); box-shadow: var(--sp-press); overflow: hidden; }
+.region-progress .rp-bar i { display: block; height: 100%; border-radius: 999px; background: var(--sp-accent); }
+
+/* =========================================================
+   ЗАМЕТКИ К МЕТКАМ В ПОПАПЕ (js/map-extras.js)
+   ========================================================= */
+/* флажки и «Заметка» — одной строкой; сама заметка и редактор — на всю ширину под ними */
+.leaflet-popup .bp-marks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.leaflet-popup .bp-marks .bp-flags { display: contents; }
+.leaflet-popup .bp-note { flex: 1 1 100%; }
+.leaflet-popup .bp-note.is-empty { flex: 1 1 0; display: flex; }
+.leaflet-popup .bp-note:not(.is-empty) { padding: 9px 11px; border-radius: 12px; background: var(--sp-base); box-shadow: var(--sp-press); }
+.leaflet-popup .bp-note-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--sp-muted); }
+.leaflet-popup .bp-note-left { font-weight: 500; letter-spacing: 0; text-transform: none; }
+.leaflet-popup .bp-note-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 1.45; color: var(--sp-text); }
+.leaflet-popup .bp-note-ta {
+    display: block; width: 100%; box-sizing: border-box; min-height: 70px; resize: vertical; padding: 8px 10px;
+    border: 0; border-radius: 10px; background: var(--sp-base); color: var(--sp-text); box-shadow: var(--sp-press);
+    font-family: inherit; font-size: 16px; line-height: 1.4; outline: none;
+}
+@media (min-width: 700px) { .leaflet-popup .bp-note-ta { font-size: 13px; } }
+.leaflet-popup .bp-note-ta:focus { box-shadow: var(--sp-press), var(--sp-focus-ring); }
+.leaflet-popup .bp-note-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.leaflet-popup .bp-note button {
+    padding: 5px 12px; border: 0; border-radius: 999px; background: var(--sp-btn); color: var(--sp-text);
+    box-shadow: var(--sp-btn-sh); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.leaflet-popup .bp-note button:active { box-shadow: var(--sp-press); }
+.leaflet-popup .bp-note .bp-note-edit { padding: 2px 9px; font-size: 11px; letter-spacing: 0; text-transform: none; color: var(--sp-accent); }
+.leaflet-popup .bp-note .bp-note-add { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 34px; padding: 5px 8px; border-radius: 12px; color: var(--sp-text); white-space: nowrap; }
+.leaflet-popup .bp-note .bp-note-add span { color: var(--sp-accent); font-size: 14px; line-height: 1; }
+.leaflet-popup .bp-note .bp-note-save { color: var(--sp-accent); }
+.leaflet-popup .bp-note .bp-note-del { margin-left: auto; color: #e0525e; }
+
+/* флажки «Важно» / «Позже» в попапе */
+.leaflet-popup .bp-flag {
+    flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 34px; padding: 5px 8px; white-space: nowrap;
+    border: 0; border-radius: 12px; background: var(--sp-btn); color: var(--sp-text);
+    box-shadow: var(--sp-btn-sh); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.leaflet-popup .bp-flag span { color: var(--flag); font-size: 14px; line-height: 1; }
+.leaflet-popup .bp-flag.is-on { box-shadow: var(--sp-press), inset 0 0 0 1.5px color-mix(in srgb, var(--flag) 70%, transparent); color: var(--sp-text); }
+
+/* =========================================================
+   ФИЛЬТР «МОИ ОТМЕТКИ» В ПАНЕЛИ
+   ========================================================= */
+.marks-filter { margin: 12px 0 2px; }
+.marks-filter .mf-label { margin: 0 0 6px 2px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--sp-muted); }
+.marks-filter .mf-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+html[data-game] .marks-filter .mf-chip {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 12px; margin: 0; width: auto;
+    border: 0; border-radius: 999px; background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh);
+    font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0; text-transform: none; cursor: pointer; transform: none;
+}
+.marks-filter .mf-chip span { color: var(--flag, var(--sp-accent)); font-size: 14px; line-height: 1; }
+.marks-filter .mf-chip b { font-weight: 700; color: var(--sp-muted); font-variant-numeric: tabular-nums; }
+html[data-game] .marks-filter .mf-chip.is-on { box-shadow: var(--sp-press), inset 0 0 0 1.5px color-mix(in srgb, var(--flag, var(--sp-accent)) 65%, transparent); color: var(--sp-text); }
+html[data-game] .marks-filter .mf-chip:disabled { opacity: .45; cursor: default; box-shadow: none; }
+
+/* =========================================================
+   РЕЖИМ «ТОЛЬКО КАРТА»
+   ========================================================= */
+.bp-focus-btn {
+    position: fixed; top: 12px; right: 12px; z-index: 900; width: 40px; height: 40px; display: grid; place-items: center; padding: 0;
+    border: 0; border-radius: 12px; background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); cursor: pointer;
+}
+.bp-focus-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.bp-focus-btn:hover { color: var(--sp-accent); }
+.bp-focus-btn:active, .bp-focus-btn[aria-pressed="true"] { box-shadow: var(--sp-press); }
+.bp-focus #sidebar-toggle-btn, .bp-focus .support-toast { display: none !important; }
+.bp-focus .bp-focus-btn { opacity: .55; }
+.bp-focus .bp-focus-btn:hover, .bp-focus .bp-focus-btn:focus-visible { opacity: 1; }
+@media (max-width: 480px) {
+    body:has(#sidebar:not(.collapsed)) .bp-focus-btn { display: none; }
+    .bp-focus-btn { top: 10px; right: 10px; }
+}
+
+/* =========================================================
+   ГОРЯЧИЕ КЛАВИШИ
+   ========================================================= */
+.bp-keys-link {
+    display: inline-flex; align-items: center; gap: 6px; margin: 6px 0 0; padding: 2px 0; border: 0; background: none; box-shadow: none;
+    color: var(--sp-muted); font: inherit; font-size: 12px; cursor: pointer; text-transform: none; letter-spacing: 0; width: auto;
+}
+html[data-game] #sidebar .bp-keys-link, html[data-game] #sidebar .bp-keys-link:hover { background: none; box-shadow: none; transform: none; }
+.bp-keys-link:hover { color: var(--sp-accent); }
+.bp-keys kbd, .bp-keys-link kbd {
+    display: inline-block; min-width: 22px; padding: 2px 6px; border-radius: 6px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh);
+    color: var(--sp-text); font: 600 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center;
+}
+.bp-keys { position: fixed; inset: 0; z-index: 3000; display: grid; place-items: center; padding: 16px; background: var(--sp-scrim); }
+.bp-keys-card {
+    width: min(420px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 20px 22px; border-radius: 20px;
+    background: var(--sp-base); color: var(--sp-text); box-shadow: var(--sp-drop);
+}
+.bp-keys-card h3 { margin: 0 0 14px; font-size: 17px; color: var(--sp-text); }
+.bp-keys-card dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 14px; align-items: center; margin: 0 0 16px; }
+.bp-keys-card dt { margin: 0; }
+.bp-keys-card dd { margin: 0; font-size: 14px; color: color-mix(in srgb, var(--sp-text) 88%, var(--sp-muted)); }
+.bp-keys-close {
+    width: 100%; min-height: 40px; border: 0; border-radius: 12px; background: var(--sp-btn); color: var(--sp-accent);
+    box-shadow: var(--sp-btn-sh); font: inherit; font-weight: 700; cursor: pointer;
+}
+
+/* =========================================================
+   ПРАВКА МЕСТА МЕТКИ
+   ========================================================= */
+.bp-picking, .bp-picking .leaflet-interactive { cursor: crosshair !important; }
+.bp-suggest {
+    position: fixed; left: 50%; bottom: 18px; z-index: 1200; transform: translateX(-50%); width: min(440px, calc(100vw - 32px)); box-sizing: border-box;
+    padding: 14px 16px; border-radius: 18px; background: var(--sp-base); color: var(--sp-text);
+    box-shadow: var(--sp-drop), 0 0 0 1px color-mix(in srgb, var(--sp-accent) 30%, transparent);
+}
+.bp-suggest p { margin: 0 0 6px; font-size: 13px; line-height: 1.4; }
+.bp-suggest-title b { color: var(--sp-accent); }
+.bp-suggest-hint { color: var(--sp-muted); }
+.bp-suggest-ta {
+    display: block; width: 100%; box-sizing: border-box; margin: 4px 0 2px; padding: 8px 10px; resize: vertical;
+    border: 0; border-radius: 10px; background: var(--sp-base); color: var(--sp-text); box-shadow: var(--sp-press);
+    font-family: inherit; font-size: 16px; line-height: 1.4; outline: none;
+}
+@media (min-width: 700px) { .bp-suggest-ta { font-size: 13px; } }
+.bp-suggest-actions { display: flex; gap: 8px; margin-top: 8px; }
+.bp-suggest-actions button {
+    flex: 1; min-height: 38px; border: 0; border-radius: 12px; background: var(--sp-btn); color: var(--sp-text);
+    box-shadow: var(--sp-btn-sh); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.bp-suggest-actions .bp-suggest-send { color: var(--sp-accent); }
+.bp-suggest-actions button[hidden] { display: none; }
+#bp-notify {
+    position: fixed; left: 50%; bottom: 24px; z-index: 1300; transform: translate(-50%, 20px); max-width: calc(100vw - 32px);
+    padding: 10px 16px; font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s;
+}
+#bp-notify.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* =========================================================
+   ПОДСКАЗКИ, УВЕДОМЛЕНИЯ, ВЫПАДАЮЩИЙ ПОИСК — одни для всех карт.
+   Место и анимация остаются в css/style.css игры, шрифт — тоже (у игр с засечками он крупнее); цвет, форма и тень — отсюда.
+   ========================================================= */
+/* подсказка над меткой при наведении (L.tooltip className "<префикс>-tip") — кнопка над картой */
+html[data-game] .leaflet-tooltip:is(.cp-tip, .dr-tip, .gr-tip, .hl-tip, .ob-tip, .pw-tip, .sb-tip, .sk-tip, .tg-tip, .w3-tip) {
+    padding: 4px 10px; border: 0; border-radius: var(--sp-r-xs); background: var(--sp-btn); color: var(--sp-text);
+    box-shadow: var(--sp-hairline), var(--sp-sheen), var(--sp-float);
+}
+html[data-game] .leaflet-tooltip-top:is(.cp-tip, .dr-tip, .gr-tip, .hl-tip, .ob-tip, .pw-tip, .sb-tip, .sk-tip, .tg-tip, .w3-tip)::before { border-top-color: var(--sp-btn); }
+html[data-game] .leaflet-tooltip-bottom:is(.cp-tip, .dr-tip, .gr-tip, .hl-tip, .ob-tip, .pw-tip, .sb-tip, .sk-tip, .tg-tip, .w3-tip)::before { border-bottom-color: var(--sp-btn); }
+
+/* уведомления внизу экрана: «Скопировано», «Метка отмечена»… (тосты движков игр и #bp-notify из js/map-extras.js) — стекло */
+html[data-game] :is(.cp-toast, .dr-toast, .gr-toast, .hl-toast, .ob-toast, .pw-toast, .sb-toast, .sk-toast, .tg-toast, .w3-toast), #bp-notify {
+    border: 0; border-radius: var(--sp-r); background: var(--sp-glass); color: var(--sp-text);
+    -webkit-backdrop-filter: var(--sp-blur-strong); backdrop-filter: var(--sp-blur-strong);
+    box-shadow: var(--sp-glass-edge), var(--sp-drop-sm);
+}
+
+/* выпадающий список поиска под полем в панели — как меню «⋯»: карточка, строки без рамок, наведение вдавливает */
+html[data-game] .search-results {
+    padding: 4px; gap: 2px; border: 0; border-radius: var(--sp-r); background: var(--sp-card);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 10%, transparent), var(--sp-raise-sm);
+    scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--sp-text) 22%, transparent) transparent;
+}
+html[data-game] .search-results::-webkit-scrollbar-track { background: transparent; }
+html[data-game] .search-results::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--sp-text) 22%, transparent); border: 0; border-radius: 4px; }
+html[data-game] .search-item { border: 0; border-radius: 9px; background: none; color: var(--sp-text); }
+html[data-game] .search-item:hover, html[data-game] .search-item:focus-visible { background: var(--sp-base); color: var(--sp-text); box-shadow: var(--sp-press); }
+html[data-game] .search-item:focus-visible { outline: 2px solid color-mix(in srgb, var(--sp-accent) 70%, transparent); outline-offset: -2px; }
+html[data-game] .search-item .si-zone { color: var(--sp-muted); }
+
+/* =========================================================
+   СМАРТФОН: ОКНО МЕТКИ ПОД МЕТКОЙ (js/map-extras.js → belowMode)
+   ========================================================= */
+.leaflet-popup.bp-below { margin: 0; }
+.leaflet-popup.bp-below .leaflet-popup-tip-container { top: -20px; margin-top: 0; transform: rotate(180deg); }
+/* панель правки — с учётом «чёлки» снизу */
+@media (max-width: 640px) {
+    .bp-suggest { bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+}
+
+/* iPhone увеличивает страницу при фокусе в поле со шрифтом меньше 16 px — на сенсорных экранах все поля 16 px */
+@media (pointer: coarse) {
+    html[data-game] #sidebar input, html[data-game] #sidebar select, html[data-game] #sidebar textarea,
+    .leaflet-popup input, .leaflet-popup select, .leaflet-popup textarea, .bp-suggest textarea { font-size: 16px !important; }
+}
+
+/* «Сбросить подсветку (N)» над списком категорий — выпуклая кнопка панели с иконкой «лупа с крестиком» */
+html[data-game] .locate-clear {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 40px; margin: 10px 0 6px; padding: 8px 12px;
+    border: 0; border-radius: var(--sp-r-sm); background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh);
+    cursor: pointer; transition: box-shadow .2s, color .2s, transform .15s;
+}
+html[data-game] .locate-clear::before {
+    content: ""; flex: none; width: 16px; height: 16px; background: var(--sp-accent);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21M8.4 8.4l4.2 4.2M12.6 8.4l-4.2 4.2'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21M8.4 8.4l4.2 4.2M12.6 8.4l-4.2 4.2'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+html[data-game] .locate-clear:hover { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+html[data-game] .locate-clear:active { color: var(--sp-accent); box-shadow: var(--sp-press); transform: none; }
+html[data-game] .locate-clear:focus-visible { outline: 2px solid color-mix(in srgb, var(--sp-accent) 70%, transparent); outline-offset: 2px; }
+
+/* =========================================================
+   РАЗЛИЧИМЫЕ КНОПКИ: нажатое/включённое — цвета панели (вдавлено), кнопки поверх карты — с тёмной обводкой
+   ========================================================= */
+html[data-game] .leaflet-popup [class*="-done-btn"].is-done, html[data-game] .leaflet-popup .ms-btn:active,
+html[data-game] .leaflet-popup a.leaflet-popup-close-button:active, .leaflet-popup .bp-note button:active,
+html[data-game] .leaflet-popup .bp-flag.is-on, html[data-game] .marks-filter .mf-chip.is-on,
+html[data-game] .bp-focus-btn:active, html[data-game] .bp-focus-btn[aria-pressed="true"], html[data-game] .locate-clear:active,
+html[data-game] .bp-suggest-actions button:active, html[data-game] .bp-keys-close:active { background: var(--sp-base); }
+html[data-game] .marks-filter .mf-chip:disabled { background: var(--sp-base); }
+/* поверх тайлов светлые/тёмные блики панели не работают — даём кнопкам рамку и тень */
+html[data-game] .leaflet-bar a, html[data-game] #sidebar-toggle-btn, html[data-game] .bp-focus-btn {
+    box-shadow: var(--sp-hairline), var(--sp-sheen), var(--sp-float);
+}
+html[data-game] .leaflet-bar a:hover, html[data-game] #sidebar-toggle-btn:hover, html[data-game] .bp-focus-btn:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 55%, transparent), var(--sp-sheen), var(--sp-float-up);
+}
+html[data-game] .bp-focus-btn[aria-pressed="true"] { box-shadow: var(--sp-press), var(--sp-float-ring); }
+
+/* =========================================================
+   SPATIAL UI, как на главной: слои глубины — панель → карточки → кнопки (чем ближе, тем светлее),
+   на панели мягкие пятна цвета игры, карточки при наведении приподнимаются
+   ========================================================= */
+html[data-game] .scroll-body { margin: 0; }
+/* карточки — слой над панелью */
+html[data-game] .auth-mini-box, html[data-game] .progress-card, html[data-game] .region-progress {
+    background: var(--sp-card); box-shadow: var(--sp-card-sh); transition: var(--sp-t-card);
+}
+html[data-game] .region-progress:hover, html[data-game] .region-progress[open] {
+    transform: translateY(-2px);
+    box-shadow: var(--sp-card-sh-up);
+}
+html[data-game] .region-progress .rp-bar, html[data-game] .progress-track { background: var(--sp-sunk); }
+html[data-game] .region-progress button.rp-row:hover { background: var(--sp-base); }
+
+/* полоса прокрутки панели — тонкая, без подложки */
+html[data-game] #sidebar::-webkit-scrollbar-track, html[data-game] .scroll-body::-webkit-scrollbar-track { background: transparent; }
+html[data-game] #sidebar::-webkit-scrollbar-thumb, html[data-game] .scroll-body::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--sp-text) 22%, transparent); border: 0; border-radius: 4px;
+}
+
+/* «Горячие клавиши» под импортом: пустая строка статуса импорта не занимает место (остаётся для экранного диктора), отступы меньше */
+html[data-game] .io-status:empty { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); }
+html[data-game] #sidebar .bp-keys-link { margin: 0; }
+html[data-game] .section:has(> .bp-keys-link) { padding-bottom: 2px; }
+html[data-game] .section:has(> .bp-keys-link) + .filters-list > :first-child .filter-group-head,
+html[data-game] .section:has(> .bp-keys-link) + .filters-list > .filter-group-head:first-child { margin-top: 8px; }
+
+/* лупа у категории — ровный круг в общем стиле */
+html[data-game] .filter-locate {
+    flex: 0 0 34px; width: 34px; height: 34px; min-height: 0; align-self: center; padding: 0; border-radius: 50%;
+}
+html[data-game] .filter-locate svg { width: 15px; height: 15px; }
+html[data-game] .filter-locate:hover { transform: translateY(-1px); }
+html[data-game] .filter-locate.is-on:hover { color: var(--sp-base); background: var(--sp-accent); }
+html[data-game] .filter-locate:active { transform: none; box-shadow: var(--sp-press); }
+
+/* =========================================================
+   ПОПАПЫ В SPATIAL UI: стеклянная панель над картой (размытие под ней), тонкий контур и блик сверху,
+   глубокая тень «парения», мягкое появление; внутри слои — картинка приподнята, вдавленные плашки, выпуклые кнопки
+   ========================================================= */
+html[data-game] .leaflet-popup.bp-below .leaflet-popup-content-wrapper { transform-origin: 50% 0; }
+
+/* вдавленные плашки: «1 из 7», теги, заметка — темнее стекла */
+html[data-game] .leaflet-popup .ms-nav, html[data-game] .leaflet-popup [class$="-tags"] > span,
+html[data-game] .leaflet-popup .bp-note:not(.is-empty) {
+    background: color-mix(in srgb, var(--sp-base) 70%, transparent);
+    box-shadow: var(--sp-press), inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 6%, transparent);
+}
+/* крестик и стрелки — выпуклые круглые кнопки слоем выше стекла */
+html[data-game] .leaflet-popup a.leaflet-popup-close-button, html[data-game] .leaflet-popup .ms-btn { background: var(--sp-btn); box-shadow: var(--sp-btn-sh); }
+html[data-game] .leaflet-popup a.leaflet-popup-close-button:hover, html[data-game] .leaflet-popup .ms-btn:hover { box-shadow: var(--sp-btn-sh-up); color: var(--sp-accent); }
+/* главная кнопка «Отметить найденным» — с подсветкой цвета игры */
+html[data-game] .leaflet-popup [class*="-done-btn"]:not(.is-done) {
+    background: var(--sp-btn);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 38%, transparent), var(--sp-sheen), var(--sp-raise-sm);
+}
+html[data-game] .leaflet-popup [class*="-done-btn"]:not(.is-done):hover {
+    background: var(--sp-btn);
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--sp-accent) 60%, transparent), var(--sp-sheen), var(--sp-raise-sm-up);
+}
+/* крестик и стрелки «‹ ›» — нарисованные иконки вместо символов шрифта: символы сидят не по центру круга */
+/* flex, а не grid: невидимый символ внутри кнопки иначе занимает вторую строку сетки и иконка уезжает вверх */
+html[data-game] .leaflet-popup a.leaflet-popup-close-button, html[data-game] .leaflet-popup .ms-btn {
+    display: flex; align-items: center; justify-content: center; padding: 0; font-size: 0; line-height: 0;
+}
+html[data-game] .leaflet-popup a.leaflet-popup-close-button span { display: none; }
+html[data-game] .leaflet-popup a.leaflet-popup-close-button::before, html[data-game] .leaflet-popup .ms-btn::before {
+    content: ""; width: 12px; height: 12px; background: currentColor;
+    -webkit-mask: var(--bp-ico) center / contain no-repeat; mask: var(--bp-ico) center / contain no-repeat;
+}
+html[data-game] .leaflet-popup a.leaflet-popup-close-button {
+    --bp-ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round'%3E%3Cpath d='M2 2l8 8M10 2l-8 8'/%3E%3C/svg%3E");
+}
+html[data-game] .leaflet-popup .ms-btn {
+    --bp-ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7.5 2.5L4 6l3.5 3.5'/%3E%3C/svg%3E");
+}
+html[data-game] .leaflet-popup .ms-btn[data-ms="1"]::before { transform: scaleX(-1); }
+
+/* =========================================================
+   ВЕРХНЕЕ МЕНЮ КАРТЫ (js/map-topbar.js; разметку делает scripts/site_menu.py): без полосы-фона, «таблетки» над картой правее
+   боковой панели. Таблетки — слой кнопок (--sp-btn) из полупрозрачного стекла с бликом, парят над картой (--sp-float-lift);
+   пункты при наведении приподнимаются, раскрытое и текущее — вдавлено. Выпадающие панели почти непрозрачные: за ними карта.
+   Блок входа и кнопки Twitch / YouTube / «Поддержать» раньше стояли в боковой панели (id и логика входа те же).
+   ========================================================= */
+.mtb { position: fixed; z-index: 1100; top: 10px; left: calc(var(--sidebar-width, 380px) + 14px); right: 66px; display: flex; align-items: center; gap: 10px; pointer-events: none; transition: left .3s ease; }
+body:has(#sidebar.collapsed) .mtb { left: 52px; }
+.mtb > *, .mtb-panel > * { pointer-events: auto; }
+.mtb-pill {
+    background: var(--sp-glass-sheen), var(--sp-pill-glass); color: var(--sp-text);
+    -webkit-backdrop-filter: var(--sp-blur); backdrop-filter: var(--sp-blur);
+    box-shadow: var(--sp-btn-sh), var(--sp-float-lift);
+}
+.mtb-home { display: inline-flex; align-items: center; gap: 9px; flex: none; padding: 4px 14px 4px 4px; border-radius: 999px; text-decoration: none; font: 700 13.5px var(--font-display, "Unbounded", sans-serif); letter-spacing: -.01em; }
+.mtb-home img { width: 30px; height: 30px; border-radius: 50%; box-shadow: var(--sp-btn-sh); }
+/* «Главная» над картой: пока панель открыта на узком экране — только иконка, панель свёрнута — иконка и надпись */
+.mtb-panel { display: flex; flex: 1; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; pointer-events: none; }
+.mtb-nav { display: flex; align-items: center; gap: 2px; padding: 3px; border-radius: 999px; }
+.mtb-link { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 0; border-radius: 999px; background: none; box-shadow: none; transform: none; color: color-mix(in srgb, var(--sp-text) 78%, transparent); font: 600 13px var(--font-body, inherit); cursor: pointer; text-decoration: none; white-space: nowrap; transition: color .2s, background .2s; }
+.mtb-link:hover, .mtb-link:focus-visible, .mtb-link[aria-expanded="true"] { color: var(--sp-accent); }
+a.mtb-link { text-decoration: none; }
+.mtb-link svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.mtb-link[aria-expanded="true"] svg { transform: rotate(180deg); }
+.mtb-dd { position: relative; }
+.mtb-menu {
+    position: absolute; top: calc(100% + 12px); left: 0; z-index: 3; width: 290px; max-height: min(70vh, 540px); overflow: auto; padding: 7px; border-radius: 22px;
+    background: color-mix(in srgb, var(--sp-btn) 98%, transparent); color: var(--sp-text);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
+    box-shadow: var(--sp-raise), var(--sp-float-lift);
+}
+.mtb-menu a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 13px; border-radius: 13px; background: none; box-shadow: none; transform: none; color: var(--sp-text); font: 600 13px var(--font-body, inherit); text-decoration: none; }
+.mtb-menu a:hover, .mtb-menu a:focus-visible, .mtb-menu a[aria-current="true"] { color: var(--sp-accent); }
+/* пункты меню: наведение — приподнятая кнопка, раскрытое / текущее — вдавлено */
+.mtb-link:hover, .mtb-link:focus-visible, .mtb-menu a:hover, .mtb-menu a:focus-visible { background: var(--sp-btn); box-shadow: var(--sp-btn-sh-up); transform: var(--sp-lift-y); }
+.mtb-link[aria-expanded="true"], .mtb-menu a[aria-current="true"] { background: var(--sp-base); box-shadow: var(--sp-press); transform: none; }
+/* «Игры» — кнопка и в покое, как иконки соцсетей справа; в «бургере» (≤1100px) остаются строками меню */
+@media (min-width: 1101px) {
+    .mtb-nav { gap: 4px; }
+    .mtb-link { background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); }
+    .mtb-link:hover, .mtb-link:focus-visible { background: var(--sp-btn); box-shadow: var(--sp-btn-sh-up); color: var(--sp-accent); transform: var(--sp-lift-y); }
+    .mtb-link[aria-expanded="true"], .mtb-link:active { background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-accent); transform: none; }
+}
+.mtb-menu small { color: var(--sp-muted); font: 500 11.5px var(--font-body, inherit); }
+.mtb-menu .mtb-all { margin-top: 4px; border-top: 1px solid var(--sp-edge); border-radius: 0 0 13px 13px; color: var(--sp-muted); }
+.mtb-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; padding: 3px; border-radius: 999px; }
+.mtb-burger { display: none; }
+
+/* Twitch / YouTube / «Поддержать»: круглые кнопки внутри таблетки */
+.mtb .mtb-social, .mtb .mtb-social:hover { position: relative; display: grid; place-items: center; flex: none; width: 34px; height: 34px; padding: 0; gap: 0; border: 0; border-radius: 50%; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); animation: none; transform: none; }
+.mtb .mtb-social::before, .mtb .mtb-social::after { display: none; }
+.mtb .mtb-social span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mtb .mtb-social svg { width: 16px; height: 16px; padding: 5px; } /* лунка .sp-ico (css/spatial.css) внутри круглой кнопки */
+
+/* вход: тот же блок, что стоял в боковой панели, без своей карточки */
+.mtb .auth-mini-box { display: flex; align-items: center; gap: 6px; margin: 0; padding: 0 0 0 4px; border: 0; background: none; box-shadow: none; }
+.mtb .auth-mini-info { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 0; }
+.mtb .auth-mini-avatar { width: 30px; height: 30px; min-width: 30px; border-radius: 50%; }
+.mtb .auth-mini-text { display: none; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: var(--sp-text); }
+.mtb .auth-mini-text br, .mtb .auth-mini-text span { display: none; }
+.mtb .auth-mini-btn, .mtb .auth-mini-btn:hover { min-height: 34px; padding: 5px 13px; border: 0; border-radius: 999px; background: var(--sp-btn); color: var(--sp-text); font: 600 12.5px var(--font-body, inherit); box-shadow: var(--sp-btn-sh); transform: none; }
+.mtb .auth-mini-btn:hover { color: var(--sp-accent); }
+.mtb .mtb-social, .mtb .auth-mini-btn { background: color-mix(in srgb, var(--sp-btn) 90%, transparent); }
+.mtb .mtb-social:hover, .mtb .auth-mini-btn:hover { box-shadow: var(--sp-btn-sh-up); transform: var(--sp-lift-y); }
+.mtb .mtb-social:active, .mtb .auth-mini-btn:active { background: var(--sp-base); box-shadow: var(--sp-press); transform: none; }
+
+/* элементы карты уходят под меню: зум-кнопки и подписи не прячутся за таблетками */
+html[data-game] .leaflet-top { top: 56px; }
+@media (max-width: 1100px) {
+    .mtb { left: calc(var(--sidebar-width, 380px) + 12px); right: 62px; }
+    body:has(#sidebar.collapsed) .mtb { left: 52px; }
+    body:has(#sidebar:not(.collapsed)) .mtb-home span { display: none; }
+    body:has(#sidebar:not(.collapsed)) .mtb-home { padding: 4px; }
+    .mtb-burger { display: grid; place-content: center; gap: 4px; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; margin-left: auto; }
+    .mtb-burger span { display: block; width: 16px; height: 2px; border-radius: 2px; background: var(--sp-text); transition: transform .2s, opacity .2s; }
+    .mtb.is-open .mtb-burger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .mtb.is-open .mtb-burger span:nth-child(2) { opacity: 0; }
+    .mtb.is-open .mtb-burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .mtb-panel {
+        display: none; position: absolute; top: calc(100% + 10px); left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 8px; padding: 10px; border-radius: 24px; pointer-events: auto; max-height: calc(100vh - 80px); overflow: auto;
+        background: color-mix(in srgb, var(--sp-btn) 98%, transparent); -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
+        box-shadow: var(--sp-raise), var(--sp-float-lift);
+    }
+    .mtb.is-open .mtb-panel { display: flex; }
+    .mtb-nav, .mtb-actions { flex-direction: column; align-items: stretch; padding: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; margin: 0; }
+    .mtb-actions { flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .mtb-link { padding: 11px 12px; font-size: 14px; justify-content: space-between; }
+    .mtb-dd .mtb-menu { position: static; width: auto; max-height: none; margin: 2px 0 6px; background: var(--sp-base); box-shadow: var(--sp-press); }
+    .mtb .auth-mini-box { flex: 1 1 100%; order: 9; margin-top: 4px; }
+    .mtb .auth-mini-text { display: block; max-width: none; flex: 1; white-space: normal; line-height: 1.3; }
+    .mtb .auth-mini-text b, .mtb .auth-mini-text span { display: block; }
+    .mtb .auth-mini-text span { font-size: 11px; color: var(--sp-muted); }
+    .mtb .auth-mini-btn { margin-left: auto; }
+}
+@media (max-width: 700px) { .mtb-panel { position: fixed; top: 58px; left: 12px; right: 12px; } }
+/* телефон: боковая панель и меню не открыты одновременно — пока панель открыта, меню свёрнуто в кнопку «Меню сайта» в её шапке */
+.mtb-side-btn { display: none; }
+@media (max-width: 700px) {
+    body:has(#sidebar:not(.collapsed)) .mtb { display: none; }
+    .mtb, body:has(#sidebar.collapsed) .mtb { left: 52px; right: 58px; }
+    html[data-game] .mtb-side-btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 40px; margin: 0 0 12px; padding: 8px 14px; border: 0; border-radius: 999px; cursor: pointer;
+        background: var(--sp-btn); color: var(--sp-text); font: 600 13px var(--font-body, inherit); box-shadow: var(--sp-btn-sh);
+    }
+    html[data-game] .mtb-side-btn svg { width: 16px; height: 16px; fill: none; stroke: var(--sp-accent); stroke-width: 2.2; stroke-linecap: round; }
+    html[data-game] .mtb-side-btn small { color: var(--sp-muted); font-weight: 500; font-size: 11.5px; }
+}
+.bp-focus .mtb { display: none; }
+
+/* Верхнее меню карты: одно скругление у всего — как у подложки-таблетки (999px). Общие правила кнопок боковой панели
+   (html[data-game] .social-btn / .auth-mini-btn / .auth-mini-box / .bp-focus-btn) специфичнее .mtb …, поэтому здесь повторяем с html[data-game]. */
+html[data-game] .mtb .mtb-social { border-radius: 50%; }
+html[data-game] .mtb .auth-mini-btn, html[data-game] .mtb .auth-mini-btn:hover { border-radius: 999px; padding: 5px 14px; white-space: nowrap; flex: none; }
+html[data-game] .mtb .auth-mini-box { gap: 6px; padding: 0 0 0 4px; border-radius: 999px; background: none; box-shadow: none; transition: none; }
+html[data-game] .mtb .auth-mini-box:hover { box-shadow: none; transform: none; }
+html[data-game] .mtb .auth-mini-avatar { border-radius: 50%; }
+html[data-game] .mtb .mtb-link, html[data-game] .mtb .mtb-link:hover { border-radius: 999px; }
+html[data-game] .bp-focus-btn { border-radius: 50%; }
+.mtb-actions { flex: none; }
+@media (max-width: 1100px) {
+    html[data-game] .mtb .auth-mini-box { flex: 1 1 100%; }
+    html[data-game] .mtb .auth-mini-btn { margin-left: auto; }
+}
+/* «Бургер» (≤1100px) без пустот: «Игры» — кнопка, список раскрывается под ними на всю ширину (игры — в две колонки);
+   Twitch / YouTube / «Поддержать» — три кнопки с подписями на всю ширину; вход — отдельной строкой под чертой. */
+@media (max-width: 1100px) {
+    .mtb-panel { gap: 10px; }
+    .mtb-nav { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .mtb-dd { display: contents; }
+    .mtb-link { flex: 1 1 0; justify-content: center; gap: 8px; min-height: 42px; padding: 10px 12px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); }
+    .mtb-link:hover, .mtb-link:focus-visible { background: var(--sp-btn); box-shadow: var(--sp-btn-sh-up); color: var(--sp-accent); }
+    .mtb-link[aria-expanded="true"] { background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-accent); transform: none; }
+    .mtb-dd .mtb-menu { order: 1; flex: 1 1 100%; margin: 0; }
+    .mtb-dd:first-child .mtb-menu:not([hidden]) { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .mtb-dd:first-child .mtb-menu a { padding: 9px 10px; }
+    .mtb-menu .mtb-all { grid-column: 1 / -1; }
+    .mtb-actions { gap: 8px; }
+    html[data-game] .mtb .mtb-social, html[data-game] .mtb .mtb-social:hover { display: inline-flex; flex: 1 1 auto; width: auto; height: 38px; gap: 7px; padding: 0 10px; border-radius: 999px; }
+    html[data-game] .mtb .mtb-social span { display: inline; position: static; width: auto; height: auto; overflow: visible; clip-path: none; color: var(--sp-text); font: 600 12.5px var(--font-body, inherit); }
+    html[data-game] .mtb .auth-mini-box { margin-top: 2px; padding: 10px 0 0 2px; border-top: 1px solid var(--sp-edge); border-radius: 0; }
+}
+/* телефон: «Главная» и выпадающее меню — от левого края, по одной линии с кнопками зума (ярлык боковой панели — посередине высоты) */
+@media (max-width: 700px) {
+    .mtb, body:has(#sidebar.collapsed) .mtb { left: 10px; }
+    .mtb-panel { left: 10px; right: 10px; }
+}
+
+/* =========================================================
+   КОМПАКТНАЯ ПАНЕЛЬ (js/map-extras.js → tidySidebar): «Скрыть все / Показать все» одной кнопкой,
+   экспорт, импорт и горячие клавиши — в меню «⋯». Кнопки панели — обычным регистром во всех играх.
+   ========================================================= */
+html[data-game] .btn-group.bp-compact { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+html[data-game] .btn-group.bp-compact > button[hidden] { display: none; }
+html[data-game] .btn-group.bp-compact > .wide { grid-column: auto; }
+html[data-game] .btn-group button, html[data-game] .io-row button, html[data-game] .add-marker-btn, html[data-game] .bp-more-menu button {
+    text-transform: none; letter-spacing: normal; font-family: var(--font-body, inherit); font-size: 13px; font-weight: 600; line-height: 1.25;
+}
+html[data-game] .btn-group button { padding: 10px 8px; }
+.bp-act-row { display: flex; gap: 10px; align-items: stretch; }
+.bp-act-row .add-marker-btn { flex: 1; min-width: 0; margin: 0; }
+html[data-game] .add-marker-btn { padding: 10px 12px; }
+.bp-more { position: relative; flex: none; }
+html[data-game] .bp-more-btn {
+    width: 44px; height: 100%; min-height: 40px; padding: 0; display: grid; place-items: center; cursor: pointer;
+    border: 0; border-radius: var(--sp-r-sm); background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh);
+    transition: box-shadow .2s, color .2s, transform .15s;
+}
+html[data-game] .bp-more-btn:hover { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+html[data-game] .bp-more-btn[aria-expanded="true"] { background: var(--sp-base); color: var(--sp-accent); box-shadow: var(--sp-press); transform: none; }
+.bp-more-btn svg { width: 20px; height: 20px; fill: currentColor; }
+.bp-more-menu {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 50; min-width: 230px; padding: 6px; display: grid; gap: 2px;
+    border-radius: var(--sp-r); background: var(--sp-card); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 10%, transparent), var(--sp-drop-sm);
+}
+.bp-more-menu[hidden] { display: none; }
+html[data-game] #sidebar .bp-more-menu button, html[data-game] #sidebar .bp-more-menu .bp-keys-link {
+    display: flex; align-items: center; gap: 8px; width: 100%; margin: 0; padding: 9px 10px; border: 0; border-radius: 9px; text-align: left;
+    background: none; box-shadow: none; color: var(--sp-text); transform: none; cursor: pointer; white-space: nowrap;
+}
+html[data-game] #sidebar .bp-more-menu button:hover, html[data-game] #sidebar .bp-more-menu .bp-keys-link:hover { background: var(--sp-base); color: var(--sp-accent); box-shadow: none; }
+
+/* вход в верхнем меню карты: гостю не показываем пустой кружок-аватар рядом с кнопкой «Войти» (в раскрытом меню телефона он остаётся с подписью) */
+@media (min-width: 1101px) { html[data-game] .mtb .auth-mini-info:not(.has-avatar) { display: none; } }
+
+/* «Свернуть меню» на телефоне — spatial: плавающая таблетка на верхнем слое (светлее панели, тонкий контур, блик сверху, тень вниз),
+   под ней панель плавно растворяется в фон, чтобы список категорий уходил под кнопку, а не обрезался полосой */
+@media (max-width: 480px) {
+    html[data-game] .sidebar-collapse-mobile {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        position: sticky; bottom: 0; z-index: 3; isolation: isolate;
+        width: 100%; margin-top: auto; padding: 26px 16px 18px; border: 0; border-radius: 0; cursor: pointer;
+        background: linear-gradient(to top, var(--sp-base) 58%, color-mix(in srgb, var(--sp-base) 0%, transparent));
+        color: var(--sp-text); font: 600 14px/18px var(--font-body, inherit); letter-spacing: normal; text-transform: none; text-shadow: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    html[data-game] .sidebar-collapse-mobile::before {
+        content: ""; position: absolute; inset: 14px 14px 8px; z-index: -1; border-radius: 999px;
+        background: linear-gradient(180deg, color-mix(in srgb, var(--sp-btn) 92%, #fff), var(--sp-btn));
+        box-shadow: var(--sp-hairline), var(--sp-sheen), var(--sp-lifted);
+        transition: box-shadow .2s, background .2s, transform .15s;
+    }
+    html[data-game] .sidebar-collapse-mobile svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--sp-accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    html[data-game] .sidebar-collapse-mobile:active::before { background: var(--sp-base); box-shadow: var(--sp-press), inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 35%, transparent); transform: scale(.99); }
+    html[data-game] .sidebar-collapse-mobile:active { color: var(--sp-accent); }
+    html[data-game] .sidebar-collapse-mobile:focus-visible { outline: none; }
+    html[data-game] .sidebar-collapse-mobile:focus-visible::before { box-shadow: inset 0 0 0 2px var(--sp-accent), var(--sp-lifted); }
+}
+
+/* =========================================================
+   ЗАГРУЗОЧНЫЙ ЭКРАН КАРТЫ (#map-loader.spl) — те же слои глубины, что у интерфейса карты:
+   подложка игры с мягкими пятнами акцента → карточка (слой 1) → выпуклый диск (слой 2) с вдавленной площадкой,
+   на которой эмблема игры → название → вдавленная дорожка загрузки. Эмблема, шрифты и цвета — свои у каждой игры
+   (раздел «Загрузочный экран» в css/style.css карты), каркас — общий. Скрывает экран js/map-core.js → hideMapLoader.
+   ========================================================= */
+#map-loader.spl {
+    position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; overflow: hidden; padding: 16px;
+    background: var(--sp-base); color: var(--sp-text);
+    transition: opacity .6s ease, visibility .6s ease;
+}
+#map-loader.spl.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+/* пятна акцента на подложке — как в боковой панели */
+.spl::before, .spl::after {
+    content: ""; position: absolute; width: 80vmax; height: 80vmax; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, color-mix(in srgb, var(--sp-accent) 15%, transparent), transparent 62%);
+}
+.spl::before { left: -34vmax; top: -40vmax; animation: spl-drift 16s ease-in-out infinite alternate; }
+.spl::after { right: -36vmax; bottom: -44vmax; opacity: .75; animation: spl-drift 21s ease-in-out infinite alternate-reverse; }
+@keyframes spl-drift { to { transform: translate(7vmax, 5vmax); } }
+
+.spl-card {
+    position: relative; width: min(360px, 100%); display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 30px 24px 26px; text-align: center;
+    background: var(--sp-card); border-radius: var(--sp-r-lg); box-shadow: var(--sp-card-sh);
+    animation: spl-in .5s cubic-bezier(.2, .8, .2, 1) both;
+}
+@keyframes spl-in { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+
+/* эмблема: выпуклый диск, в нём вдавленная площадка; диск слегка «дышит» — приподнимается и опускается */
+.spl-emblem {
+    width: 172px; height: 172px; margin-bottom: 16px; display: grid; place-items: center; border-radius: 50%;
+    background: var(--sp-btn); box-shadow: var(--sp-btn-sh); animation: spl-float 3.6s ease-in-out infinite;
+}
+@keyframes spl-float { 50% { transform: translateY(-4px); box-shadow: var(--sp-hairline), var(--sp-sheen), var(--sp-raise-sm-up); } }
+.spl-well {
+    position: relative; width: 144px; height: 144px; display: grid; place-items: center; border-radius: 50%; overflow: hidden;
+    background: var(--sp-base); box-shadow: var(--sp-press);
+}
+.spl-well > svg { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); }
+
+.spl-eyebrow { font: 600 11px/1.2 var(--font-display); letter-spacing: .3em; padding-left: .3em; text-transform: uppercase; color: var(--sp-muted); }
+.spl-title { font: 700 30px/1.1 var(--font-display); letter-spacing: .12em; padding-left: .12em; text-transform: uppercase; color: var(--sp-text); }
+.spl-sub { font: 600 12px/1.3 var(--font-display); letter-spacing: .26em; padding-left: .26em; text-transform: uppercase; color: var(--sp-accent); }
+.spl-logo { display: block; width: min(280px, 80%); height: auto; }
+
+/* полоса загрузки — та же вдавленная дорожка, что «Найдено меток» в боковой панели */
+.spl-track { display: block; width: min(240px, 82%); height: 8px; margin: 14px 0 4px; border-radius: var(--sp-r-pill); overflow: hidden; background: var(--sp-base); box-shadow: var(--sp-press); }
+.spl-track > i { display: block; width: 38%; height: 100%; border-radius: inherit; background: var(--sp-accent); box-shadow: var(--sp-sheen); animation: spl-sweep 1.3s ease-in-out infinite; }
+@keyframes spl-sweep { from { transform: translateX(-100%); } to { transform: translateX(265%); } }
+.spl-status { min-height: 1.4em; font: 500 13px/1.4 var(--font-body, system-ui, sans-serif); color: var(--sp-muted); }
+
+@media (max-width: 480px) {
+    .spl-card { padding: 26px 18px 22px; }
+    .spl-title { font-size: 26px; }
+    .spl-emblem { width: 150px; height: 150px; }
+    .spl-well { width: 126px; height: 126px; }
+}
+@media (prefers-reduced-motion: reduce) { .spl::before, .spl::after, .spl-card, .spl-emblem, .spl-track > i, .spl-well * { animation: none !important; } }

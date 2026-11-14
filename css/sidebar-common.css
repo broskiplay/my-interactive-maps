@@ -1,0 +1,39 @@
+/* Общая геометрия служебных элементов сайдбара на всех картах: кнопка «Главная», соцсети, блок входа.
+   Здесь только размеры, отступы и положение. Цвета, рамки, скругления и шрифты остаются у темы каждой игры.
+   Подключается последним в <head> каждой карты. */
+.sidebar-header { gap: 12px; padding: 18px 16px 14px; }
+.header-top-row { align-items: flex-start; gap: 12px; }
+.home-nav { align-self: flex-start; gap: 0; }
+
+.header-top-row .home-back-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 34px; padding: 0 12px; font-size: 14px; line-height: 1; white-space: nowrap; }
+.header-top-row .home-back-btn svg { width: 14px; height: 14px; }
+
+.social-links { gap: 8px; }
+.social-links .social-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 10px; font-size: 13px; line-height: 1; white-space: nowrap; }
+.social-links .social-btn svg { width: 14px; height: 14px; }
+
+.auth-mini-box { gap: 10px; padding: 8px 10px; }
+.auth-mini-text { font-size: 12.5px; line-height: 1.3; }
+.auth-mini-text b { font-size: 13.5px; }
+.auth-mini-box .auth-mini-btn.auth-mini-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 34px; padding: 0 12px; font-size: 13px; line-height: 1; }
+
+/* Логотип игры — на всю ширину шапки панели (кнопки «Главная», соцсети и вход переехали в верхнее меню над картой).
+   Картинка тянется по ширине; баннер Gothic / Tainted Grail — полосой во всю ширину; текстовый логотип (Skyrim, Oblivion,
+   Ведьмак, Cyberpunk) подбирает размер шрифта по ширине шапки: cqi = 1% ширины h1, множитель = 1 / ширина слова в em. */
+.header-top-row h1, .header-top-row .brand { flex: 1 1 0; min-width: 0; container-type: inline-size; }
+.header-top-row h1 .logo-title { width: 100%; height: auto; max-height: 112px; object-fit: contain; object-position: left center; }
+.header-top-row .brand img { width: 100%; max-width: none; height: auto; }
+.header-banner-title { margin-right: 0; }
+.header-banner-title .header-banner { width: 100%; max-width: none; height: auto; aspect-ratio: 2.6; object-fit: cover; }
+html[data-game="skyrim"] .header-top-row h1 .logo-main { font-size: 22.4cqi; }
+html[data-game="oblivion"] .header-top-row h1 .logo-main { font-size: 21.4cqi; }
+html[data-game="witcher3"] .header-top-row h1 .logo-main { font-size: 16.2cqi; }
+html[data-game="cyberpunk"] .header-top-row h1 .logo-main { font-size: 16.3cqi; }
+html[data-game="hogwarts"] .header-top-row h1 .logo-main { font-size: 10.6cqi; }
+html[data-game="phantomblade"] .header-top-row h1 .logo-main { font-size: 9.6cqi; }
+/* Кнопка входа, пока по требованию догружается Firebase (js/firebase-lazy.js) */
+.auth-mini-btn.is-loading { cursor: progress; opacity: .7; }
+/* «N из M меток» заполняет скрипт после загрузки данных: держим место под строку заранее, иначе панель сдвигается (CLS) */
+.progress-count:empty::before { content: "\a0"; }
+/* Полоса прокрутки панели появляется, когда список фильтров заполнился: место под неё держим сразу, иначе всё сдвигается вбок */
+#sidebar { scrollbar-gutter: stable; }

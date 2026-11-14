@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ru" data-root="../">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все игры — интерактивные карты на русском — BroskiPlay</title>
+    <meta name="description" content="Все интерактивные карты BroskiPlay на русском в одном списке: выберите игру и откройте её карты. Прогресс синхронизируется между устройствами через Google.">
+    <link rel="canonical" href="https://broskiplay.ru/games/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Все игры — интерактивные карты на русском — BroskiPlay">
+    <meta property="og:description" content="Метки на русском для популярных игр. Отмечайте найденное и синхронизируйте прогресс между устройствами через Google.">
+    <meta property="og:image" content="https://broskiplay.ru/og-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивные карты BroskiPlay на русском: Stellar Blade, Tainted Grail, Gothic 1 Remake, Dimraeth, Palworld, Oblivion Remastered, Skyrim, Ведьмак 3, Cyberpunk 2077, Hogwarts Legacy, Phantom Blade Zero">
+    <meta property="og:url" content="https://broskiplay.ru/games/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Все игры — интерактивные карты на русском — BroskiPlay">
+    <meta name="twitter:description" content="Метки на русском для популярных игр. Прогресс синхронизируется между устройствами через Google.">
+    <meta name="twitter:image" content="https://broskiplay.ru/og-preview.jpg">
+    <meta name="theme-color" content="#50e3c2">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    
+    <!-- Шрифты: Unbounded (заголовки), Manrope (весь остальной текст) -->
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="../css/spatial.css?v=4">
+    <link rel="stylesheet" href="../css/style.css?v=63">
+
+    <!-- Применяем сохранённую/системную тему до отрисовки (защита от мигания) -->
+    <script>
+        (function () {
+            // Тема по системе телефона: светлая → светлая, тёмная или не задана → тёмная.
+            // Ручной выбор переключателем действует, пока система сама не сменит тему.
+            var sys = "dark";
+            try { if (window.matchMedia("(prefers-color-scheme: light)").matches) sys = "light"; } catch (e) {}
+            var theme = sys;
+            try {
+                var saved = localStorage.getItem("bp_theme");
+                if ((saved === "light" || saved === "dark") && localStorage.getItem("bp_theme_sys") === sys) theme = saved;
+            } catch (e) {}
+            document.documentElement.setAttribute("data-theme", theme);
+        })();
+    </script>
+    
+    <!-- Firebase SDK грузится по требованию из js/script.js (только для входа и тех, кто уже входил) -->
+
+    <!-- Скрипты -->
+    <script src="../ui-feedback.js?v=4" defer></script>
+    <script src="../js/script.js?v=24" defer></script>
+    <script src="../js/home-fx.js?v=5" defer></script>
+    <script src="../js/topbar.js?v=9" defer></script>
+    <script src="/js/metrika.js?v=1" defer></script>
+</head>
+<body class="games-page">
+<header class="topbar" id="topbar">
+    <div class="topbar-inner">
+        <a class="tb-brand" href="../" aria-label="BroskiPlay — на главную"><img src="../icons/logo-badge-96.png" width="34" height="34" alt=""><span>BroskiPlay</span></a>
+        <button type="button" class="tb-burger" id="tb-burger" aria-expanded="false" aria-controls="tb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+        <div class="tb-panel" id="tb-panel">
+            <nav class="tb-nav" aria-label="Разделы сайта">
+                <a class="tb-link" id="tb-games-link" href="./" aria-current="page">Игры</a>
+                <div class="tb-dd" id="tb-upd">
+                    <a class="tb-link tb-dd-btn" href="#updates" aria-haspopup="true" aria-expanded="false" aria-controls="tb-upd-menu">Обновления<span class="tb-dot" hidden></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+                    <div class="tb-menu" id="tb-upd-menu" hidden><a href="#updates" id="tb-updates"><span>Что нового</span><small>новое на сайте</small></a><a href="../fixes/"><span>Журнал исправлений</span><small>правки меток</small></a></div>
+                </div>
+                <a class="tb-link tb-opt" href="#community">Сообщество</a>
+            </nav>
+            <div class="tb-actions">
+                <a id="twitch-button" href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-twitch tb-social">
+                            <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                            <span class="live-indicator" aria-hidden="true"></span>
+                            <span id="twitch-button-label">Twitch</span>
+                        </a>
+                <a id="youtube-button" href="https://www.youtube.com/@broskiplayt/videos" target="_blank" rel="noopener noreferrer" class="social-btn social-youtube tb-social" aria-label="Открыть видео BroskiPlay на YouTube">
+                            <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                            <span>YouTube</span>
+                        </a>
+                <a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-donate tb-social">
+                            <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                            <span>Поддержать</span>
+                        </a>
+                <button type="button" class="tb-icon" id="tb-search" aria-label="Найти игру" title="Найти игру (клавиша /)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+                <div class="ui-controls tb-theme"></div>
+                    <div class="auth-card">
+                        <div class="auth-info">
+                            <img id="auth-avatar" class="auth-avatar" src="" alt="Avatar">
+                            <div id="auth-status" class="auth-text">
+                                <b>Гостевой режим</b><br>
+                                <span>Войдите через Google для синхронизации меток</span>
+                            </div>
+                        </div>
+                        <button id="auth-btn" class="auth-btn"><svg class="google-icon" width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Войти с Google</span></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="site-shell">
+    <section class="game-library" aria-labelledby="games-heading">
+        <div class="section-heading">
+            <h1 id="games-heading">Все игры</h1>
+            <p>Выберите игру, чтобы открыть доступные карты</p>
+        </div>
+        <div class="game-search">
+            <label class="sr-only" for="game-search-input">Поиск игры</label>
+            <input id="game-search-input" type="search" placeholder="Найти игру, например Stellar Blade" autocomplete="off" aria-controls="games-container" aria-describedby="game-search-status">
+            <p class="game-search-status" id="game-search-status" role="status" aria-live="polite"></p>
+        </div>
+        
+        <!-- Контейнер для карточек игр (генерируется в JS) -->
+        <!-- games:start — блок генерируется: python3 scripts/prerender_home.py (не править вручную) -->
+        <div class="games-container" id="games-container">
+            <details class="game-dropdown theme-stellar">
+                        <summary>
+                            <div class="game-banner stellar-banner">
+                                <img class="game-banner-art" src="../stellar-blade-map/logo-card.webp" srcset="../stellar-blade-map/logo-card-720.webp 720w, ../stellar-blade-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" fetchpriority="high" decoding="async" alt="Stellar Blade — выбрать локацию">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Stellar Blade</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="stellar-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="stellar-progress-bar" role="progressbar" aria-label="Общий прогресс Stellar Blade" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="stellar-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="stellar-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">1&nbsp;139&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">9 карт</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../stellar-blade-map/eidos7/" class="map-link is-untouched" title="Эйдос-7 (Eidos 7): 0 из 147 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Эйдос-7 (Eidos 7)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">147&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/xion/" class="map-link is-untouched" title="Ксион (Xion City): 0 из 166 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Ксион (Xion City)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">166&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/wasteland/" class="map-link is-untouched" title="Пустошь (Wasteland): 0 из 234 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Пустошь (Wasteland)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">234&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/altess-levoire/" class="map-link is-untouched" title="Левуар «Высь» (Altess Levoire): 0 из 26 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Левуар «Высь» (Altess Levoire)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">26&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/matrix-11/" class="map-link is-untouched" title="Матрица-11 (Matrix 11): 0 из 129 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Матрица-11 (Matrix 11)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">129&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/great-desert/" class="map-link is-untouched" title="Великая пустыня (Great Desert): 0 из 229 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Великая пустыня (Great Desert)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">229&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/abyss-levoire/" class="map-link is-untouched" title="Левуар «Бездна» (Abyss Levoire): 0 из 29 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Левуар «Бездна» (Abyss Levoire)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">29&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/spire-4/" class="map-link is-untouched" title="Шпиль-4 (Spire 4): 0 из 125 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Шпиль-4 (Spire 4)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">125&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../stellar-blade-map/eidos-9/" class="map-link is-untouched" title="Эйдос-9 (Eidos 9): 0 из 54 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Эйдос-9 (Eidos 9)
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">54&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-tainted">
+                        <summary>
+                            <div class="game-banner tainted-banner"><span class="game-new is-upd">Обновлено</span>
+                                <img class="game-banner-art" src="../tainted-grail-map/logo-card.webp" srcset="../tainted-grail-map/logo-card-720.webp 720w, ../tainted-grail-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" decoding="async" alt="Tainted Grail: The Fall of Avalon — выбрать локацию">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Tainted Grail: The Fall of Avalon</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="tainted-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="tainted-progress-bar" role="progressbar" aria-label="Общий прогресс Tainted Grail" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="tainted-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="tainted-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">4&nbsp;422&nbsp;метки в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">4 карты</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../tainted-grail-map/horns-of-the-south/" class="map-link is-untouched" title="Рога Юга: 0 из 1400 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Рога Юга
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;400&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../tainted-grail-map/cuanacht/" class="map-link is-untouched" title="Кунахт: 0 из 1390 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Кунахт
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;390&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../tainted-grail-map/forlorn-swords/" class="map-link is-untouched" title="Забытые мечи: 0 из 1019 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Забытые мечи
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;019&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../tainted-grail-map/sarras/" class="map-link is-untouched" title="Саррас: 0 из 613 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Саррас
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">613&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-gothic">
+                        <summary>
+                            <div class="game-banner gothic-banner">
+                                <img class="game-banner-art" src="../gothic-remake-map/logo.svg" loading="lazy" decoding="async" alt="Gothic 1 Remake — выбрать локацию">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Gothic 1 Remake</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="gothic-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="gothic-progress-bar" role="progressbar" aria-label="Общий прогресс Gothic 1 Remake" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="gothic-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="gothic-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">1&nbsp;714&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">1 карта</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../gothic-remake-map/" class="map-link is-untouched" title="Долина рудников: 0 из 1714 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Долина рудников
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;714&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-dimraeth">
+                        <summary>
+                            <div class="game-banner dimraeth-banner">
+                                <img class="game-banner-image" src="../dimraeth-map/logo-640.webp" srcset="../dimraeth-map/logo-400.webp 400w, ../dimraeth-map/logo-640.webp 640w" sizes="(max-width: 560px) 58vw, 320px" loading="lazy" decoding="async" alt="Dimraeth — выбрать локацию">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Dimraeth</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="dimraeth-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="dimraeth-progress-bar" role="progressbar" aria-label="Общий прогресс Dimraeth" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="dimraeth-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="dimraeth-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">328&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">4 карты</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../dimraeth-map/wildwood/" class="map-link is-untouched" title="Эрлвуд: 0 из 246 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Эрлвуд
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">246&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../dimraeth-map/thelostcaverns/" class="map-link is-untouched" title="Затерянные пещеры: 0 из 12 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Затерянные пещеры
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">12&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../dimraeth-map/playerbase/" class="map-link is-untouched" title="Святилище: 0 из 9 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Святилище
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">9&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../dimraeth-map/thegoblincaves/" class="map-link is-untouched" title="Гоблинские пещеры: 0 из 61 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Гоблинские пещеры
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">61&nbsp;метка</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-palworld">
+                        <summary>
+                            <div class="game-banner palworld-banner">
+                                <img class="game-banner-image" src="../palworld-map/logo-title.png" loading="lazy" decoding="async" alt="Palworld — выбрать локацию">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Palworld</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="palworld-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="palworld-progress-bar" role="progressbar" aria-label="Общий прогресс Palworld" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="palworld-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="palworld-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">4&nbsp;624&nbsp;метки в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">1 карта</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../palworld-map/" class="map-link is-untouched" title="Острова Палпагос: 0 из 4624 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Острова Палпагос
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">4&nbsp;624&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-oblivion">
+                        <summary>
+                            <div class="game-banner oblivion-banner">
+                                <img class="game-banner-art" src="../oblivion-remake-map/logo-card.webp" srcset="../oblivion-remake-map/logo-card-720.webp 720w, ../oblivion-remake-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" loading="lazy" decoding="async" alt="Oblivion Remastered — выбрать карту">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Oblivion Remastered</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="oblivion-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="oblivion-progress-bar" role="progressbar" aria-label="Общий прогресс Oblivion Remastered" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="oblivion-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="oblivion-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">1&nbsp;256&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">2 карты</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../oblivion-remake-map/cyrodiil/" class="map-link is-untouched" title="Сиродил: 0 из 1118 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Сиродил
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;118&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../oblivion-remake-map/shivering-isles/" class="map-link is-untouched" title="Дрожащие острова: 0 из 138 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Дрожащие острова
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">138&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-skyrim">
+                        <summary>
+                            <div class="game-banner skyrim-banner">
+                                <img class="game-banner-art" src="../skyrim-map/logo-card.webp" srcset="../skyrim-map/logo-card-720.webp 720w, ../skyrim-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" loading="lazy" decoding="async" alt="Skyrim — выбрать карту">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Skyrim</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="skyrim-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="skyrim-progress-bar" role="progressbar" aria-label="Общий прогресс Skyrim" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="skyrim-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="skyrim-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">1&nbsp;017&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">2 карты</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../skyrim-map/skyrim/" class="map-link is-untouched" title="Скайрим: 0 из 904 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Скайрим
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">904&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../skyrim-map/solstheim/" class="map-link is-untouched" title="Солстхейм: 0 из 113 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Солстхейм
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">113&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-witcher3">
+                        <summary>
+                            <div class="game-banner witcher3-banner">
+                                <img class="game-banner-art" src="../witcher3-map/logo-card.webp" srcset="../witcher3-map/logo-card-720.webp 720w, ../witcher3-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" loading="lazy" decoding="async" alt="Ведьмак 3: Дикая Охота — выбрать карту">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Ведьмак 3</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="witcher3-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="witcher3-progress-bar" role="progressbar" aria-label="Общий прогресс Ведьмак 3" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="witcher3-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="witcher3-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">1&nbsp;796&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">10 карт</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../witcher3-map/velen-novigrad/" class="map-link is-untouched" title="Велен и Новиград: 0 из 1020 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Велен и Новиград
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;020&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/skellige/" class="map-link is-untouched" title="Скеллиге: 0 из 377 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Скеллиге
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">377&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/toussaint/" class="map-link is-untouched" title="Туссент: 0 из 144 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Туссент
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">144&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/white-orchard/" class="map-link is-untouched" title="Белый Сад: 0 из 128 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Белый Сад
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">128&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/kaer-morhen/" class="map-link is-untouched" title="Каэр Морхен: 0 из 35 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Каэр Морхен
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">35&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/isle-of-mists/" class="map-link is-untouched" title="Остров Туманов: 0 из 42 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Остров Туманов
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">42&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/vizima-castle/" class="map-link is-untouched" title="Королевский замок в Вызиме: 0 из 8 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Королевский замок в Вызиме
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">8&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/time-and-space/" class="map-link is-untouched" title="Время и пространство: 0 из 27 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Время и пространство
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">27&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/olgierd-world/" class="map-link is-untouched" title="Мир Гюнтера о'Дима: 0 из 13 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Мир Гюнтера о'Дима
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">13&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../witcher3-map/land-of-fables/" class="map-link is-untouched" title="Страна Сказок: 0 из 2 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Страна Сказок
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">2&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-cyberpunk2077">
+                        <summary>
+                            <div class="game-banner cyberpunk2077-banner"><span class="game-new">Новое</span>
+                                <img class="game-banner-art" src="../cyberpunk2077-map/logo-card.webp" srcset="../cyberpunk2077-map/logo-card-720.webp 720w, ../cyberpunk2077-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" loading="lazy" decoding="async" alt="Cyberpunk 2077 — открыть карту Найт-Сити">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Cyberpunk 2077</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="cyberpunk2077-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="cyberpunk2077-progress-bar" role="progressbar" aria-label="Общий прогресс Cyberpunk 2077" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="cyberpunk2077-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="cyberpunk2077-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">2&nbsp;335&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">1 карта</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../cyberpunk2077-map/" class="map-link is-untouched" title="Найт-Сити: 0 из 2335 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Найт-Сити
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">2&nbsp;335&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-hogwarts">
+                        <summary>
+                            <div class="game-banner hogwarts-banner"><span class="game-new">Новое</span>
+                                <img class="game-banner-art" src="../hogwarts-legacy-map/logo-card.webp" srcset="../hogwarts-legacy-map/logo-card-720.webp 720w, ../hogwarts-legacy-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" loading="lazy" decoding="async" alt="Hogwarts Legacy — выбрать карту">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Hogwarts Legacy</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="hogwarts-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="hogwarts-progress-bar" role="progressbar" aria-label="Общий прогресс Hogwarts Legacy" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="hogwarts-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="hogwarts-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">1&nbsp;983&nbsp;метки в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">3 карты</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../hogwarts-legacy-map/world/" class="map-link is-untouched" title="Мир: 0 из 1110 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Мир
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">1&nbsp;110&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../hogwarts-legacy-map/hogwarts/" class="map-link is-untouched" title="Хогвартс: 0 из 645 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Хогвартс
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">645&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../hogwarts-legacy-map/hogsmeade/" class="map-link is-untouched" title="Хогсмид: 0 из 228 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Хогсмид
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">228&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+            
+                        <details class="game-dropdown theme-phantomblade">
+                        <summary>
+                            <div class="game-banner phantomblade-banner"><span class="game-new">Новое</span>
+                                <img class="game-banner-art" src="../phantom-blade-zero-map/logo-card.webp" srcset="../phantom-blade-zero-map/logo-card-720.webp 720w, ../phantom-blade-zero-map/logo-card.webp 1080w" sizes="(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px" loading="lazy" decoding="async" alt="Phantom Blade Zero — выбрать карту">
+                            </div>
+                            <div class="game-info">
+                                <div class="game-title-block">
+                                    <span class="game-title">Phantom Blade Zero</span>
+                                    <div class="game-progress is-empty">
+                                        <div class="game-progress-heading"><span>Найдено меток</span><strong id="phantomblade-progress-value">0%</strong></div>
+                                        <div class="game-progress-track" id="phantomblade-progress-bar" role="progressbar" aria-label="Общий прогресс Phantom Blade Zero" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="phantomblade-progress-fill" style="width: 0%;"></span></div>
+                                        <span class="game-progress-count" id="phantomblade-progress-count" title="Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят.">2&nbsp;407&nbsp;меток в прогрессе</span>
+                                    </div>
+                                </div>
+                                <span class="game-indicators">
+                                    <span class="game-badge">8 карт</span>
+                                    <span class="game-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+                                </span>
+                            </div>
+                        </summary>
+                        <div class="maps-list">
+                
+                        <a href="../phantom-blade-zero-map/weeping-creek-valley/" class="map-link is-untouched" title="Долина Плачущего ручья: 0 из 305 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Долина Плачущего ручья
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">305&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/crimson-forest/" class="map-link is-untouched" title="Багровый лес: 0 из 301 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Багровый лес
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">301&nbsp;метка</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/village-of-lu/" class="map-link is-untouched" title="Деревня Лу: 0 из 318 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Деревня Лу
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">318&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/pangzhen/" class="map-link is-untouched" title="Панчжэнь: 0 из 554 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Панчжэнь
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">554&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/the-mandates-encampment/" class="map-link is-untouched" title="Лагерь Союза: 0 из 257 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Лагерь Союза
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">257&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/meigu-lake/" class="map-link is-untouched" title="Озеро Мэйгу: 0 из 401 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Озеро Мэйгу
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">401&nbsp;метка</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/mountain-of-imprisonment/" class="map-link is-untouched" title="Гора Заточения: 0 из 194 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Гора Заточения
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">194&nbsp;метки</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        <a href="../phantom-blade-zero-map/mount-soulrend/" class="map-link is-untouched" title="Гора Разбитых Душ: 0 из 77 меток, 0% исследовано">
+                            <span class="map-name">
+                                <svg class="map-marker" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                                Гора Разбитых Душ
+                            </span>
+                            <span class="status" aria-label="Открыть"><span class="map-progress">77&nbsp;меток</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                            </span>
+                        </a>
+                    
+                        </div>
+                    </details>
+                
+                    <a class="game-suggest-banner is-cell" href="https://forms.gle/S1dA8ivejnYkdB1HA" target="_blank" rel="noopener noreferrer" style="grid-column: 1 / -1;">
+                        <span class="game-suggest-plus" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span>
+                        <span class="game-suggest-copy">
+                            <span class="game-suggest-title">Здесь могла бы быть ваша игра</span>
+                            <span class="game-suggest-sub">Предложите карту — она попадёт в очередь на добавление.</span>
+                        </span>
+                        <span class="game-suggest-cta">Предложить игру →</span>
+                    </a>
+        </div>
+        <!-- games:end -->
+    </section>
+
+    <!-- community:start — блок «Мы в соцсетях» -->
+    <section class="community-block" id="community" aria-labelledby="community-heading">
+        <div class="community-copy">
+            <h2 id="community-heading">Мы в соцсетях</h2>
+            <p class="community-lead">Новости карт, вопросы и пожелания по новым играм.</p>
+        </div>
+        <nav class="social-links community-links" aria-label="Сообщества BroskiPlay">
+            <a href="https://vk.ru/broski_club" target="_blank" rel="noopener noreferrer" class="social-btn social-vk">
+                <svg class="sp-ico" viewBox="1.5 4.5 21 15" aria-hidden="true"><path class="f" d="M12.785 16.241s.288-.032.436-.194c.136-.148.132-.427.132-.427s-.02-1.304.587-1.496c.596-.19 1.364 1.259 2.177 1.815.615.422 1.082.33 1.082.33l2.175-.03s1.137-.07.598-.964c-.044-.073-.314-.661-1.618-1.869-1.366-1.265-1.183-1.06.462-3.246.999-1.33 1.398-2.142 1.274-2.489-.12-.331-.854-.244-.854-.244l-2.449.015s-.182-.025-.316.056c-.132.079-.217.263-.217.263s-.387 1.028-.903 1.903c-1.09 1.85-1.526 1.948-1.704 1.833-.414-.267-.31-1.075-.31-1.648 0-1.793.272-2.54-.53-2.734-.266-.064-.462-.107-1.143-.114-.874-.009-1.614.003-2.033.208-.279.136-.494.44-.363.457.162.022.529.099.723.363.251.342.242 1.11.242 1.11s.144 2.11-.336 2.373c-.33.18-.78-.188-1.75-1.865-.497-.859-.872-1.809-.872-1.809s-.072-.177-.2-.272c-.156-.115-.373-.152-.373-.152l-2.327.015s-.35.01-.478.162c-.114.135-.009.414-.009.414s1.822 4.264 3.886 6.414c1.892 1.97 4.04 1.84 4.04 1.84h.973z"/></svg>
+                <span>ВКонтакте</span>
+            </a>
+            <a href="https://t.me/broskiplaytw" target="_blank" rel="noopener noreferrer" class="social-btn social-telegram">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                <span>Telegram</span>
+            </a>
+            <a href="https://discord.gg/RmdBrh2NqC" target="_blank" rel="noopener noreferrer" class="social-btn social-discord">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                <span>Discord</span>
+            </a>
+            <a href="https://lolka.gg/G53N4TVyp" target="_blank" rel="noopener noreferrer" class="social-btn social-lolka">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path class="f" fill-rule="evenodd" d="M7 7.5h10a1.5 1.5 0 0 1 1.5 1.5v9a3 3 0 0 1-3 3h-7a3 3 0 0 1-3-3V9A1.5 1.5 0 0 1 7 7.5ZM10 11.3a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 1 0 0-3.4Zm4 0a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 1 0 0-3.4Z"/><path d="M5.4 14.5v-4.8a6.6 6.6 0 0 1 13.2 0v4.8"/><rect class="f" x="3" y="12" width="3" height="5" rx="1.2"/><rect class="f" x="18" y="12" width="3" height="5" rx="1.2"/></svg>
+                <span>Lolka</span>
+            </a>
+        </nav>
+    </section>
+    <!-- community:end -->
+
+    <!-- donate:start — блок «Поддержать проект»; цель сбора берётся из data/goal.json -->
+    <section class="donate-block" id="donate" aria-labelledby="donate-heading">
+        <div class="donate-info">
+            <h2 id="donate-heading">Поддержать проект</h2>
+            <p class="donate-lead">Карты бесплатные: без подписки и без ограничения числа отмеченных меток. Донаты оплачивают новые игры, переводы и работу сайта.</p>
+            <div class="donate-goal" id="donate-goal" hidden>
+                <div class="donate-goal-head">
+                    <span class="donate-goal-title" id="donate-goal-title"></span>
+                    <strong class="donate-goal-pct" id="donate-goal-pct"></strong>
+                </div>
+                <div class="donate-goal-track" id="donate-goal-bar" role="progressbar" aria-labelledby="donate-goal-title" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="donate-goal-fill"></span></div>
+                <p class="donate-goal-sum" id="donate-goal-sum"></p>
+            </div>
+        </div>
+        <a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn social-donate donate-btn">
+            <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+            <span>Поддержать</span>
+        </a>
+        <script>
+        (function () {
+            fetch("../data/goal.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+                if (!g || !(g.goal > 0)) return;
+                var raised = Math.max(0, Number(g.raised) || 0), pct = Math.min(100, Math.round(raised / g.goal * 100));
+                var fmt = function (n) { return Number(n).toLocaleString("ru-RU") + "\u00a0" + (g.currency || "₽"); };
+                document.getElementById("donate-goal-title").textContent = g.title || "Цель сбора";
+                document.getElementById("donate-goal-pct").textContent = pct + "%";
+                document.getElementById("donate-goal-fill").style.width = pct + "%";
+                document.getElementById("donate-goal-bar").setAttribute("aria-valuenow", String(pct));
+                var sum = "<b>" + fmt(raised) + "</b> из " + fmt(g.goal);
+                if (g.deadline) {
+                    var days = Math.ceil((new Date(g.deadline + "T00:00:00") - new Date()) / 864e5);
+                    if (days > 0) sum += " · осталось " + days + "\u00a0" + (days % 10 === 1 && days % 100 !== 11 ? "день" : (days % 10 >= 2 && days % 10 <= 4 && (days % 100 < 12 || days % 100 > 14) ? "дня" : "дней"));
+                }
+                document.getElementById("donate-goal-sum").innerHTML = sum;
+                document.getElementById("donate-goal").hidden = false;
+            }).catch(function () { /* без цели остаётся только текст и кнопка */ });
+        })();
+        </script>
+    </section>
+    <!-- donate:end -->
+
+    <!-- changelog:start — блок генерируется: python3 scripts/changelog.py (не править вручную) -->
+    <section class="updates" id="updates" data-latest="81f24a0bd7">
+        <details class="updates-dropdown">
+            <summary>
+                <h2 id="updates-heading">Что нового<span class="updates-dot" role="img" aria-label="Есть непрочитанные обновления" hidden></span></h2>
+                <span class="updates-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></span>
+            </summary>
+            <div class="updates-body">
+                <ol class="updates-list">
+                    <li class="update-entry">
+                        <time datetime="2026-11-14">14 ноября 2026</time>
+                        <ul>
+                            <li>Tainted Grail: обновлён перевод — названия и описания меток теперь как в русской версии игры</li>
+                        </ul>
+                    </li>
+                    <li class="update-entry">
+                        <time datetime="2026-11-13">13 ноября 2026</time>
+                        <ul>
+                            <li>Новая карта: Phantom Blade Zero — 8 локаций от Долины Плачущего ручья до Горы Разбитых Душ, 2 498 меток на русском с описаниями и картинками, прогресс по картам</li>
+                            <li>Мелкие исправления: карточки игр на странице «Все игры» выровнены, логотипы на баннерах больше не обрезаются; кнопка «Установить» снова видна на картах и подсказывает, как установить сайт, если браузер не показал окно установки</li>
+                        </ul>
+                    </li>
+                </ol>
+                <a class="updates-all" href="../updates/">Все обновления — ещё 9 дат →</a>
+            </div>
+        </details>
+        <script>
+        (function () {
+            var box = document.getElementById("updates"), dot = box && box.querySelector(".updates-dot");
+            if (!box) return;
+            document.querySelectorAll('a[href="#updates"]').forEach(function (a) {
+                a.addEventListener("click", function () { box.querySelector(".updates-dropdown").open = true; });
+            });
+            if (!dot) return;
+            var key = "bp_updates_seen", latest = box.getAttribute("data-latest"), seen = null;
+            try { seen = localStorage.getItem(key); } catch (e) {}
+            if (seen !== latest) dot.hidden = false;
+            box.querySelector(".updates-dropdown").addEventListener("toggle", function () {
+                if (!this.open) return;
+                dot.hidden = true;
+                try { localStorage.setItem(key, latest); } catch (e) {}
+            });
+        })();
+        </script>
+    </section>
+    <!-- changelog:end -->
+
+    <section class="about" id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">О проекте</h2>
+        <div class="about-grid">
+            <article class="about-item">
+                <h3>Что это</h3>
+                <p>Интерактивные карты игровых миров на русском языке: названия и описания меток переведены, найденное можно отмечать. Прогресс сохраняется в браузере и работает без аккаунта, а после входа через Google появится на других ваших устройствах.</p>
+            </article>
+            <article class="about-item">
+                <h3>Нашли ошибку?</h3>
+                <p>Нажмите «Неточное место?» или «Сообщить об ошибке» в окне метки — принятые правки попадают в <a href="../fixes/">журнал исправлений</a>. Не нашли нужную игру? <a href="https://forms.gle/S1dA8ivejnYkdB1HA" target="_blank" rel="noopener noreferrer">Предложите её</a>.</p>
+            </article>
+            <article class="about-item about-src">
+                <h3>Откуда карты</h3>
+                <p>Мы не рисуем карты с нуля: метки и подложки основаны на открытых картах игрового сообщества. Англоязычные карты переводим целиком, а названия мест, предметов и персонажей стараемся давать по официальной русской локализации — чтобы на карте было написано то же, что в игре. Где одного источника мало, сводим несколько и правим координаты и стыки. Все карты работают на нашем движке: одинаковое управление, заметки, поиск и работа без интернета.</p>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <nav class="footer-links" aria-label="Ссылки в подвале">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer">Twitch</a>
+            <a href="https://www.youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer">YouTube</a>
+            <a href="https://vk.ru/broski_club" target="_blank" rel="noopener noreferrer">ВКонтакте</a>
+            <a href="https://t.me/broskiplaytw" target="_blank" rel="noopener noreferrer">Telegram</a>
+            <a href="https://discord.gg/RmdBrh2NqC" target="_blank" rel="noopener noreferrer">Discord</a>
+            <a href="https://lolka.gg/G53N4TVyp" target="_blank" rel="noopener noreferrer">Lolka</a>
+            <a href="https://github.com/broskiplay/my-interactive-maps" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdCjye5hjkhH_ed9R2IUjYKJ43S5MXFg2aUftj4Vu_rk2cv0w/viewform" target="_blank" rel="noopener noreferrer">Сообщить об ошибке</a>
+            <a href="../fixes/">Журнал исправлений</a>
+            <a href="../privacy.html">Политика конфиденциальности</a>
+        </nav>
+        <p class="footer-copy">© 2026 BroskiPlay</p>
+    </div>
+</footer>
+
+<!-- Экран загрузки при переходе на карту -->
+<div class="loading-screen" id="map-loading-screen" role="status" aria-live="polite" hidden>
+    <div class="loading-panel">
+        <p class="loading-eyebrow">BroskiPlay · загрузка локации</p>
+        <h2 class="loading-title" id="map-loading-title">Подготовка карты</h2>
+        <p class="loading-tip" id="map-loading-tip"></p>
+        <div class="loading-track" aria-hidden="true"><span></span></div>
+        <span class="loading-caption">СИНХРОНИЗАЦИЯ ДАННЫХ И МАРКЕРОВ</span>
+    </div>
+</div>
+</body>
+</html>

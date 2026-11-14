@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spatial UI — BroskiPlay</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Справочник движка оформления Spatial UI: палитры, слои глубины, токены и примитивы.">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <link rel="stylesheet" href="../css/spatial.css?v=4">
+    <script>
+        // тема всей страницы: ?theme=light | <игра> (как data-theme / data-game на страницах сайта и карт)
+        (function () {
+            var t = new URLSearchParams(location.search).get("theme") || "";
+            if (t === "light") document.documentElement.setAttribute("data-theme", "light");
+            else if (t && t !== "home") document.documentElement.setAttribute("data-game", t);
+        })();
+    </script>
+    <style>
+        :root { --font-body: "Manrope", system-ui, sans-serif; --font-display: "Unbounded", "Manrope", system-ui, sans-serif; color-scheme: dark; }
+        :root[data-theme="light"], :root[data-game="oblivion"], :root[data-game="skyrim"] { color-scheme: light; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--sp-base); color: var(--sp-text); font: 15px/1.55 var(--font-body); }
+        a { color: var(--sp-accent); }
+        code, pre { font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+        code { padding: 1px 6px; border-radius: var(--sp-r-xs); background: var(--sp-base); box-shadow: var(--sp-press); }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 22px 80px; }
+        header { display: grid; gap: 14px; margin-bottom: 34px; }
+        .eyebrow { color: var(--sp-accent); font: 700 12px var(--font-body); letter-spacing: .12em; text-transform: uppercase; }
+        h1 { margin: 0; font: 600 clamp(28px, 4vw, 44px)/1.15 var(--font-display); }
+        h2 { margin: 52px 0 6px; font: 600 22px/1.25 var(--font-display); }
+        h3 { margin: 0 0 6px; font: 600 15px/1.3 var(--font-body); }
+        .lead, .note { color: var(--sp-muted); max-width: 760px; margin: 0; }
+        .note { font-size: 13.5px; margin-bottom: 18px; }
+        .themes { display: flex; flex-wrap: wrap; gap: 8px; }
+        .themes a { text-decoration: none; }
+
+        /* палитры рядом */
+        .scopes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 18px; }
+        .scope { display: grid; gap: 14px; padding: 18px; border-radius: var(--sp-r-lg); background: var(--sp-base); color: var(--sp-text); box-shadow: 0 0 0 1px var(--sp-edge); }
+        .scope-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+        .scope-head b { font: 600 14px var(--font-display); }
+        .scope-head small { color: var(--sp-muted); font-size: 12px; }
+        .scope .sp-card { padding: 14px 16px; display: grid; gap: 10px; }
+        .scope p { margin: 0; color: var(--sp-muted); font-size: 13px; }
+        .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .swatches i { height: 26px; border-radius: 8px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 14%, transparent); }
+
+        /* слои */
+        .layers { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+        .stack { padding: 22px; border-radius: var(--sp-r-lg); background: var(--sp-base); box-shadow: var(--sp-press); }
+        .stack .sp-card { padding: 18px; display: grid; gap: 14px; }
+        .legend { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+        .legend li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+        .legend b { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-accent); font: 700 14px var(--font-display); }
+        .legend span { color: var(--sp-muted); font-size: 13.5px; }
+        .legend strong { display: block; color: var(--sp-text); font-weight: 600; }
+
+        /* токены */
+        .tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+        .tok { display: grid; gap: 10px; padding: 14px; border-radius: var(--sp-r); background: var(--sp-card); box-shadow: var(--sp-card-edge); }
+        .tok-demo { height: 64px; border-radius: var(--sp-r); background: var(--sp-btn); }
+        .tok-demo.color { box-shadow: inset 0 0 0 1px var(--sp-edge); }
+        .tok-name { font: 600 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--sp-accent); }
+        .tok-use { color: var(--sp-muted); font-size: 12.5px; }
+        .tok-stage { padding: 12px; border-radius: var(--sp-r); background: var(--sp-base); }
+
+        /* примитивы */
+        .prims { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; }
+        .prim { display: grid; gap: 12px; align-content: start; padding: 18px; }
+        .prim pre { margin: 0; padding: 10px 12px; overflow: auto; border-radius: var(--sp-r-sm); background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-muted); white-space: pre-wrap; }
+        .map-bg {
+            position: relative; min-height: 210px; padding: 16px; border-radius: var(--sp-r); overflow: hidden;
+            background:
+                radial-gradient(circle at 20% 30%, #6d8a5b 0 9%, transparent 10%), radial-gradient(circle at 70% 60%, #3f6d8c 0 16%, transparent 17%),
+                repeating-linear-gradient(35deg, #8a7b58 0 14px, #7a6c4c 14px 28px);
+        }
+        .map-bg .sp-glass { position: absolute; left: 16px; bottom: 16px; right: 70px; padding: 14px 16px; }
+        .map-bg .zoom { position: absolute; top: 16px; right: 16px; display: grid; gap: 8px; }
+        .rules { display: grid; gap: 10px; margin: 0; padding-left: 20px; color: var(--sp-muted); max-width: 860px; }
+        .rules b { color: var(--sp-text); }
+        @media (max-width: 760px) { .layers { grid-template-columns: 1fr; } .wrap { padding: 22px 16px 60px; } }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <span class="eyebrow">BroskiPlay · движок оформления</span>
+        <h1>Spatial UI</h1>
+        <p class="lead">Один движок (<code>css/spatial.css</code>) для главной, служебных страниц и всех карт. Тема задаёт четыре цвета и свет/тень,
+            всё остальное — слои глубины, тени, состояния — считается из них. Чем ближе слой к зрителю, тем он светлее.</p>
+        <nav class="themes" aria-label="Тема страницы" id="themes"></nav>
+    </header>
+
+    <h2>Палитры</h2>
+    <p class="note">Одни и те же элементы в каждой теме — так проверяется единство. Новая палитра добавляется одной строкой
+        в блок 1 движка; здесь она появится сама, если вписать её в список <code>THEMES</code> внизу страницы.</p>
+    <div class="scopes" id="scopes"></div>
+
+    <h2>Слои глубины</h2>
+    <p class="note">Тема всей страницы — переключатель вверху. Нажатое и включённое возвращается на слой подложки и вдавливается.</p>
+    <div class="layers">
+        <div class="stack">
+            <div class="sp-card">
+                <div class="row"><button class="sp-btn">Кнопка</button><button class="sp-btn sp-primary">Главная</button><button class="sp-btn" aria-pressed="true">Нажата</button></div>
+                <div class="sp-well" style="padding: 10px 12px; color: var(--sp-muted); font-size: 13px;">Вдавленная плашка: поле, дорожка, тег</div>
+                <span class="sp-track"><i style="width: 62%"></i></span>
+            </div>
+        </div>
+        <ol class="legend">
+            <li><b>0</b><span><strong>Подложка</strong>фон страницы, боковая панель карты — <code>--sp-base</code>. Сюда же опускается нажатое (<code>--sp-press</code>).</span></li>
+            <li><b>1</b><span><strong>Карточки и блоки</strong><code>--sp-card</code> + <code>--sp-card-sh</code>, при наведении <code>--sp-card-sh-up</code>.</span></li>
+            <li><b>2</b><span><strong>Кнопки, таблетки, чипы</strong><code>--sp-btn</code> + <code>--sp-btn-sh</code> (контур, блик по верхней кромке, тень), при наведении <code>--sp-btn-sh-up</code>.</span></li>
+            <li><b>3</b><span><strong>Над картой</strong>те же кнопки + <code>--sp-float</code>: тёмное кольцо и тень, чтобы кромка читалась на любых тайлах.</span></li>
+            <li><b>∞</b><span><strong>Окна</strong>стекло <code>--sp-glass</code> с размытием и тенью парения <code>--sp-overlay</code>.</span></li>
+        </ol>
+    </div>
+
+    <h2>Токены</h2>
+    <p class="note">В правилах страниц — только они. Свои тени и смеси цветов ловит <code>scripts/spatial_lint.py</code> (запускается перед публикацией).</p>
+    <div class="tokens" id="tokens"></div>
+
+    <h2>Примитивы</h2>
+    <p class="note">Классы для новой разметки. Специфичность нулевая (<code>:where</code>), поэтому любое правило страницы их уточняет.</p>
+    <div class="prims">
+        <div class="sp-card prim">
+            <h3>Кнопки</h3>
+            <div class="row">
+                <button class="sp-btn">Обычная</button>
+                <button class="sp-btn sp-primary">Главная</button>
+                <button class="sp-btn" aria-pressed="true">Включена</button>
+                <button class="sp-btn" disabled>Нельзя</button>
+                <button class="sp-btn sp-round" aria-label="Найти"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
+            </div>
+            <pre>&lt;button class="sp-btn"&gt;…
+.sp-primary · .sp-round · aria-pressed="true" / .is-on</pre>
+        </div>
+        <div class="sp-card prim">
+            <h3>Чипы-фильтры</h3>
+            <div class="row">
+                <button class="sp-btn sp-chip">Все <b style="color: var(--sp-muted)">128</b></button>
+                <button class="sp-btn sp-chip is-on">★ Важно <b style="color: var(--sp-muted)">4</b></button>
+                <button class="sp-btn sp-chip">⏱ Позже</button>
+            </div>
+            <pre>&lt;button class="sp-btn sp-chip is-on"&gt;…</pre>
+        </div>
+        <div class="sp-card prim">
+            <h3>Поле, плашка, прогресс</h3>
+            <input class="sp-field" type="search" placeholder="Поиск по меткам" aria-label="Поиск по меткам">
+            <div class="row"><span class="sp-well" style="padding: 3px 10px; border-radius: 999px; font-size: 12px; color: var(--sp-muted);">тег</span><span class="sp-well" style="padding: 3px 10px; border-radius: 999px; font-size: 12px; color: var(--sp-muted);">1 из 7</span></div>
+            <span class="sp-track"><i style="width: 38%"></i></span>
+            <pre>.sp-field · .sp-well · &lt;span class="sp-track"&gt;&lt;i style="width:38%"&gt;</pre>
+        </div>
+        <div class="sp-card sp-hoverable prim">
+            <h3>Карточка</h3>
+            <p class="note" style="margin: 0;">Слой 1. С классом <code>.sp-hoverable</code> приподнимается при наведении и подсвечивается кольцом акцента.</p>
+            <pre>&lt;div class="sp-card sp-hoverable"&gt;…</pre>
+        </div>
+        <div class="sp-card prim" style="grid-column: 1 / -1;">
+            <h3>Над картой: кнопки и стекло</h3>
+            <div class="map-bg">
+                <div class="zoom"><button class="sp-btn sp-round sp-float" aria-label="Приблизить">+</button><button class="sp-btn sp-round sp-float" aria-label="Отдалить">−</button></div>
+                <div class="sp-glass">
+                    <h3>Попап метки</h3>
+                    <p class="note" style="margin: 0 0 10px;">Стекло с размытием, тонкий контур и блик, глубокая тень парения.</p>
+                    <button class="sp-btn sp-primary" style="width: 100%;">Отметить найденным</button>
+                </div>
+            </div>
+            <pre>.sp-btn.sp-float — кнопка поверх тайлов · .sp-glass — окно над картой</pre>
+        </div>
+    </div>
+
+    <h2>Правила</h2>
+    <ul class="rules">
+        <li><b>Чем ближе — тем светлее.</b> Подложка → карточка → кнопка; нажатое и включённое — цвета подложки и вдавлено.</li>
+        <li><b>Цвета игры — только в движке.</b> Палитра карты: строка в блоке 1 <code>css/spatial.css</code> и <code>&lt;html data-game="…"&gt;</code>. Стили страниц не задают свои фоны, тени и контуры.</li>
+        <li><b>Над картой — с кольцом.</b> Неоморфный свет не работает поверх тайлов: кнопкам на карте <code>--sp-float</code>, окнам <code>--sp-glass</code> + <code>--sp-overlay</code>.</li>
+        <li><b>Свой акцент у элемента</b> (карточка игры, соцсеть) — кольцо пишется в самом правиле: <code>inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 55%, transparent)</code>. Токены <code>*-up</code> берут акцент темы.</li>
+        <li><b>Осознанное исключение</b> (объёмная иконка, свечение эфира) — <code>/* sp-ok: причина */</code> в той же строке, иначе проверка остановит публикацию.</li>
+        <li><b>Панель карты — во всю высоту, у края экрана</b>; плавающую панель с отступами пробовали и отказались.</li>
+    </ul>
+</div>
+<script>
+(function () {
+    var THEMES = [
+        ["home", "Главная", "тёмная"], ["light", "Главная", "светлая"],
+        ["stellar", "Stellar Blade"], ["palworld", "Palworld"], ["tainted", "Tainted Grail"], ["gothic", "Gothic Remake"],
+        ["dimraeth", "Dimraeth"], ["oblivion", "Oblivion Remastered", "бумага"], ["skyrim", "Skyrim", "бумага"],
+        ["witcher3", "The Witcher 3"], ["cyberpunk", "Cyberpunk 2077"], ["hogwarts", "Hogwarts Legacy"], ["phantomblade", "Phantom Blade Zero"]
+    ];
+    var cur = new URLSearchParams(location.search).get("theme") || "home";
+    var nav = document.getElementById("themes");
+    THEMES.forEach(function (t) {
+        var a = document.createElement("a");
+        a.className = "sp-btn sp-chip" + (t[0] === cur ? " is-on" : "");
+        a.href = "?theme=" + t[0];
+        a.textContent = t[1] + (t[2] ? " · " + t[2] : "");
+        if (t[0] === cur) a.setAttribute("aria-current", "true");
+        nav.appendChild(a);
+    });
+
+    var scopes = document.getElementById("scopes");
+    THEMES.forEach(function (t) {
+        var el = document.createElement("section");
+        el.className = "scope";
+        el.setAttribute("data-sp-scope", t[0]);
+        el.innerHTML =
+            '<div class="scope-head"><b>' + t[1] + '</b><small>' + (t[2] || t[0]) + '</small></div>' +
+            '<div class="swatches" aria-hidden="true"><i style="background: var(--sp-base)"></i><i style="background: var(--sp-card)"></i><i style="background: var(--sp-btn)"></i><i style="background: var(--sp-accent)"></i><i style="background: var(--sp-muted)"></i></div>' +
+            '<div class="sp-card"><b>Карточка</b><p>Текст второго плана и <a href="#">ссылка</a>.</p>' +
+            '<div class="row"><button class="sp-btn">Кнопка</button><button class="sp-btn sp-primary">Главная</button><button class="sp-btn" aria-pressed="true">Нажата</button></div>' +
+            '<input class="sp-field" placeholder="Поле ввода" aria-label="Поле ввода"><span class="sp-track"><i style="width: 54%"></i></span></div>';
+        scopes.appendChild(el);
+    });
+
+    var TOK = [
+        ["--sp-base", "color", "слой 0: подложка, нажатое"], ["--sp-card", "color", "слой 1: карточки"], ["--sp-btn", "color", "слой 2: кнопки"],
+        ["--sp-accent", "color", "акцент темы"], ["--sp-sunk", "color", "дно узких дорожек"],
+        ["--sp-card-sh", "shadow", "карточка", "--sp-card"], ["--sp-card-sh-up", "shadow", "карточка, наведение", "--sp-card"],
+        ["--sp-btn-sh", "shadow", "кнопка"], ["--sp-btn-sh-up", "shadow", "кнопка, наведение"],
+        ["--sp-press", "shadow", "вдавлено", "--sp-base"], ["--sp-raise", "shadow", "объём слоя 1 без контура", "--sp-base"],
+        ["--sp-raise-sm", "shadow", "объём слоя 2 без контура", "--sp-base"],
+        ["--sp-float", "shadow", "кнопка над картой"], ["--sp-overlay", "shadow", "окно над картой", "--sp-glass"]
+    ];
+    var box = document.getElementById("tokens");
+    TOK.forEach(function (t) {
+        var el = document.createElement("div");
+        el.className = "tok";
+        var demo = t[1] === "color"
+            ? '<div class="tok-demo color" style="background: var(' + t[0] + ')"></div>'
+            : '<div class="tok-stage"><div class="tok-demo" style="background: var(' + (t[3] || "--sp-btn") + '); box-shadow: ' +
+              (t[0] === "--sp-float" ? "var(--sp-hairline), var(--sp-sheen), var(--sp-float)" : "var(" + t[0] + ")") + '"></div></div>';
+        el.innerHTML = demo + '<div><div class="tok-name">' + t[0] + '</div><div class="tok-use">' + t[2] + '</div></div>';
+        box.appendChild(el);
+    });
+})();
+</script>
+</body>
+</html>

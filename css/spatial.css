@@ -1,0 +1,193 @@
+/* =========================================================================================
+   SPATIAL UI — движок оформления всего сайта: главная, служебные страницы и все карты.
+   Подключается ПЕРВЫМ из стилей сайта (до css/style.css на страницах сайта, до css/map-nm.css на картах).
+   Справочник с живыми образцами во всех палитрах: /design/ (страница закрыта от поиска).
+
+   Принцип: слои глубины, чем ближе к зрителю — тем светлее.
+       0 — подложка (фон страницы, боковая панель карты); нажатое/включённое возвращается на этот слой (вдавлено)
+       1 — карточки и блоки          --sp-card   + тень --sp-card-sh
+       2 — кнопки, таблетки, чипы    --sp-btn    + тень --sp-btn-sh (тонкий контур, блик по верхней кромке, тень)
+       3 — то, что парит над картой  те же кнопки + --sp-float (тёмное кольцо и тень, чтобы читались поверх тайлов)
+       ∞ — окна поверх всего         --sp-glass (стекло с размытием) + --sp-overlay
+
+   Тема задаёт только ВХОДНЫЕ значения (блок 1). Всё остальное считается из них (блок 2) — в правилах страниц
+   используйте токены блока 2 или примитивы блока 3, а не свои тени и смеси цветов (проверка: scripts/spatial_lint.py).
+   Новая игра = одна строка в блоке 1 + <html data-game="…"> (и та же строка с [data-sp-scope="…"] — для справочника /design/).
+
+   Подсветка цветом (кольцо при наведении): токены *-up уже включают кольцо цвета --sp-accent темы. Если у элемента свой
+   акцент (карточка игры на главной, кнопки соцсетей), пишите кольцо в самом правиле — переменная, объявленная на :root,
+   не видит акцент, переопределённый ниже по дереву:  inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 55%, transparent)
+   ========================================================================================= */
+
+/* ---------- 1. ТЕМЫ: входные значения ----------
+   Тема страницы — на <html>: data-theme="light" (светлая тема сайта) или data-game="…" (карта).
+   Тему можно дать и отдельному блоку: data-sp-scope="home | light | <игра>" — внутри блока все токены пересчитаются
+   (так /design/ показывает все палитры рядом; так же можно показать на главной кусок интерфейса карты). */
+
+/* главная и страницы сайта, тёмная тема (по умолчанию) */
+:root, [data-sp-scope="home"] {
+    --sp-base: #151a25; --sp-text: #eef2f6; --sp-muted: #98a2b1; --sp-accent: #54dcff;   /* голубой и текст — фирменные цвета канала BroskiPlay */
+    --sp-floor: #0d111b;                  /* фон самой страницы (фирменный) — на ступень темнее подложки элементов */
+    --sp-hi: rgba(255, 255, 255, .045);   /* блик сверху-слева */
+    --sp-lo: rgba(0, 0, 0, .55);          /* тень снизу-справа */
+    --sp-lift: var(--sp-text);            /* к какому цвету светлеют ближние слои */
+    --sp-card-mix: 93%;                   /* доля подложки в цвете карточки */
+    --sp-btn-mix: 90%;                    /* доля подложки в цвете кнопки */
+    --sp-edge-mix: 15%;                   /* заметность тонкого контура кнопки */
+    --sp-card-edge-mix: 8%;               /* заметность контура карточки */
+    --sp-gloss: rgba(255, 255, 255, .07); /* блик по верхней кромке кнопки */
+    --sp-card-gloss: rgba(255, 255, 255, .05);
+    --sp-shade: 0, 0, 0;                  /* цвет падающих теней (rgb) */
+}
+/* светлая тема сайта (переключатель ui-feedback.js): слои одного цвета, объём только светом и тенью, без контуров */
+:root[data-theme="light"]:not([data-game]), [data-sp-scope="light"] {
+    --sp-base: #e3e8f0; --sp-text: #1b2333; --sp-muted: #5b6679; --sp-accent: #1f7fa3;
+    --sp-hi: rgba(255, 255, 255, .95); --sp-lo: rgba(132, 148, 180, .42);
+    --sp-lift: var(--sp-text); --sp-card-mix: 100%; --sp-btn-mix: 100%; --sp-edge-mix: 0%; --sp-card-edge-mix: 0%;
+    --sp-gloss: rgba(255, 255, 255, 0); --sp-card-gloss: rgba(255, 255, 255, 0);
+    --sp-shade: 60, 78, 130;
+    /* светлый неоморфизм: тени шире и мягче */
+    --sp-raise: -7px -7px 16px var(--sp-hi), 8px 8px 18px var(--sp-lo);
+    --sp-raise-up: -9px -9px 20px var(--sp-hi), 12px 14px 26px var(--sp-lo);
+    --sp-raise-sm: -4px -4px 9px var(--sp-hi), 4px 4px 10px var(--sp-lo);
+    --sp-raise-sm-up: -5px -5px 12px var(--sp-hi), 6px 7px 14px var(--sp-lo);
+    --sp-press: inset -3px -3px 7px var(--sp-hi), inset 3px 3px 8px var(--sp-lo);
+    --sp-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 60%);
+    --sp-glass-gloss: rgba(255, 255, 255, .85);
+    --sp-bar-mix: 80%;
+}
+
+/* карты: общее для тёмных палитр игр + цвета каждой игры */
+:root[data-game], :where([data-sp-scope]:not([data-sp-scope="home"]):not([data-sp-scope="light"])) {
+    --sp-hi: rgba(255, 255, 255, .05); --sp-lo: rgba(0, 0, 0, .6);
+    --sp-lift: var(--sp-text); --sp-card-mix: 93%; --sp-btn-mix: 90%; --sp-edge-mix: 16%; --sp-card-edge-mix: 8%;
+    --sp-gloss: rgba(255, 255, 255, .07); --sp-card-gloss: rgba(255, 255, 255, .05); --sp-shade: 0, 0, 0;
+}
+:root[data-game="stellar"],   [data-sp-scope="stellar"]   { --sp-base: #10161f; --sp-text: #e6edf6; --sp-muted: #8d9aab; --sp-accent: #54dcff; }
+:root[data-game="palworld"],  [data-sp-scope="palworld"]  { --sp-base: #141a15; --sp-text: #ece9dc; --sp-muted: #9aa391; --sp-accent: #e0a63a; }
+:root[data-game="tainted"],   [data-sp-scope="tainted"]   { --sp-base: #200f0b; --sp-text: #f1e9e4; --sp-muted: #b39a8c; --sp-accent: #d9924f; }
+:root[data-game="gothic"],    [data-sp-scope="gothic"]    { --sp-base: #15191e; --sp-text: #e9e4da; --sp-muted: #9da3ab; --sp-accent: #d98f3d; }
+:root[data-game="dimraeth"],  [data-sp-scope="dimraeth"]  { --sp-base: #161111; --sp-text: #f3e8cc; --sp-muted: #b0a283; --sp-accent: #e8c773; }
+:root[data-game="witcher3"],  [data-sp-scope="witcher3"]  { --sp-base: #17140f; --sp-text: #ddd7c9; --sp-muted: #a39d8c; --sp-accent: #c8372c; }
+:root[data-game="cyberpunk"], [data-sp-scope="cyberpunk"] { --sp-base: #130d11; --sp-text: #f0e2da; --sp-muted: #a8918d; --sp-accent: #ff5c57; }
+:root[data-game="hogwarts"],  [data-sp-scope="hogwarts"]  { --sp-base: #0e1322; --sp-text: #efe6d0; --sp-muted: #a39a86; --sp-accent: #e2b660; }
+:root[data-game="phantomblade"], [data-sp-scope="phantomblade"] { --sp-base: #12100e; --sp-text: #ece3d0; --sp-muted: #a49a88; --sp-accent: #d23c2e; }
+/* свитки: светлая «бумага» своей игры — ближние слои светлеют к белому, тени коричневые */
+:root[data-game="oblivion"], [data-sp-scope="oblivion"] { --sp-base: #d8c393; --sp-text: #3a2610; --sp-muted: #6b5030; --sp-accent: #8d2b1c; --sp-hi: rgba(255, 248, 225, .75); --sp-lo: rgba(84, 58, 22, .38); }
+:root[data-game="skyrim"],   [data-sp-scope="skyrim"]   { --sp-base: #d2c8ab; --sp-text: #2c2822; --sp-muted: #5c5243; --sp-accent: #2f5877; --sp-hi: rgba(255, 252, 238, .75); --sp-lo: rgba(66, 58, 44, .38); }
+:root[data-game="oblivion"], :root[data-game="skyrim"], [data-sp-scope="oblivion"], [data-sp-scope="skyrim"] {
+    --sp-lift: #fff; --sp-card-mix: 90%; --sp-btn-mix: 82%; --sp-edge-mix: 18%; --sp-gloss: rgba(255, 255, 255, .5); --sp-card-gloss: rgba(255, 255, 255, .5);
+    --sp-shade: 70, 48, 18;
+    --sp-glass-mix: 90%; --sp-pill-mix: 82%;
+    --sp-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0) 60%);
+    --sp-float-lift: 0 10px 18px -8px rgba(var(--sp-shade), .45);
+}
+
+/* ---------- 2. ТОКЕНЫ: считаются из темы, в правилах страниц используются они ----------
+   :where() — нулевая специфичность: тема (блок 1) может уточнить любой токен, и для <html>, и для блока data-sp-scope */
+:root, :where([data-sp-scope]) {
+    /* поверхности слоёв */
+    --sp-card: color-mix(in srgb, var(--sp-base) var(--sp-card-mix), var(--sp-lift));
+    --sp-btn: color-mix(in srgb, var(--sp-base) var(--sp-btn-mix), var(--sp-lift));
+    --sp-edge: color-mix(in srgb, var(--sp-text) var(--sp-edge-mix), transparent);
+    --sp-sunk: color-mix(in srgb, var(--sp-base) 85%, #000);               /* дно узких дорожек (полосы прогресса) */
+
+    /* свет и тень (объём без контура) */
+    --sp-raise: -6px -6px 14px var(--sp-hi), 8px 8px 20px var(--sp-lo);           /* слой 1 */
+    --sp-raise-up: -8px -8px 18px var(--sp-hi), 12px 14px 28px var(--sp-lo);      /* слой 1, приподнят (наведение) */
+    --sp-raise-sm: -3px -3px 8px var(--sp-hi), 4px 4px 10px var(--sp-lo);         /* слой 2 */
+    --sp-raise-sm-up: -4px -4px 12px var(--sp-hi), 6px 8px 16px var(--sp-lo);     /* слой 2, приподнят */
+    --sp-press: inset -3px -3px 8px var(--sp-hi), inset 4px 4px 10px var(--sp-lo); /* вдавлено: поле ввода, нажатая кнопка */
+
+    /* кромки */
+    --sp-hairline: inset 0 0 0 1px var(--sp-edge);
+    --sp-sheen: inset 0 1px 0 var(--sp-gloss);
+    --sp-card-edge: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) var(--sp-card-edge-mix), transparent), inset 0 1px 0 var(--sp-card-gloss);
+
+    /* готовые тени слоёв (кольцо в *-up — цвет акцента темы) */
+    --sp-card-sh: var(--sp-card-edge), var(--sp-raise);
+    --sp-card-sh-up: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 35%, transparent), inset 0 1px 0 var(--sp-card-gloss), var(--sp-raise-up);
+    --sp-btn-sh: var(--sp-hairline), var(--sp-sheen), var(--sp-raise-sm);
+    --sp-btn-sh-up: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 45%, transparent), var(--sp-sheen), var(--sp-raise-sm-up);
+    --sp-focus-ring: 0 0 0 2px color-mix(in srgb, var(--sp-accent) 45%, transparent);
+
+    /* над картой и поверх страницы */
+    --sp-float-ring: 0 0 0 1px rgba(0, 0, 0, .45);                                  /* тёмное кольцо: кромка читается на любых тайлах */
+    --sp-float: var(--sp-float-ring), 0 4px 12px rgba(0, 0, 0, .5);                 /* кнопки поверх тайлов */
+    --sp-float-up: var(--sp-float-ring), 0 6px 16px rgba(0, 0, 0, .55);
+    --sp-float-lift: 0 10px 18px -8px rgba(var(--sp-shade), .55);                    /* таблетки меню над картой */
+    --sp-drop: 0 18px 44px rgba(0, 0, 0, .5);                                       /* окна и плашки */
+    --sp-drop-sm: 0 14px 30px rgba(0, 0, 0, .45);                                   /* выпадающие меню, уведомления */
+    --sp-glass-mix: 91%;
+    --sp-glass: color-mix(in srgb, var(--sp-card) var(--sp-glass-mix), transparent);
+    --sp-glass-edge: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 13%, transparent), var(--sp-sheen);
+    --sp-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, 0) 55%);  /* блик по стеклу таблеток */
+    --sp-glass-gloss: rgba(255, 255, 255, .08);
+    --sp-overlay: 0 0 0 1px rgba(0, 0, 0, .28), 0 28px 60px rgba(0, 0, 0, .5), 0 8px 20px rgba(0, 0, 0, .3);
+    --sp-tip-sh: 0 0 0 1px rgba(0, 0, 0, .22), 0 8px 18px rgba(0, 0, 0, .35);       /* хвостик попапа */
+    --sp-lifted: 0 10px 22px rgba(0, 0, 0, .38), 0 2px 6px rgba(0, 0, 0, .25);       /* картинка, приподнятая над стеклом */
+    --sp-panel-sh: 6px 0 28px rgba(0, 0, 0, .45);                                   /* боковая панель карты над тайлами */
+    --sp-pill-mix: 84%;                                                             /* плотность стекла таблеток меню над картой */
+    --sp-pill-glass: color-mix(in srgb, var(--sp-btn) var(--sp-pill-mix), transparent);
+    --sp-bar-mix: 82%;                                                              /* стекло таблеток верхнего меню сайта (над страницей) */
+    --sp-bar-glass: color-mix(in srgb, var(--sp-base) var(--sp-bar-mix), transparent);
+    --sp-scrim: rgba(0, 0, 0, .45);                                                 /* затемнение под модальным окном */
+    --sp-blur: blur(12px) saturate(1.25);
+    --sp-blur-strong: blur(18px) saturate(1.35);
+
+    /* форма и движение */
+    --sp-r-xs: 6px; --sp-r-sm: 10px; --sp-r: 14px; --sp-r-lg: 22px; --sp-r-pill: 999px;
+    --sp-lift-y: translateY(-1px);
+    --sp-t: box-shadow .2s, color .2s, transform .15s;
+    --sp-t-card: box-shadow .25s, transform .25s;
+}
+
+/* ---------- 3. ПРИМИТИВЫ для новой разметки (низкая специфичность: любое правило страницы их уточняет) ---------- */
+:where(.sp-card) { background: var(--sp-card); border-radius: var(--sp-r-lg); box-shadow: var(--sp-card-sh); color: var(--sp-text); transition: var(--sp-t-card); }
+:where(.sp-card.sp-hoverable):hover { transform: translateY(-2px); box-shadow: var(--sp-card-sh-up); }
+
+:where(.sp-btn) {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 14px;
+    border: 0; border-radius: var(--sp-r-sm); background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh);
+    font: 600 13px var(--font-body, system-ui, sans-serif); text-decoration: none; cursor: pointer; transition: var(--sp-t);
+}
+:where(.sp-btn):hover { color: var(--sp-accent); transform: var(--sp-lift-y); box-shadow: var(--sp-btn-sh-up); }
+:where(.sp-btn):active, :where(.sp-btn)[aria-pressed="true"], :where(.sp-btn.is-on) { background: var(--sp-base); color: var(--sp-accent); box-shadow: var(--sp-press); transform: none; }
+:where(.sp-btn):focus-visible { outline: 2px solid color-mix(in srgb, var(--sp-accent) 70%, transparent); outline-offset: 2px; }
+:where(.sp-btn):disabled { opacity: .45; cursor: default; box-shadow: none; transform: none; }
+:where(.sp-btn.sp-primary) { color: var(--sp-accent); }
+:where(.sp-btn.sp-round) { width: 40px; padding: 0; border-radius: 50%; }
+
+/* Значок в лунке (Twitch / YouTube / «Поддержать»): контурный знак цвета --brand в вдавленной круглой ямке на выпуклой кнопке.
+   Размер задаёт место (width/height + padding), остальное — здесь. .f — залитая деталь знака (треугольник «плей»). */
+:where(.sp-ico) {
+    box-sizing: content-box; flex: none; width: 16px; height: 16px; padding: 7px; border-radius: 50%;
+    background: var(--sp-base); box-shadow: var(--sp-press); color: var(--brand, var(--sp-accent));
+    fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: var(--sp-t);
+}
+.sp-ico { box-sizing: content-box; } /* не :where — иначе сброс «* { box-sizing: border-box }» съедает знак отступом */
+:where(.sp-ico .f) { fill: currentColor; stroke: none; }
+:where(:hover > .sp-ico, :focus-visible > .sp-ico) {
+    box-shadow: var(--sp-press), inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent), 0 0 12px color-mix(in srgb, currentColor 28%, transparent);
+}
+
+:where(.sp-chip) { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 12px; border-radius: var(--sp-r-pill); font-size: 12px; }
+
+:where(.sp-well) { background: var(--sp-base); border-radius: var(--sp-r-sm); box-shadow: var(--sp-press); }
+:where(.sp-field) {
+    border: 0; border-radius: var(--sp-r-sm); padding: 10px 12px; background: var(--sp-base); color: var(--sp-text); box-shadow: var(--sp-press);
+    font: inherit; outline: none;
+}
+:where(.sp-field):focus { box-shadow: var(--sp-press), var(--sp-focus-ring); }
+
+:where(.sp-track) { display: block; height: 8px; border-radius: var(--sp-r-pill); background: var(--sp-base); box-shadow: var(--sp-press); overflow: hidden; }
+:where(.sp-track) > i { display: block; height: 100%; border-radius: inherit; background: var(--sp-accent); }
+
+:where(.sp-glass) {
+    background: var(--sp-glass); color: var(--sp-text); border-radius: var(--sp-r-lg);
+    -webkit-backdrop-filter: var(--sp-blur-strong); backdrop-filter: var(--sp-blur-strong); box-shadow: var(--sp-glass-edge), var(--sp-overlay);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { :where(.sp-glass) { background: var(--sp-card); } }
+/* кнопка поверх карты: добавить к .sp-btn */
+:where(.sp-btn.sp-float) { box-shadow: var(--sp-hairline), var(--sp-sheen), var(--sp-float); }
+:where(.sp-btn.sp-float):hover { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 55%, transparent), var(--sp-sheen), var(--sp-float-up); }

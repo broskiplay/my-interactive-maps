@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Очередь правок — BroskiPlay</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#50e3c2">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <link rel="stylesheet" href="../css/spatial.css?v=4">
+    <link rel="stylesheet" href="../css/style.css?v=50">
+    <script>
+        (function () {
+            var sys = "dark";
+            try { if (window.matchMedia("(prefers-color-scheme: light)").matches) sys = "light"; } catch (e) {}
+            var theme = sys;
+            try {
+                var saved = localStorage.getItem("bp_theme");
+                if ((saved === "light" || saved === "dark") && localStorage.getItem("bp_theme_sys") === sys) theme = saved;
+            } catch (e) {}
+            document.documentElement.setAttribute("data-theme", theme);
+        })();
+    </script>
+    <style>
+        .rq { max-width: 860px; }
+        .rq h1 { font-family: var(--font-display); font-size: 26px; margin: 10px 0 6px; }
+        .rq-lead { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+        .rq-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 18px; }
+        .rq-bar .grow { flex: 1; }
+        .rq button, .rq select {
+            min-height: 38px; padding: 6px 14px; border: 0; border-radius: 12px; background: var(--page); color: var(--text);
+            box-shadow: var(--sp-raise-sm); font: 600 13px var(--font-body); cursor: pointer;
+        }
+        .rq button:active { box-shadow: var(--sp-press); }
+        .rq button:disabled { opacity: .5; cursor: default; }
+        .rq select { -webkit-appearance: none; appearance: none; padding-right: 14px; }
+        .rq-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+        .rq-tabs button[aria-pressed="true"] { box-shadow: var(--sp-press); color: var(--cyan); }
+        .rq-status { color: var(--muted); font-size: 13px; margin: 0 0 14px; min-height: 18px; }
+        .rq-list { display: grid; gap: 14px; }
+        .rq-item { padding: 14px 16px; border-radius: 18px; background: var(--page); box-shadow: var(--sp-raise-sm); }
+        .rq-item.is-accepted { box-shadow: var(--sp-raise-sm), inset 3px 0 0 var(--acid); }
+        .rq-item.is-rejected { opacity: .62; }
+        .rq-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin-bottom: 6px; }
+        .rq-kind { padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; box-shadow: var(--sp-press); }
+        .rq-kind.move { color: var(--orange); }
+        .rq-kind.error { color: var(--red); }
+        .rq-title { font-weight: 700; font-size: 15px; }
+        .rq-meta { color: var(--muted); font-size: 12px; }
+        .rq-text { white-space: pre-wrap; overflow-wrap: anywhere; margin: 8px 0; font-size: 14px; line-height: 1.5; }
+        .rq-coords { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); overflow-wrap: anywhere; }
+        .rq-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .rq-actions a { display: inline-flex; align-items: center; min-height: 38px; padding: 6px 14px; border-radius: 12px; background: var(--page); color: var(--cyan); box-shadow: var(--sp-raise-sm); font: 600 13px var(--font-body); text-decoration: none; }
+        .rq-actions .ok { color: var(--acid); }
+        .rq-actions .no { color: var(--muted); }
+        .rq-actions .del { color: var(--red); margin-left: auto; }
+        .rq-empty { padding: 28px; text-align: center; color: var(--muted); border-radius: 18px; box-shadow: var(--sp-press); }
+        .rq-rules { margin-top: 14px; padding: 14px 16px; border-radius: 14px; box-shadow: var(--sp-press); font-size: 13px; color: var(--muted); }
+        .rq-rules code { color: var(--text); overflow-wrap: anywhere; }
+    </style>
+</head>
+<body>
+<main class="site-shell legal rq">
+    <a class="back-link" href="../">← К картам</a>
+    <h1>Очередь правок</h1>
+    <p class="rq-lead">Сообщения «Сообщить об ошибке» и «Неточное место?» с карт. Страница видна только автору: читать очередь разрешено одному аккаунту.</p>
+
+    <div class="rq-bar">
+        <span id="rq-user" class="rq-meta">Не выполнен вход</span>
+        <span class="grow"></span>
+        <button type="button" id="rq-auth">Войти через Google</button>
+    </div>
+
+    <div id="rq-app" hidden>
+        <div class="rq-bar">
+            <div class="rq-tabs" role="group" aria-label="Статус">
+                <button type="button" data-status="new" aria-pressed="true">Новые</button>
+                <button type="button" data-status="accepted" aria-pressed="false">Принятые</button>
+                <button type="button" data-status="rejected" aria-pressed="false">Отклонённые</button>
+                <button type="button" data-status="all" aria-pressed="false">Все</button>
+            </div>
+            <select id="rq-game" aria-label="Игра"><option value="">Все игры</option></select>
+            <span class="grow"></span>
+            <button type="button" id="rq-reload">Обновить</button>
+            <button type="button" id="rq-copy" title="Текст со всеми принятыми правками — чтобы внести их в данные карт">Скопировать принятые</button>
+            <button type="button" id="rq-log" title="Файл fixes-new.json с принятыми правками для публичного журнала /fixes/: python3 scripts/fixes.py import <файл>">Скачать для журнала</button>
+        </div>
+        <p class="rq-status" id="rq-status" role="status" aria-live="polite"></p>
+        <div class="rq-list" id="rq-list"></div>
+    </div>
+    <div id="rq-denied" class="rq-rules" hidden></div>
+</main>
+
+<script src="../js/firebase-lazy.js?v=1"></script>
+<script>
+(function () {
+    "use strict";
+    var CONFIG = {
+        apiKey: "AIzaSyBZ29h18Z1k0gE4dAEca5JH8yePQgxhaII",
+        authDomain: "broskiplaymaps.firebaseapp.com",
+        projectId: "broskiplaymaps",
+        appId: "1:418362476965:web:59ce4e677b1a0a84d7404c"
+    };
+    var GAMES = { stellar: "Stellar Blade", tainted: "Tainted Grail", gothic: "Gothic 1 Remake", dimraeth: "Dimraeth", palworld: "Palworld", oblivion: "Oblivion Remastered", skyrim: "Skyrim", witcher3: "Ведьмак 3", cyberpunk2077: "Cyberpunk 2077", hogwarts: "Hogwarts Legacy", phantomblade: "Phantom Blade Zero" };
+    var KIND = { move: "Перенос", error: "Ошибка" };
+    var STATUS = { "new": "новое", accepted: "принято", rejected: "отклонено" };
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+    var $ = function (id) { return document.getElementById(id); };
+    var fb = null, db = null, items = [], filter = "new", game = "";
+
+    function setStatus(t) { $("rq-status").textContent = t; }
+
+    function mapLink(r) {
+        if (!r.url) return "";
+        try {
+            var u = new URL(r.url);
+            if (r.kind === "move" && r.to) u.searchParams.set("suggest", r.to.lat + "," + r.to.lng);
+            return u.href;
+        } catch (e) { return r.url; }
+    }
+    function when(r) {
+        var d = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : null;
+        return d ? d.toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
+    }
+
+    function render() {
+        var list = items.filter(function (r) { return (filter === "all" || (r.status || "new") === filter) && (!game || r.game === game); });
+        var counts = { "new": 0, accepted: 0, rejected: 0 };
+        items.forEach(function (r) { counts[r.status || "new"] = (counts[r.status || "new"] || 0) + 1; });
+        document.querySelectorAll(".rq-tabs button").forEach(function (b) {
+            var s = b.dataset.status, base = b.textContent.replace(/\s*\(\d+\)$/, "");
+            b.textContent = s === "all" ? base + " (" + items.length + ")" : base + " (" + (counts[s] || 0) + ")";
+            b.setAttribute("aria-pressed", String(s === filter));
+        });
+        $("rq-list").innerHTML = list.length ? list.map(function (r) {
+            var st = r.status || "new";
+            return '<article class="rq-item is-' + st + '" data-id="' + esc(r.id) + '">' +
+                '<div class="rq-head"><span class="rq-kind ' + esc(r.kind) + '">' + esc(KIND[r.kind] || r.kind) + '</span>' +
+                '<span class="rq-title">' + esc(r.title || "Без названия") + '</span>' +
+                '<span class="rq-meta">' + esc(GAMES[r.game] || r.game) + (r.map ? " · " + esc(r.map) : "") + " · id " + esc(r.markerId) + " · " + esc(when(r)) + " · " + esc(STATUS[st] || st) + (r.uid ? " · вошедший игрок" : " · гость") + '</span></div>' +
+                (r.text ? '<div class="rq-text">' + esc(r.text) + '</div>' : "") +
+                (r.kind === "move" ? '<div class="rq-coords">Сейчас: ' + esc(r.fromData) + '<br>Должно быть: ' + esc(r.toData) + '</div>' : (r.fromData ? '<div class="rq-coords">Метка: ' + esc(r.fromData) + '</div>' : "")) +
+                '<div class="rq-actions"><a href="' + esc(mapLink(r)) + '" target="_blank" rel="noopener">Показать на карте</a>' +
+                (st !== "accepted" ? '<button type="button" class="ok" data-act="accepted">Принять</button>' : "") +
+                (st !== "rejected" ? '<button type="button" class="no" data-act="rejected">Отклонить</button>' : "") +
+                (st !== "new" ? '<button type="button" data-act="new">Вернуть в новые</button>' : "") +
+                '<button type="button" class="del" data-act="delete">Удалить</button></div></article>';
+        }).join("") : '<div class="rq-empty">Здесь пусто</div>';
+    }
+
+    function load() {
+        setStatus("Загрузка…");
+        return db.collection("reports").orderBy("createdAt", "desc").limit(500).get().then(function (snap) {
+            items = snap.docs.map(function (d) { var x = d.data(); x.id = d.id; return x; });
+            var games = {};
+            items.forEach(function (r) { games[r.game] = true; });
+            var sel = $("rq-game"), cur = sel.value;
+            sel.innerHTML = '<option value="">Все игры</option>' + Object.keys(games).sort().map(function (g) { return '<option value="' + esc(g) + '">' + esc(GAMES[g] || g) + '</option>'; }).join("");
+            sel.value = games[cur] ? cur : "";
+            game = sel.value;
+            $("rq-app").hidden = false;
+            $("rq-denied").hidden = true;
+            setStatus(items.length ? "Сообщений: " + items.length : "");
+            render();
+        }).catch(function (err) {
+            $("rq-app").hidden = true;
+            var u = fb.auth().currentUser;
+            var denied = err && (err.code === "permission-denied" || /permission/i.test(err.message));
+            $("rq-denied").hidden = false;
+            $("rq-denied").innerHTML = denied
+                ? "Нет доступа к очереди для этого аккаунта. Доступ задаётся правилами Firestore (Firebase → Firestore Database → Правила). Идентификатор аккаунта: <code>" + esc(u ? u.uid : "—") + "</code>"
+                : "Не удалось загрузить очередь: " + esc(err && err.message || err);
+            setStatus("");
+        });
+    }
+
+    $("rq-list").addEventListener("click", function (e) {
+        var b = e.target.closest("button[data-act]");
+        if (!b) return;
+        var card = b.closest(".rq-item"), id = card.dataset.id, act = b.dataset.act;
+        if (act === "delete" && !confirm("Удалить сообщение без возможности восстановить?")) return;
+        b.disabled = true;
+        var ref = db.collection("reports").doc(id);
+        var p = act === "delete" ? ref.delete() : ref.update({ status: act, reviewedAt: firebase.firestore.FieldValue.serverTimestamp() });
+        p.then(function () {
+            if (act === "delete") items = items.filter(function (r) { return r.id !== id; });
+            else items.forEach(function (r) { if (r.id === id) r.status = act; });
+            render();
+        }).catch(function (err) { b.disabled = false; setStatus("Не сохранилось: " + (err.message || err)); });
+    });
+    document.querySelector(".rq-tabs").addEventListener("click", function (e) {
+        var b = e.target.closest("button[data-status]");
+        if (b) { filter = b.dataset.status; render(); }
+    });
+    $("rq-game").addEventListener("change", function (e) { game = e.target.value; render(); });
+    $("rq-reload").addEventListener("click", load);
+    $("rq-copy").addEventListener("click", function () {
+        var acc = items.filter(function (r) { return r.status === "accepted" && (!game || r.game === game); });
+        if (!acc.length) { setStatus("Принятых правок нет"); return; }
+        var text = acc.map(function (r, i) {
+            return (i + 1) + ". " + (GAMES[r.game] || r.game) + " / " + r.map + " / " + (r.kind === "move" ? "перенос" : "ошибка") + " / id " + r.markerId + " «" + (r.title || "") + "»" +
+                (r.kind === "move" ? "\n   было: " + r.fromData + "\n   стало: " + r.toData : "") +
+                (r.text ? "\n   " + r.text.replace(/\n/g, "\n   ") : "");
+        }).join("\n");
+        navigator.clipboard.writeText(text).then(function () { setStatus("Скопировано правок: " + acc.length); }, function () { setStatus("Не удалось скопировать"); });
+    });
+
+    // Публичный журнал исправлений (/fixes/): только дата, игра, карта, метка и тип правки — без текста сообщения и автора
+    $("rq-log").addEventListener("click", function () {
+        var acc = items.filter(function (r) { return r.status === "accepted"; });
+        if (!acc.length) { setStatus("Принятых правок нет"); return; }
+        var iso = function (t) { var d = t && t.toDate ? t.toDate() : new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+        var out = acc.map(function (r) {
+            return { id: r.id, date: iso(r.reviewedAt || r.createdAt), game: r.game, map: r.map || "", markerId: String(r.markerId || ""), title: r.title || "", kind: r.kind };
+        });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
+        a.download = "fixes-new.json";
+        document.body.appendChild(a); a.click(); a.remove();
+        setStatus("Скачано записей: " + out.length + ". Дальше: python3 scripts/fixes.py import ~/Downloads/fixes-new.json");
+    });
+
+    function onUser(u) {
+        $("rq-user").textContent = u ? (u.displayName || u.email || "Google") : "Не выполнен вход";
+        $("rq-auth").textContent = u ? "Выйти" : "Войти через Google";
+        if (u) load();
+        else { $("rq-app").hidden = true; $("rq-denied").hidden = true; items = []; }
+    }
+    window.BPFirebase.load().then(function (f) {
+        fb = f;
+        if (!fb.apps.length) fb.initializeApp(CONFIG);
+        db = fb.firestore();
+        fb.auth().onAuthStateChanged(onUser);
+    }).catch(function (err) { setStatus("Firebase не загрузился: " + (err.message || err)); });
+    $("rq-auth").addEventListener("click", function () {
+        if (!fb) return;
+        var a = fb.auth();
+        if (a.currentUser) a.signOut(); else a.signInWithPopup(new fb.auth.GoogleAuthProvider()).catch(function (err) { setStatus("Вход не удался: " + (err.message || err)); });
+    });
+})();
+</script>
+</body>
+</html>

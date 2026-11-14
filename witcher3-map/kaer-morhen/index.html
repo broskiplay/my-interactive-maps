@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="witcher3">
+<head>
+    <meta charset="UTF-8">
+    <base href="../">
+    <!-- map-page: сгенерировано scripts/map_pages.py из ../index.html — не править вручную -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Каэр Морхен — интерактивная карта «Ведьмак 3: Дикая Охота» на русском: Велен и Новиград, Скеллиге, Туссент, Белый Сад и Каэр Морхен, задания, ведьмачье снаряжение, карты Гвинт, места силы, гнёзда чудовищ, сундуки и прогресс на всех устройствах.">
+    <meta name="theme-color" content="#14110f">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта Ведьмак 3: Каэр Морхен — BroskiPlay</title>
+    <link rel="canonical" href="https://broskiplay.ru/witcher3-map/kaer-morhen/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/witcher3-map/#app",
+          "name": "Интерактивная карта Ведьмак 3",
+          "url": "https://broskiplay.ru/witcher3-map/",
+          "description": "Интерактивная карта «Ведьмак 3: Дикая Охота» на русском: Велен и Новиград, Скеллиге, Туссент, Белый Сад и Каэр Морхен, задания, ведьмачье снаряжение, карты Гвинт, места силы, гнёзда чудовищ, сундуки и прогресс на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "The Witcher 3: Wild Hunt"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта Ведьмак 3",
+              "item": "https://broskiplay.ru/witcher3-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта Ведьмак 3: Каэр Морхен — BroskiPlay">
+    <meta property="og:description" content="Каэр Морхен — интерактивная карта «Ведьмак 3: Дикая Охота» на русском: Велен и Новиград, Скеллиге, Туссент, Белый Сад и Каэр Морхен, задания, ведьмачье снаряжение, карты Гвинт, места силы, гнёзда чудовищ, сундуки и прогресс на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/witcher3.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта The Witcher 3: Wild Hunt на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/witcher3-map/kaer-morhen/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/witcher3.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта The Witcher 3: Wild Hunt на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=1">
+    <!-- Тайлы и данные карты лежат на broskiplay.github.io: соединение открываем заранее -->
+    <link rel="preconnect" href="https://broskiplay.github.io">
+    <link rel="preconnect" href="https://broskiplay.github.io" crossorigin>
+    <!-- early-data:start — список тайлов (manifest.json) и данные меток запрашиваем сразу, не дожидаясь скриптов карты.
+         Карту выбираем так же, как js/app.js; адреса совпадают с его fetch(), поэтому браузер берёт уже скачанное.
+         Сгенерировано scripts/early_data.py по настройкам карты: после изменения списка карт или путей запустите его снова. -->
+    <script>
+        (function () {
+            var C = {"maps":{"velen-novigrad":["https://broskiplay.github.io/witcher3-assets/tiles/velen-novigrad/manifest.json","data/witcher3_velen-novigrad_markers.json"],"skellige":["https://broskiplay.github.io/witcher3-assets/tiles/skellige/manifest.json","data/witcher3_skellige_markers.json"],"toussaint":["https://broskiplay.github.io/witcher3-assets/tiles/toussaint/manifest.json","data/witcher3_toussaint_markers.json"],"white-orchard":["https://broskiplay.github.io/witcher3-assets/tiles/white-orchard/manifest.json","data/witcher3_white-orchard_markers.json"],"kaer-morhen":["https://broskiplay.github.io/witcher3-assets/tiles/kaer-morhen/manifest.json","data/witcher3_kaer-morhen_markers.json"],"isle-of-mists":["https://broskiplay.github.io/witcher3-assets/tiles/isle-of-mists/manifest.json","data/witcher3_isle-of-mists_markers.json"],"vizima-castle":["https://broskiplay.github.io/witcher3-assets/tiles/vizima-castle/manifest.json","data/witcher3_vizima-castle_markers.json"],"time-and-space":["https://broskiplay.github.io/witcher3-assets/tiles/time-and-space/manifest.json","data/witcher3_time-and-space_markers.json"],"olgierd-world":["https://broskiplay.github.io/witcher3-assets/tiles/olgierd-world/manifest.json","data/witcher3_olgierd-world_markers.json"],"land-of-fables":["https://broskiplay.github.io/witcher3-assets/tiles/land-of-fables/manifest.json","data/witcher3_land-of-fables_markers.json"]},"def":"velen-novigrad","last":"w3_last_map"};
+            // Карта — из адреса /<игра>/<карта>/ (у страниц локаций <base href="../">, поэтому "." — папка игры)
+            var home = new URL(".", document.baseURI).pathname, seg = location.pathname.slice(home.length).split("/")[0];
+            var u = new URLSearchParams(location.search), q = u.get("map");
+            if (q !== null) {
+                // Старые ссылки ?map=<id>: переходим на страницу локации, у одной карты — просто убираем параметр
+                u.delete("map");
+                var rest = u.toString() ? "?" + u.toString() : "";
+                if (!C.single && C.maps[q] && !C.maps[seg]) { location.replace(home + q + "/" + rest + location.hash); return; }
+                try { history.replaceState(history.state, "", location.pathname + rest + location.hash); } catch (e) { /* без History API */ }
+            }
+            var id = C.single ? C.def : C.maps[seg] ? seg : null;
+            if (!id && C.last) { try { var l = localStorage.getItem(C.last); id = C.maps[l] ? l : (C.legacy && C.legacy[l]) || null; } catch (e) { /* нет доступа */ } }
+            (C.maps[id || C.def] || []).forEach(function (u) {
+                var e = document.createElement("link");
+                e.rel = "preload"; e.as = "fetch"; e.crossOrigin = "anonymous"; e.href = u;
+                document.head.appendChild(e);
+            });
+        })();
+    </script>
+    <!-- early-data:end -->
+    <!-- Основной шрифт (им набран список фильтров) — заранее, чтобы список не «прыгал» при подмене шрифта -->
+    <link rel="preload" href="../fonts/eb-garamond-cyrillic-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/eb-garamond-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/style.css?v=6">
+    <link rel="stylesheet" href="../css/spatial.css?v=4">
+    <link rel="stylesheet" href="../css/map-nm.css?v=29">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=1">
+    <script src="../js/report-marker.js?v=4" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=5">
+    <script src="../js/support-toast.js?v=8" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=3">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=5">
+</head>
+<body>
+
+<!-- Загрузочный экран: общий spatial-каркас (css/map-nm.css, .spl), эмблема и шрифты игры — css/style.css -->
+<div id="map-loader" class="spl" role="status" aria-live="polite">
+    <div class="spl-card">
+        <div class="spl-emblem" aria-hidden="true">
+            <div class="spl-well w3l-emblem">
+            <svg viewBox="0 0 120 120">
+                <circle class="w3l-ring w3l-ring-1" cx="60" cy="60" r="57"/>
+                <circle class="w3l-ring w3l-ring-2" cx="60" cy="60" r="51"/>
+            </svg>
+            <i class="w3-wolf-img"></i>
+            </div>
+        </div>
+        <div class="spl-eyebrow">The Witcher 3</div>
+        <div class="spl-title w3l-title">Ведьмак 3</div>
+        <div class="spl-track" aria-hidden="true"><i></i></div>
+        <div class="spl-status">Достаём карту из седельной сумки…</div>
+    </div>
+</div>
+
+<!-- mtb:start — верхнее меню карты: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="mtb" id="mtb">
+    <a class="mtb-pill mtb-home" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="30" height="30" alt=""><span>Главная</span></a>
+    <button type="button" class="mtb-burger mtb-pill" id="mtb-burger" aria-expanded="false" aria-controls="mtb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+    <div class="mtb-panel" id="mtb-panel">
+        <nav class="mtb-pill mtb-nav" aria-label="Разделы сайта">
+            <a class="mtb-link" href="/games/">Игры</a>
+        </nav>
+        <div class="mtb-pill mtb-actions">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+            <div class="auth-mini-box">
+    <div class="auth-mini-info">
+        <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+        <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+    </div>
+    <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+</div>
+        </div>
+    </div>
+</header>
+<!-- mtb:end -->
+
+<div id="sidebar">
+    <div class="scroll-body">
+        <div class="sidebar-header">
+<!-- mtb-side:start — кнопка меню сайта для телефона (генерируется scripts/site_menu.py) -->
+        <button type="button" class="mtb-side-btn" id="mtb-side-btn" aria-label="Меню сайта: игры, вход"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Меню сайта</span><small>игры · вход</small></button>
+        <!-- mtb-side:end -->
+            <div class="header-top-row">
+                <span class="logo-medal" aria-hidden="true"><i class="w3-wolf-img"></i></span>
+                <h1>
+                    <span class="logo-top">Дикая Охота</span>
+                    <span class="logo-main">Ведьмак 3</span>
+                    <span class="logo-sub">Интерактивная карта</span>
+                </h1>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <p class="section-label">Карта</p>
+            <div id="map-switch" class="map-switch"></div>
+
+            <div class="progress-card" aria-label="Общий прогресс">
+                <div class="progress-head"><span>Найдено меток</span><strong id="progress-value">0%</strong></div>
+                <div class="progress-track" role="progressbar" aria-label="Прогресс исследования карты" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+                <div class="progress-count" id="progress-count"></div>
+            </div>
+
+            <div class="search-wrap">
+                <input type="search" id="search-input" placeholder="Поиск: сундук, Гвинт, место силы…" autocomplete="off" aria-controls="search-results">
+                <div class="search-results" id="search-results" role="listbox" aria-label="Результаты поиска"></div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="show-all-btn">Показать все</button>
+                <button type="button" id="hide-all-btn">Скрыть все</button>
+                <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+            </div>
+
+            <button type="button" id="add-marker-btn" class="add-marker-btn">＋ Добавить свою метку</button>
+
+            <div class="io-row">
+                <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки в JSON-файл">⬇ Экспорт прогресса</button>
+                <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+            </div>
+            <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+            <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="filters-list" id="filters-container"></div>
+
+        <p class="bp-credit">Метки основаны на открытых картах сообщества. Перенос на движок и доработка — BroskiPlay.</p>
+
+        <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+        <details class="bp-about" id="bp-about">
+            <summary>О карте</summary>
+            <h2>Ведьмак 3: что отмечено на карте «Велен и Новиград»</h2>
+            <p>Интерактивная карта Ведьмак 3 на русском. На карте «Велен и Новиград» отмечено 1 729 меток в 45 категориях. Все карты: Велен и Новиград, Скеллиге, Туссент, Белый Сад, Каэр Морхен, Остров Туманов, Королевский замок в Вызиме, Время и пространство, Мир Гюнтера о&#x27;Дима, Страна Сказок. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+            <ul>
+                <li><strong>Локации</strong> (488): Покинутый посёлок (16), Лагерь бандитов (30), Вход (109), Сокровища под охраной (33), Порт (10), Магический светильник (10), Рассадник чудовищ (4), Гнездо чудовищ (30) и ещё 10.</li>
+                <li><strong>Услуги</strong> (131): Ингредиенты (4), Бронник (6), Верстак бронника (11), Цирюльник (5), Кузнец (8), Бордель (2), Точило (17), Игрок в Гвинт (2) и ещё 4.</li>
+                <li><strong>Квесты</strong> (188): Основное задание (31), Дополнительное задание (116), Кулачный бой (8), Скачки (3), Спрятанное сокровище (30).</li>
+                <li><strong>Предметы</strong> (864): Ведьмачье снаряжение (35), Сундук (457), Карта Гвинт (127), Книга (188), Мутаген (3), Рецепт (4), Предмет для задания (42), Реликвия (8).</li>
+                <li><strong>Другое</strong> (58): Другое (56), NPC (2).</li>
+            </ul>
+        <!-- cats:start — генерируется: python3 scripts/category_pages.py -->
+        <h3>Все категории Ведьмак 3: Дикая Охота</h3>
+        <ul class="bp-cats">
+            <li><strong>Локации:</strong> <a href="c/abandoned-village/">Покинутый посёлок</a>, <a href="c/bandit-camp/">Лагерь бандитов</a>, <a href="c/entrance/">Вход</a>, <a href="c/guarded-treasure/">Сокровища под охраной</a>, <a href="c/port/">Порт</a>, <a href="c/hansa-hideout/">Убежище ганзы</a>, <a href="c/errant-knight/">Странствующий Рыцарь</a>, <a href="c/magic-lamp/">Магический светильник</a>, <a href="c/monster-den/">Рассадник чудовищ</a>, <a href="c/monster-nest/">Гнездо чудовищ</a>, <a href="c/notice-board/">Доска объявлений</a>, <a href="c/person-in-distress/">Человек в беде</a>, <a href="c/place-of-power/">Место силы</a>, <a href="c/important/">Важное</a>, <a href="c/signpost/">Дорожный указатель</a>, <a href="c/contraband/">Контрабанда</a>, <a href="c/war-trophy/">Военные трофеи</a>, <a href="c/stash/">Тайник</a>, <a href="c/portal/">Портал</a>, <a href="c/vineyard-pests/">Вредители с винодельни</a>, <a href="c/winemaker-order/">Заказ виноделов</a>, <a href="c/contract/">Заказ</a>, <a href="c/lebioda-statue/">Статуя Лебеды</a>.</li>
+            <li><strong>Услуги:</strong> <a href="c/ingredients/">Ингредиенты</a>, <a href="c/armorer/">Бронник</a>, <a href="c/armorer-table/">Верстак бронника</a>, <a href="c/barber/">Цирюльник</a>, <a href="c/blacksmith/">Кузнец</a>, <a href="c/brothel/">Бордель</a>, <a href="c/whetstone/">Точило</a>, <a href="c/gwent-player/">Игрок в Гвинт</a>, <a href="c/herbalist/">Травник</a>, <a href="c/innkeeper/">Корчмарь</a>, <a href="c/merchant/">Торговец</a>.</li>
+            <li><strong>Квесты:</strong> <a href="c/main-quest/">Основное задание</a>, <a href="c/side-quest/">Дополнительное задание</a>, <a href="c/fist-fight/">Кулачный бой</a>, <a href="c/horse-race/">Скачки</a>, <a href="c/treasure-hunt/">Спрятанное сокровище</a>.</li>
+            <li><strong>Предметы:</strong> <a href="c/witcher-gear/">Ведьмачье снаряжение</a>, <a href="c/chest/">Сундук</a>, <a href="c/gwent-card/">Карта Гвинт</a>, <a href="c/book/">Книга</a>, <a href="c/mutagen/">Мутаген</a>, <a href="c/recipe/">Рецепт</a>, <a href="c/quest-item/">Предмет для задания</a>, <a href="c/relic/">Реликвия</a>.</li>
+            <li><strong>Другое:</strong> <a href="c/other/">Другое</a>, <a href="c/npc/">NPC</a>.</li>
+        </ul>
+        <!-- cats:end -->
+        </details>
+        <!-- about:end -->
+
+        <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg><span>Свернуть меню</span></button>
+    </div>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<main id="map" aria-label="Карта"></main>
+<div id="map-empty"></div>
+<div class="w3-toast" id="w3-toast" role="status" aria-live="polite"></div>
+
+<script src="../vendor/leaflet/leaflet.js" defer></script>
+<script src="../js/smooth-zoom.js?v=1" defer></script>
+<script src="../js/lightbox-zoom.js?v=3" defer></script>
+
+<script src="../js/marker-stack.js?v=1" defer></script>
+<script src="js/categories.js?v=1" defer></script>
+<script src="../js/nm-pin.js?v=2" defer></script>
+<script src="../js/firebase-lazy.js?v=1" defer></script>
+<script src="../js/map-extras.js?v=10" defer></script>
+<script src="../js/map-topbar.js?v=4" defer></script>
+<script src="../js/map-core.js?v=10" defer></script>
+<script src="js/app.js?v=13" defer></script>
+</body>
+</html>
