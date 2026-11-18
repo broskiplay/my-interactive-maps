@@ -1,0 +1,64 @@
+/* BroskiPlay homepage v2 — isolated presentation layer. No shared map tokens changed. */
+:root[data-theme="dark"] body {
+  background-image: radial-gradient(ellipse 72% 38% at 52% 5%, rgba(22,105,133,.20), transparent 78%),
+    radial-gradient(ellipse 46% 30% at 100% 52%, rgba(40,86,79,.13), transparent 80%);
+}
+html { scroll-behavior: smooth; }
+#games-heading { scroll-margin-top: 110px; }
+.vx-hero {
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--sp-accent) 24%, var(--sp-rim));
+  box-shadow: 0 24px 64px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.13);
+}
+.vx-hero::before {
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:radial-gradient(ellipse 65% 95% at 85% 40%, rgba(35,137,164,.12), transparent 75%);
+}
+.vx-hero-copy { position:relative; z-index:1; }
+.vx-hero .home-title { letter-spacing:-.045em; line-height:1.08; text-wrap:balance; }
+.vx-hero .vx-lead { max-width:53ch; line-height:1.65; }
+.vx-hero .vx-cta-main { box-shadow:0 8px 28px rgba(84,220,255,.18); }
+.vx-hero .vx-cta-main:hover { box-shadow:0 12px 36px rgba(84,220,255,.30); }
+.vx-window { box-shadow:0 22px 52px rgba(0,0,0,.32), 0 0 0 1px rgba(84,220,255,.08); }
+.vx-pin:focus-visible { outline:3px solid #fff; outline-offset:5px; }
+.vx-win-hint { pointer-events:none; }
+.hero-latest { opacity:1; }
+.hd-art-tag { opacity:1; }
+.bp-benefits {
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0;
+  margin:20px 0 24px; padding:14px 10px; border:1px solid var(--sp-rim);
+  border-radius:22px; background:var(--sp-card);
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+.bp-benefit { display:flex; align-items:center; gap:12px; min-width:0; padding:9px 17px; }
+.bp-benefit + .bp-benefit { border-left:1px solid color-mix(in srgb,var(--sp-text) 12%,transparent); }
+.bp-benefit svg { flex:none; width:27px; height:27px; fill:none; stroke:var(--sp-accent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.bp-benefit strong { display:block; font-size:14px; line-height:1.35; }
+.bp-benefit span { display:block; margin-top:3px; color:var(--sp-muted); font-size:12px; line-height:1.4; }
+.game-library { position:relative; }
+.game-library .section-heading h2 { letter-spacing:-.025em; }
+.game-dropdown { transition:transform .2s ease, box-shadow .2s ease; }
+.game-dropdown:not([open]):hover { transform:translateY(-3px); }
+.game-dropdown summary:focus-visible { outline:3px solid var(--sp-accent); outline-offset:3px; }
+.game-banner-art, .game-banner-image { transition:transform .35s ease; }
+.game-dropdown:hover .game-banner-art, .game-dropdown:hover .game-banner-image { transform:scale(1.035); }
+.game-search input:focus-visible { outline:2px solid var(--sp-accent); outline-offset:2px; }
+#recent-maps:not([hidden]) { margin:0 0 26px; }
+@media(max-width:1050px) {
+ .bp-benefits { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .bp-benefit:nth-child(3) { border-left:0; }
+ .bp-benefit:nth-child(n+3) { border-top:1px solid color-mix(in srgb,var(--sp-text) 12%,transparent); }
+}
+@media(max-width:640px) {
+ .vx-hero .home-title { letter-spacing:-.03em; }
+ .bp-benefits { grid-template-columns:1fr; padding:6px 12px; border-radius:18px; }
+ .bp-benefit { padding:12px 7px; }
+ .bp-benefit + .bp-benefit, .bp-benefit:nth-child(3) { border-left:0; border-top:1px solid color-mix(in srgb,var(--sp-text) 12%,transparent); }
+ .bp-benefit strong { font-size:13px; }
+ .bp-benefit span { font-size:12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ html { scroll-behavior:auto; }
+ .game-dropdown, .game-banner-art, .game-banner-image { transition:none; }
+ .game-dropdown:not([open]):hover, .game-dropdown:hover .game-banner-art, .game-dropdown:hover .game-banner-image { transform:none; }
+}
