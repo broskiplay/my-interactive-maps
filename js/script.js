@@ -933,10 +933,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const mapNames = [...card.querySelectorAll(".map-link:not(.map-link-db)")].map(link => link.textContent).join(" ");
             const isMatch = !query || normalizeSearch(`${title} ${mapNames}`).includes(query);
             card.hidden = !isMatch;
-            if (isMatch) visibleCount++;
+            if (isMatch && !card.classList.contains("is-filtered")) visibleCount++;
         });
         fitSuggestBanner();
-        gameSearchStatus.textContent = query ? (visibleCount ? `Найдено игр: ${visibleCount} из ${gameCards.length}` : "Игры или карты не найдены. Проверьте запрос.") : "";
+        gameSearchStatus.textContent = query ? (visibleCount ? `Найдено игр: ${visibleCount}` : "По этому запросу и фильтру ничего не найдено.") : "";
     });
 
 
