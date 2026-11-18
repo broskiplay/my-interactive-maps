@@ -157,3 +157,70 @@ html { scroll-behavior: smooth; }
 :root[data-theme="light"] .recent-item::before { background:linear-gradient(0deg,var(--sp-base),color-mix(in srgb,var(--sp-base) 70%,transparent)); }
 :root[data-theme="light"] .recent-cover { opacity:.23; }
 @media(prefers-reduced-motion:reduce) { .recent-item, .game-library details.game-dropdown { transition:none; } }
+
+/* V2.2 — final polish: typography, touch targets and predictable states. */
+:root:not(#vx) .game-library .game-title,
+:root:not(#vx) .recent-map { text-wrap:pretty; }
+.game-library .game-title { line-height:1.32; overflow-wrap:anywhere; }
+.game-library .game-info { min-width:0; }
+.game-library .game-title-block { min-width:0; }
+.game-library .game-badge { font-variant-numeric:tabular-nums; }
+.game-library details.game-dropdown > summary { border-radius:inherit; }
+.game-library details.game-dropdown:focus-within {
+  box-shadow:var(--sp-card-sh), inset 0 0 0 1px color-mix(in srgb,var(--game-accent) 55%,var(--sp-rim));
+}
+.game-library details.game-dropdown[open] {
+  box-shadow:var(--sp-card-sh), inset 0 0 0 1.5px color-mix(in srgb,var(--game-accent) 66%,var(--sp-rim));
+}
+:root:not(#vx) .game-library :is(.game-fav,.lib-sort button,.view-toggle button,.game-cta):focus-visible,
+:root:not(#vx) .vx-hero .sp-btn:focus-visible,
+:root:not(#vx) .recent-dismiss:focus-visible,
+:root:not(#vx) .recent-item:focus-visible {
+  outline:3px solid var(--sp-accent); outline-offset:3px;
+}
+.game-library .lib-sort button[aria-pressed="true"] { font-weight:750; }
+.game-library .game-fav[aria-pressed="true"] {
+  color:var(--acid,#c7ff3f);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acid,#c7ff3f) 66%,transparent),0 4px 18px rgba(0,0,0,.26);
+}
+:root:not(#vx) .game-library .game-search input:focus {
+  outline:2px solid var(--sp-accent); outline-offset:2px;
+}
+.game-library .game-banner-art,
+.game-library .game-banner-image { backface-visibility:hidden; }
+@media(hover:hover) and (pointer:fine) {
+  .game-library details.game-dropdown:not([open]):hover {
+    transform:translateY(-2px);
+    box-shadow:var(--sp-card-sh),0 0 0 1px color-mix(in srgb,var(--game-accent) 40%,transparent);
+  }
+  :root:not(#vx) .game-library .game-fav:hover { filter:brightness(1.14); }
+  :root:not(#vx) .recent-dismiss:hover { color:var(--sp-text); }
+}
+@media(hover:none) {
+  .game-library details.game-dropdown:not([open]):hover,
+  .game-library .game-banner-art,
+  .game-library .game-banner-image { transform:none; }
+  .game-library details.game-dropdown > summary:active { opacity:.92; }
+}
+@media(max-width:680px) {
+  .game-library .game-title { line-height:1.27; }
+  .game-library .lib-sort { scrollbar-width:none; }
+  .game-library .lib-sort::-webkit-scrollbar { display:none; }
+  :root:not(#vx) .game-library .game-fav { min-width:44px; min-height:44px; }
+  .game-library .game-search .view-toggle button { min-width:44px; min-height:44px; }
+  .game-library .game-search .lib-sort button { min-height:44px; }
+  .game-library .games-container:not(.is-list) .game-banner { aspect-ratio:16 / 9; }
+  .game-library .games-container:not(.is-list) .game-info { align-content:start; }
+  .game-library .games-container:not(.is-list) .game-indicators { min-width:0; }
+  .game-library .game-search-status { overflow-wrap:anywhere; }
+}
+@media(max-width:360px) {
+  .game-library .games-container:not(.is-list) .game-banner { aspect-ratio:16 / 8; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .game-library .game-banner-art,
+  .game-library .game-banner-image,
+  .game-library details.game-dropdown,
+  .recent-item,
+  .recent-dismiss { animation:none; transition:none; }
+}
