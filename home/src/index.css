@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Токены темы (RGB-тройки для Tailwind: bg-surface, text-muted/80 и т. п.). Тема — атрибут data-theme на <html>. */
+@layer base {
+  :root,
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --canvas: 13 17 27;
+    --surface: 20 25 38;
+    --raised: 29 35 51;
+    --line: 41 48 66;
+    --ink: 236 239 245;
+    --muted: 160 168 186;
+    --subtle: 118 127 147;
+    --accent: 199 255 63;
+    --accent-ink: 13 17 27;
+    --danger: 248 113 113;
+  }
+  [data-theme="light"] {
+    color-scheme: light;
+    --canvas: 246 247 250;
+    --surface: 255 255 255;
+    --raised: 238 240 245;
+    --line: 222 226 234;
+    --ink: 17 21 31;
+    --muted: 82 90 108;
+    --subtle: 120 128 145;
+    --accent: 77 124 15;
+    --accent-ink: 255 255 255;
+    --danger: 200 40 40;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}

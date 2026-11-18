@@ -1,0 +1,40 @@
+{
+ "game": "Tainted Grail: The Fall of Avalon",
+ "sections": {
+  "weapons": "Оружие",
+  "armor": "Броня",
+  "jewelry": "Украшения",
+  "magic": "Магия",
+  "ammo": "Боеприпасы",
+  "potions": "Зелья",
+  "food": "Еда",
+  "ingredients": "Материалы",
+  "gems": "Камни",
+  "recipes": "Рецепты",
+  "books": "Книги и записки",
+  "keys": "Ключи",
+  "quest": "Сюжетные предметы",
+  "housing": "Мебель",
+  "misc": "Разное"
+ },
+ "maps": {
+  "horns-of-the-south": "Рога Юга",
+  "cuanacht": "Кунахт",
+  "forlorn-swords": "Забытые Мечи",
+  "sarras": "Саррас"
+ },
+ "counts": {
+  "items": 3015,
+  "quests": 257,
+  "bestiary": 66,
+  "characters": 127,
+  "lore": 40,
+  "talents": 8,
+  "effects": 154,
+  "locations": 221,
+  "tips": 24,
+  "achievements": 65,
+  "sets": 14,
+  "markers": 22
+ }
+}

@@ -1,0 +1,18 @@
+/* Переключатель меток в попапе (js/marker-stack.js). Цвета берутся у попапа игры: currentColor + полупрозрачная подложка */
+.ms-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin: 0 18px 8px 0; padding: 3px; border-radius: 999px;
+    background: rgba(127, 127, 127, .16); color: inherit;
+    font: 600 12px/1.1 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.ms-count { flex: 1; display: flex; flex-direction: column; align-items: center; opacity: .9; white-space: nowrap; }
+.ms-count small { font-size: 10px; font-weight: 500; opacity: .7; }
+.ms-btn {
+    flex: none; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%;
+    display: grid; place-items: center; background: rgba(127, 127, 127, .24); color: inherit;
+    font: 700 20px/1 system-ui, sans-serif; cursor: pointer; transition: background .15s;
+}
+.ms-btn:hover { background: rgba(127, 127, 127, .42); }
+.ms-btn:active { background: rgba(127, 127, 127, .55); }
+.ms-btn:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+@media (pointer: coarse) { .ms-btn { width: 36px; height: 36px; } }

@@ -1,0 +1,506 @@
+{
+ "_comment": "Список игр главной (home/), страниц категорий и README. Порядок = порядок в библиотеке. Карта с одной локацией открывается по /<folder>/, с несколькими — /<folder>/<id>/. fresh: added/updated/release — даты для бейджей «Новое», «Обновлено», «Скоро».",
+ "games": [
+  {
+   "key": "stellar",
+   "title": "Stellar Blade",
+   "folder": "stellar-blade-map",
+   "banner": {
+    "kind": "art",
+    "src": "/stellar-blade-map/logo-card.webp",
+    "srcset": "/stellar-blade-map/logo-card-720.webp 720w, /stellar-blade-map/logo-card.webp 1080w",
+    "alt": "Stellar Blade"
+   },
+   "storage": {
+    "user": "sb_user2_",
+    "found": "sb_found_",
+    "cloud": ""
+   },
+   "maps": [
+    {
+     "id": "eidos7",
+     "name": "Эйдос-7 (Eidos 7)",
+     "markersFile": "stellar_blade_eidos-7_markers.json"
+    },
+    {
+     "id": "xion",
+     "name": "Ксион (Xion City)",
+     "markersFile": "stellar_blade_xion-city_markers.json"
+    },
+    {
+     "id": "wasteland",
+     "name": "Пустошь (Wasteland)",
+     "markersFile": "stellar_blade_wasteland_markers.json"
+    },
+    {
+     "id": "altess-levoire",
+     "name": "Левуар «Высь» (Altess Levoire)",
+     "markersFile": "stellar_blade_altess-levoire_markers.json"
+    },
+    {
+     "id": "matrix-11",
+     "name": "Матрица-11 (Matrix 11)",
+     "markersFile": "stellar_blade_matrix-11_markers.json"
+    },
+    {
+     "id": "great-desert",
+     "name": "Великая пустыня (Great Desert)",
+     "markersFile": "stellar_blade_great-desert_markers.json"
+    },
+    {
+     "id": "abyss-levoire",
+     "name": "Левуар «Бездна» (Abyss Levoire)",
+     "markersFile": "stellar_blade_abyss-levoire_markers.json"
+    },
+    {
+     "id": "spire-4",
+     "name": "Шпиль-4 (Spire 4)",
+     "markersFile": "stellar_blade_spire-4_markers.json"
+    },
+    {
+     "id": "eidos-9",
+     "name": "Эйдос-9 (Eidos 9)",
+     "markersFile": "stellar_blade_eidos-9_markers.json"
+    }
+   ],
+   "fresh": {
+    "updated": "2026-11-07"
+   }
+  },
+  {
+   "key": "tainted",
+   "title": "Tainted Grail: The Fall of Avalon",
+   "folder": "tainted-grail-map",
+   "banner": {
+    "kind": "art",
+    "src": "/tainted-grail-map/logo-card.webp",
+    "srcset": "/tainted-grail-map/logo-card-720.webp 720w, /tainted-grail-map/logo-card.webp 1080w",
+    "alt": "Tainted Grail: The Fall of Avalon"
+   },
+   "storage": {
+    "user": "tg_user_",
+    "found": "tg_found_",
+    "cloud": "tg_"
+   },
+   "maps": [
+    {
+     "id": "horns-of-the-south",
+     "name": "Рога Юга",
+     "markersFile": "tainted_grail_horns-of-the-south_markers.json"
+    },
+    {
+     "id": "cuanacht",
+     "name": "Кунахт",
+     "markersFile": "tainted_grail_cuanacht_markers.json"
+    },
+    {
+     "id": "forlorn-swords",
+     "name": "Забытые Мечи",
+     "markersFile": "tainted_grail_forlorn-swords_markers.json"
+    },
+    {
+     "id": "sarras",
+     "name": "Саррас",
+     "markersFile": "tainted_grail_sarras_markers.json"
+    }
+   ],
+   "db": "/db/tainted-grail/",
+   "fresh": {
+    "updated": "2026-11-16"
+   }
+  },
+  {
+   "key": "gothic",
+   "title": "Gothic 1 Remake",
+   "folder": "gothic-remake-map",
+   "banner": {
+    "kind": "art",
+    "src": "/gothic-remake-map/logo.svg",
+    "alt": "Gothic 1 Remake"
+   },
+   "storage": {
+    "user": "gr_user_",
+    "found": "gr_found_",
+    "cloud": "gr_"
+   },
+   "maps": [
+    {
+     "id": "valley-of-mines",
+     "name": "Долина рудников",
+     "markersFile": "gothic_remake_valley-of-mines_markers.json"
+    }
+   ],
+   "db": "/db/gothic-remake/",
+   "fresh": {
+    "updated": "2026-11-07"
+   }
+  },
+  {
+   "key": "dimraeth",
+   "title": "Dimraeth",
+   "folder": "dimraeth-map",
+   "banner": {
+    "kind": "logo",
+    "src": "/dimraeth-map/logo-640.webp",
+    "srcset": "/dimraeth-map/logo-400.webp 400w, /dimraeth-map/logo-640.webp 640w",
+    "alt": "Dimraeth"
+   },
+   "storage": {
+    "user": "dr_user_",
+    "found": "dr_found_",
+    "cloud": "dr_"
+   },
+   "maps": [
+    {
+     "id": "wildwood",
+     "name": "Эрлвуд",
+     "markersFile": "dimraeth_wildwood_markers.json"
+    },
+    {
+     "id": "thelostcaverns",
+     "name": "Затерянные пещеры",
+     "markersFile": "dimraeth_thelostcaverns_markers.json"
+    },
+    {
+     "id": "playerbase",
+     "name": "Святилище",
+     "markersFile": "dimraeth_playerbase_markers.json"
+    },
+    {
+     "id": "thegoblincaves",
+     "name": "Гоблинские пещеры",
+     "markersFile": "dimraeth_thegoblincaves_markers.json"
+    }
+   ]
+  },
+  {
+   "key": "palworld",
+   "title": "Palworld",
+   "folder": "palworld-map",
+   "banner": {
+    "kind": "logo",
+    "src": "/palworld-map/logo-title.png",
+    "alt": "Palworld"
+   },
+   "storage": {
+    "user": "pw_user_",
+    "found": "pw_found_",
+    "cloud": "pw_"
+   },
+   "maps": [
+    {
+     "id": "palpagos-islands",
+     "name": "Острова Палпагос",
+     "markersFile": "palworld_palpagos-islands_markers.json"
+    }
+   ]
+  },
+  {
+   "key": "oblivion",
+   "title": "Oblivion Remastered",
+   "folder": "oblivion-remake-map",
+   "banner": {
+    "kind": "art",
+    "src": "/oblivion-remake-map/logo-card.webp",
+    "srcset": "/oblivion-remake-map/logo-card-720.webp 720w, /oblivion-remake-map/logo-card.webp 1080w",
+    "alt": "Oblivion Remastered"
+   },
+   "storage": {
+    "user": "ob_user_",
+    "found": "ob_found_",
+    "cloud": "ob_"
+   },
+   "maps": [
+    {
+     "id": "cyrodiil",
+     "name": "Сиродил",
+     "markersFile": "oblivion_cyrodiil_markers.json"
+    },
+    {
+     "id": "shivering-isles",
+     "name": "Дрожащие острова",
+     "markersFile": "oblivion_shivering-isles_markers.json"
+    }
+   ]
+  },
+  {
+   "key": "skyrim",
+   "title": "Skyrim",
+   "folder": "skyrim-map",
+   "banner": {
+    "kind": "art",
+    "src": "/skyrim-map/logo-card.webp",
+    "srcset": "/skyrim-map/logo-card-720.webp 720w, /skyrim-map/logo-card.webp 1080w",
+    "alt": "Skyrim"
+   },
+   "storage": {
+    "user": "sk_user_",
+    "found": "sk_found_",
+    "cloud": "sk_"
+   },
+   "maps": [
+    {
+     "id": "skyrim",
+     "name": "Скайрим",
+     "markersFile": "skyrim_skyrim_markers.json"
+    },
+    {
+     "id": "solstheim",
+     "name": "Солстейм",
+     "markersFile": "skyrim_solstheim_markers.json"
+    }
+   ],
+   "db": "/db/skyrim/",
+   "fresh": {
+    "added": "2026-11-05"
+   }
+  },
+  {
+   "key": "witcher3",
+   "title": "Ведьмак 3",
+   "folder": "witcher3-map",
+   "banner": {
+    "kind": "art",
+    "src": "/witcher3-map/logo-card.webp",
+    "srcset": "/witcher3-map/logo-card-720.webp 720w, /witcher3-map/logo-card.webp 1080w",
+    "alt": "Ведьмак 3: Дикая Охота"
+   },
+   "storage": {
+    "user": "w3_user_",
+    "found": "w3_found_",
+    "cloud": "w3_"
+   },
+   "maps": [
+    {
+     "id": "velen-novigrad",
+     "name": "Велен и Новиград",
+     "markersFile": "witcher3_velen-novigrad_markers.json"
+    },
+    {
+     "id": "skellige",
+     "name": "Скеллиге",
+     "markersFile": "witcher3_skellige_markers.json"
+    },
+    {
+     "id": "toussaint",
+     "name": "Туссент",
+     "markersFile": "witcher3_toussaint_markers.json"
+    },
+    {
+     "id": "white-orchard",
+     "name": "Белый Сад",
+     "markersFile": "witcher3_white-orchard_markers.json"
+    },
+    {
+     "id": "kaer-morhen",
+     "name": "Каэр Морхен",
+     "markersFile": "witcher3_kaer-morhen_markers.json"
+    },
+    {
+     "id": "isle-of-mists",
+     "name": "Остров Туманов",
+     "markersFile": "witcher3_isle-of-mists_markers.json"
+    },
+    {
+     "id": "vizima-castle",
+     "name": "Королевский замок в Вызиме",
+     "markersFile": "witcher3_vizima-castle_markers.json"
+    },
+    {
+     "id": "time-and-space",
+     "name": "Время и пространство",
+     "markersFile": "witcher3_time-and-space_markers.json"
+    },
+    {
+     "id": "olgierd-world",
+     "name": "Мир Гюнтера о'Дима",
+     "markersFile": "witcher3_olgierd-world_markers.json"
+    },
+    {
+     "id": "land-of-fables",
+     "name": "Страна Сказок",
+     "markersFile": "witcher3_land-of-fables_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-07"
+   }
+  },
+  {
+   "key": "cyberpunk2077",
+   "title": "Cyberpunk 2077",
+   "folder": "cyberpunk2077-map",
+   "banner": {
+    "kind": "art",
+    "src": "/cyberpunk2077-map/logo-card.webp",
+    "srcset": "/cyberpunk2077-map/logo-card-720.webp 720w, /cyberpunk2077-map/logo-card.webp 1080w",
+    "alt": "Cyberpunk 2077"
+   },
+   "storage": {
+    "user": "cp_user_",
+    "found": "cp_found_",
+    "cloud": "cp_"
+   },
+   "maps": [
+    {
+     "id": "night-city",
+     "name": "Найт-Сити",
+     "markersFile": "cyberpunk2077_night-city_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-09"
+   }
+  },
+  {
+   "key": "hogwarts",
+   "title": "Hogwarts Legacy",
+   "folder": "hogwarts-legacy-map",
+   "banner": {
+    "kind": "art",
+    "src": "/hogwarts-legacy-map/logo-card.webp",
+    "srcset": "/hogwarts-legacy-map/logo-card-720.webp 720w, /hogwarts-legacy-map/logo-card.webp 1080w",
+    "alt": "Hogwarts Legacy"
+   },
+   "storage": {
+    "user": "hl_user_",
+    "found": "hl_found_",
+    "cloud": "hl_"
+   },
+   "maps": [
+    {
+     "id": "world",
+     "name": "Мир",
+     "markersFile": "hogwarts_world_markers.json"
+    },
+    {
+     "id": "hogwarts",
+     "name": "Хогвартс",
+     "markersFile": "hogwarts_hogwarts_markers.json"
+    },
+    {
+     "id": "hogsmeade",
+     "name": "Хогсмид",
+     "markersFile": "hogwarts_hogsmeade_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-11"
+   }
+  },
+  {
+   "key": "phantomblade",
+   "title": "Phantom Blade Zero",
+   "folder": "phantom-blade-zero-map",
+   "banner": {
+    "kind": "art",
+    "src": "/phantom-blade-zero-map/logo-card.webp",
+    "srcset": "/phantom-blade-zero-map/logo-card-720.webp 720w, /phantom-blade-zero-map/logo-card.webp 1080w",
+    "alt": "Phantom Blade Zero"
+   },
+   "storage": {
+    "user": "pb_user_",
+    "found": "pb_found_",
+    "cloud": "pb_"
+   },
+   "maps": [
+    {
+     "id": "weeping-creek-valley",
+     "name": "Долина Плачущего ручья",
+     "markersFile": "phantomblade_weeping-creek-valley_markers.json"
+    },
+    {
+     "id": "crimson-forest",
+     "name": "Багровый лес",
+     "markersFile": "phantomblade_crimson-forest_markers.json"
+    },
+    {
+     "id": "village-of-lu",
+     "name": "Деревня Лу",
+     "markersFile": "phantomblade_village-of-lu_markers.json"
+    },
+    {
+     "id": "pangzhen",
+     "name": "Панчжэнь",
+     "markersFile": "phantomblade_pangzhen_markers.json"
+    },
+    {
+     "id": "the-mandates-encampment",
+     "name": "Лагерь Союза",
+     "markersFile": "phantomblade_the-mandates-encampment_markers.json"
+    },
+    {
+     "id": "meigu-lake",
+     "name": "Озеро Мэйгу",
+     "markersFile": "phantomblade_meigu-lake_markers.json"
+    },
+    {
+     "id": "mountain-of-imprisonment",
+     "name": "Гора Заточения",
+     "markersFile": "phantomblade_mountain-of-imprisonment_markers.json"
+    },
+    {
+     "id": "mount-soulrend",
+     "name": "Гора Разбитых Душ",
+     "markersFile": "phantomblade_mount-soulrend_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-13"
+   }
+  },
+  {
+   "key": "rdr2",
+   "title": "Red Dead Redemption 2",
+   "folder": "rdr2-map",
+   "banner": {
+    "kind": "art",
+    "src": "/rdr2-map/logo-card.webp",
+    "srcset": "/rdr2-map/logo-card-720.webp 720w, /rdr2-map/logo-card.webp 1080w",
+    "alt": "Red Dead Redemption 2"
+   },
+   "storage": {
+    "user": "rd_user_",
+    "found": "rd_found_",
+    "cloud": "rd_"
+   },
+   "maps": [
+    {
+     "id": "rdr2",
+     "name": "Запад: Нью-Ханаан, Амбарино, Гуарма",
+     "markersFile": "rdr2_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-18"
+   }
+  },
+  {
+   "key": "silverpalace",
+   "title": "Silver Palace",
+   "folder": "silver-palace-map",
+   "banner": {
+    "kind": "art",
+    "src": "/silver-palace-map/logo-card.webp",
+    "srcset": "/silver-palace-map/logo-card-720.webp 720w, /silver-palace-map/logo-card.webp 1080w",
+    "alt": "Silver Palace"
+   },
+   "storage": {
+    "user": "slv_user_",
+    "found": "slv_found_",
+    "cloud": "slv_"
+   },
+   "maps": [
+    {
+     "id": "silver-palace",
+     "name": "Серебряный дворец",
+     "markersFile": "silver-palace_markers.json"
+    }
+   ],
+   "fresh": {
+    "release": "2026-12-14",
+    "added": "2026-12-14"
+   }
+  }
+ ]
+}

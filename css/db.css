@@ -1,0 +1,1379 @@
+/* База данных (scripts/db_pages.py): /db/, /db/<игра>/, /db/<игра>/<раздел>/<запись>/ */
+.db { max-width: 980px; }
+.db-crumbs { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; color: var(--muted); font-size: 13px; }
+.db-crumbs a { color: var(--muted); }
+.db-crumbs a:hover { color: var(--cyan); }
+.db-en { margin: -6px 0 14px; color: var(--muted); font-family: var(--font-label); font-size: 14px; }
+.db-lead { font-size: 15px; line-height: 1.7; }
+
+/* карточка записи: картинка + факты */
+.db-head { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: start; margin: 8px 0 18px; }
+.db-fig { width: 132px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 20px; background: var(--page); box-shadow: var(--sp-press); overflow: hidden; }
+.db-fig img { width: 84%; height: 84%; object-fit: contain; }
+.db-fig.db-wide { width: min(360px, 100%); aspect-ratio: auto; padding: 10px; }
+.db-fig.db-wide img { width: 100%; height: auto; border-radius: 14px; }
+.db-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; font-size: 14px; }
+.db-facts dt { color: var(--muted); }
+.db-facts dd { margin: 0; }
+.db-tag { display: inline-block; padding: 2px 10px; border-radius: 999px; box-shadow: var(--sp-press); font-family: var(--font-label); font-size: 12px; font-weight: 600; }
+.db-q-magic { color: var(--cyan); }
+.db-q-story { color: var(--orange); }
+.db-q-junk { color: var(--muted); }
+.db-text { font-size: 15px; line-height: 1.75; }
+.db-flavor { margin: 14px 0; padding: 10px 16px; border-radius: 14px; box-shadow: var(--sp-press); color: var(--muted); font-style: italic; }
+.db-book { margin: 10px 0 18px; padding: 18px 22px; border-radius: 18px; background: var(--page); box-shadow: var(--sp-press); font-size: 15px; line-height: 1.8; }
+.dbk { color: var(--cyan); font-weight: 600; }
+.dbq { color: var(--muted); border-bottom: 1px dotted currentColor; cursor: help; }
+.db-steps { padding-left: 22px; line-height: 1.7; }
+.db-steps li { margin-bottom: 6px; }
+.db-note { color: var(--muted); font-size: 13px; }
+.db-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.db-table th, .db-table td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--sp-line, rgba(127, 127, 127, .18)); }
+.db-table th { color: var(--muted); font-family: var(--font-label); font-weight: 600; }
+.db-scroll { overflow-x: auto; }
+.db-where { list-style: none; padding: 0; columns: 2 260px; column-gap: 26px; }
+.db-where li { break-inside: avoid; margin-bottom: 6px; }
+.db-where small { color: var(--muted); margin-left: 4px; }
+.db-secs { margin: 26px 0 8px; font-size: 14px; line-height: 1.9; color: var(--muted); }
+.db-secs strong { color: var(--text); font-weight: 600; margin-right: 4px; }
+
+/* хаб и каталог */
+.db-games { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 16px; margin: 18px 0; }
+.db-game { display: block; padding: 18px 20px; border-radius: 20px; background: var(--sp-card, var(--page)); box-shadow: var(--sp-raise-sm); color: var(--text); text-decoration: none; }
+.db-game:hover { color: var(--cyan); transform: translateY(-2px); }
+.db-game b { display: block; font-size: 17px; margin-bottom: 6px; }
+.db-game span { color: var(--muted); font-size: 13px; }
+.db-more { margin: 18px auto 0; display: block; padding: 8px 20px; }
+.db-empty { color: var(--muted); }
+.db-count { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+
+@media (max-width: 600px) {
+    .db-head { grid-template-columns: 1fr; }
+    .db-fig { width: 104px; }
+    .db-fig.db-wide { width: 100%; }
+}
+.cp.db ul.db-grid, .cp.db ul.db-where, .cp.db ul.db-trees { padding-left: 0; margin-left: 0; }
+.db-fig.db-wide { margin-bottom: 18px; }
+
+/* баннеры игр (те же картинки, что на карточках главной) */
+.db-banner { margin: 6px 0 18px; border-radius: 22px; overflow: hidden; box-shadow: var(--sp-raise-sm); aspect-ratio: 16 / 5; background: #1a0f0d; /* sp-ok: подложка под баннер до загрузки картинки */ }
+.db-banner-art { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 45%; }
+.db-game { padding: 0 0 16px; overflow: hidden; }
+.db-game b, .db-game span { display: block; padding: 0 18px; }
+.db-game b { margin-top: 14px; }
+.db-game-art { display: block; width: 100%; height: auto; aspect-ratio: 16 / 7; object-fit: cover; object-position: center 45%; transition: transform .5s; }
+.db-game:hover .db-game-art { transform: scale(1.04); }
+@media (max-width: 600px) { .db-banner { aspect-ratio: 16 / 7; border-radius: 16px; } }
+
+/* значки заданий — глифы из шрифта карты Tainted Grail, цвета категорий карты (tainted-grail-map/js/app.js) */
+@font-face { font-family: "tg-icons"; src: url("/tainted-grail-map/images/icons/icons.woff?v=1") format("woff"); font-display: block; }
+.db-qi { display: grid; place-items: center; border-radius: 50%; color: #fff; /* sp-ok: белый глиф на цвете категории, как метка на карте */ font-family: "tg-icons"; font-style: normal; line-height: 1; box-shadow: var(--sp-raise-sm); }
+.db-qi::before { content: "\e920"; }
+.db-qi-main { background: #d4a017; } /* sp-ok: цвет категории карты */
+.db-qi-main::before { content: "\e91c"; }
+.db-qi-side { background: #3f9f6a; } /* sp-ok: цвет категории карты */
+.db-qi-side::before { content: "\e92e"; }
+.db-qi-task { background: #4f8f8f; } /* sp-ok: цвет категории карты */
+.db-qi-lore { background: #9a7ac4; } /* sp-ok: цвет категории карты «Записи и книги» */
+.db-qi-lore::before { content: "\e919"; }
+.db-fig .db-qi { width: 72px; height: 72px; font-size: 40px; }
+.db-head-q { grid-template-columns: auto 1fr; align-items: center; }
+.db-fig-icon { width: 104px; margin: 8px 0 18px; }
+
+/* локации, подсказки, ссылки-плашки, таланты */
+.db-qi-loc { background: #8a6a9a; } /* sp-ok: цвет категории карты «Подземелье» */
+.db-qi-loc::before { content: "\e90d"; }
+.db-qi-tip { background: #4f8f8f; } /* sp-ok: цвет категории карты */
+.db-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 8px; list-style: none; padding: 0; margin: 8px 0 18px; }
+.cp.db ul.db-links { padding-left: 0; margin-left: 0; }
+.db-link { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; padding: 7px 10px; border-radius: 12px; background: var(--sp-card, var(--page)); box-shadow: var(--sp-raise-sm); color: var(--text); text-decoration: none; font-size: 14px; line-height: 1.3; }
+a.db-link:hover, a.db-link:focus-visible { color: var(--cyan); }
+.db-link img, .db-link .db-noimg { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
+.db-link .db-noimg { display: grid; place-items: center; box-shadow: var(--sp-press); color: var(--muted); }
+.db-link small { display: block; color: var(--muted); font-size: 12px; }
+.db-nolink { box-shadow: var(--sp-press); }
+.db-tals { display: grid; gap: 10px; margin: 6px 0 22px; }
+.db-tal { padding: 12px 16px; border-radius: 16px; background: var(--sp-card, var(--page)); box-shadow: var(--sp-raise-sm); scroll-margin-top: 80px; }
+.db-tal:target { box-shadow: var(--sp-press); }
+.db-tal h3 { margin: 0 0 4px; font-size: 16px; }
+.db-tal h3 small { margin-left: 8px; color: var(--muted); font-family: var(--font-label); font-size: 12px; font-weight: 500; }
+.db-tal p { margin: 4px 0; font-size: 14px; line-height: 1.6; }
+.db-ranks { margin: 6px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+.db-ranks li { margin-bottom: 4px; }
+.db-ranks li::marker { color: var(--muted); }
+.db-tip { scroll-margin-top: 80px; }
+.db-text kbd {
+    display: inline-block; min-width: 1.6em; padding: 0 .45em; border-radius: 6px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh);
+    color: var(--sp-text); font: 600 .85em/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center; vertical-align: .05em;
+}
+.db-text kbd.pad { color: var(--sp-muted, var(--muted)); font-weight: 500; }
+
+/* картинки из попапов меток карты */
+.db-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 12px; margin: 8px 0 20px; }
+.db-shots figure { margin: 0; padding: 8px; border-radius: 16px; background: var(--sp-card, var(--page)); box-shadow: var(--sp-raise-sm); }
+.db-shots img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 10px; }
+.db-shot-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 10px; }
+.db-shot-open:hover img, .db-shot-open:focus-visible img { filter: brightness(1.08); }
+.db-shots figcaption { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 4px 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
+.db-shot-map { flex: none; padding: 5px 11px; border-radius: 999px; background: var(--page); box-shadow: var(--sp-raise-sm); color: var(--cyan); font: 600 12px var(--font-body); text-decoration: none; }
+.db-shot-map:hover, .db-shot-map:focus-visible { box-shadow: var(--sp-press); }
+
+/* просмотр во весь экран (js/db-shots.js) */
+.db-lb-on { overflow: hidden; }
+.db-lb { position: fixed; inset: 0; z-index: 1000; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding: 16px; background: rgba(5, 8, 14, .92); /* sp-ok: затемнение под просмотром картинки, одинаково в обеих темах */ }
+.db-lb[hidden] { display: none; }
+.db-lb figure { grid-column: 2; margin: 0; display: grid; justify-items: center; gap: 10px; min-width: 0; }
+.db-lb img { max-width: 100%; max-height: calc(100vh - 110px); object-fit: contain; border-radius: 12px; }
+.db-lb figcaption { display: flex; align-items: center; gap: 12px; color: #e8edf5; /* sp-ok: текст на тёмном затемнении */ font-size: 14px; }
+.db-lb-nav, .db-lb-x { width: 46px; height: 46px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .1); /* sp-ok: кнопки на затемнении */ color: #fff; /* sp-ok */ font-size: 30px; line-height: 1; cursor: pointer; }
+.db-lb-nav:hover, .db-lb-x:hover { background: rgba(255, 255, 255, .2); /* sp-ok */ }
+.db-lb-nav[hidden] { visibility: hidden; display: block; }
+.db-lb-prev { grid-column: 1; }
+.db-lb-next { grid-column: 3; }
+.db-lb-x { position: absolute; top: 12px; right: 12px; font-size: 28px; }
+@media (max-width: 600px) {
+    .db-lb { grid-template-columns: 1fr 1fr; padding: 60px 8px 12px; }
+    .db-lb figure { grid-column: 1 / -1; grid-row: 1; }
+    .db-lb-prev { grid-column: 1; grid-row: 2; justify-self: start; }
+    .db-lb-next { grid-column: 2; grid-row: 2; justify-self: end; }
+    .db-lb img { max-height: calc(100vh - 190px); }
+}
+
+/* шапка записи: картинка слева, факты и текст справа */
+.db-hero { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: 28px; align-items: start; margin: 8px 0 18px; }
+.db-hero .db-fig.db-wide { width: 100%; margin: 0; }
+.db-hero .db-fig.db-wide img { max-height: 460px; object-fit: contain; }
+.db-hero-text > .db-text:first-of-type { margin-top: 14px; }
+.db-facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; padding: 14px 18px; border-radius: 16px; background: var(--page); box-shadow: var(--sp-press); font-size: 14px; }
+.db-facts dt { color: var(--muted); }
+.db-facts dd { margin: 0; }
+@media (max-width: 760px) {
+    .db-hero { grid-template-columns: 1fr; gap: 16px; }
+    .db-hero .db-fig.db-wide { max-width: 420px; }
+}
+.db-link img.db-pic { object-fit: cover; border-radius: 8px; }
+
+/* подпись под записями базы */
+.db-copy { margin: 40px 0 0; padding-top: 14px; border-top: 1px solid var(--sp-edge); color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+/* схема дерева талантов — как экран персонажа в игре: тёмная панель, арт ветвей, слоты по координатам игры */
+.db-tree { position: relative; margin: 8px 0 10px; border-radius: 20px; overflow: hidden; box-shadow: var(--sp-press);
+  background: radial-gradient(90% 85% at 50% 45%, #4a4a4e 0%, #2c2c30 55%, #18181b 100%); } /* sp-ok: игровая панель всегда тёмная */
+.db-tree-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 14px 0; }
+.db-tree-tabs button { padding: 6px 12px; border: 1px solid #3b3d45; border-radius: 999px; background: transparent; color: #cfc9bc; font: 500 13px/1.2 var(--font-label, inherit); cursor: pointer; } /* sp-ok */
+.db-tree-tabs button:hover { color: #f0a53f; border-color: #6b5634; } /* sp-ok */
+.db-tree-tabs button.is-on { color: #14151a; background: #e8a24a; border-color: #e8a24a; } /* sp-ok: акцент экрана талантов игры */
+.db-tree-sc { overflow-x: auto; scrollbar-width: thin; }
+.db-tree-svg { display: block; width: 100%; height: auto; }
+.db-tree-art image { opacity: .9; transition: opacity .3s; }
+.db-tree-ln line { stroke: #c9c4b8; stroke-width: 4; stroke-linecap: round; opacity: .7; transition: opacity .3s; } /* sp-ok */
+.db-tree-lb text { fill: #e9e3d6; font: 600 26px/1 var(--font-label, sans-serif); letter-spacing: .08em; text-anchor: middle; paint-order: stroke; stroke: #0c0d10; stroke-width: 6px; transition: opacity .3s; } /* sp-ok */
+.db-tn { --tn-spk: #d8d3c7; --tn-core: #f5f2ea; cursor: pointer; outline: none; transition: opacity .3s; } /* sp-ok */
+.db-tn circle { fill: transparent; }
+.db-tn use { filter: drop-shadow(0 0 3px rgba(0, 0, 0, .9)); transform-box: view-box; transform-origin: 0 0; transition: transform .15s; }
+.db-tn:hover, .db-tn:focus-visible, .db-tn.is-hl, .db-tn.is-found { --tn-spk: #e39a3b; --tn-core: #f0a53f; } /* sp-ok: оранжевый, как в игре */
+.db-tn:hover use, .db-tn:focus-visible use, .db-tn.is-hl use, .db-tn.is-found use { transform: scale(1.2); filter: drop-shadow(0 0 8px rgba(240, 165, 63, .9)); }
+.db-tree.is-zoom svg [data-sub]:not(.is-sub) { opacity: .12; }
+.db-tree.is-zoom .db-tree-art image.is-sub { opacity: 1; }
+/* попап таланта — стекло Spatial UI (слой «окна поверх всего»): наведение — подсказка, клик — закреплён, с крестиком и ссылкой */
+.db-tt { position: fixed; z-index: 1200; width: max-content; max-width: min(340px, calc(100vw - 16px)); padding: 14px 16px 14px; box-sizing: border-box;
+  background: var(--sp-glass); color: var(--sp-text); border-radius: var(--sp-r-lg); box-shadow: var(--sp-glass-edge), var(--sp-overlay);
+  font-size: 13.5px; line-height: 1.55; pointer-events: none; animation: db-tt-in .16s ease-out; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .db-tt { background: var(--sp-card); } }
+@keyframes db-tt-in { from { opacity: 0; transform: translateY(4px); } }
+.db-tt[hidden] { display: none; }
+.db-tt.is-pinned { pointer-events: auto; }
+.db-tt-h { padding: 0 0 8px; margin: 0 0 8px; border-bottom: 1px solid var(--sp-edge); }
+.db-tt.is-pinned .db-tt-h { padding-right: 34px; }
+.db-tt-h b { display: block; font: 700 15px/1.3 var(--font-display); color: var(--sp-text); }
+.db-tt-h small { display: block; margin-top: 2px; color: var(--sp-muted); font-size: 12px; }
+.db-tt-req { margin: 0 0 6px; color: var(--sp-muted); font-size: 12.5px; }
+.db-tt ol { margin: 0; padding-left: 20px; }
+.db-tt ol li { margin-bottom: 3px; }
+.db-tt ol li::marker { color: var(--sp-muted); }
+.db-tt p { margin: 0; }
+.db-tt .dbk { color: var(--sp-accent); }
+.db-tt .dbq { color: var(--sp-muted); }
+.db-tt-x { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%;
+  background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-muted); font: 400 20px/1 var(--font-body); cursor: pointer; }
+.db-tt-x:hover { color: var(--sp-accent); box-shadow: var(--sp-btn-sh-up); }
+.db-tt-x:active { box-shadow: var(--sp-press); }
+.db-tt-go { display: flex; align-items: center; justify-content: center; min-height: 38px; margin-top: 12px; padding: 6px 14px; border-radius: var(--sp-r);
+  background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-accent); font: 600 13px var(--font-body); text-decoration: none; }
+.db-tt-go:hover { box-shadow: var(--sp-btn-sh-up); color: var(--sp-accent); }
+.db-tt-go:active { box-shadow: var(--sp-press); }
+/* телефон: закреплённый попап — шторка снизу экрана, схема остаётся на месте */
+.db-tt.is-sheet { left: 8px !important; right: 8px; top: auto !important; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); width: auto; max-width: none;
+  max-height: 62vh; overflow-y: auto; padding: 16px 18px 16px; font-size: 14.5px; animation: db-tt-up .22s cubic-bezier(.2, .8, .2, 1); }
+@keyframes db-tt-up { from { opacity: 0; transform: translateY(24px); } }
+.db-tn.is-pin { --tn-spk: #e39a3b; --tn-core: #f0a53f; } /* sp-ok: оранжевый, как в игре */
+.db-tn.is-pin use { transform: scale(1.25); filter: drop-shadow(0 0 8px rgba(240, 165, 63, .9)); } /* sp-ok */
+/* телефон: схема по ширине экрана; в общем виде нажатие приближает ветвь, приближённая ветвь — в своих пропорциях */
+@media (max-width: 700px) {
+  .db-tree-sc { overflow: hidden; }
+  .db-tree-tabs { padding: 10px 10px 0; }
+  .db-tree-tabs button { padding: 7px 11px; font-size: 12.5px; }
+  .db-tree:not(.is-zoom) .db-tn { pointer-events: none; }
+  .db-tree:not(.is-zoom) .db-tree-svg { cursor: zoom-in; }
+  .db-tree.is-zoom .db-tn circle { r: 40px; }
+}
+.db-tal:target { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+/* ---------- вкладка «Таланты» каталога: плитки деревьев и вставленная схема ---------- */
+.db-treebox { margin: 0 0 14px; }
+.db-trees-h { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.db-trees { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; list-style: none; padding: 0; margin: 0; }
+.db-trees button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border: 0; border-radius: 14px; background: var(--page); color: var(--text); box-shadow: var(--sp-raise-sm); font: inherit; text-align: left; cursor: pointer; }
+.db-trees button:hover, .db-trees button:focus-visible { box-shadow: var(--sp-press); }
+.db-trees img { width: 40px; height: 40px; object-fit: contain; flex: none; }
+.db-trees b { display: block; font-size: 14px; }
+.db-trees small { display: block; color: var(--muted); font-size: 12px; }
+.db-treebox.is-search .db-tn:not(.is-found) { opacity: .35; }
+
+/* ---------- спойлер «Все таланты списком» под схемой ---------- */
+.db-spoiler { margin: 16px 0 22px; }
+.db-spoiler > summary { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 18px; border-radius: var(--sp-r); list-style: none; cursor: pointer;
+  background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); font: 600 15px var(--font-body); user-select: none; }
+.db-spoiler > summary::-webkit-details-marker { display: none; }
+.db-spoiler > summary::before { content: ""; width: 8px; height: 8px; margin: 0 4px 0 2px; border: solid var(--sp-accent); border-width: 0 2px 2px 0; transform: rotate(-45deg); transition: transform .2s; }
+.db-spoiler[open] > summary::before { transform: rotate(45deg); }
+.db-spoiler > summary small { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-muted); font-size: 12px; }
+.db-spoiler > summary:hover { color: var(--sp-accent); box-shadow: var(--sp-btn-sh-up); }
+.db-spoiler[open] > summary { background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-accent); }
+.db-spoiler > h2:first-of-type { margin-top: 18px; }
+
+/* ---------- база игры в оформлении её карты (html[data-game], db_pages.py → DB["theme"]) ----------
+   палитра — из css/spatial.css (:root[data-game=…]), шрифты — как на карте игры, фон — пятна акцента, как в боковой панели карты */
+html[data-game="tainted"] { --font-display: "Cinzel", Georgia, "Times New Roman", serif; --font-heading: var(--font-display); }
+html[data-game] body { background: var(--sp-base); }
+html[data-game] body::before { content: ""; display: block; position: fixed; inset: 0; z-index: -1; pointer-events: none; -webkit-mask-image: none; mask-image: none;
+  background: radial-gradient(60vmax 60vmax at 0% 0%, color-mix(in srgb, var(--sp-accent) 13%, transparent), transparent 62%),
+              radial-gradient(60vmax 60vmax at 100% 100%, color-mix(in srgb, var(--sp-accent) 10%, transparent), transparent 62%); }
+html[data-game] body::after { display: none; }
+html[data-game] .tb-theme { display: none; }
+html[data-game] .db h1, html[data-game] .db h2 { font-family: var(--font-display); letter-spacing: .02em; }
+html[data-game] .db h1 { color: var(--sp-text); }
+html[data-game] .db h2 { color: var(--sp-accent); }
+html[data-game] .db a { color: var(--sp-accent); }
+html[data-game] .db .db-trees button { color: var(--sp-text); }
+/* хлебные крошки — кнопки-«таблетки», как чипы фильтров; первая — с домиком */
+.cp.db .db-crumbs { align-items: center; gap: 4px; margin: 2px 0 14px; }
+.cp.db .db-crumbs > span { color: var(--sp-muted); font-size: 0; width: 14px; height: 14px; flex: none; opacity: .7;
+  background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat; }
+.cp.db .db-crumbs a { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 5px 14px; border-radius: 999px;
+  background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 13px var(--font-body); text-decoration: none;
+  transition: color .15s, box-shadow .15s, transform .15s; }
+.cp.db .db-crumbs a:first-child::before { content: ""; width: 15px; height: 15px; flex: none; background: currentColor; opacity: .85;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 11l9-7 9 7'/%3E%3Cpath d='M5 10v10h5v-6h4v6h5V10'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 11l9-7 9 7'/%3E%3Cpath d='M5 10v10h5v-6h4v6h5V10'/%3E%3C/svg%3E") center / contain no-repeat; }
+.cp.db .db-crumbs a:hover { color: var(--sp-accent); transform: translateY(-1px); }
+.cp.db .db-crumbs a:active { box-shadow: var(--sp-press); transform: none; }
+.cp.db .db-crumbs a:last-child { color: var(--sp-accent); }
+.cp.db .db-crumbs .db-crumb-cur { display: inline-flex; align-items: center; min-height: 32px; padding: 5px 6px; max-width: 100%; min-width: 0; color: var(--sp-muted); font: 600 13px var(--font-body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp.db .db-crumbs a:last-child:not(:only-child) { color: var(--sp-text); }
+.cp.db .db-crumbs a:hover { color: var(--sp-accent); }
+@media (max-width: 600px) { .cp.db .db-crumbs a { min-height: 30px; padding: 4px 11px; font-size: 12px; } }
+html[data-game] .db .db-tal, html[data-game] .db .db-game { background: var(--sp-card); box-shadow: var(--sp-card-sh); }
+
+/* ---------- загрузочный экран при входе в базу игры: тот же каркас, что у карты (css/map-nm.css #map-loader.spl),
+   эмблема и её стили берутся из файлов карты (db_pages.map_loader). Скрывает js/db-catalog.js, показывается раз за сессию ---------- */
+#db-loader.spl { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; overflow: hidden; padding: 16px;
+  background: var(--sp-base); color: var(--sp-text); transition: opacity .6s ease, visibility .6s ease; }
+#db-loader.spl.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+#db-loader.spl::before, #db-loader.spl::after { content: ""; position: absolute; width: 80vmax; height: 80vmax; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, color-mix(in srgb, var(--sp-accent) 15%, transparent), transparent 62%); }
+#db-loader.spl::before { left: -34vmax; top: -40vmax; animation: spl-drift 16s ease-in-out infinite alternate; }
+#db-loader.spl::after { right: -36vmax; bottom: -44vmax; opacity: .75; animation: spl-drift 21s ease-in-out infinite alternate-reverse; }
+@keyframes spl-drift { to { transform: translate(7vmax, 5vmax); } }
+#db-loader .spl-card { position: relative; width: min(360px, 100%); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 30px 24px 26px; text-align: center;
+  background: var(--sp-card); border-radius: var(--sp-r-lg); box-shadow: var(--sp-card-sh); animation: spl-in .5s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes spl-in { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+#db-loader .spl-emblem { width: 172px; height: 172px; margin-bottom: 16px; display: grid; place-items: center; border-radius: 50%;
+  background: var(--sp-btn); box-shadow: var(--sp-btn-sh); animation: spl-float 3.6s ease-in-out infinite; }
+@keyframes spl-float { 50% { transform: translateY(-4px); box-shadow: var(--sp-hairline), var(--sp-sheen), var(--sp-raise-sm-up); } }
+#db-loader .spl-well { position: relative; width: 144px; height: 144px; display: grid; place-items: center; border-radius: 50%; overflow: hidden; background: var(--sp-base); box-shadow: var(--sp-press); }
+#db-loader .spl-well > svg { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); }
+#db-loader .spl-title { font: 700 30px/1.1 var(--font-display); letter-spacing: .12em; padding-left: .12em; text-transform: uppercase; color: var(--sp-text); }
+#db-loader .spl-sub { font: 600 12px/1.3 var(--font-display); letter-spacing: .26em; padding-left: .26em; text-transform: uppercase; color: var(--sp-accent); }
+#db-loader .spl-track { display: block; width: min(240px, 82%); height: 8px; margin: 14px 0 4px; border-radius: var(--sp-r-pill); overflow: hidden; background: var(--sp-base); box-shadow: var(--sp-press); }
+#db-loader .spl-track > i { display: block; width: 38%; height: 100%; border-radius: inherit; background: var(--sp-accent); box-shadow: var(--sp-sheen); animation: spl-sweep 1.3s ease-in-out infinite; }
+@keyframes spl-sweep { from { transform: translateX(-100%); } to { transform: translateX(265%); } }
+#db-loader .spl-status { min-height: 1.4em; font: 500 13px/1.4 var(--font-body, system-ui, sans-serif); color: var(--sp-muted); }
+@media (max-width: 480px) {
+  #db-loader .spl-card { padding: 26px 18px 22px; }
+  #db-loader .spl-title { font-size: 26px; }
+  #db-loader .spl-emblem { width: 150px; height: 150px; }
+  #db-loader .spl-well { width: 126px; height: 126px; }
+}
+@media (prefers-reduced-motion: reduce) { #db-loader::before, #db-loader::after, #db-loader .spl-card, #db-loader .spl-emblem, #db-loader .spl-track > i, #db-loader .spl-well * { animation: none !important; } }
+.db-gridwrap.is-flat { margin: 0; }
+.db-gridwrap.is-flat > summary { display: none; }
+.db-gridwrap[open]:not(.is-flat) > .db-grid { margin-top: 14px; }
+.db-mk td { vertical-align: top; }
+.db-mk tr { scroll-margin-top: 80px; }
+.db-mk-pics { white-space: nowrap; }
+.db-mk-pics img { width: 40px; height: 40px; margin: 0 4px 4px 0; border-radius: 50%; }
+.db-mk small { color: var(--muted); }
+.db-muted { color: var(--muted); }
+
+.db-more { margin: 22px auto 0; display: block; min-height: 40px; padding: 8px 22px; border: 0; border-radius: 12px; background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 13px var(--font-body); cursor: pointer; }
+.db-more:hover { color: var(--sp-accent); box-shadow: var(--sp-btn-sh-up); }
+
+/* ================= каталог 2026-11: шапка с кадрами из игры, вкладки-иконки, карточки без подписей ================= */
+
+/* ---------- шапка (Game.hero + js/db-hero.js) ---------- */
+.cp.db:has(.dbx) { max-width: 1180px; }
+.dbx { position: relative; margin: 4px 0 22px;
+  min-height: clamp(360px, 52vh, 480px); display: flex; align-items: center; border-radius: 26px; isolation: isolate;
+  background: #120806; /* sp-ok: подложка под кадры до загрузки */ box-shadow: var(--sp-card-sh); }
+/* обрезка — у слоя декора, не у .dbx: Safari (iOS) обрезает по предку с overflow:hidden и скруглением даже position:fixed,
+   и закреплённый поиск пропадал. z-index слоёв считаются в контексте .dbx (у .dbx-fx своего нет) */
+.dbx-fx { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+.dbx-bg, .dbx-fog, .dbx-embers, .dbx-beasts { position: absolute; inset: 0; pointer-events: none; }
+.dbx-bg { z-index: -3; }
+.dbx-shot { position: absolute; inset: -6%; background: center / cover no-repeat; opacity: 0; transition: opacity 2.2s ease;
+  filter: saturate(1.05) brightness(.82); animation: dbx-kb 26s ease-in-out infinite alternate; }
+.dbx-shot:nth-child(2n) { animation-direction: alternate-reverse; animation-duration: 31s; }
+.dbx-shot.is-on { opacity: 1; }
+@keyframes dbx-kb { from { transform: scale(1.02) translate3d(-1.5%, 0, 0); } to { transform: scale(1.14) translate3d(1.5%, -1.5%, 0); } }
+/* затемнение: слева под текстом и снизу в цвет страницы */
+.dbx-bg::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sp-base) 86%, transparent) 0%, color-mix(in srgb, var(--sp-base) 55%, transparent) 40%, transparent 70%),
+              linear-gradient(0deg, var(--sp-base) 0%, transparent 38%),
+              radial-gradient(120% 90% at 78% 40%, transparent 30%, rgba(0, 0, 0, .45) 100%); } /* sp-ok: виньетка кадра */
+.dbx-fog { z-index: -1; overflow: hidden; }
+.dbx-fog i { position: absolute; left: -50%; width: 200%; height: 70%; opacity: .55; mix-blend-mode: screen;
+  background: radial-gradient(28% 40% at 20% 60%, rgba(214, 190, 170, .16), transparent 70%), /* sp-ok: дымка поверх кадра */
+              radial-gradient(22% 34% at 55% 40%, rgba(214, 190, 170, .12), transparent 70%),
+              radial-gradient(30% 44% at 85% 65%, rgba(200, 170, 150, .14), transparent 70%); /* sp-ok: дымка поверх кадра */
+  animation: dbx-fog 48s linear infinite; }
+.dbx-fog i:first-child { bottom: -18%; }
+.dbx-fog i:last-child { bottom: 10%; opacity: .35; animation-duration: 75s; animation-direction: reverse; }
+@keyframes dbx-fog { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(25%, 0, 0); } }
+.dbx-embers { z-index: 1; width: 100%; height: 100%; }
+.dbx-beasts { z-index: 0; left: auto; width: min(46%, 520px); right: 2%; animation: dbx-float 7s ease-in-out infinite;
+  -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 22%); mask-image: linear-gradient(0deg, transparent 0%, #000 22%); }
+.dbx-beast { position: absolute; right: 0; bottom: -2%; width: 100%; height: 104%; object-fit: contain; object-position: right bottom;
+  opacity: 0; transform: translate3d(40px, 0, 0) scale(.96); transition: opacity 1.6s ease, transform 2.4s cubic-bezier(.2, .7, .2, 1);
+  filter: drop-shadow(0 10px 40px rgba(0, 0, 0, .85)) drop-shadow(0 0 22px color-mix(in srgb, var(--sp-accent) 25%, transparent)); } /* sp-ok: тень существа */
+.dbx-beast.is-on { opacity: 1; transform: none; }
+@keyframes dbx-float { 50% { transform: translate3d(0, -8px, 0); } }
+.dbx.is-off *, .dbx.is-off { animation-play-state: paused !important; }
+.dbx.is-still *, .dbx.is-still { animation: none !important; transition: none !important; }
+.dbx-in { position: relative; z-index: 2; width: min(560px, 100%); padding: 40px 44px 36px; box-sizing: border-box; }
+.cp.db .dbx h1 { margin: 0; font: 700 clamp(38px, 6vw, 66px)/1.02 var(--font-display); letter-spacing: .04em; color: var(--sp-text);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .7); } /* sp-ok: тень текста на кадре */
+.dbx h1 small { display: block; margin-bottom: 8px; font: 600 13px/1.2 var(--font-display); letter-spacing: .32em; text-transform: uppercase; color: var(--sp-accent); text-shadow: none; }
+.dbx-sub { margin: 6px 0 0; font: 600 14px/1.3 var(--font-display); letter-spacing: .24em; text-transform: uppercase; color: color-mix(in srgb, var(--sp-text) 72%, transparent); }
+.dbx-lead { margin: 14px 0 0; color: color-mix(in srgb, var(--sp-text) 80%, transparent); font-size: 14.5px; line-height: 1.5; }
+.dbx-search { display: flex; align-items: center; gap: 10px; margin: 22px 0 0; padding: 0 8px 0 16px; min-height: 54px; border-radius: 16px;
+  background: color-mix(in srgb, var(--sp-base) 62%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 14%, transparent), 0 10px 30px rgba(0, 0, 0, .35); } /* sp-ok: стекло на кадре */
+.dbx-search:focus-within { box-shadow: inset 0 0 0 1.5px var(--sp-accent), 0 10px 30px rgba(0, 0, 0, .35); } /* sp-ok */
+.dbx-search svg { width: 20px; height: 20px; flex: none; fill: none; stroke: var(--sp-muted); stroke-width: 2; stroke-linecap: round; }
+.dbx-search .db-search { flex: 1; min-width: 0; height: 52px; padding: 0; border: 0; background: none; color: var(--sp-text); font: 16px var(--font-body); outline: none; box-shadow: none; }
+.dbx-stats { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 18px 0 0; }
+.cp.db .dbx-stats a { display: flex; align-items: baseline; gap: 6px; color: var(--sp-muted); text-decoration: none; font-size: 13px; }
+.dbx-stats b { color: var(--sp-text); font: 700 18px var(--font-display); }
+.cp.db .dbx-stats a:hover, .cp.db .dbx-stats a:hover b { color: var(--sp-accent); }
+/* «Карта …» в шапке раздела — та же таблетка, что «Показать на карте» на странице записи */
+.cp.db .dbx-stats a.dbx-map { align-items: center; gap: 12px; min-height: 44px; padding: 4px 18px 4px 4px; border-radius: var(--sp-r-pill); background: var(--sp-btn); box-shadow: var(--sp-btn-sh);
+  color: var(--sp-text); font: 600 14px var(--font-body); transition: transform .18s, box-shadow .18s, color .18s; }
+.dbx-map .sp-ico { width: 16px; height: 16px; padding: 9px; color: var(--sp-accent); }
+.dbx-map i { font-style: normal; color: var(--sp-accent); transition: transform .18s; }
+.cp.db .dbx-stats a.dbx-map:hover, .cp.db .dbx-stats a.dbx-map:focus-visible { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+.dbx-map:hover i { transform: translateX(4px); }
+.cp.db .dbx-stats a.dbx-map:active { box-shadow: var(--sp-press); transform: none; }
+html[data-game="skyrim"] .cp.db .dbx-map span { font: 500 14px var(--s-label); letter-spacing: .14em; text-transform: uppercase; }
+html[data-game="gothic"] .cp.db .dbx-map span { font: 600 13.5px var(--g-label); letter-spacing: .12em; text-transform: uppercase; }
+.cp.db .dbx-cap { position: absolute; z-index: 3; pointer-events: auto; right: 22px; bottom: 14px; margin: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  color: color-mix(in srgb, var(--sp-text) 70%, transparent); text-decoration: none;
+  font: italic 500 14px var(--font-display); letter-spacing: .06em; text-shadow: 0 1px 6px rgba(0, 0, 0, .8); transition: color .2s; } /* sp-ok: читаемость поверх кадра */
+.dbx-cap small { font: 600 9.5px var(--font-body); font-style: normal; letter-spacing: .18em; text-transform: uppercase; color: var(--sp-accent); opacity: .85; }
+.cp.db .dbx-cap:hover { color: var(--sp-text); }
+@media (max-width: 760px) {
+  .dbx { min-height: 0; border-radius: 20px; align-items: flex-end; }
+  .dbx-in { padding: 120px 18px 22px; }
+  .dbx-beasts { width: 70%; right: -6%; opacity: .55; }
+  .dbx-bg::after { background: linear-gradient(0deg, var(--sp-base) 8%, color-mix(in srgb, var(--sp-base) 55%, transparent) 60%, transparent 100%); }
+  .cp.db .dbx-cap { top: 14px; bottom: auto; }
+  .dbx-lead { display: none; }
+}
+
+/* ---------- вкладки: иконка из игры + название + число ---------- */
+.db-tabs { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; margin: 0 0 16px; }
+.cp.db .db-tabs a { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 10px; border-radius: 16px;
+  background: var(--sp-card); box-shadow: var(--sp-card-sh); color: var(--sp-text); text-decoration: none; text-align: center; transition: transform .15s, color .15s; }
+.cp.db .db-tabs a:hover { transform: translateY(-2px); color: var(--sp-accent); }
+.cp.db .db-tabs a[aria-selected="true"] { color: var(--sp-accent); box-shadow: var(--sp-press), inset 0 -2px 0 var(--sp-accent); transform: none; }
+.db-tabs img, .db-tabs .db-qi { width: 44px; height: 44px; object-fit: contain; font-size: 24px; }
+.db-tabs img.dbt-bestiary, .db-tabs img.dbt-characters { object-fit: cover; object-position: center 12%; border-radius: 50%; background: var(--sp-base); box-shadow: var(--sp-press); }
+.db-tabs span { font: 600 13px/1.2 var(--font-body); }
+.db-tabs small { color: var(--sp-muted); font-size: 11px; }
+@media (max-width: 700px) {
+  .db-tabs { display: flex; overflow-x: auto; gap: 8px; margin-inline: -16px; padding: 4px 16px 10px; scrollbar-width: none; scroll-snap-type: x proximity; }
+  /* ≤480 px у body отступ 14 px (css/style.css) — лента до краёв экрана, без лишних 2 px горизонтальной прокрутки */
+  @media (max-width: 480px) { .db-tabs { margin-inline: -14px; padding-inline: 14px; } }
+  .db-tabs::-webkit-scrollbar { display: none; }
+  .cp.db .db-tabs a { flex: 0 0 86px; scroll-snap-align: start; padding: 10px 4px 8px; }
+  .db-tabs img, .db-tabs .db-qi { width: 36px; height: 36px; font-size: 20px; }
+  .db-tabs span { font-size: 12px; }
+}
+
+/* ---------- фильтры: чипы раздела + чипы типа + сортировка ---------- */
+.db-bar { display: flex; align-items: flex-start; gap: 10px; }
+.db-bar .db-chips { flex: 1; }
+.db-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.db-chips button { display: inline-flex; align-items: baseline; gap: 6px; min-height: 32px; padding: 5px 12px; border: 0; border-radius: 999px;
+  background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 12.5px var(--font-body); cursor: pointer; }
+.db-chips button small { color: var(--sp-muted); font-weight: 500; font-size: 11px; }
+.db-chips button:hover { color: var(--sp-accent); }
+.db-chips button[aria-pressed="true"] { color: var(--sp-accent); box-shadow: var(--sp-press); background: var(--sp-base); }
+.db-chips2 { margin-top: -2px; padding-left: 12px; border-left: 2px solid color-mix(in srgb, var(--sp-accent) 45%, transparent); }
+.db-chips2 button { min-height: 28px; padding: 3px 10px; font-size: 12px; }
+.db-sort { flex: none; min-height: 32px; padding: 4px 10px; border: 0; border-radius: 10px; background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 12.5px var(--font-body); }
+.db-count { color: var(--sp-muted); font-size: 13px; margin: 0 0 10px; }
+
+/* ---------- сетка и карточки ---------- */
+.db-grid { display: grid; gap: 10px; list-style: none; padding: 0; margin: 0; }
+.cp.db .db-grid > li { display: flex; margin: 0; padding: 0; }
+.cp.db .db-grid > li > .db-card { flex: 1; min-width: 0; }
+.cp.db .db-grid > li.db-empty { display: block; grid-column: 1 / -1; }
+.db-g-tile { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+.db-g-fig { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.db-g-scene { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+.db-g-row { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 8px; }
+.cp.db .db-card { position: relative; display: flex; color: var(--sp-text); text-decoration: none; background: var(--sp-card); box-shadow: var(--sp-card-sh);
+  border-radius: 16px; transition: transform .15s, color .15s, box-shadow .15s; -webkit-tap-highlight-color: transparent; }
+.cp.db .db-card:hover, .cp.db .db-card:focus-visible { color: var(--sp-accent); transform: translateY(-2px); }
+.db-card b { font-weight: 600; }
+.db-pic { position: relative; display: grid; place-items: center; flex: none; }
+.db-pic img { display: block; }
+.db-noimg { display: grid; place-items: center; width: 100%; height: 100%; color: var(--sp-muted); font-size: 18px; }
+
+/* плитка предмета: иконка на подсветке цвета качества, тир — римской цифрой в углу, название в две строки */
+.db-v-tile { --q: var(--sp-muted); flex-direction: column; align-items: center; gap: 8px; padding: 10px 8px 12px; text-align: center; }
+.db-v-tile .db-pic { width: 100%; aspect-ratio: 1.15; border-radius: 12px; background: radial-gradient(60% 60% at 50% 50%, color-mix(in srgb, var(--q) 26%, transparent), transparent 75%), var(--sp-base);
+  box-shadow: var(--sp-press), inset 0 -2px 0 color-mix(in srgb, var(--q) 70%, transparent); }
+.db-v-tile .db-pic img { width: 78%; height: 78%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .55)); transition: transform .2s; } /* sp-ok: тень иконки */
+.db-v-tile:hover .db-pic img { transform: scale(1.08); }
+.db-v-tile b { font-size: 12.5px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.db-tier { position: absolute; top: 5px; right: 6px; padding: 1px 6px; border-radius: 6px; background: color-mix(in srgb, var(--sp-base) 80%, transparent);
+  color: var(--q); font: 700 11px/1.4 var(--font-display); font-style: normal; letter-spacing: .04em; }
+.db-qc-common { --q: #c9c1b4; }  /* sp-ok: цвета качества предметов, как рамки в инвентаре игры */
+.db-qc-magic { --q: #6fa8ff; }   /* sp-ok */
+.db-qc-story { --q: #e3a64a; }   /* sp-ok */
+.db-qc-junk { --q: #7d756c; }    /* sp-ok */
+.db-qc-tool { --q: #8fc47a; }    /* sp-ok */
+.db-tt .db-qc-common, .db-tt .db-qc-magic, .db-tt .db-qc-story, .db-tt .db-qc-junk, .db-tt .db-qc-tool { color: var(--q); font-weight: 600; }
+
+/* портрет (бестиарий, персонажи): рендер в полный рост на подсветке, имя по низу */
+.db-v-fig { flex-direction: column; justify-content: flex-end; aspect-ratio: 3 / 4; overflow: hidden;
+  background: radial-gradient(70% 55% at 50% 42%, color-mix(in srgb, var(--sp-accent) 18%, transparent), transparent 72%), var(--sp-card); }
+.db-v-fig .db-pic { position: absolute; inset: 8px 6px 34px; }
+.db-v-fig .db-pic img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .7)); transition: transform .35s cubic-bezier(.2, .7, .2, 1); } /* sp-ok */
+.db-v-fig:hover .db-pic img { transform: scale(1.06) translateY(-4px); }
+.db-v-fig b { position: relative; padding: 26px 10px 10px; font: 600 13.5px/1.25 var(--font-display); text-align: center;
+  background: linear-gradient(0deg, var(--sp-card) 40%, transparent); }
+
+/* кадр места (локации): скриншот, название поверх */
+.db-v-scene { flex-direction: column; justify-content: flex-end; aspect-ratio: 16 / 10; overflow: hidden; }
+.db-v-scene .db-pic { position: absolute; inset: 0; }
+.db-v-scene .db-pic img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.db-v-scene .db-qi { width: 56px; height: 56px; font-size: 30px; }
+.db-v-scene:hover .db-pic img { transform: scale(1.06); }
+.db-v-scene::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0, 0, 0, .82) 0%, transparent 55%); pointer-events: none; } /* sp-ok: под подписью на кадре */
+.db-v-scene b, .db-v-scene small { position: relative; z-index: 1; padding: 0 12px; color: #f3ece2; } /* sp-ok: текст на кадре */
+.db-v-scene b { padding-bottom: 10px; font-size: 14px; line-height: 1.25; }
+.db-v-scene small { order: -1; margin-bottom: 2px; color: color-mix(in srgb, #f3ece2 65%, transparent); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; } /* sp-ok */
+.cp.db .db-v-scene:hover b { color: var(--sp-accent); }
+
+/* строка (задания, лор, эффекты, достижения, книги…) */
+.db-v-row { align-items: center; gap: 12px; min-height: 52px; padding: 8px 12px; border-radius: 14px; }
+.db-v-row .db-pic { width: 36px; height: 36px; }
+.db-v-row .db-pic img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
+.db-v-row .db-qi { width: 32px; height: 32px; font-size: 18px; }
+.db-v-row b { flex: 1; min-width: 0; font-size: 14px; line-height: 1.3; }
+.db-meta { flex: none; padding: 2px 8px; border-radius: 999px; background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-muted); font-size: 11.5px; font-weight: 600; }
+.db-v-row[data-k] { box-shadow: var(--sp-card-sh), inset 3px 0 0 var(--k, transparent); }
+.db-v-row[data-k="Усиление"], .db-v-row[data-k="Благословение"], .db-v-row[data-k="Благодать"] { --k: #6fbf7a; } /* sp-ok: польза */
+.db-v-row[data-k="Ослабление"], .db-v-row[data-k="Проклятие"], .db-v-row[data-k="Проступок"] { --k: #d0584a; } /* sp-ok: вред */
+.db-v-row[data-k="Испытание"] { --k: #e3a64a; } /* sp-ok */
+
+@media (max-width: 600px) {
+  .db-g-tile { grid-template-columns: repeat(auto-fill, minmax(98px, 1fr)); gap: 8px; }
+  .db-g-fig { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .db-g-row { grid-template-columns: 1fr; }
+  .db-view { margin-left: 0; }
+}
+
+/* подсказка карточки каталога — то же стекло, что у талантов (.db-tt) */
+.db-ctt { max-width: 300px; }
+.db-ctt p { display: flex; flex-wrap: wrap; gap: 2px 0; color: var(--sp-muted); font-size: 13px; }
+.db-ctt p span + span::before { content: "·"; margin: 0 6px; color: var(--sp-muted); font-weight: 400; }
+.db-ctt.is-long p { display: block; }
+.db-ctt.is-long p span + span::before { content: " · "; margin: 0; }
+
+/* ---------- фон страниц базы: пятна акцента стоят на месте (анимация огромного fixed-слоя под стеклом тормозила слабые Mac) ---------- */
+@media (prefers-reduced-motion: reduce) { .dbx-shot, .dbx-fog i, .dbx-beasts { animation: none !important; } }
+/* стекло верхнего меню над живым фоном пересчитывало размытие каждый кадр — здесь плотная подложка без backdrop-filter */
+html[data-game] .tb-brand, html[data-game] .tb-nav, html[data-game] .tb-actions, html[data-game] .tb-burger, html[data-game] .tb-menu { background: var(--sp-glass-sheen), color-mix(in srgb, var(--sp-base) 94%, transparent); }
+/* узкий экран: блоки меню лежат внутри панели-бургера — подложку несёт сама панель, у колонок её нет (иначе выходят отдельные плашки) */
+@media (max-width: 1200px) {
+  html[data-game] .tb-nav, html[data-game] .tb-actions { background: none; }
+  html[data-game] .tb-dd .tb-menu { background: var(--sp-base); }
+  html[data-game] .tb-panel { background: var(--sp-base); }
+}
+
+/* ---------- Tainted Grail: туман Мглы, пепел, искры, огам (js/db-bg.js, db_pages.py → DB["bg"]) ----------
+   слой стоит за всей страницей (z-index: -1, после body::before); туман — мягкие градиенты без filter: blur */
+.dbg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.dbg canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dbg i { position: absolute; display: block; }   /* туман неподвижен: движение дают частицы на canvas */
+/* холодная Мгла: сине-бирюзовое облако снизу слева и лиловое сверху справа медленно ходят навстречу друг другу */
+.dbg-tainted i:nth-child(1) { left: -35vmax; bottom: -40vmax; width: 110vmax; height: 80vmax;
+  background: radial-gradient(closest-side, rgba(92, 150, 176, .16), rgba(92, 150, 176, .05) 55%, transparent); /* sp-ok: атмосферный фон Мглы */
+ }
+.dbg-tainted i:nth-child(2) { right: -40vmax; top: -35vmax; width: 105vmax; height: 75vmax;
+  background: radial-gradient(closest-side, rgba(128, 96, 172, .13), rgba(128, 96, 172, .04) 55%, transparent); /* sp-ok: атмосферный фон Мглы */
+ }
+/* стелющийся по низу туман: широкая полоса из повторяющихся клубов уплывает вбок */
+.dbg-tainted i:nth-child(3) { left: 0; bottom: -6vh; width: 200%; height: 46vh; opacity: .9;
+  background: radial-gradient(28% 60% at 12% 70%, rgba(170, 182, 190, .085), transparent 70%), /* sp-ok: атмосферный фон Мглы */
+              radial-gradient(24% 55% at 37% 80%, rgba(150, 170, 186, .07), transparent 70%),
+              radial-gradient(30% 62% at 62% 72%, rgba(170, 182, 190, .085), transparent 70%),
+              radial-gradient(24% 55% at 87% 80%, rgba(150, 170, 186, .07), transparent 70%);
+ }
+/* виньетка — края темнее, взгляд в центр */
+.dbg::after { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(8, 3, 2, .55)); } /* sp-ok: атмосферный фон Мглы */
+@media (prefers-reduced-motion: reduce) { .dbg canvas { display: none; } }
+
+/* ---------- инструменты списка: качество, «Есть на карте», сортировка, плитки/таблица ---------- */
+.db-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 12px; }
+.db-tools:not(:has(> :not([hidden]))) { display: none; }
+/* display у кнопок панели перебивает атрибут hidden — без этого «Таблица» и «Есть на карте» видны там, где скрипт их прячет */
+.db-tools [hidden] { display: none !important; }
+.db-onmap { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 16px 4px 4px; border: 0; border-radius: 999px; background: var(--sp-btn); color: var(--sp-text);
+  box-shadow: var(--sp-btn-sh); font: 600 12.5px var(--font-body); cursor: pointer; transition: transform .18s, box-shadow .18s, color .18s; }
+.db-onmap .sp-ico { width: 14px; height: 14px; padding: 6px; color: var(--sp-muted); }
+.db-onmap:hover { color: var(--sp-accent); }
+.db-onmap:hover .sp-ico, .db-onmap[aria-pressed="true"] .sp-ico { color: var(--sp-accent); }
+.db-onmap[aria-pressed="true"] { color: var(--sp-accent); background: var(--sp-base); box-shadow: var(--sp-press); }
+.db-view { display: inline-flex; margin-left: auto; padding: 3px; border-radius: 12px; background: var(--sp-base); box-shadow: var(--sp-press); }
+.db-view button { min-height: 28px; padding: 3px 12px; border: 0; border-radius: 9px; background: none; color: var(--sp-muted); font: 600 12.5px var(--font-body); cursor: pointer; }
+.db-view button[aria-pressed="true"] { background: var(--sp-btn); color: var(--sp-accent); box-shadow: var(--sp-btn-sh); }
+.db-tools .db-sort { order: 3; }
+.db-tools .db-view { order: 4; }
+
+/* ---------- поиск по всем разделам ---------- */
+.db-also { margin: 0 0 12px; color: var(--sp-muted); font-size: 13px; line-height: 1.9; }
+.db-also button { padding: 2px 10px; border: 0; border-radius: 999px; background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 12.5px var(--font-body); cursor: pointer; }
+.db-also button:hover { color: var(--sp-accent); }
+.db-also button small { color: var(--sp-accent); font-weight: 700; }
+.db-also.is-loud { padding: 10px 14px; border-radius: 14px; background: var(--sp-card); box-shadow: var(--sp-card-sh); color: var(--sp-text); font-size: 14px; }
+.cp.db .db-tabs a.is-zero { opacity: .45; }
+
+/* ---------- таблица предметов ---------- */
+.db-tablewrap { overflow-x: auto; border-radius: 16px; background: var(--sp-card); box-shadow: var(--sp-card-sh); }
+.db-itable { min-width: 640px; font-size: 13.5px; }
+.db-itable th { position: sticky; top: 0; background: var(--sp-card); white-space: nowrap; }
+.db-itable th button { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.db-itable th button:hover, .db-itable th button.is-on { color: var(--sp-accent); }
+.db-itable th[aria-sort="descending"] button::after { content: " ↓"; }
+.db-itable th[aria-sort="ascending"] button::after { content: " ↑"; }
+.db-itable .is-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.db-itable td { vertical-align: middle; }
+.db-itable td:nth-child(2) { color: var(--sp-muted); }
+.db-itable tbody tr:hover { background: color-mix(in srgb, var(--sp-accent) 7%, transparent); }
+.cp.db .db-tlink { display: flex; align-items: center; gap: 10px; color: var(--q, var(--sp-text)); text-decoration: none; font-weight: 600; }
+.cp.db .db-tlink:hover { color: var(--sp-accent); }
+.db-tlink .db-pic { width: 30px; height: 30px; border-radius: 8px; background: var(--sp-base); box-shadow: var(--sp-press); }
+.db-tlink .db-pic img { width: 26px; height: 26px; object-fit: contain; }
+.db-tlink .db-pic .db-noimg { font-size: 12px; }
+.db-itable tr.db-qc-common .db-tlink { color: var(--sp-text); }
+
+/* ---------- поиск, закреплённый под меню ---------- */
+.dbx.has-stuck { z-index: 50; }
+.dbx-search.is-stuck { position: fixed; z-index: 50; margin: 0; box-sizing: border-box; background: color-mix(in srgb, var(--sp-base) 88%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 14%, transparent), 0 12px 32px rgba(0, 0, 0, .5); animation: db-stick .2s ease-out; } /* sp-ok: стекло поверх страницы */
+.dbx-search.is-stuck:focus-within { box-shadow: inset 0 0 0 1.5px var(--sp-accent), 0 12px 32px rgba(0, 0, 0, .5); } /* sp-ok */
+@keyframes db-stick { from { opacity: 0; transform: translateY(-6px); } }
+.dbx-search-ph { margin-top: 22px; }
+.dbx-search-ph:not([style*="height"]) { display: none; }
+
+/* ---------- страница записи: «← к списку», соседние записи, ссылки в тексте ---------- */
+.cp.db .db-back { display: inline-flex; align-items: center; gap: 6px; margin: -2px 0 12px; padding: 5px 12px; border-radius: 999px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh);
+  color: var(--sp-text); font-size: 13px; font-weight: 600; text-decoration: none; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cp.db .db-back:hover { color: var(--sp-accent); }
+.db-pager { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 28px 0 6px; }
+.cp.db .db-pager a { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 10px 14px; border-radius: 14px; background: var(--sp-card); box-shadow: var(--sp-card-sh); color: var(--sp-text); text-decoration: none; }
+.cp.db .db-pager a:hover { color: var(--sp-accent); }
+.db-pager a small { color: var(--sp-muted); font-size: 11.5px; }
+.db-pager a span { font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.db-pager .db-pg-next { text-align: right; }
+.db-pg-n { color: var(--sp-muted); font-size: 12px; white-space: nowrap; }
+@media (max-width: 600px) { .db-pager { grid-template-columns: 1fr 1fr; } .db-pg-n { display: none; } }
+.cp.db a.db-ref { color: var(--sp-accent); text-decoration: underline dotted; text-underline-offset: 3px; }
+.db-ltt { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; }
+.db-ltt > :not(.db-ltt-pic) { grid-column: 2; }
+.db-ltt-pic { grid-row: 1 / span 2; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 12px; background: var(--sp-base); box-shadow: var(--sp-press); overflow: hidden; }
+.db-ltt-pic img { max-width: 100%; max-height: 100%; object-fit: contain; }
+/* картинки внутри текста документа (Gothic: наброски в книгах, скриншоты подсказок) */
+.db-doc-img { margin: 4px 0 16px; }
+.db-doc-img img { display: block; max-width: min(100%, 640px); height: auto; border-radius: 12px; }
+.db-doc-img figcaption { margin-top: 6px; font-size: 13px; line-height: 1.5; opacity: .75; font-style: italic; }
+
+/* ---------- Gothic 1 Remake: база в оформлении интерфейса игры, поверх spatial UI (db_pages.py → DB theme "gothic") ----------
+   Палитра — та же строка gothic в css/spatial.css (холодный сланец + янтарь, как у карты); от игры взято:
+   — шрифты интерфейса (G1R/Content/UI/Fonts): Noto Serif — текст и заголовки, Fira Sans Extra Condensed — подписи капителью;
+   — фактура меню (T_ManagementUI_Background → gothic-remake-map/images/ui/bg.webp, 9 КБ) под всей страницей;
+   — пергамент записок (T_PaperPanelBackground → paper.webp) у текста книг — грузится только на страницах книг;
+   — тлеющие рамки ячеек и линии с ромбом (T_InventorySlot_Hover, T_TooltipTitleLine, T_LevelUp_DecoLine) — CSS-маски, без картинок;
+   — почти прямые углы, как у рамок игры.
+   Нагрузка: ни canvas, ни blur, ни blend-режимов; движется только шапка каталога (transform/opacity, пауза вне экрана). */
+html[data-game="gothic"] {
+  --font-display: "Noto Serif", Georgia, "Times New Roman", serif; --font-heading: var(--font-display);
+  --g-label: "Fira Sans Extra Condensed", "Arial Narrow", var(--font-body);
+  /* «тлеющий» бледно-янтарный цвет рамок игры — из акцента палитры, не отдельным цветом */
+  --g-glow: color-mix(in srgb, var(--sp-accent) 38%, var(--sp-text));
+  --g-line: color-mix(in srgb, var(--g-glow) 55%, transparent);
+  --g-frame: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 9%, transparent);
+  --g-frame-hot: inset 0 0 0 1px var(--g-line), inset 0 0 14px color-mix(in srgb, var(--sp-accent) 16%, transparent);
+  /* линия с ромбом посередине (концы гаснут) и линия с ромбом в начале — маски, цвет задаёт background */
+  --g-deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 16' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='400' y2='0'%3E%3Cstop offset='0' stop-opacity='0'/%3E%3Cstop offset='.5'/%3E%3Cstop offset='1' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 8h186M214 8h186' stroke='url(%23a)' stroke-width='1.2'/%3E%3Cpath d='M200 2l6 6-6 6-6-6z' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M200 6l2 2-2 2-2-2z'/%3E%3C/svg%3E");
+  --g-rule: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 12' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='400' y2='0'%3E%3Cstop offset='0'/%3E%3Cstop offset='1' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M14 6h386' stroke='url(%23a)' stroke-width='1.2'/%3E%3Cpath d='M6 1l5 5-5 5-5-5z' fill='none' stroke='black' stroke-width='1.3'/%3E%3C/svg%3E");
+}
+html[data-game="gothic"] body::before {
+  background: radial-gradient(60vmax 60vmax at 0% 0%, color-mix(in srgb, var(--sp-accent) 9%, transparent), transparent 62%),
+              linear-gradient(color-mix(in srgb, var(--sp-base) 30%, transparent), color-mix(in srgb, var(--sp-base) 30%, transparent)),
+              url("/gothic-remake-map/images/ui/bg.webp") center / cover no-repeat, var(--sp-base); }
+html[data-game="gothic"] .db { font-family: var(--font-display); }
+html[data-game="gothic"] .db-en, html[data-game="gothic"] .db-crumbs a, html[data-game="gothic"] .db-tag, html[data-game="gothic"] .db-meta,
+html[data-game="gothic"] .db-chips button, html[data-game="gothic"] .db-sort, html[data-game="gothic"] .db-tabs span,
+html[data-game="gothic"] .dbx h1 small, html[data-game="gothic"] .dbx-sub, html[data-game="gothic"] .dbx-cap small, html[data-game="gothic"] .db-facts dt {
+  font-family: var(--g-label); letter-spacing: .06em; }
+html[data-game="gothic"] .db-tabs span, html[data-game="gothic"] .db-facts dt { text-transform: uppercase; font-weight: 600; }
+
+/* заголовки: h1 — с линией-ромбом под ним, h2 — капитель с линией, уходящей вправо */
+html[data-game="gothic"] .db h1 { font-weight: 700; letter-spacing: .01em; }
+html[data-game="gothic"] .db > h1::after, html[data-game="gothic"] .db-hero h1::after {
+  content: ""; display: block; width: min(420px, 100%); height: 16px; margin: 10px 0 0;
+  background: var(--g-glow); -webkit-mask: var(--g-deco) center / 100% 100% no-repeat; mask: var(--g-deco) center / 100% 100% no-repeat; }
+html[data-game="gothic"] .db h2 { display: flex; align-items: center; gap: 12px; font: 600 15px/1.3 var(--g-label); letter-spacing: .16em; text-transform: uppercase; color: var(--g-glow); }
+html[data-game="gothic"] .db h2::after { content: ""; flex: 1; min-width: 40px; height: 12px;
+  background: var(--g-line); -webkit-mask: var(--g-rule) left center / 100% 100% no-repeat; mask: var(--g-rule) left center / 100% 100% no-repeat; }
+
+/* скругления — как везде в spatial UI; тонкая рамка ячейки, при наведении — тлеющая */
+html[data-game="gothic"] .cp.db .db-card { box-shadow: var(--sp-card-sh), var(--g-frame); }
+html[data-game="gothic"] .cp.db .db-card:hover, html[data-game="gothic"] .cp.db .db-card:focus-visible,
+html[data-game="gothic"] .cp.db .db-tabs a:hover, html[data-game="gothic"] a.db-link:hover, html[data-game="gothic"] a.db-link:focus-visible {
+  box-shadow: var(--sp-card-sh), var(--g-frame-hot); color: var(--g-glow); }
+html[data-game="gothic"] .cp.db .db-tabs a[aria-selected="true"] { color: var(--g-glow); box-shadow: var(--sp-press), var(--g-frame-hot); }
+html[data-game="gothic"] .db-chips button[aria-pressed="true"] { color: var(--g-glow); box-shadow: var(--sp-press), inset 0 0 0 1px var(--g-line); }
+/* ячейка предмета — тёмный квадрат инвентаря с тонкой рамкой; полоса цвета качества снизу остаётся */
+html[data-game="gothic"] .db-v-tile .db-pic { box-shadow: var(--sp-press), var(--g-frame), inset 0 -2px 0 color-mix(in srgb, var(--q) 70%, transparent); }
+html[data-game="gothic"] .db-v-tile:hover .db-pic { box-shadow: var(--sp-press), var(--g-frame-hot), inset 0 -2px 0 color-mix(in srgb, var(--q) 70%, transparent); }
+
+/* текст книг и записок — на пергаменте игры (рваные края сохраняет border-image) */
+html[data-game="gothic"] .db-book { padding: 30px 34px; border: 22px solid transparent; border-radius: 0; box-shadow: none; background: none;
+  border-image: url("/gothic-remake-map/images/ui/paper.webp") 60 fill / 22px / 0 stretch;
+  color: #2c2218; /* sp-ok: чернила на пергаменте игры */ font-size: 15.5px; filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .45)); } /* sp-ok: тень листа */
+html[data-game="gothic"] .db-book .dbk, html[data-game="gothic"] .db-book a { color: #7a2e17; } /* sp-ok: красные чернила */
+html[data-game="gothic"] .db-book .dbq { color: #5a4a3a; } /* sp-ok */
+html[data-game="gothic"] .db-book h3, html[data-game="gothic"] .db-book h4, html[data-game="gothic"] .db-book p, html[data-game="gothic"] .db-book li { color: inherit; }
+html[data-game="gothic"] .db-book h3 { font: 700 19px/1.3 var(--font-display); text-align: center; }
+html[data-game="gothic"] .db-book h4 { font: italic 400 15px/1.4 var(--font-display); text-align: center; opacity: .8; }
+@media (max-width: 600px) { html[data-game="gothic"] .db-book { padding: 16px 12px; border-width: 14px; border-image-width: 14px; } }
+
+/* шапка каталога: кадры Долины, над ними — свечение Барьера и искры магической руды (CSS, без canvas) */
+html[data-game="gothic"] .dbx { background: var(--sp-base); box-shadow: var(--sp-card-sh), var(--g-frame); }
+html[data-game="gothic"] .cp.db .dbx h1 { font-weight: 700; letter-spacing: .02em; }
+html[data-game="gothic"] .dbx-in h1::after { content: ""; display: block; width: min(360px, 100%); height: 16px; margin: 12px 0 0;
+  background: var(--g-glow); -webkit-mask: var(--g-deco) center / 100% 100% no-repeat; mask: var(--g-deco) center / 100% 100% no-repeat; }
+.dbx-barrier, .dbx-ore { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+/* купол Барьера: тонкая голубая дуга над Долиной, медленно дышит (анимируется только opacity) */
+.dbx-barrier { background: radial-gradient(130% 120% at 68% 118%, transparent 70%, rgba(120, 175, 255, .2) 71.5%, rgba(120, 175, 255, .06) 74%, transparent 78%); /* sp-ok: свечение Барьера */
+  animation: dbx-barrier 7s ease-in-out infinite; will-change: opacity; }
+@keyframes dbx-barrier { 50% { opacity: .45; } }
+.dbx-ore { z-index: 1; overflow: hidden; }
+.dbx-ore i { position: absolute; bottom: -12px; width: 5px; height: 5px; border-radius: 50%; opacity: 0; will-change: transform, opacity;
+  background: radial-gradient(circle, #d6ecff 0, #6fb4ff 35%, rgba(80, 150, 255, 0) 70%); /* sp-ok: искры магической руды */
+  animation: dbx-ore 13s linear infinite; }
+.dbx-ore i:nth-child(1) { left: 8%;  animation-delay: -1s; }
+.dbx-ore i:nth-child(2) { left: 19%; animation-delay: -6s; animation-duration: 16s; transform: scale(.7); }
+.dbx-ore i:nth-child(3) { left: 31%; animation-delay: -10s; }
+.dbx-ore i:nth-child(4) { left: 44%; animation-delay: -3s; animation-duration: 18s; }
+.dbx-ore i:nth-child(5) { left: 57%; animation-delay: -12s; animation-duration: 11s; }
+.dbx-ore i:nth-child(6) { left: 66%; animation-delay: -7s; }
+.dbx-ore i:nth-child(7) { left: 75%; animation-delay: -2s; animation-duration: 15s; }
+.dbx-ore i:nth-child(8) { left: 86%; animation-delay: -9s; animation-duration: 12s; }
+.dbx-ore i:nth-child(9) { left: 94%; animation-delay: -5s; animation-duration: 17s; }
+@keyframes dbx-ore {
+  0% { transform: translate3d(0, 0, 0) scale(.6); opacity: 0; }
+  15% { opacity: .9; }
+  50% { transform: translate3d(14px, -190px, 0) scale(1); }
+  85% { opacity: .5; }
+  100% { transform: translate3d(-8px, -380px, 0) scale(.5); opacity: 0; }
+}
+@media (max-width: 700px) { .dbx-ore i:nth-child(3n) { display: none; } }
+@media (prefers-reduced-motion: reduce) { .dbx-ore { display: none; } .dbx-barrier { animation: none; } }
+
+/* бестиарий и персонажи: у Gothic вместо рендеров в полный рост — широкие наброски глоссария 500×264,
+   поэтому карточка не портретная: лист наброска сверху, имя под ним */
+html[data-game="gothic"] .db-g-fig { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+html[data-game="gothic"] .db-v-fig { justify-content: flex-start; aspect-ratio: auto; background: var(--sp-card); }
+html[data-game="gothic"] .db-v-fig .db-pic { position: relative; inset: auto; margin: 6px 6px 0; aspect-ratio: 500 / 264; overflow: hidden; border-radius: var(--sp-r-sm);
+  box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-game="gothic"] .db-v-fig .db-pic img { object-fit: cover; object-position: center; filter: sepia(.12) brightness(.94); }
+html[data-game="gothic"] .db-v-fig:hover .db-pic img { transform: scale(1.04); }
+html[data-game="gothic"] .db-v-fig b { padding: 9px 10px 11px; background: none; }
+@media (max-width: 700px) { html[data-game="gothic"] .db-g-fig { grid-template-columns: repeat(2, 1fr); } }
+
+/* шапка: фактура меню игры, справа — лист с наброском героя или существа из глоссария (рваные края — маска
+   пергамента игры). Лист неподвижен, наброски сменяются только прозрачностью — js/db-hero.js */
+html[data-game="gothic"] .dbx-bg { background: url("/gothic-remake-map/images/ui/bg.webp") center / cover; }
+html[data-game="gothic"] .dbx-bg::after { background: radial-gradient(70% 90% at 72% 50%, color-mix(in srgb, var(--sp-accent) 10%, transparent), transparent 70%),
+  linear-gradient(90deg, color-mix(in srgb, var(--sp-base) 80%, transparent) 0%, color-mix(in srgb, var(--sp-base) 45%, transparent) 100%); }
+.dbx-beasts.dbx-sheet { inset: 50% 4% auto auto; width: min(46%, 560px); height: auto; aspect-ratio: 500 / 264; animation: none;
+  -webkit-mask-image: none; mask-image: none; transform: translateY(-54%) rotate(-2deg);
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .6)); } /* sp-ok: тень листа */
+.dbx-sheet .dbx-beast { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; transform: none; filter: sepia(.12) brightness(.95);
+  transition: opacity 1.4s ease;
+  -webkit-mask: url("/gothic-remake-map/images/ui/paper.webp") 0 0 / 100% 100% no-repeat; mask: url("/gothic-remake-map/images/ui/paper.webp") 0 0 / 100% 100% no-repeat; }
+@media (min-width: 761px) and (max-width: 1040px) { .dbx-beasts.dbx-sheet { opacity: .4; } }
+@media (max-width: 760px) {
+  .dbx-beasts.dbx-sheet { inset: 44px 8% auto; width: auto; opacity: 1; transform: rotate(-1.5deg); }
+  html[data-game="gothic"] .dbx-in { padding-top: calc(44px + 44.5% + 20px); }
+  html[data-game="gothic"] .cp.db .dbx-cap { top: 12px; }
+}
+
+/* «Показать на карте» под шапкой записи (scripts/db_pages.py → add_map_btn) */
+.db-mapbtn { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 4px 0 18px; }
+/* как «Поддержать» в шапке сайта: выпуклая таблетка, знак карты в вдавленной лунке, стрелка уезжает при наведении */
+.cp.db .db-mapgo { display: inline-flex; align-items: center; gap: 12px; min-height: 48px; padding: 5px 20px 5px 5px; border-radius: var(--sp-r-pill);
+  background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); font: 600 14.5px var(--font-body); letter-spacing: .01em; text-decoration: none;
+  transition: transform .18s, box-shadow .18s, color .18s; }
+.cp.db .db-mapgo .sp-ico { width: 18px; height: 18px; padding: 10px; color: var(--sp-accent); }
+.cp.db .db-mapgo i { font-style: normal; color: var(--sp-accent); transition: transform .18s; }
+.cp.db .db-mapgo:hover, .cp.db .db-mapgo:focus-visible { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+.cp.db .db-mapgo:hover i, .cp.db .db-mapgo:focus-visible i { transform: translateX(4px); }
+.cp.db .db-mapgo:active { box-shadow: var(--sp-press); transform: none; }
+html[data-game="gothic"] .cp.db .db-mapgo span { font: 600 14px var(--g-label); letter-spacing: .12em; text-transform: uppercase; }
+.cp.db .db-mapall { color: var(--sp-muted); font-size: 13px; }
+.cp.db .db-mapall:hover { color: var(--sp-accent); }
+
+/* Gothic: заклинания, гильдии, распорядок дня */
+.db-toc { margin: 0 0 18px; font-size: 14px; line-height: 1.9; }
+.db-toc small { color: var(--muted); }
+.db-spells .db-mk-pics img { border-radius: 8px; }
+.db-spells td:nth-child(5), .db-spells td:nth-child(6) { min-width: 150px; }
+.db-guild { scroll-margin-top: 80px; margin: 0 0 22px; }
+.db-guild h3 { margin: 0 0 10px; }
+.db-guild .db-note { margin: 10px 0 0; line-height: 1.7; }
+.db-routine td:first-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 600px) {
+    .db-guild .db-facts { grid-template-columns: 1fr; gap: 2px; }
+    .db-guild .db-facts dd { margin-bottom: 8px; }
+}
+
+/* ---------- TES V: Skyrim — база в оформлении интерфейса игры (db_pages.py → DB theme "skyrim") ----------
+   Карта Skyrim — светлый свиток (строка skyrim в css/spatial.css); страницы базы — как меню игры: тёмные полупрозрачные
+   панели, тонкие белые линии с ромбами на концах, подписи узким гротеском капителью с разрядкой (в игре — Futura Condensed,
+   здесь Fira Sans Extra Condensed), белые значки в кольцах (SVG-маски — tools/sk_db/glyphs.py, блок в конце файла).
+   Книги — на пергаменте, с буквицами и картинками из файлов игры; таланты — созвездия на ночном небе; в шапке — снег.
+   Нагрузка: ни canvas, ни blur, ни blend-режимов; снег — только transform/opacity, пауза вне экрана и при reduced-motion. */
+html:root[data-game="skyrim"] {   /* html:root — сильнее строки свитка в spatial.css; db.css грузится только на страницах базы */
+  --sp-base: #111316; --sp-text: #ecebe6; --sp-muted: #9c9ea0; --sp-accent: #bcd3e6; --sp-floor: #0b0d10; /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-hi: rgba(255, 255, 255, .05); --sp-lo: rgba(0, 0, 0, .6); --sp-lift: var(--sp-text); /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-card-mix: 93%; --sp-btn-mix: 90%; --sp-edge-mix: 16%; --sp-card-edge-mix: 8%; /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-gloss: rgba(255, 255, 255, .07); --sp-card-gloss: rgba(255, 255, 255, .05); --sp-shade: 0, 0, 0; /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-glass-mix: 91%; --sp-pill-mix: 84%; /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, 0) 55%); /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-float-lift: 0 10px 18px -8px rgba(0, 0, 0, .55); /* sp-ok: палитра меню игры вместо свитка карты */
+  /* стекло visionOS — входы тёмных палитр (у свитка карты они кремовые) */
+  --sp-tint: #fff; --sp-card-tint: 6%; --sp-card-alpha: 58%; --sp-btn-tint: 10%; --sp-btn-alpha: 50%; /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-rim: rgba(255, 255, 255, .14); --sp-rim-hi: rgba(255, 255, 255, .24); --sp-shadow-a: .5; /* sp-ok: палитра меню игры вместо свитка карты */
+  --sp-well: color-mix(in srgb, var(--sp-sunk) 55%, transparent); /* sp-ok: тёмные вводы поверх бумажной темы */
+  --s-label: "Fira Sans Extra Condensed", "Arial Narrow", var(--font-body);
+  --font-display: var(--s-label); --font-heading: var(--s-label);
+  --s-line: color-mix(in srgb, var(--sp-text) 50%, transparent);
+  --s-frame: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 10%, transparent);
+  --s-frame-hot: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 55%, transparent), inset 0 0 18px color-mix(in srgb, var(--sp-accent) 10%, transparent);
+  /* линия меню игры: гаснет к краям, у концов — ромбы; и линия заголовка — ромб в начале, гаснет вправо */
+  --s-deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 14' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='400' y2='0'%3E%3Cstop offset='0' stop-opacity='.2'/%3E%3Cstop offset='.5'/%3E%3Cstop offset='1' stop-opacity='.2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 7h368' stroke='url(%23a)' stroke-width='1'/%3E%3Cpath d='M7 2l5 5-5 5-5-5zM393 2l5 5-5 5-5-5z' fill='none' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M200 4l3 3-3 3-3-3z'/%3E%3C/svg%3E");
+  --s-rule: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 12' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='0' y1='0' x2='400' y2='0'%3E%3Cstop offset='0'/%3E%3Cstop offset='1' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M13 6h387' stroke='url(%23a)' stroke-width='1'/%3E%3Cpath d='M6 2l4 4-4 4-4-4z' fill='none' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+html[data-game="skyrim"] body::before {
+  background: radial-gradient(70vmax 50vmax at 80% -10%, rgba(120, 160, 200, .13), transparent 65%), /* sp-ok: холодный свет неба */
+              radial-gradient(60vmax 60vmax at 0% 100%, rgba(0, 0, 0, .5), transparent 70%), var(--sp-floor); } /* sp-ok */
+html[data-game="skyrim"] .db-en, html[data-game="skyrim"] .db-crumbs a, html[data-game="skyrim"] .db-tag, html[data-game="skyrim"] .db-meta,
+html[data-game="skyrim"] .db-chips button, html[data-game="skyrim"] .db-sort, html[data-game="skyrim"] .db-tabs span,
+html[data-game="skyrim"] .dbx h1 small, html[data-game="skyrim"] .dbx-sub, html[data-game="skyrim"] .dbx-cap small, html[data-game="skyrim"] .db-facts dt,
+html[data-game="skyrim"] .cp.db th, html[data-game="skyrim"] .db-pager small {
+  font-family: var(--s-label); letter-spacing: .08em; }
+html[data-game="skyrim"] .db-tabs span, html[data-game="skyrim"] .db-facts dt, html[data-game="skyrim"] .cp.db th,
+html[data-game="skyrim"] .db-chips button { text-transform: uppercase; font-weight: 500; }
+
+/* заголовки: h1 — капитель с линией меню под ним, h2 — линия с ромбом, гаснущая вправо */
+html[data-game="skyrim"] .cp.db h1 { font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+html[data-game="skyrim"] .db > h1::after, html[data-game="skyrim"] .db-hero h1::after, html[data-game="skyrim"] .dbx-in h1::after {
+  content: ""; display: block; width: min(420px, 100%); height: 14px; margin: 10px 0 0;
+  background: var(--s-line); -webkit-mask: var(--s-deco) center / 100% 100% no-repeat; mask: var(--s-deco) center / 100% 100% no-repeat; }
+html[data-game="skyrim"] .db h2 { display: flex; align-items: center; gap: 12px; font: 500 16px/1.3 var(--s-label); letter-spacing: .18em; text-transform: uppercase; color: var(--sp-text); }
+html[data-game="skyrim"] .db h2::after { content: ""; flex: 1; min-width: 40px; height: 12px;
+  background: var(--s-line); -webkit-mask: var(--s-rule) left center / 100% 100% no-repeat; mask: var(--s-rule) left center / 100% 100% no-repeat; }
+html[data-game="skyrim"] .db h3 { font-family: var(--s-label); font-weight: 600; letter-spacing: .06em; }
+
+/* панели: тёмное стекло с тонкой белой рамкой; при наведении рамка светлеет — как выбор строки в меню игры */
+html[data-game="skyrim"] .cp.db .db-card { box-shadow: var(--sp-card-sh), var(--s-frame); }
+html[data-game="skyrim"] .cp.db .db-card:hover, html[data-game="skyrim"] .cp.db .db-card:focus-visible,
+html[data-game="skyrim"] .cp.db .db-tabs a:hover, html[data-game="skyrim"] a.db-link:hover, html[data-game="skyrim"] a.db-link:focus-visible {
+  box-shadow: var(--sp-card-sh), var(--s-frame-hot); color: #fff; } /* sp-ok: выбранная строка в игре — чисто белая */
+html[data-game="skyrim"] .cp.db .db-tabs a[aria-selected="true"] { color: #fff; box-shadow: var(--sp-press), var(--s-frame-hot); } /* sp-ok */
+html[data-game="skyrim"] .db-chips button[aria-pressed="true"] { color: #fff; box-shadow: var(--sp-press), inset 0 0 0 1px var(--s-line); } /* sp-ok */
+html[data-game="skyrim"] .db-v-tile .db-pic { box-shadow: var(--sp-press), var(--s-frame); }
+html[data-game="skyrim"] .db-v-tile:hover .db-pic { box-shadow: var(--sp-press), var(--s-frame-hot); }
+html[data-game="skyrim"] .cp.db .db-mapgo span { font: 500 15px var(--s-label); letter-spacing: .14em; text-transform: uppercase; }
+
+/* значки: белый глиф в тёмном кольце (как значки инвентаря и журнала); у типов заданий кольцо слегка тонировано */
+html[data-game="skyrim"] .db-qi { color: #f3f1ea; font-family: inherit; /* sp-ok: белый глиф, как в игре */
+  background: radial-gradient(circle at 50% 38%, #2b3036, #111316 72%); /* sp-ok: тёмная лунка значка */
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--qt, #d9dde0) 60%, transparent), var(--sp-raise-sm); } /* sp-ok */
+html[data-game="skyrim"] .db-qi::before { content: ""; width: 60%; height: 60%; background: currentColor;
+  -webkit-mask: var(--qi) center / contain no-repeat; mask: var(--qi) center / contain no-repeat; }
+html[data-game="skyrim"] .db-fig-q .db-qi { width: 96px; height: 96px; }
+
+/* книги и записки — пергамент; разметка из тегов игры: <p align>, <font face='$HandwrittenFont'>, [pagebreak], <img> */
+html[data-game="skyrim"] .db-book { position: relative; padding: 34px 40px; border-radius: 18px; overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 40%, #ece2c8 0%, #e0d3b2 60%, #cbb98f 100%); /* sp-ok: пергамент книг игры */
+  box-shadow: inset 0 0 0 1px rgba(80, 60, 30, .35), inset 0 0 40px rgba(110, 80, 40, .35), 0 14px 30px -10px rgba(0, 0, 0, .7); /* sp-ok */
+  color: #2b2419; /* sp-ok: чернила */ font: 17px/1.75 "EB Garamond", Georgia, serif; }
+html[data-game="skyrim"] .db-book p, html[data-game="skyrim"] .db-book li, html[data-game="skyrim"] .db-book h3, html[data-game="skyrim"] .db-book h4 { color: inherit; }
+html[data-game="skyrim"] .db-book a, html[data-game="skyrim"] .db-book .dbk { color: #6b2a17; } /* sp-ok: красные чернила */
+html[data-game="skyrim"] .db-book p { margin: 0 0 .8em; }
+html[data-game="skyrim"] .db-book .sk-center { text-align: center; }
+html[data-game="skyrim"] .db-book .sk-right { text-align: right; }
+html[data-game="skyrim"] .db-book .sk-hand { font-family: "Alegreya", "EB Garamond", serif; font-style: italic; font-size: 1.05em; }
+html[data-game="skyrim"] .db-book .sk-mage { font-family: "Cormorant SC", serif; letter-spacing: .06em; }
+/* письмена фалмеров, двемеров, даэдра и драконов — в игре это отдельные алфавиты; здесь латиница вразрядку */
+html[data-game="skyrim"] .db-book :is(.sk-falmer, .sk-dwemer, .sk-daedric, .sk-dragon) { font-family: "Cinzel", "Cormorant SC", serif; letter-spacing: .22em; opacity: .8; }
+html[data-game="skyrim"] .db-book img.sk-cap { float: left; width: auto; height: 3.4em; margin: .25em .35em 0 0; }
+html[data-game="skyrim"] .db-book img.sk-pic { display: block; max-width: 100%; height: auto; margin: 10px auto 14px; }
+html[data-game="skyrim"] .db-book hr.sk-pb { clear: both; height: 14px; margin: 18px auto; width: min(260px, 70%); border: 0;
+  background: rgba(60, 45, 25, .55); -webkit-mask: var(--s-deco) center / 100% 100% no-repeat; mask: var(--s-deco) center / 100% 100% no-repeat; } /* sp-ok: чернила */
+html[data-game="skyrim"] .db-book::after { content: ""; display: table; clear: both; }
+@media (max-width: 600px) { html[data-game="skyrim"] .db-book { padding: 20px 16px; font-size: 16px; } }
+
+/* слова Крика: драконий язык капителью, перевод под ним */
+html[data-game="skyrim"] b.sk-dw { font: 600 15px var(--s-label); letter-spacing: .14em; text-transform: uppercase; color: var(--sp-accent); }
+
+/* таланты — созвездия: ночное небо из градиентов (без картинок и canvas), тонкие белые линии, голубое свечение выбранной звезды */
+html[data-game="skyrim"] .db-tree {
+  background: radial-gradient(1px 1px at 12% 22%, rgba(255, 255, 255, .8), transparent 100%), /* sp-ok: звёзды */ radial-gradient(1px 1px at 33% 71%, rgba(255, 255, 255, .6), transparent 100%),
+              radial-gradient(1.5px 1.5px at 57% 14%, rgba(255, 255, 255, .7), transparent 100%), radial-gradient(1px 1px at 78% 58%, rgba(255, 255, 255, .6), transparent 100%),
+              radial-gradient(1px 1px at 90% 30%, rgba(255, 255, 255, .7), transparent 100%), radial-gradient(1.5px 1.5px at 22% 88%, rgba(255, 255, 255, .5), transparent 100%),
+              radial-gradient(1px 1px at 66% 90%, rgba(255, 255, 255, .5), transparent 100%), radial-gradient(1px 1px at 45% 42%, rgba(255, 255, 255, .45), transparent 100%),
+              radial-gradient(80% 70% at 50% 30%, #1d2a3a 0%, #111821 55%, #07090c 100%); } /* sp-ok: ночное небо экрана навыков */
+html[data-game="skyrim"] .db-tree-ln line { stroke: #dfe8f2; stroke-width: 2.5; opacity: .5; } /* sp-ok */
+html[data-game="skyrim"] .db-tree-lb text { font: 500 24px/1 var(--s-label); letter-spacing: .16em; fill: #e8eef4; stroke: #07090c; } /* sp-ok */
+html[data-game="skyrim"] .db-tn { --tn-spk: #cfdcea; --tn-core: #f4f7fb; } /* sp-ok */
+html[data-game="skyrim"] .db-tn:hover, html[data-game="skyrim"] .db-tn:focus-visible, html[data-game="skyrim"] .db-tn.is-hl,
+html[data-game="skyrim"] .db-tn.is-found, html[data-game="skyrim"] .db-tn.is-pin { --tn-spk: #8fc4ff; --tn-core: #ffffff; } /* sp-ok: голубое свечение */
+html[data-game="skyrim"] .db-tn:hover use, html[data-game="skyrim"] .db-tn:focus-visible use, html[data-game="skyrim"] .db-tn.is-hl use,
+html[data-game="skyrim"] .db-tn.is-found use, html[data-game="skyrim"] .db-tn.is-pin use { filter: drop-shadow(0 0 8px rgba(140, 195, 255, .95)); } /* sp-ok */
+html[data-game="skyrim"] .db-tree-tabs button { border-color: rgba(220, 230, 240, .25); color: #dfe6ee; font-family: var(--s-label); letter-spacing: .08em; text-transform: uppercase; } /* sp-ok */
+html[data-game="skyrim"] .db-tree-tabs button:hover { color: #fff; border-color: rgba(220, 230, 240, .6); } /* sp-ok */
+html[data-game="skyrim"] .db-tree-tabs button.is-on { color: #0b0d10; background: #e8eef4; border-color: #e8eef4; } /* sp-ok */
+html[data-game="skyrim"] .db-req { font-family: var(--s-label); letter-spacing: .06em; color: var(--sp-muted); }
+
+/* шапка каталога: кадры Скайрима, поверх — медленный снег (CSS, 14 хлопьев, только transform/opacity) */
+html[data-game="skyrim"] .dbx { box-shadow: var(--sp-card-sh), var(--s-frame); }
+html[data-game="skyrim"] .cp.db .dbx h1 { font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+html[data-game="skyrim"] .dbx-bg::after { background: linear-gradient(90deg, rgba(11, 13, 16, .88) 0%, rgba(11, 13, 16, .55) 55%, rgba(11, 13, 16, .2) 100%); } /* sp-ok */
+.dbx-snow { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+.dbx-snow i { position: absolute; top: -10px; width: 4px; height: 4px; border-radius: 50%; background: rgba(255, 255, 255, .85); opacity: 0; /* sp-ok: снег */
+  will-change: transform, opacity; animation: dbx-snow 16s linear infinite; }
+.dbx-snow i:nth-child(1)  { left: 4%;  animation-delay: -2s; }
+.dbx-snow i:nth-child(2)  { left: 11%; animation-delay: -9s;  animation-duration: 19s; width: 3px; height: 3px; }
+.dbx-snow i:nth-child(3)  { left: 18%; animation-delay: -5s;  animation-duration: 13s; }
+.dbx-snow i:nth-child(4)  { left: 26%; animation-delay: -14s; width: 5px; height: 5px; }
+.dbx-snow i:nth-child(5)  { left: 33%; animation-delay: -1s;  animation-duration: 21s; width: 3px; height: 3px; }
+.dbx-snow i:nth-child(6)  { left: 41%; animation-delay: -11s; animation-duration: 15s; }
+.dbx-snow i:nth-child(7)  { left: 49%; animation-delay: -6s;  animation-duration: 18s; width: 3px; height: 3px; }
+.dbx-snow i:nth-child(8)  { left: 56%; animation-delay: -15s; }
+.dbx-snow i:nth-child(9)  { left: 63%; animation-delay: -3s;  animation-duration: 14s; width: 5px; height: 5px; }
+.dbx-snow i:nth-child(10) { left: 71%; animation-delay: -12s; animation-duration: 20s; width: 3px; height: 3px; }
+.dbx-snow i:nth-child(11) { left: 78%; animation-delay: -7s; }
+.dbx-snow i:nth-child(12) { left: 85%; animation-delay: -10s; animation-duration: 17s; width: 3px; height: 3px; }
+.dbx-snow i:nth-child(13) { left: 91%; animation-delay: -4s;  animation-duration: 12s; }
+.dbx-snow i:nth-child(14) { left: 97%; animation-delay: -13s; animation-duration: 22s; width: 3px; height: 3px; }
+@keyframes dbx-snow {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  10% { opacity: .9; }
+  50% { transform: translate3d(-22px, 200px, 0); }
+  90% { opacity: .6; }
+  100% { transform: translate3d(10px, 420px, 0); opacity: 0; }
+}
+@media (max-width: 700px) { .dbx-snow i:nth-child(2n) { display: none; } }
+@media (prefers-reduced-motion: reduce) { .dbx-snow { display: none; } }
+
+/* бестиарий и персонажи: портретов в файлах игры нет — вместо высоких карточек компактные строки со значком
+   (имя и раса/подпись), чтобы список не превращался в стену пустых рамок */
+html[data-game="skyrim"] .db-g-fig { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+html[data-game="skyrim"] .db-v-fig { flex-direction: row; align-items: center; justify-content: flex-start; gap: 12px; aspect-ratio: auto; padding: 9px 12px; background: var(--sp-card); }
+html[data-game="skyrim"] .db-v-fig .db-pic { position: static; inset: auto; flex: none; width: 40px; height: 40px; }
+html[data-game="skyrim"] .db-v-fig .db-qi { width: 40px; height: 40px; }
+html[data-game="skyrim"] .db-v-fig b { padding: 0; background: none; text-align: left; font: 500 15px/1.25 var(--s-label); letter-spacing: .03em; }
+/* значок в плитке предмета (у Skyrim нет иконок инвентаря — значок вида предмета) */
+html[data-game="skyrim"] .db-v-tile .db-pic { display: grid; place-items: center; }
+html[data-game="skyrim"] .db-v-tile .db-qi { width: 56%; height: auto; aspect-ratio: 1; }
+html[data-game="skyrim"] .db-v-tile:hover .db-qi { transform: scale(1.06); }
+html[data-game="skyrim"] .db-v-tile .db-qi { transition: transform .2s; }
+
+/* ---------- удобство каталога и страниц записей (2026-11-17) ---------- */
+/* плитка предмета: имя целиком (до 3 строк) и строка характеристик — похожие предметы отличаются без перехода */
+.db-v-tile b { -webkit-line-clamp: 3; }
+.db-v-tile .db-stat { display: block; margin-top: -2px; color: var(--sp-muted); font-size: 11px; font-weight: 600; line-height: 1.3; }
+.db-card mark, .db-tlink mark, .db-sug mark { padding: 0; border-radius: 3px; background: color-mix(in srgb, var(--sp-accent) 30%, transparent); color: inherit; }
+.db-tools .db-sort { order: 3; min-height: 32px; }
+
+/* значок-глиф в ссылках на записи (задания, эффекты, локации без снимка) — раньше схлопывался в ноль */
+.db-link .db-qi { flex: none; width: 32px; height: 32px; font-size: 18px; }
+.db-link .db-noimg { flex: none; display: grid; place-items: center; color: var(--sp-muted); }
+
+/* подсказки поиска */
+.dbx-search { position: relative; }
+.db-sug { position: absolute; z-index: 60; top: calc(100% + 8px); left: 0; right: 0; max-height: min(70vh, 520px); overflow-y: auto; padding: 6px; border-radius: 16px;
+  background: color-mix(in srgb, var(--sp-base) 96%, #000); box-shadow: var(--sp-card-sh), 0 18px 40px rgba(0, 0, 0, .5); } /* sp-ok: тень выпадающего списка */
+.db-sug[hidden] { display: none; }
+.db-sug-i { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 5px 10px; border-radius: 11px; color: var(--sp-text); text-decoration: none; }
+.db-sug-i .db-pic { width: 34px; height: 34px; }
+.db-sug-i .db-pic img { width: 34px; height: 34px; object-fit: contain; }
+.db-sug-i .db-qi { width: 30px; height: 30px; font-size: 16px; }
+.db-sug-i b { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 600; }
+.db-sug-i small { flex: none; color: var(--sp-muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
+.db-sug-i:hover, .db-sug-i.is-cur { background: var(--sp-card); color: var(--sp-accent); }
+.db-sug-all { display: block; width: 100%; margin-top: 4px; padding: 10px; border: 0; border-top: 1px solid var(--sp-edge); border-radius: 0 0 10px 10px; background: none; color: var(--sp-muted); font: 600 12.5px var(--font-body); cursor: pointer; }
+.db-sug-all:hover { color: var(--sp-accent); }
+
+/* «Недавно смотрели» */
+.db-recent { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 14px; font-size: 13px; }
+.db-recent-h { color: var(--sp-muted); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.db-recent-l { display: flex; flex-wrap: wrap; gap: 6px; }
+.db-recent-l a { padding: 3px 11px; border-radius: 999px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); text-decoration: none; font-weight: 600; font-size: 12.5px; }
+.db-recent-l a:hover { color: var(--sp-accent); }
+.db-recent-x { margin-left: auto; padding: 2px 8px; border: 0; background: none; color: var(--sp-muted); font: 500 12px var(--font-body); cursor: pointer; text-decoration: underline; }
+
+/* характеристики плашками */
+.db-info { min-width: 0; }
+.db-plates { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; }
+.db-plate { display: flex; flex-direction: column-reverse; gap: 2px; min-width: 92px; padding: 10px 16px 9px; border-radius: 14px; background: var(--sp-card); box-shadow: var(--sp-card-sh); }
+.db-plate b { font-size: 26px; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; color: var(--sp-text); }
+.db-plate span { color: var(--sp-muted); font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
+.db-pl-dmg b { color: #e2735f; } /* sp-ok: урон */
+.db-pl-armor b { color: #7fb4e0; } /* sp-ok: броня */
+.db-pl-hp b { color: #7fc48a; } /* sp-ok: здоровье */
+.db-pl-price b { color: #e3c36a; } /* sp-ok: золото */
+.db-pl-mana b { color: #6f8fe8; } /* sp-ok: мана */
+.db-pl-tier b, .db-pl-lvl b { color: var(--sp-accent); }
+.db-info .db-facts { margin: 0; }
+
+/* длинные списки ссылок и оглавление страницы */
+.db-more { display: block; margin: 10px 0 0; padding: 7px 18px; border: 0; border-radius: 999px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); font: 600 13px var(--font-body); cursor: pointer; }
+.db-more:hover { color: var(--sp-accent); }
+.db-links > li[hidden] { display: none; }
+.db-toc { display: none; }
+@media (min-width: 1480px) {
+    .db-toc { position: fixed; z-index: 5; top: 120px; left: calc(50% + 520px); display: flex; flex-direction: column; width: 190px; max-height: calc(100vh - 160px); overflow-y: auto; padding-left: 12px; border-left: 1px solid var(--sp-edge); }
+    .db-toc a { padding: 5px 8px; color: var(--sp-muted); font-size: 12.5px; font-weight: 600; line-height: 1.3; text-decoration: none; border-radius: 8px; }
+    .db-toc a small { margin-left: 6px; opacity: .7; }
+    .db-toc a:hover { color: var(--sp-text); }
+    .db-toc a.is-on { color: var(--sp-accent); background: var(--sp-card); }
+}
+html { scroll-padding-top: 90px; }
+
+/* задание: этапы — лента с номерами, цели — со «галочками» */
+.cp.db ol.db-steps { counter-reset: st; list-style: none; padding-left: 0; margin-left: 0; position: relative; }
+.cp.db ol.db-steps > li { counter-increment: st; position: relative; margin: 0; padding: 4px 0 18px 46px; }
+.cp.db ol.db-steps > li::before { content: counter(st); position: absolute; left: 0; top: 2px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--sp-base); box-shadow: var(--sp-press); color: var(--sp-accent); font: 700 13px var(--font-body); font-variant-numeric: tabular-nums; }
+.cp.db ol.db-steps > li::after { content: ""; position: absolute; left: 14px; top: 36px; bottom: 4px; width: 2px; background: var(--sp-edge); }
+.cp.db ol.db-steps > li:last-child::after { display: none; }
+.cp.db ul.db-steps { list-style: none; padding-left: 0; margin-left: 0; display: grid; gap: 6px; }
+.cp.db ul.db-steps > li { position: relative; margin: 0; padding: 7px 12px 7px 40px; border-radius: 11px; background: var(--sp-card); box-shadow: var(--sp-card-sh); }
+.cp.db ul.db-steps > li::before { content: ""; position: absolute; left: 13px; top: 11px; width: 14px; height: 14px; border-radius: 4px; box-shadow: inset 0 0 0 2px var(--sp-muted); }
+
+/* таблицы статов: ячейки с сопротивлениями — компактнее, строки читаются при наведении */
+.db-table tbody tr:hover { background: color-mix(in srgb, var(--sp-accent) 7%, transparent); }
+
+/* телефон: фильтры в одну прокручиваемую строку, поиск и панель не занимают пол-экрана */
+@media (max-width: 700px) {
+    .db-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .db-chips::-webkit-scrollbar { display: none; }
+    .db-chips button { flex: none; }
+    .db-tools { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .db-tools > * { flex: none; }
+    .db-plate { min-width: 0; flex: 1 1 40%; }
+    .db-sug { max-height: 60vh; }
+}
+
+/* кнопки панели инструментов — в одном стиле с чипами */
+html[data-game="skyrim"] .db-onmap, html[data-game="skyrim"] .db-view button {
+  font-family: var(--s-label); letter-spacing: .08em; text-transform: uppercase; font-weight: 500; font-size: 12.5px; }
+html[data-game="skyrim"] .db-onmap[aria-pressed="true"] { color: #fff; box-shadow: var(--sp-press), inset 0 0 0 1px var(--s-line); } /* sp-ok */
+/* skyrim-glyphs:start — tools/sk_db/glyphs.py, не править вручную */
+html[data-game="skyrim"] .db-qi-amulet { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M6 2.5c0 6 2.8 9.5 6 10.5M18 2.5c0 6-2.8 9.5-6 10.5'/%3E%3Cpath fill-rule='evenodd' d='M12 12.5l4.5 4.7L12 22l-4.5-4.8zm0 2.6l-2.1 2.1 2.1 2.2 2.1-2.2z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-arrow { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M4 20L18.5 5.5'/%3E%3Cpath fill-rule='evenodd' d='M21.5 2.5L20 9.5l-5.5-5.5z'/%3E%3Cpath fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M4 20l-1-4.2M4 20l4.2 1M6.6 17.4l-1-4.2M6.6 17.4l4.2 1'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-axe { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M13.500 3.500c3.500.2 6.500 2.500 7.500 6l-3 .8-.8 3.200-3.300-2 .6-3.600-3.200-2.200 2.200-2.200zM11.200 9.800l2 2L5 22l-2.200-2.200 8.400-10z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-axe2 { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M12 2.5v19.5'/%3E%3Cpath fill-rule='evenodd' d='M11 5C7 3 3.5 3.8 2.5 5c1 3 1 6 0 8.5 1 1.2 4.5 2 8.5 0zM13 5c4-2 7.5-1.2 8.5 0-1 3-1 6 0 8.5-1 1.2-4.5 2-8.5 0z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-bag { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M9 2.500h6l-1.300 3c2.700 1.700 4.800 4.400 4.800 8 0 4-3 7-6.500 7s-6.500-3-6.500-7c0-3.600 2.100-6.300 4.800-8L9 2.500z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-beast { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 11.5c-3.2 0-6.5 4.5-6.5 7.4 0 2.2 2 3.3 3.7 2.7 1-.4 1.7-.7 2.8-.7s1.8.3 2.8.7c1.7.6 3.7-.5 3.7-2.7 0-2.9-3.3-7.4-6.5-7.4z'/%3E%3Cpath fill-rule='evenodd' d='M3.8 8.6a2.2 2.6 -20 1 0 4.4 0a2.2 2.6 -20 1 0-4.4 0zM7.8 4.4a2.2 2.6 -8 1 0 4.4 0a2.2 2.6 -8 1 0-4.4 0zM11.8 4.4a2.2 2.6 8 1 0 4.4 0a2.2 2.6 8 1 0-4.4 0zM15.8 8.6a2.2 2.6 20 1 0 4.4 0a2.2 2.6 20 1 0-4.4 0z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-bolt { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' d='M6 18L17 7'/%3E%3Cpath fill-rule='evenodd' d='M21 3l-1.5 6.5-5-5z'/%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M6 18l-3-1.2M6 18l1.2 3'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-book { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5 3.500C5 2.700 5.700 2 6.500 2H19v16H7a2 2 0 0 0-2 2V3.500zM7 20h12v2H7a1 1 0 0 1 0-2zM8.500 5.500v2h7v-2h-7z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-boots { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6 2h8v10.5l5 2.3c1.6.8 2.5 2 2.5 3.7V21H6zM6 18.3h15.5v1.2H6z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-bow { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M6 2.5c8.5 1.5 14 7 15.5 15.5'/%3E%3Cpath fill='none' stroke='black' stroke-width='1' stroke-linecap='round' stroke-linejoin='round' d='M6 2.5L21.5 18'/%3E%3Cpath fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M3 21.5L16 8.5'/%3E%3Cpath fill-rule='evenodd' d='M17.5 7l-3.5.5 3 3z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-circlet { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 12.5c3.5 4 15.5 4 19 0'/%3E%3Cpath fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 12.5l1.5-3M21.5 12.5L20 9.5'/%3E%3Cpath fill-rule='evenodd' d='M12 6l3.2 4.5L12 15l-3.2-4.5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-claw { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4.5 21.5c0-8 3-15 9-19-3.2 5.5-4.5 11.5-3.5 19z'/%3E%3Cpath fill-rule='evenodd' d='M11.5 21.5c0-6 3-11 8.5-14-2.6 4.2-3.6 9.2-3 14z'/%3E%3Cpath fill-rule='evenodd' d='M17.5 21.5c0-3.5 1.6-6.4 4.5-8.5-1.4 3-1.8 5.8-1.4 8.5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-club { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M16 2c3 0 5.500 2.500 5.500 5.500 0 2.500-1.800 4.500-4 6.500l-3 2.800-1.200 4.200-3.800-1 1.800-3.800L9 14c-.8-3.500.8-7 3-9.500C13 3 14.500 2 16 2z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-coins { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 3C7.600 3 4 4.800 4 7s3.600 4 8 4 8-1.800 8-4-3.600-4-8-4zM4 9.500V12c0 2.200 3.600 4 8 4s8-1.800 8-4V9.500c-1.700 1.800-4.800 2.800-8 2.800S5.700 11.300 4 9.500zM4 14.500V17c0 2.200 3.600 4 8 4s8-1.800 8-4v-2.500c-1.700 1.800-4.800 2.800-8 2.800s-6.300-1-8-2.800z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-crossbow { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M12 7.5v14'/%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 10.5C5 7 19 7 21.5 10.5'/%3E%3Cpath fill='none' stroke='black' stroke-width='1' stroke-linecap='round' stroke-linejoin='round' d='M2.5 10.5L12 14l9.5-3.5'/%3E%3Cpath fill-rule='evenodd' d='M12 2l2.2 4h-4.4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-cuirass { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M8 2.5L9.5 4.5h5L16 2.5l5 3-2 5v8.5c-2 2-4.5 3-7 3s-5-1-7-3V10.5l-2-5zM12 7v12.5'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-dagger { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1.500l2.800 9.500-2.800 3-2.800-3L12 1.500zM7.500 14.500h9V17h-9zM10.800 17h2.400v5h-2.400z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-food { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 7.5c-3-2.2-8.5-1.2-8.5 5 0 5 3 9 5.6 9 1 0 1.6-.6 2.9-.6s1.9.6 2.9.6c2.6 0 5.6-4 5.6-9 0-6.2-5.5-7.2-8.5-5z'/%3E%3Cpath fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M12 7.5c0-2.2 1.2-4.2 3.5-5.2'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-gauntlets { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M7 22v-6.5L4.5 11a1.6 1.6 0 0 1 2.7-1.6L9 12V4.5a1.6 1.6 0 0 1 3.2 0V11V3a1.6 1.6 0 0 1 3.2 0v8V5a1.6 1.6 0 0 1 3.2 0v11L17 22z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-gear { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M19.620 10.330 L22.380 10.440 L22.380 13.560 L19.620 13.670 L18.570 16.210 L20.450 18.240 L18.240 20.450 L16.210 18.570 L13.670 19.620 L13.560 22.380 L10.440 22.380 L10.330 19.620 L7.790 18.570 L5.760 20.450 L3.550 18.240 L5.430 16.210 L4.380 13.670 L1.620 13.560 L1.620 10.440 L4.380 10.330 L5.430 7.790 L3.550 5.760 L5.760 3.550 L7.790 5.430 L10.330 4.380 L10.440 1.620 L13.560 1.620 L13.670 4.380 L16.210 5.430 L18.240 3.550 L20.450 5.760 L18.570 7.790ZM15.200 12A3.200 3.200 0 1 0 8.800 12A3.200 3.200 0 1 0 15.200 12Z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-gem { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6.500 3h11l4.500 6L12 21.500 2 9l4.500-6zM6 9l6 9 6-9H6z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-hammer { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M12 9.5V22'/%3E%3Cpath fill-rule='evenodd' d='M3.5 2.5h17v7h-17zM6 5h12v2H6z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-helmet { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4.5 14.5a7.5 7.5 0 0 1 15 0V21h-4v-4.5h-7V21h-4zM7.5 12h9v1.8h-9z'/%3E%3Cpath fill-rule='evenodd' d='M5.5 9.5L1.5 3l5.5 4zM18.5 9.5l4-6.5-5.5 4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-hide { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5 2.5l3.2 3h7.6l3.2-3 1.2 5.5-2.2 3 2.2 4-2.2 3 1 3.5-5-1L12 22.5l-2-2-5 1 1-3.5-2.2-3 2.2-4-2.2-3z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-hood { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2C6.5 2 3 8 3 14v8h18v-8c0-6-3.5-12-9-12zm0 6.5c-2.5 0-4.4 2.5-4.4 6V18h8.8v-3.5c0-3.5-1.9-6-4.4-6z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-ingot { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M2.5 21l3-6.5h13l3 6.5zM6.5 12.5l3-6.5h5l3 6.5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-key { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M7.5 2.5a5.5 5.5 0 1 1 0 11a5.5 5.5 0 1 1 0-11zm0 3a2.5 2.5 0 1 0 0 5a2.5 2.5 0 1 0 0-5z'/%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M11.5 12l9.5 9.5M16.5 17l2.6-2.6M19 19.5l2.2-2.2'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-loc { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M2.5 20.5C2.5 11 6.5 5 12 5s9.5 6 9.5 15.5H16c0-4-1.2-8-4-8s-4 4-4 8H2.5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-log { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M3.500 7h11a5 5 0 0 1 0 10h-11a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zM14.500 9.300a2.700 2.700 0 1 0 0 5.400 2.700 2.700 0 0 0 0-5.400z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-lore { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 6.500C9.800 4.700 6.500 4.200 3 5v14c3.500-.8 6.800-.3 9 1.500 2.200-1.800 5.500-2.300 9-1.500V5c-3.500-.8-6.800-.3-9 1.500zM11.200 7.500v11.600h1.600V7.500h-1.600z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-main { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M2 5c4-.5 7 1.500 8.500 5C11 8 12 6.500 12 6.500S13 8 13.500 10C15 6.500 18 4.500 22 5c-1.500 2-2 4.500-1.500 7-1.500-1-3-1-4 0 .5 2-.3 4.500-2 6.500-.3-1.800-1.200-3-2.500-3.800C10.700 15.500 9.800 16.700 9.500 18.500 7.800 16.500 7 14 7.500 12c-1-1-2.500-1-4 0C4 9.500 3.500 7 2 5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-note { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5 2h9.5v5.5H20V22H5zM8 11h9v1.5H8zM8 14.5h9V16H8zM8 18h6v1.5H8z'/%3E%3Cpath fill-rule='evenodd' d='M16 2l4 4h-4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-person { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM4 21c0-4.500 3.600-7.500 8-7.500s8 3 8 7.500H4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-plant { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M11 16C6 16 3 12.500 3 6c5 0 8 3 8 8v2zM13 16c5 0 8-3.500 8-10-5 0-8 3-8 8v2zM11 16h2v6h-2z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-poison { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M9 2h6v2h-1v3.8c3 1 5 4 5 7.2a7 7 0 0 1-14 0c0-3.2 2-6.2 5-7.2V4H9zM8.4 13.6a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0-2.8 0zM12.8 13.6a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0-2.8 0zM10.8 17h2.4v1.8h-2.4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-potion { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M9 2.5h6v2h-1v4.500l5.300 9a2.200 2.200 0 0 1-1.900 3.500H6.600a2.200 2.200 0 0 1-1.900-3.500L10 9V4.500H9v-2z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-comp { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 3l6.500.9 9.300 9.300-2.100 2.100-9.300-9.300L3 3zM21 3l-.9 6.500-9.300 9.300-2.100-2.100 9.300-9.300L21 3zM2.800 17.500l3.700-3.700 3.700 3.700-3.700 3.700-3.700-3.700zM13.800 17.500l3.700-3.700 3.700 3.700-3.700 3.700-3.700-3.700z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-daedra { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M4 3h16v18H4zM7 6.500h1.800v11H7zM11 6.500h1.800v4.500H11zM11 13.500h1.800v4H11zM15 6.500h1.800v11H15z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-db { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1.500l2.800 9.500-2.800 3-2.800-3L12 1.500zM7.500 14.500h9V17h-9zM10.800 17h2.400v5h-2.400z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-dbn { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6 21.5V9H4V3h4v2.5h2V3h4v2.5h2V3h4v6h-2v12.5H6zM10 21.5v-4a2 2 0 0 1 4 0v4h-4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-dg { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M12 7.5v14'/%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 10.5C5 7 19 7 21.5 10.5'/%3E%3Cpath fill='none' stroke='black' stroke-width='1' stroke-linecap='round' stroke-linejoin='round' d='M2.5 10.5L12 14l9.5-3.5'/%3E%3Cpath fill-rule='evenodd' d='M12 2l2.2 4h-4.4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-mage { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2.5c1.8 3 5 5.3 5 9.5a5 5 0 0 1-10 0c0-1.8.7-3.100 1.800-4.300.2 1.200.8 2 1.700 2.300C10 7.600 10.600 5 12 2.500zM6.500 18.500h11v2.500h-11v-2.500z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-thief { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 3C7.600 3 4 4.800 4 7s3.600 4 8 4 8-1.800 8-4-3.600-4-8-4zM4 9.500V12c0 2.200 3.600 4 8 4s8-1.800 8-4V9.500c-1.700 1.800-4.800 2.800-8 2.800S5.700 11.300 4 9.500zM4 14.500V17c0 2.200 3.600 4 8 4s8-1.800 8-4v-2.500c-1.700 1.800-4.800 2.800-8 2.800s-6.300-1-8-2.800z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-q-war { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M2.5 21.5V8.5h3V5.5H8v3h2.5v-3H13v3h2.5v-3H18v3h3.5v13H15v-5a3 3 0 0 0-6 0v5H2.5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-ring { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2.5a9.5 9.5 0 1 0 0 19 9.5 9.5 0 0 0 0-19zm0 4a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-robe { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M8 2.5h8l1.5 3L22 9.5l-2 3-2.4-1.4L19 22H5l1.4-10.9L4 12.5l-2-3 4.5-4zM10 2.5l2 3.2 2-3.2z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-scroll { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM7.500 7l3.500 3.500L14.500 7l1.500 1.500-3.500 3.500 3.500 3.500-1.500 1.500-3.500-3.500L7.500 16.500 6 15l3.500-3L6 8.500 7.500 7z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-shield { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2.2L20 5v6.2c0 5-3.4 8.8-8 10.6-4.6-1.8-8-5.6-8-10.6V5l8-2.8z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-shout { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M2 9.5h4.5L11 5v14l-4.5-4.5H2z'/%3E%3Cpath fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' d='M14 8.5c1.6 2 1.6 5 0 7M17 5.5c3.2 3.6 3.2 9.4 0 13M20 2.5c4.6 5.2 4.6 13.8 0 19'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-side { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M10 2.500h4l-.8 12h-2.400L10 2.500zM10 17.500h4v4h-4v-4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-skillbook { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5 3.500C5 2.700 5.700 2 6.500 2H19v16H7a2 2 0 0 0-2 2V3.500zM7 20h12v2H7a1 1 0 0 1 0-2zM8.500 5.500v2h7v-2h-7z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-soulgem { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2l6.5 6.5L12 22 5.5 8.5zM8.8 9h6.4L12 17.5z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-spell { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M11 2l2 6.500 6.500 2-6.500 2L11 19l-2-6.500-6.500-2L9 8.500 11 2zM19 14.500l.9 2.600 2.600.9-2.600.9-.9 2.600-.9-2.600-2.600-.9 2.600-.9.9-2.600z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-staff { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M5 21.5L15 9'/%3E%3Cpath fill-rule='evenodd' d='M17.5 2.5a4 4 0 1 1 0 8a4 4 0 1 1 0-8zm0 2a2 2 0 1 0 0 4a2 2 0 1 0 0-4z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-star { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.1 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-sword { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1.500l2.200 3V14h-4.400V4.500L12 1.500zM7 14.500h10V17H7zM10.800 17h2.400v3.500h-2.400zM10.200 20.500h3.600v2h-3.600z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-sword2 { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M10.8 1h2.4l1 3v11h-4.4V4zM4.5 15h15v2.2h-15zM10.9 17.2h2.2v3.6h-2.2zM9.8 20.6h4.4V23H9.8z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-task { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 2.500a5.500 5.500 0 0 0-5.500 5.500h3.300A2.200 2.200 0 1 1 12 10.200c-1.800.8-3 2.200-3 4.300v.8h3.200v-.5c0-1 .9-1.700 2-2.500A5.400 5.400 0 0 0 12 2.500zM9.800 17.500h3.400v3.600H9.800v-3.600z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-tip { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM7.500 7l3.500 3.500L14.500 7l1.500 1.500-3.500 3.500 3.500 3.500-1.500 1.500-3.500-3.500L7.500 16.500 6 15l3.500-3L6 8.500 7.500 7z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-tome { --qi: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 6.500C9.800 4.700 6.500 4.200 3 5v14c3.500-.8 6.800-.3 9 1.500 2.200-1.800 5.500-2.300 9-1.500V5c-3.500-.8-6.800-.3-9 1.500zM11.200 7.500v11.600h1.600V7.500h-1.600z'/%3E%3C/svg%3E"); }
+html[data-game="skyrim"] .db-qi-main { --qt: #c9a94a; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-side { --qt: #8fb2c8; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-task { --qt: #9aa1a8; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-mage { --qt: #6f8fd6; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-thief { --qt: #8a9a6a; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-db { --qt: #b0413e; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-comp { --qt: #b98a52; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-daedra { --qt: #9a6ac0; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-war { --qt: #5f86b0; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-dg { --qt: #7aa6b8; } /* sp-ok: оттенок типа задания */
+html[data-game="skyrim"] .db-qi-q-dbn { --qt: #6aa38c; } /* sp-ok: оттенок типа задания */
+/* skyrim-glyphs:end */
+
+/* ---------- 2026-11-17: панель «Фильтры», сегменты, полоса игры на страницах записей, свёрнутые варианты ---------- */
+/* подписи кнопок — строго по центру: и у кнопок со значком (группа «значок + текст» по центру), и у ссылок-кнопок */
+.db-chips button, .db-view button, .db-also button, .db-onmap, .db-onvar, .db-fbtn, .db-freset, .db-seg button, .db-showvar, .db-sug-all, .db-recent-x,
+.cp.db .db-crumbs a, .cp.db .dbx-stats a.dbx-map, .dbs-go, .dbs-map, .dbs-tabs a, .db-shot-map, .cp.db .cp-open, .db-more {
+  display: inline-flex; align-items: center; justify-content: center; text-align: center; }
+.db-sug-all { display: flex; }
+.db-more { display: flex; width: fit-content; margin-inline: auto; }
+.cp.db .dbx-stats a.dbx-map { padding: 4px 22px 4px 6px; }
+.db-onmap { padding: 4px 18px 4px 6px; }
+.db-chips button { align-items: center; }
+
+/* кнопка «Фильтры» + число включённых */
+.db-fbtn { position: relative; gap: 8px; min-height: 36px; padding: 4px 18px 4px 6px; border: 0; border-radius: var(--sp-r-pill); background: var(--sp-btn); color: var(--sp-text);
+  box-shadow: var(--sp-btn-sh); font: 600 12.5px var(--font-body); cursor: pointer; transition: transform .18s, box-shadow .18s, color .18s; }
+.db-fbtn .sp-ico { width: 14px; height: 14px; padding: 6px; color: var(--sp-accent); }
+.db-fbtn:hover { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+.db-fbtn[aria-expanded="true"] { color: var(--sp-accent); background: var(--sp-base); box-shadow: var(--sp-press); transform: none; }
+.db-fbadge { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 10px; background: var(--sp-accent); color: var(--sp-base);
+  font: 700 11.5px/1 var(--font-body); font-style: normal; }
+.db-tools { gap: 10px; }
+.db-tools .db-fbtn { order: 1; }
+.db-sort { appearance: none; -webkit-appearance: none; min-height: 36px; padding: 4px 34px 4px 18px; border-radius: var(--sp-r-pill); text-align: center; text-align-last: center; cursor: pointer;
+  background: var(--sp-btn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a94a8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 12px center / 12px no-repeat; }
+.db-sort:hover { color: var(--sp-accent); }
+.db-view { padding: 3px; border-radius: var(--sp-r-pill); }
+.db-view button { min-height: 30px; padding: 3px 16px; border-radius: var(--sp-r-pill); }
+
+/* панель фильтров: вдавленная карточка, у каждого параметра — подпись и сегменты */
+.db-fpanel { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0 0 14px; padding: 14px 16px; border-radius: 18px; background: var(--sp-base); box-shadow: var(--sp-press); }
+.db-fpanel[hidden], .db-fpanel [hidden] { display: none !important; }
+.db-ff { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.db-ff-l { color: var(--sp-muted); font: 600 11.5px var(--font-body); letter-spacing: .08em; text-transform: uppercase; }
+.db-seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 3px; border-radius: var(--sp-r-pill); background: var(--sp-card); box-shadow: var(--sp-card-sh); }
+.db-seg button { min-height: 30px; padding: 3px 14px; border: 0; border-radius: var(--sp-r-pill); background: none; color: var(--sp-muted); font: 600 12.5px var(--font-body); cursor: pointer; transition: color .15s; }
+.db-seg button:hover { color: var(--sp-accent); }
+.db-seg button[aria-pressed="true"] { background: var(--sp-btn); color: var(--sp-accent); box-shadow: var(--sp-btn-sh); }
+.db-onvar { gap: 8px; min-height: 36px; padding: 4px 18px; border: 0; border-radius: var(--sp-r-pill); background: var(--sp-btn); color: var(--sp-text);
+  box-shadow: var(--sp-btn-sh); font: 600 12.5px var(--font-body); cursor: pointer; }
+.db-onvar:hover { color: var(--sp-accent); }
+.db-onvar[aria-pressed="true"] { color: var(--sp-accent); background: var(--sp-card); box-shadow: var(--sp-press); }
+.db-freset { margin-left: auto; min-height: 30px; padding: 3px 16px; border: 0; border-radius: var(--sp-r-pill); background: none; color: var(--sp-muted);
+  box-shadow: inset 0 0 0 1px var(--sp-edge); font: 600 12.5px var(--font-body); cursor: pointer; }
+.db-freset:hover { color: var(--sp-accent); }
+
+/* свёрнутые варианты: бейдж «+36» на плитке и кнопка в строке числа записей */
+.db-vcount { position: absolute; left: 5px; top: 5px; padding: 1px 7px; border-radius: 999px; background: color-mix(in srgb, var(--sp-base) 82%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 55%, transparent); color: var(--sp-accent); font: 700 11px/1.5 var(--font-body); font-style: normal; }
+.db-count .db-showvar { min-height: 26px; padding: 2px 14px; margin-left: 4px; border: 0; border-radius: var(--sp-r-pill); background: var(--sp-btn); color: var(--sp-accent);
+  box-shadow: var(--sp-btn-sh); font: 600 12px var(--font-body); cursor: pointer; vertical-align: middle; }
+
+/* полоса игры над страницами записей и списков: название, поиск, карта и все разделы — страница не тупик */
+.dbs { margin: 2px 0 14px; padding: 12px 14px 10px; border-radius: 20px; background: var(--sp-card); box-shadow: var(--sp-card-sh); }
+.dbs-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.cp.db .dbs-game { display: flex; flex-direction: column; gap: 3px; padding: 0 6px; color: var(--sp-text); text-decoration: none; line-height: 1; }
+.dbs-game small { color: var(--sp-accent); font: 600 10.5px/1.1 var(--font-display); letter-spacing: .24em; text-transform: uppercase; }
+.dbs-game b { font: 700 21px/1.1 var(--font-display); letter-spacing: .03em; }
+.cp.db .dbs-game:hover b { color: var(--sp-accent); }
+.dbs-search { flex: 1 1 260px; display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 5px 0 14px; border-radius: var(--sp-r-pill); background: var(--sp-base); box-shadow: var(--sp-press); }
+.dbs-search:focus-within { box-shadow: var(--sp-press), inset 0 0 0 1.5px var(--sp-accent); }
+.dbs-search svg { width: 17px; height: 17px; flex: none; fill: none; stroke: var(--sp-muted); stroke-width: 2; stroke-linecap: round; }
+.dbs-search input { flex: 1; min-width: 0; height: 40px; padding: 0; border: 0; background: none; color: var(--sp-text); font: 15px var(--font-body); outline: none; box-shadow: none; }
+.dbs-go, .dbs-map, .dbs-tabs a { border: 0; border-radius: var(--sp-r-pill); background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 13px var(--font-body);
+  text-decoration: none; cursor: pointer; transition: transform .18s, box-shadow .18s, color .18s; }
+.dbs-go { min-height: 32px; padding: 0 16px; }
+.cp.db .dbs-map { gap: 8px; min-height: 40px; padding: 3px 18px 3px 4px; color: var(--sp-text); }
+.dbs-map .sp-ico { width: 14px; height: 14px; padding: 7px; color: var(--sp-accent); }
+.dbs-go:hover, .cp.db .dbs-map:hover, .cp.db .dbs-tabs a:hover { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+.dbs-go:active, .cp.db .dbs-map:active, .cp.db .dbs-tabs a:active { transform: none; box-shadow: var(--sp-press); }
+.dbs-tabs { display: flex; gap: 6px; margin: 10px -2px 0; padding: 4px 2px 4px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+.dbs-tabs::-webkit-scrollbar { display: none; }
+.cp.db .dbs-tabs a { flex: none; gap: 7px; min-height: 34px; padding: 0 15px; scroll-snap-align: start; color: var(--sp-text); }
+.dbs-tabs a small { color: var(--sp-muted); font: 500 11px var(--font-body); }
+.cp.db .dbs-tabs a[aria-current="page"] { color: var(--sp-accent); background: var(--sp-base); box-shadow: var(--sp-press), inset 0 -2px 0 var(--sp-accent); transform: none; }
+.cp.db .db-crumbs.is-sub a:first-child::before { content: none; }
+@media (max-width: 700px) {
+  .dbs { margin-inline: -4px; padding: 10px 10px 8px; border-radius: 18px; }
+  .dbs-game b { font-size: 19px; }
+  .dbs-search { order: 3; flex-basis: 100%; }
+  .dbs-map { margin-left: auto; }
+  .db-fpanel { padding: 12px; gap: 12px; }
+  .db-ff { flex-wrap: wrap; }
+  .db-freset { margin-left: 0; }
+  .db-tools { flex-wrap: wrap; overflow: visible; }
+  .db-tools .db-view { margin-left: auto; }
+}
+
+/* шрифты игр — как у чипов и вкладок */
+html[data-game="gothic"] .dbs-game small, html[data-game="gothic"] .dbs-tabs a, html[data-game="gothic"] .dbs-go, html[data-game="gothic"] .dbs-map, html[data-game="gothic"] .db-fbtn,
+html[data-game="gothic"] .db-seg button, html[data-game="gothic"] .db-onvar, html[data-game="gothic"] .db-ff-l, html[data-game="gothic"] .db-freset { font-family: var(--g-label); letter-spacing: .06em; }
+html[data-game="skyrim"] .dbs-game small, html[data-game="skyrim"] .dbs-tabs a, html[data-game="skyrim"] .dbs-go, html[data-game="skyrim"] .dbs-map, html[data-game="skyrim"] .db-fbtn,
+html[data-game="skyrim"] .db-seg button, html[data-game="skyrim"] .db-onvar, html[data-game="skyrim"] .db-ff-l, html[data-game="skyrim"] .db-freset, html[data-game="skyrim"] .db-sort {
+  font-family: var(--s-label); letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
+html[data-game="skyrim"] .dbs-tabs a small { text-transform: none; letter-spacing: 0; }
+html[data-game="gothic"] .cp.db .dbs-tabs a[aria-current="page"] { color: var(--g-glow); box-shadow: var(--sp-press), var(--g-frame-hot); }
+html[data-game="skyrim"] .cp.db .dbs-tabs a[aria-current="page"] { color: #fff; box-shadow: var(--sp-press), var(--s-frame-hot); } /* sp-ok */
+html[data-game="skyrim"] .db-seg button[aria-pressed="true"], html[data-game="skyrim"] .db-onvar[aria-pressed="true"] { color: #fff; } /* sp-ok */
+html[data-game="gothic"] .db-seg button[aria-pressed="true"], html[data-game="gothic"] .db-onvar[aria-pressed="true"] { color: var(--g-glow); }
+
+/* ---------- смартфон: каталог базы ---------- */
+.db-fdone { display: none; }
+@media (max-width: 700px) {
+  /* шапка игры: кнопка карты — отдельной строкой во всю ширину */
+  .cp.db .dbx-stats a.dbx-map { flex: 1 0 100%; box-sizing: border-box; margin-top: 8px; justify-content: flex-start; }
+  /* вкладки: первая не прижата к краю после прокрутки */
+  .db-tabs { scroll-padding-inline: 16px; }
+  /* панель инструментов — одна строка: «Фильтры», сортировка, вид */
+  .db-tools { flex-wrap: nowrap; gap: 8px; }
+  .db-tools > .db-sort { flex: 1 1 0; min-width: 0; padding: 4px 26px 4px 12px; font-size: 12px; background-position: right 8px center; text-overflow: ellipsis; }
+  .db-tools > .db-view { flex: none; margin-left: 0; }
+  .db-view button { padding: 3px 8px; font-size: 11.5px; letter-spacing: 0 !important; }
+  .db-tools > .db-sort { letter-spacing: 0 !important; text-transform: none !important; font-size: 12px; padding: 4px 22px 4px 10px; background-position: right 6px center; }
+  .db-tools .db-fbtn { padding-inline: 14px; }
+  /* фильтры — нижняя шторка */
+  .db-fpanel:not([hidden]) { position: fixed; left: 0; right: 0; bottom: 0; z-index: 2000; flex-direction: column; align-items: stretch; flex-wrap: nowrap; gap: 16px; margin: 0;
+    max-height: 82vh; max-height: 82dvh; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; padding: 22px 16px calc(16px + env(safe-area-inset-bottom)); border-radius: 22px 22px 0 0;
+    background: var(--sp-card); box-shadow: 0 -10px 40px rgba(0, 0, 0, .55), 0 0 0 100vmax rgba(0, 0, 0, .55); } /* sp-ok: шторка и затемнение фона */
+  .db-fpanel:not([hidden])::before { content: ""; position: absolute; top: 8px; left: 50%; width: 38px; height: 4px; margin-left: -19px; border-radius: 2px; background: var(--sp-edge); }
+  .db-fpanel .db-ff { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .db-fpanel .db-seg { display: flex; width: 100%; box-sizing: border-box; }
+  .db-fpanel .db-seg { gap: 3px; padding: 3px; border-radius: 22px; }
+  .db-fpanel .db-seg button { flex: 1 1 auto; min-height: 38px; padding: 3px 8px; font-size: 12px; letter-spacing: .03em !important; white-space: nowrap; }
+  .db-fpanel .db-onvar, .db-fpanel .db-onmap { min-height: 42px; }
+  .db-fpanel .db-freset { margin-left: 0; min-height: 40px; }
+  .db-fdone { display: block; order: 99; min-height: 46px; border: 0; border-radius: var(--sp-r-pill); background: var(--sp-accent); color: var(--sp-base); font: 700 14px var(--font-body); cursor: pointer; }
+}
+@media (max-width: 700px) {
+  /* таблица предметов: столбец с названием остаётся на месте при прокрутке вбок, чтобы не терять, чья это строка */
+  .db-itable { min-width: 560px; }
+  .db-itable th:first-child, .db-itable td:first-child { position: sticky; left: 0; z-index: 1; max-width: 46vw; background: var(--sp-card); box-shadow: 6px 0 8px -6px rgba(0, 0, 0, .55); } /* sp-ok: тень закреплённого столбца */
+}
+@media (max-width: 440px) {
+  /* плитки — две колонки: названия читаются целиком */
+  .db-g-tile { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .cp.db .db-grid .db-card { overflow-wrap: anywhere; hyphens: auto; }
+}
+
+/* iOS Safari приближает страницу при фокусе на поле со шрифтом < 16px — на сенсорных экранах держим 16px */
+@media (pointer: coarse) {
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]), select, textarea { font-size: 16px !important; }
+}
+
+/* ---------- 2026-11-17: карточка предмета по редкости, сцена за заголовком, «Случайная запись», «Недавно» внизу записи ---------- */
+.db-qc-rare { --q: #b38cff; }   /* sp-ok: цвет редкости предметов */
+.db-q-rare { color: #b38cff; }  /* sp-ok */
+/* карточка: рамка и подсветка цвета редкости, иконка слева, плашки столбиком */
+.db-card { position: relative; padding: 16px 18px; border-radius: 22px; background: color-mix(in srgb, var(--sp-card, var(--page)) 92%, var(--q) 8%);
+  box-shadow: var(--sp-card-sh, var(--sp-raise-sm)), inset 0 0 0 1.5px color-mix(in srgb, var(--q) 55%, transparent); }
+.db-card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(120% 90% at 0 0, color-mix(in srgb, var(--q) 20%, transparent), transparent 60%); }
+.db-card > * { position: relative; }
+.db-card .db-fig { box-shadow: var(--sp-press), inset 0 0 0 2px var(--q), 0 0 22px color-mix(in srgb, var(--q) 38%, transparent); }
+.db-card.db-qc-common { --q: #a9a49b; }  /* sp-ok */
+.db-card.db-qc-common::before { opacity: .45; }
+.db-card .db-plates { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 8px; }
+@media (min-width: 761px) {
+  .db-card .db-info { display: grid; grid-template-columns: minmax(150px, 190px) 1fr; gap: 6px 22px; align-items: start; }
+  .db-card .db-plates { grid-template-columns: 1fr; }
+  .db-card .db-facts { align-self: center; }
+}
+.db-card .db-plate { border-left: 3px solid var(--q); }
+/* сцена: размытый кадр из игры, растворяется в фон страницы, чуть смещается при прокрутке */
+.db-scene { position: absolute; left: 50%; top: 0; width: 100vw; height: 380px; transform: translateX(-50%); z-index: -1; pointer-events: none; overflow: hidden;
+  opacity: 0; transition: opacity .8s; -webkit-mask-image: linear-gradient(#000 30%, transparent); mask-image: linear-gradient(#000 30%, transparent); }
+.db-scene::before { content: ""; position: absolute; inset: -60px; background: inherit; background-size: cover; background-position: center 35%;
+  filter: blur(10px) saturate(1.2) brightness(.9); transform: translateY(var(--py, 0px)) scale(1.06); will-change: transform; }
+.db-scene.is-on { opacity: .85; }
+@media (prefers-reduced-motion: reduce) { .db-scene::before { transform: scale(1.06); } }
+.cp.db { position: relative; }
+.dbs-rnd { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px 0 12px; border: 0; border-radius: var(--sp-r-pill); background: var(--sp-btn);
+  color: var(--sp-text); box-shadow: var(--sp-btn-sh); font: 600 13px var(--font-body); cursor: pointer; transition: transform .18s, box-shadow .18s, color .18s; }
+.dbs-rnd svg { width: 17px; height: 17px; fill: none; stroke: var(--sp-accent); stroke-width: 1.8; }
+.dbs-rnd circle { fill: var(--sp-accent); stroke: none; }
+.dbs-rnd:hover { color: var(--sp-accent); transform: translateY(-1px); box-shadow: var(--sp-btn-sh-up); }
+.dbs-rnd:disabled { opacity: .6; cursor: progress; }
+.dbx-rnd { margin-left: 4px; }
+.db-recent-end { margin: 30px 0 4px; }
+@media (max-width: 700px) { .dbs-rnd { margin-left: auto; padding: 0 12px; } .dbs-rnd span { display: none; } .dbs-rnd + .dbs-map { margin-left: 0; } }
+/* шапка каталога на телефоне: кубик в одном ряду с кнопкой карты (а не один в отдельной строке) */
+@media (max-width: 700px) {
+  .cp.db .dbx-stats a.dbx-map { flex: 1 1 calc(100% - 70px); min-width: 0; }
+  .dbx-rnd.dbs-rnd { flex: none; width: 44px; height: 44px; min-height: 44px; margin: 8px 0 0; padding: 0; justify-content: center; align-self: center; }
+}
+
+/* Skyrim: карточка компактнее (плашки в ряд), иконка на подсвеченной подложке цвета редкости — тёмные модели читаются */
+html[data-game="skyrim"] .db-card { padding: 14px 18px; box-shadow: var(--sp-card-sh), inset 0 0 0 1px color-mix(in srgb, var(--q) 70%, transparent), inset 0 3px 0 var(--q); }
+html[data-game="skyrim"] .db-card .db-fig { background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--q) 38%, #2a3140) 0, #161b25 78%); }  /* sp-ok: подложка иконки */
+html[data-game="skyrim"] .db-card .db-fig img { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .7)) brightness(1.25); }  /* sp-ok */
+@media (min-width: 761px) {
+  html[data-game="skyrim"] .db-card .db-info { grid-template-columns: 1fr; gap: 12px; }
+  html[data-game="skyrim"] .db-card .db-plates { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+  html[data-game="skyrim"] .db-card .db-plate { min-width: 120px; }
+  html[data-game="skyrim"] .db-card .db-facts { align-self: start; }
+}
+html[data-game="skyrim"] .db-qc-common { --q: #bdb7ab; }  /* sp-ok */
+html[data-game="skyrim"] .db-qc-magic { --q: #62a6ff; }   /* sp-ok */
+html[data-game="skyrim"] .db-qc-rare { --q: #c08cff; }    /* sp-ok */
+html[data-game="skyrim"] .db-qc-story { --q: #f0b24c; }   /* sp-ok */
+
+/* ---------- скелетоны: серый мерцающий блок, пока грузится картинка или каталог ---------- */
+.db-mm, .db-shots img, .db-fig.db-wide img, .db-sk {
+  background-color: color-mix(in srgb, var(--sp-muted, #888) 16%, var(--page, #222)); /* sp-ok: карта/стекло поверх картинки */
+  background-image: linear-gradient(100deg, transparent 30%, color-mix(in srgb, #fff 11%, transparent) 50%, transparent 70%); /* sp-ok: карта/стекло поверх картинки */
+  background-size: 250% 100%; animation: db-sk 1.5s linear infinite;
+}
+@keyframes db-sk { from { background-position: 150% 0; } to { background-position: -100% 0; } }
+.db-grid.is-sk > li { display: block; }
+.db-sk { border-radius: 16px; height: 128px; box-shadow: var(--sp-card-sh); }
+.db-g-fig .db-sk, .db-grid.is-sk.db-g-fig .db-sk { height: 190px; }
+.db-grid.is-sk.db-g-row .db-sk { height: 56px; }
+.db-grid.is-sk.db-g-scene .db-sk { height: 150px; }
+@media (prefers-reduced-motion: reduce) { .db-mm, .db-shots img, .db-fig.db-wide img, .db-sk { animation: none; } }
+
+/* ---------- мини-карта «Где найти» ---------- */
+.db-mm { position: relative; margin: 10px 0 14px; max-width: 760px; border-radius: 18px; overflow: hidden; box-shadow: var(--sp-press); }
+.db-mm-view { position: absolute; }
+.db-mm-view > img { display: block; width: 100%; height: 100%; animation: db-mm-in .5s ease both; user-select: none; -webkit-user-drag: none; }
+@keyframes db-mm-in { from { opacity: 0; } }
+.db-mm-dot { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--sp-accent, #ffb04a); /* sp-ok: карта/стекло поверх картинки */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, .55), 0 1px 5px rgba(0, 0, 0, .6); transition: transform .15s; } /* sp-ok: карта/стекло поверх картинки */
+.db-mm-dot::after { content: ""; position: absolute; inset: -12px; }   /* запас под палец */
+.db-mm-dot:hover, .db-mm-dot:focus-visible { transform: scale(1.7); z-index: 2; outline: none; box-shadow: 0 0 0 2px #fff, 0 2px 8px rgba(0, 0, 0, .7); } /* sp-ok: карта/стекло поверх картинки */
+.db-mm-few .db-mm-dot { width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; animation: db-mm-pulse 2s ease-out infinite; }
+@keyframes db-mm-pulse { 0% { box-shadow: 0 0 0 2px rgba(0, 0, 0, .55), 0 0 0 0 color-mix(in srgb, var(--sp-accent, #ffb04a) 70%, transparent); } /* sp-ok: карта/стекло поверх картинки */
+  100% { box-shadow: 0 0 0 2px rgba(0, 0, 0, .55), 0 0 0 16px transparent; } } /* sp-ok: карта/стекло поверх картинки */
+.db-mm figcaption { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  pointer-events: none; color: #fff; font: 600 12px var(--font-body, system-ui); text-shadow: 0 1px 4px rgba(0, 0, 0, .8); } /* sp-ok: карта/стекло поверх картинки */
+.db-mm figcaption > span { padding: 4px 10px; border-radius: 999px; background: rgba(0, 0, 0, .55); } /* sp-ok: карта/стекло поверх картинки */
+.db-mm figcaption a { pointer-events: auto; }
+@media (max-width: 700px) { .db-mm { border-radius: 14px; } }
+@media (prefers-reduced-motion: reduce) { .db-mm-few .db-mm-dot, .db-mm-view > img { animation: none; } }
+
+/* ---------- плавные переходы между страницами базы (View Transitions: Chrome, Safari 18.2+; остальные — обычный переход) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+  .db-head .db-fig, .db-hero .db-fig { view-transition-name: db-fig; }
+  .cp.db h1 { view-transition-name: db-title; }
+  ::view-transition-group(db-fig), ::view-transition-group(db-title) { animation-duration: .3s; }
+}
+
+/* ---------- кнопки копирования и липкая полоса разделов ---------- */
+.db-copybar { display: inline-flex; flex-wrap: wrap; gap: 6px; margin: 0 0 0 10px; vertical-align: middle; }
+h1 + .db-copybar { margin: 0 0 14px; display: flex; }
+.db-copybar button { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 12px; border: 0; border-radius: var(--sp-r-pill, 999px);
+  background: var(--sp-btn, var(--page)); color: var(--sp-muted, var(--muted)); box-shadow: var(--sp-btn-sh, none); font: 600 12px var(--font-body, system-ui); cursor: pointer; }
+.db-copybar button:hover, .db-copybar button:focus-visible { color: var(--sp-accent, var(--cyan)); }
+.db-copybar button:active { box-shadow: var(--sp-press, none); }
+.db-copybar svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.db-toast { position: fixed; z-index: 1300; left: 50%; bottom: 22px; transform: translate(-50%, 12px); padding: 9px 18px; border-radius: 999px; opacity: 0; pointer-events: none;
+  background: rgba(20, 22, 28, .94); color: #fff; font: 600 13px var(--font-body, system-ui); box-shadow: 0 8px 24px rgba(0, 0, 0, .45); transition: opacity .2s, transform .2s; } /* sp-ok */
+.db-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.dbs-fix { position: fixed; z-index: 60; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 12px; padding: 6px 14px; transform: translateY(-110%); transition: transform .22s ease;
+  background: color-mix(in srgb, var(--sp-base, #14161c) 90%, transparent); /* sp-ok: карта/стекло поверх картинки */
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .35); pointer-events: none; } /* sp-ok: стекло поверх страницы */
+.dbs-fix.is-on { transform: none; pointer-events: auto; }
+.dbs-fix .dbs-game small { display: none; }
+.dbs-fix .dbs-game b { font-size: 16px; white-space: nowrap; }
+.dbs-fix .dbs-tabs { flex: 1; min-width: 0; margin: 0; padding: 2px; }
+.cp.db ~ .dbs-fix .dbs-tabs a, .dbs-fix .dbs-tabs a { min-height: 30px; padding: 0 12px; }
+.dbs-fix .dbs-game { display: flex; flex-direction: column; padding: 0 6px; color: var(--sp-text); text-decoration: none; line-height: 1; }
+@media (prefers-reduced-motion: reduce) { .dbs-fix, .db-toast { transition: none; } }
+
+
+/* ---------- 2026-11-17: хаб — 3 колонки, карточки ниже; кнопка «Наверх» (js/db-top.js) ---------- */
+.db-games { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.db-game { padding-bottom: 14px; }
+.db-game-art { aspect-ratio: 16 / 6; }
+.db-game b { margin-top: 12px; margin-bottom: 4px; font-size: 16px; }
+.db-game span { font-size: 12.5px; line-height: 1.45; }
+@media (max-width: 900px) { .db-games { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .db-games { grid-template-columns: 1fr; } .db-game-art { aspect-ratio: 16 / 6.5; } }
+.db-top { position: fixed; z-index: 40; right: 18px; bottom: 20px; width: 46px; height: 46px; display: grid; place-items: center; border: 0; border-radius: 50%; cursor: pointer;
+  color: var(--sp-text, var(--text)); background: var(--sp-btn, var(--page)); box-shadow: var(--sp-btn-sh, var(--sp-raise-sm));
+  opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity .2s, transform .2s, color .15s; }
+.db-top.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.db-top:hover { color: var(--sp-accent, var(--cyan)); }
+.db-top:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+.db-top svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 600px) { .db-top { right: 12px; bottom: 14px; width: 42px; height: 42px; } }
+@media (prefers-reduced-motion: reduce) { .db-top { transition: none; } }

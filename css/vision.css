@@ -1,0 +1,338 @@
+/* =========================================================================================
+   VISION — слой стиля visionOS для страниц сайта (главная, база данных, служебные страницы).
+   Подключается ПОСЛЕДНИМ, после css/style.css (и css/db.css). Цвета, тени и стекло — токены css/spatial.css.
+   Префикс :root:not(#vx) поднимает специфичность до уровня id: перебивает многослойные правила style.css
+   (тёмная/светлая тема, состояния) без !important. Карты используют те же токены через css/map-base.css.
+   ========================================================================================= */
+
+/* ---------- Шрифт: Inter (SF Pro на Apple, если Inter не загрузился) ---------- */
+:root:not([data-game]) { --font-body: var(--font-ui); --font-display: var(--font-ui); --font-soft: var(--font-ui); --font-label: var(--font-ui); }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-feature-settings: "cv11", "ss01"; }
+:root:not([data-game]) :is(h1, h2, h3, .home-title) { letter-spacing: -.025em; }
+
+/* ---------- Подложка: насыщенные цветные пятна, которые стекло размывает и делает «живыми» ---------- */
+:root:not(#vx):not([data-game]) body {
+    background-color: var(--sp-floor, var(--sp-base));
+    background-image:
+        radial-gradient(ellipse 60% 50% at 10% -5%, color-mix(in srgb, var(--sp-accent) 30%, transparent), transparent 70%),
+        radial-gradient(ellipse 45% 40% at 95% 12%, color-mix(in srgb, var(--cyan, #54dcff) 14%, transparent), transparent 70%),
+        radial-gradient(ellipse 50% 45% at 80% 85%, color-mix(in srgb, var(--acid, #c7ff3f) 13%, transparent), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 0% 100%, color-mix(in srgb, var(--cyan, #54dcff) 9%, transparent), transparent 70%);
+    background-attachment: fixed;
+}
+:root:not(#vx)[data-theme="light"]:not([data-game]) body {
+    background-color: #dfe6f2; /* sp-ok: светлая подложка под стекло */
+    background-image:
+        radial-gradient(ellipse 60% 50% at 10% -5%, rgba(84, 200, 255, .45), transparent 70%),    /* sp-ok */
+        radial-gradient(ellipse 45% 40% at 95% 12%, rgba(160, 130, 255, .38), transparent 70%),   /* sp-ok */
+        radial-gradient(ellipse 50% 45% at 80% 85%, rgba(190, 240, 90, .3), transparent 70%),     /* sp-ok */
+        radial-gradient(ellipse 55% 45% at 0% 100%, rgba(255, 170, 120, .3), transparent 70%);    /* sp-ok */
+}
+
+/* ---------- Плавающий хедер-капсула ----------
+   Стекло нарисовано псевдоэлементом: у самой капсулы нет backdrop-filter, поэтому выпадающее меню и панель «бургера»
+   внутри неё размывают страницу, а не пустоту (элемент с backdrop-filter становится «корнем» для размытия потомков). */
+:root { --tb-top: 14px; }
+:root:not(#vx) .topbar { padding: var(--tb-top) 16px 0; }
+:root:not(#vx) .topbar-inner {
+    max-width: 1240px; height: calc(var(--tb-h) - var(--tb-top)); padding: 0 8px; gap: 10px; border-radius: var(--sp-r-pill); isolation: isolate;
+}
+:root:not(#vx) .topbar-inner::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: auto;
+    background: var(--sp-glass-sheen), var(--sp-bar-glass);
+    box-shadow: var(--sp-glass-edge), var(--sp-raise);
+}
+:root:not(#vx) :is(.tb-brand, .tb-nav, .tb-actions, .tb-burger) { background: none; box-shadow: none; }
+:root:not(#vx) .tb-brand { padding: 4px 14px 4px 4px; }
+:root:not(#vx) .tb-brand img { box-shadow: var(--sp-hairline), var(--sp-raise-sm); }
+:root:not(#vx) .tb-link { border-radius: var(--sp-r-pill); background: none; box-shadow: none; color: color-mix(in srgb, var(--sp-text) 78%, transparent); font-weight: 500; }
+:root:not(#vx) .tb-link:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--sp-tint) 12%, transparent); box-shadow: inset 0 1px 0 var(--sp-rim-hi); color: var(--sp-text); transform: none; }
+:root:not(#vx) .tb-link[aria-expanded="true"] { background: color-mix(in srgb, var(--sp-tint) 16%, transparent); box-shadow: inset 0 0 0 1px var(--sp-rim); color: var(--sp-text); }
+:root:not(#vx) .tb-menu {
+    border-radius: 22px; background: var(--sp-glass-sheen), var(--sp-glass); box-shadow: var(--sp-glass-edge), var(--sp-overlay);
+}
+:root:not(#vx) .tb-menu a:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--sp-tint) 12%, transparent); box-shadow: none; transform: none; }
+/* кнопки справа — круглые стеклянные; «Поддержать» — главное действие капсулы, залито акцентом */
+:root:not(#vx) :is(.tb-icon, .topbar .tb-social:not(.is-live), .topbar .ui-theme-toggle) { background: color-mix(in srgb, var(--sp-tint) 9%, transparent); box-shadow: inset 0 0 0 1px var(--sp-rim), inset 0 1px 0 var(--sp-rim-hi); }
+:root:not(#vx) :is(.tb-icon, .topbar .tb-social:not(.is-live), .topbar .ui-theme-toggle):hover { background: color-mix(in srgb, var(--sp-tint) 16%, transparent); transform: var(--sp-hover-scale); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 55%, var(--sp-rim)), inset 0 1px 0 var(--sp-rim-hi), 0 0 18px -4px color-mix(in srgb, var(--sp-accent) 45%, transparent); }
+:root:not(#vx) .topbar .tb-social.social-donate:not(.is-live) {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sp-accent) 92%, #fff), var(--sp-accent)); color: #06121a; /* sp-ok: тёмный текст на акцентной заливке */
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), 0 8px 20px -6px color-mix(in srgb, var(--sp-accent) 60%, transparent); /* sp-ok: блик и свечение главной кнопки */
+}
+:root:not(#vx) .topbar .tb-social.social-donate > span { color: #06121a; font-weight: 600; } /* sp-ok */
+:root:not(#vx) .topbar .tb-social.social-donate .sp-ico { background: rgba(255, 255, 255, .35); box-shadow: none; color: #06121a; } /* sp-ok */
+:root:not(#vx) .topbar .auth-card .auth-btn { background: color-mix(in srgb, var(--sp-tint) 12%, transparent); box-shadow: inset 0 0 0 1px var(--sp-rim), inset 0 1px 0 var(--sp-rim-hi); }
+@media (min-width: 1201px) { :root { --tb-h: 82px; } }
+@media (max-width: 1200px) {
+    :root { --tb-h: 72px; --tb-top: 12px; }
+    :root:not(#vx) .topbar { padding: var(--tb-top) 12px 0; }
+    :root:not(#vx) .topbar-inner { padding: 0 6px; }
+    :root:not(#vx) .tb-panel {
+        top: calc(var(--tb-h) + 8px); border-radius: 28px;
+        background: var(--sp-glass-sheen), var(--sp-glass);
+        box-shadow: var(--sp-glass-edge), var(--sp-overlay);
+    }
+    :root:not(#vx) .tb-dd .tb-menu { background: var(--sp-well); box-shadow: var(--sp-press); }
+}
+
+/* ---------- Стеклянные поверхности главной: слой 1 — карточки и блоки ---------- */
+:root:not(#vx) :is(details.game-dropdown, .game-placeholder, .community-block, .donate-block, .about-item, .updates-dropdown > summary, .update-entry,
+    .support-strip, .game-suggest-banner, .recent-item, .vx-card) {
+    background: var(--sp-card); border: 0; border-radius: var(--sp-r-lg); box-shadow: var(--sp-card-sh);
+}
+:root:not(#vx) .update-entry, :root:not(#vx) .updates-dropdown > summary { }
+:root:not(#vx) details.game-dropdown { padding: 10px; border-radius: 28px; }
+:root:not(#vx) .game-banner, :root:not(#vx) .game-banner::after { border-radius: 20px; }
+:root:not(#vx) .game-banner { box-shadow: inset 0 0 0 1px var(--sp-rim); }
+/* наведение: лёгкое увеличение, наклон за курсором (js/vision.js пишет --rx/--ry/--mx/--my), кромка и свечение цвета игры */
+:root:not(#vx) :is(details.game-dropdown, .game-suggest-banner, .recent-item, .vx-card, .vx-window, .about-item) {
+    transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: var(--sp-t-card), background-color .3s;
+}
+:root:not(#vx) :is(details.game-dropdown, .game-suggest-banner, .recent-item, .vx-card, .about-item):hover,
+:root:not(#vx) details.game-dropdown[open] {
+    transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) var(--sp-hover-scale);
+    background-image: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--sp-tint) 9%, transparent), transparent 65%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-accent, var(--recent-accent, var(--sp-accent))) 55%, var(--sp-rim)), inset 0 1px 1px var(--sp-rim-hi),
+        var(--sp-raise-up), 0 0 40px -12px color-mix(in srgb, var(--game-accent, var(--recent-accent, var(--sp-accent))) 55%, transparent);
+}
+:root:not(#vx) details.game-dropdown:is(:hover, [open], .is-peek) { z-index: 30; }
+/* всплывающий список карт: непрозрачное стекло (родитель с размытием не даёт потомку размыть страницу) */
+@media (hover: hover) and (min-width: 681px) {
+    :root:not(#vx) details.game-dropdown.is-peek > .maps-list { background: var(--sp-card-solid); box-shadow: inset 0 0 0 1px var(--sp-rim), inset 0 1px 0 var(--sp-rim-hi), var(--sp-raise-up); border-radius: 22px; }
+}
+
+/* ---------- Слой 2 — кнопки, таблетки, чипы ---------- */
+:root:not(#vx) :is(.social-btn:not(.tb-social), .donate-btn, .map-link, .game-badge, .game-cta, .game-suggest-cta, .recent-dismiss, .admin-reports,
+    .hero-perks .sp-chip, .auth-card .auth-btn:not(.logout), .view-toggle button[aria-pressed="true"], .lib-sort button[aria-pressed="true"]) {
+    background: var(--sp-btn); border: 0; box-shadow: var(--sp-btn-sh); color: var(--sp-text);
+}
+:root:not(#vx) :is(.social-btn:not(.tb-social), .donate-btn, .map-link, .game-cta, .game-suggest-cta, .admin-reports, .recent-dismiss) { transition: var(--sp-t); }
+:root:not(#vx) :is(.social-btn:not(.tb-social), .donate-btn, .admin-reports):hover {
+    transform: var(--sp-hover-scale);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand, var(--sp-accent)) 60%, var(--sp-rim)), var(--sp-sheen), var(--sp-raise-sm-up);
+}
+:root:not(#vx) .map-link { border-radius: 16px; }
+:root:not(#vx) .map-link:hover {
+    background: color-mix(in srgb, var(--sp-tint) 16%, var(--sp-btn)); color: var(--game-accent); transform: translateX(3px);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 55%, var(--sp-rim)), var(--sp-sheen), var(--sp-raise-sm);
+}
+:root:not(#vx) details.game-dropdown:hover .game-cta, :root:not(#vx) .game-cta:focus-visible {
+    transform: var(--sp-hover-scale);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-accent) 60%, var(--sp-rim)), var(--sp-sheen), var(--sp-raise-sm-up);
+}
+:root:not(#vx) :is(.social-btn, .donate-btn, .map-link, .game-cta, .recent-item, .recent-dismiss):active { transform: scale(.98); background: var(--sp-well); box-shadow: var(--sp-press); }
+:root:not(#vx) .hero-perks .sp-chip { }
+
+/* ---------- Углубления: поля, дорожки прогресса, переключатели ---------- */
+:root:not(#vx) :is(.game-search input, .game-progress-track, .donate-goal-track, .view-toggle, .lib-sort, .recent-bar, .hero-latest-tag, .lib-empty, .game-suggest-plus) {
+    background: var(--sp-well); border: 0; box-shadow: var(--sp-press);
+}
+/* без стекла: размытие с saturate(1.8) красило углубление в насыщенный синий фона (светлая тема) — как у соседних .lib-sort / .view-toggle */
+:root:not(#vx) .game-search input { min-height: 54px; border-radius: var(--sp-r-pill); padding: 14px 22px; }
+:root:not(#vx) .game-search input:focus { box-shadow: var(--sp-press), var(--sp-focus-ring); }
+:root:not(#vx) .view-toggle, :root:not(#vx) .lib-sort { border-radius: var(--sp-r-pill); }
+:root:not(#vx) :is(.view-toggle, .lib-sort) button { border-radius: var(--sp-r-pill); }
+
+/* ---------- Hero: текст слева, окно-превью карты справа ---------- */
+.vx-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); align-items: center; gap: 48px; margin: 10px 0 40px; text-align: left; }
+.vx-hero .eyebrow { margin-bottom: 16px; letter-spacing: .14em; }
+.vx-hero .home-title { text-align: left; font-size: clamp(34px, 4.6vw, 58px); font-weight: 750; line-height: 1.04; letter-spacing: -.035em; margin-bottom: 18px; }
+.vx-lead { max-width: 520px; margin: 0 0 26px; color: var(--sp-muted); font-size: clamp(16px, 1.4vw, 18.5px); line-height: 1.55; }
+.vx-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.vx-cta .sp-btn { min-height: 50px; padding: 12px 24px; font-size: 15px; font-weight: 600; }
+.vx-cta .sp-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+:root:not(#vx) .vx-cta-main {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--sp-accent) 88%, #fff), var(--sp-accent)); color: #06121a; /* sp-ok: тёмный текст на акцентной заливке */
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 14px 34px -10px color-mix(in srgb, var(--sp-accent) 70%, transparent); /* sp-ok: блик и свечение главной кнопки */
+}
+:root:not(#vx) .vx-cta-main:hover { color: #06121a; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 18px 42px -10px color-mix(in srgb, var(--sp-accent) 85%, transparent); } /* sp-ok */
+.vx-hero .hero-perks { justify-content: flex-start; }
+.vx-hero .hero-latest { margin-top: 16px; padding-left: 0; }
+
+/* окно в стиле visionOS: стекло, полоса окна с «точками», внутри — боковая панель и карта */
+.vx-window {
+    position: relative; justify-self: end; width: 100%; max-width: 470px; border-radius: 28px; padding: 8px; color: var(--sp-text);
+    background: var(--sp-glass-sheen), var(--sp-card);
+    box-shadow: var(--sp-card-edge), var(--sp-raise-up);
+    transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: var(--sp-t-card);
+}
+.vx-window::after { /* мягкое свечение под окном */
+    content: ""; position: absolute; inset: 12% 8% -8%; z-index: -1; border-radius: 50%; filter: blur(50px); pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--sp-accent) 45%, transparent), transparent);
+}
+.vx-win-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 26px; padding: 0 8px 4px; }
+.vx-win-bar i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; background: color-mix(in srgb, var(--sp-text) 22%, transparent); }
+.vx-win-bar span { grid-column: 2; color: var(--sp-muted); font-size: 12px; font-weight: 500; }
+.vx-win-bar i:nth-child(3) { grid-column: 1; grid-row: 1; margin-left: 32px; }
+.vx-win-bar i:nth-child(2) { grid-column: 1; grid-row: 1; margin-left: 16px; }
+.vx-win-bar i:nth-child(1) { grid-column: 1; grid-row: 1; }
+/* низ окна: счётчик, полоса прогресса и легенда категорий в одну строку */
+.vx-win-foot { display: flex; align-items: center; gap: 12px; padding: 10px 8px 4px; }
+.vx-win-h { flex: none; margin: 0; font-size: 12.5px; color: var(--sp-muted); line-height: 1.2; }
+.vx-win-h b { color: var(--sp-text); font-size: 14px; font-variant-numeric: tabular-nums; }
+.vx-win-track { flex: 1; display: block; min-width: 40px; height: 6px; border-radius: 99px; background: var(--sp-well); box-shadow: var(--sp-press); overflow: hidden; }
+.vx-win-track i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--sp-accent), var(--acid, #c7ff3f)); transition: width .5s var(--sp-ease); } /* sp-ok: фирменный градиент прогресса */
+.vx-win-cats { list-style: none; display: flex; gap: 10px; margin: 0; padding: 0; }
+.vx-win-cats li { display: flex; align-items: center; gap: 5px; }
+.vx-win-cats em { color: var(--sp-muted); font-style: normal; font-variant-numeric: tabular-nums; font-size: 11.5px; }
+.vx-dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+.vx-win-map { position: relative; overflow: hidden; border-radius: 21px; aspect-ratio: 16 / 10; box-shadow: inset 0 0 0 1px var(--sp-rim); background: #1d2128; } /* sp-ok: фон до загрузки тайлов */
+.vx-tiles { position: absolute; inset: -4% -4% auto; aspect-ratio: 1; display: grid; grid-template-columns: 1fr 1fr; top: -22%; transform: translate(calc(var(--ry, 0deg) * -1.2px / 1deg), calc(var(--rx, 0deg) * 1.2px / 1deg)) scale(1.02); transition: transform .35s var(--sp-ease); }
+.vx-tiles img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.vx-win-map::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 0 40px rgba(0, 0, 0, .45); } /* sp-ok: виньетка карты */
+.vx-pin {
+    position: absolute; left: var(--x); top: var(--y); z-index: 2; width: 28px; height: 28px; margin: -14px 0 0 -14px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+    background: radial-gradient(circle at 50% 50%, var(--c) 0 5px, transparent 6px), color-mix(in srgb, #0b0e14 55%, transparent); /* sp-ok: тёмная подложка метки поверх тайлов */
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 80%, #fff), inset 0 1px 0 rgba(255, 255, 255, .4), 0 6px 16px rgba(0, 0, 0, .5); /* sp-ok: кромка метки */
+    transition: transform .25s var(--sp-ease), box-shadow .25s, opacity .25s;
+}
+.vx-pin::before { content: ""; position: absolute; inset: -6px; border-radius: 50%; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c) 55%, transparent); opacity: 0; animation: vx-ping 2.4s ease-out infinite; }
+.vx-pin:hover, .vx-pin:focus-visible { transform: scale(1.18); outline: none; box-shadow: inset 0 0 0 2px #fff, 0 0 22px var(--c), 0 6px 16px rgba(0, 0, 0, .5); } /* sp-ok */
+.vx-pin.is-found { opacity: .62; background: color-mix(in srgb, var(--c) 85%, #000); } /* sp-ok: цвет категории метки */
+.vx-pin.is-found::before { animation: none; }
+.vx-pin.is-found::after { content: ""; position: absolute; left: 10px; top: 7px; width: 6px; height: 11px; border: solid #0b0e14; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); } /* sp-ok: галочка */
+@keyframes vx-ping { 0% { opacity: .9; transform: scale(.7); } 80%, 100% { opacity: 0; transform: scale(1.5); } }
+.vx-win-hint {
+    position: absolute; left: 10px; bottom: 10px; z-index: 3; padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; color: #f2f5f9; /* sp-ok: подпись поверх тайлов */
+    background: rgba(12, 15, 22, .88); /* sp-ok */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18), inset 0 1px 0 rgba(255, 255, 255, .25); /* sp-ok */
+}
+
+/* ---------- Bento: четыре компактные плитки в ряд — заголовок, одна строка, живой элемент ---------- */
+.vx-bento { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 48px 0; }
+:root:not(#vx) .vx-card { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 16px 16px 14px; border-radius: 22px; }
+.vx-card h3 { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--sp-text); font-size: 15px; font-weight: 650; line-height: 1.2; }
+.vx-card p { margin: 0 0 6px; color: var(--sp-muted); font-size: 12.5px; line-height: 1.4; }
+.vx-card-ico { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 11px; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); }
+.vx-card-ico svg { width: 17px; height: 17px; fill: none; stroke: var(--sp-accent); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+/* общая высота живых элементов — плитки ровные */
+.vx-sync, .vx-lang, .vx-search, .vx-live { margin-top: auto; min-height: 40px; }
+/* синхронизация: «ПК 12 — Телефон 12» и кнопка +1 */
+.vx-sync { display: flex; align-items: center; gap: 8px; }
+.vx-dev { display: inline-flex; align-items: baseline; gap: 5px; padding: 8px 10px; border-radius: 12px; background: var(--sp-well); box-shadow: var(--sp-press); color: var(--sp-muted); font-size: 11.5px; font-weight: 500; white-space: nowrap; }
+.vx-dev b { color: var(--sp-text); font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.vx-sync-line { position: relative; flex: 1; min-width: 10px; height: 2px; border-radius: 2px; background: color-mix(in srgb, var(--sp-text) 18%, transparent); }
+.vx-sync-line i { position: absolute; top: -3px; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--sp-accent); box-shadow: 0 0 10px var(--sp-accent); opacity: 0; }
+.vx-sync.is-sync .vx-sync-line i { animation: vx-travel .6s var(--sp-ease); }
+@keyframes vx-travel { 0% { left: 0; opacity: 1; } 100% { left: calc(100% - 8px); opacity: 0; } }
+.vx-sync-btn, .vx-round {
+    flex: none; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; text-decoration: none;
+    background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-accent); font: 700 13px var(--font-ui); transition: var(--sp-t);
+}
+.vx-sync-btn:hover, .vx-round:hover { transform: scale(1.08); box-shadow: var(--sp-btn-sh-up); }
+.vx-round { color: var(--brand); }
+.vx-round svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.vx-round .f { fill: currentColor; stroke: none; }
+/* переключатель EN / RU и одно название */
+.vx-lang { display: flex; align-items: center; gap: 10px; }
+.vx-seg { display: inline-flex; flex: none; gap: 2px; padding: 3px; border-radius: 99px; background: var(--sp-well); box-shadow: var(--sp-press); }
+.vx-seg button { min-width: 38px; min-height: 30px; border: 0; border-radius: 99px; background: none; color: var(--sp-muted); font: 600 12px var(--font-ui); cursor: pointer; transition: var(--sp-t); }
+.vx-seg button[aria-pressed="true"] { background: var(--sp-btn); color: var(--sp-text); box-shadow: var(--sp-btn-sh); }
+.vx-names { list-style: none; min-width: 0; margin: 0; padding: 0; }
+.vx-names li { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; font-weight: 600; transition: opacity .2s, transform .2s; }
+.vx-names.is-swap li { opacity: 0; transform: translateY(4px); }
+/* поиск по базе: «печатает» примеры */
+.vx-search { display: flex; align-items: center; gap: 8px; padding: 0 4px 0 12px; border-radius: 99px; background: var(--sp-well); box-shadow: var(--sp-press); color: var(--sp-text); text-decoration: none; transition: var(--sp-t); }
+.vx-search:hover { box-shadow: var(--sp-press), var(--sp-focus-ring); }
+.vx-search svg { flex: none; width: 16px; height: 16px; fill: none; stroke: var(--sp-muted); stroke-width: 2; stroke-linecap: round; }
+.vx-search span { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; font-size: 13.5px; }
+.vx-search span::after { content: ""; display: inline-block; width: 1.5px; height: 1.05em; margin-left: 2px; vertical-align: -2px; background: var(--sp-accent); animation: vx-caret 1s steps(1) infinite; }
+@keyframes vx-caret { 50% { opacity: 0; } }
+.vx-search kbd { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-accent); font: 600 14px var(--font-ui); }
+/* эфир */
+.vx-live { display: flex; align-items: center; gap: 8px; }
+.vx-live-pill { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 12px 0 11px; margin-right: auto; border-radius: 99px; background: var(--sp-well); box-shadow: var(--sp-press); color: var(--sp-muted); font-size: 12.5px; font-weight: 500; white-space: nowrap; }
+.vx-live-pill i { width: 8px; height: 8px; border-radius: 50%; background: color-mix(in srgb, var(--sp-muted) 70%, transparent); }
+.vx-live-pill.is-live { color: var(--sp-text); box-shadow: var(--sp-press), inset 0 0 0 1px rgba(255, 67, 89, .6); } /* sp-ok: цвет эфира */
+.vx-live-pill.is-live i { background: #ff4359; box-shadow: 0 0 0 0 rgba(255, 67, 89, .6); animation: vx-live 1.6s ease-out infinite; } /* sp-ok */
+@keyframes vx-live { 0% { box-shadow: 0 0 0 0 rgba(255, 67, 89, .6); } 100% { box-shadow: 0 0 0 10px rgba(255, 67, 89, 0); } } /* sp-ok */
+
+/* ---------- Прочие блоки главной ---------- */
+:root:not(#vx) .about-item { padding: 16px 18px; border-radius: 20px; }
+:root:not(#vx) .about-item :is(p, li) { font-size: 13px; line-height: 1.5; }
+:root:not(#vx) .about-item h3 { font-size: 14.5px; margin-bottom: 4px; }
+@media (min-width: 1001px) {
+    :root:not(#vx) .about-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    :root:not(#vx) .about-grid > * { grid-column: auto !important; }
+}
+/* карточки игр: место под название в две строки у всех — ряды ровные, кнопки на одной линии */
+@media (min-width: 681px) { :root:not(#vx) .games-container:not(.is-list) .game-info { min-height: 92px; align-content: center; } }
+:root:not(#vx) .support-strip { border-radius: 28px; }
+/* блоки внутри полосы — не отдельные карточки: без своего стекла, иначе размытие рисует подложки-полосы */
+:root:not(#vx) .support-strip > section { border-radius: 0; }
+.section-heading h2, .recent-heading, #about-heading { letter-spacing: -.025em; }
+
+/* ---------- Компактный стеклянный футер ---------- */
+:root:not(#vx) .site-footer {
+    width: min(100% - 32px, 1240px); margin: 56px auto 22px; padding: 0; border: 0; border-radius: 28px;
+    background: var(--sp-glass-sheen), var(--sp-card);
+    box-shadow: var(--sp-card-sh);
+}
+:root:not(#vx) .site-footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 22px; max-width: none; padding: 16px 24px; }
+:root:not(#vx) .footer-links { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 0; }
+:root:not(#vx) .footer-links a { padding: 6px 11px; border-radius: 99px; color: var(--sp-muted); font-size: 13px; font-weight: 500; text-decoration: none; transition: var(--sp-t); }
+:root:not(#vx) .footer-links a:hover { color: var(--sp-text); background: color-mix(in srgb, var(--sp-tint) 10%, transparent); }
+:root:not(#vx) .footer-copy { margin: 0; color: var(--sp-muted); font-size: 12.5px; }
+body:has(> .site-footer) { padding-bottom: 0; }
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 1100px) { .vx-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1000px) {
+    .vx-hero { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .vx-hero .home-title { text-align: center; }
+    .vx-lead { margin-inline: auto; }
+    .vx-cta, .vx-hero .hero-perks { justify-content: center; }
+    .vx-window { display: none; }
+}
+@media (max-width: 640px) {
+    .vx-hero { margin-bottom: 28px; }
+    .vx-hero .home-title { font-size: clamp(30px, 9vw, 40px); }
+    .vx-window { border-radius: 24px; padding: 6px; }
+    .vx-win-cats { display: none; }
+    .vx-bento { gap: 10px; margin-bottom: 36px; }
+    :root:not(#vx) .vx-card { padding: 13px 12px 12px; border-radius: 18px; }
+    .vx-card h3 { font-size: 13.5px; gap: 8px; }
+    .vx-card-ico { width: 28px; height: 28px; border-radius: 9px; }
+    .vx-card p { display: none; }
+    .vx-card { gap: 10px; }
+    .vx-dev { padding: 7px 8px; }
+    .vx-sync .vx-dev ~ .vx-dev, .vx-sync-line { display: none; }
+    .vx-sync .vx-dev { margin-right: auto; }
+    .vx-seg button { min-width: 32px; }
+    .vx-live-pill { padding: 0 10px; gap: 6px; font-size: 11.5px; }
+}
+@media (max-width: 480px) {
+    /* узкий телефон: эфир — только точка-индикатор, кнопки Twitch и YouTube помещаются */
+    .vx-live-pill { width: 32px; min-height: 32px; padding: 0; justify-content: center; }
+    .vx-live-pill span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .vx-live { gap: 6px; }
+    .vx-round { width: 32px; height: 32px; }
+    :root:not(#vx) .site-footer { width: calc(100% - 24px); margin-top: 40px; border-radius: 24px; }
+    :root:not(#vx) .site-footer-inner { justify-content: center; text-align: center; padding: 14px; }
+    :root:not(#vx) .footer-links { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+    :root:not(#vx) :is(details.game-dropdown, .game-suggest-banner, .recent-item, .vx-card, .vx-window, .about-item) { transform: none !important; }
+    .vx-pin::before, .vx-search span::after, .vx-live-pill.is-live i { animation: none; }
+}
+
+/* вход в верхнем меню (гость, десктоп): «Кабинет» и «Войти с Google» — одна цельная пилюля */
+@media (min-width: 1201px) {
+    :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)) {
+        padding: 0 0 0 16px; gap: 0; border-radius: 999px; min-height: 38px; align-items: center;
+        background: color-mix(in srgb, var(--sp-tint) 12%, transparent);
+        box-shadow: inset 0 0 0 1px var(--sp-rim), inset 0 1px 0 var(--sp-rim-hi);
+    }
+    :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)) .auth-info { padding-right: 12px; }
+    :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)) .auth-btn,
+    :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)) .auth-btn:hover {
+        background: none; box-shadow: none; transform: none; border-radius: 0 999px 999px 0; position: relative;
+    }
+    :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)) .auth-btn::after {
+        content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 1px; background: var(--sp-rim);
+    }
+    :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)):hover {
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cyan) 55%, transparent), inset 0 1px 0 var(--sp-rim-hi);
+    }
+}

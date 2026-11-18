@@ -1,0 +1,48 @@
+{
+ "game": "The Elder Scrolls V: Skyrim",
+ "sections": {
+  "weapons": "Оружие",
+  "armor": "Броня",
+  "clothing": "Одежда",
+  "jewelry": "Украшения",
+  "ammo": "Стрелы и болты",
+  "magic": "Свитки и тома заклинаний",
+  "potions": "Зелья и яды",
+  "food": "Еда и напитки",
+  "ingredients": "Ингредиенты",
+  "soulgems": "Камни душ",
+  "materials": "Материалы",
+  "books": "Книги и записки",
+  "keys": "Ключи",
+  "misc": "Разное"
+ },
+ "quest_types": [
+  "Разное",
+  "Основной сюжет",
+  "Коллегия Винтерхолда",
+  "Гильдия воров",
+  "Тёмное Братство",
+  "Соратники",
+  "Даэдрические задания",
+  "Побочные задания",
+  "Гражданская война",
+  "Dawnguard",
+  "Dragonborn"
+ ],
+ "maps": {
+  "skyrim": "Скайрим",
+  "solstheim": "Солстейм"
+ },
+ "counts": {
+  "items": 8871,
+  "quests": 382,
+  "bestiary": 393,
+  "characters": 1073,
+  "lore": 0,
+  "locations": 733,
+  "talents": 20,
+  "effects": 179,
+  "spells": 201,
+  "tips": 345
+ }
+}

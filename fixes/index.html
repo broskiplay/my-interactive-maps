@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tdm-reservation" content="1">
+    <!-- fixes: сгенерировано scripts/fixes.py — не править вручную -->
+    <title>Журнал исправлений карт — BroskiPlay</title>
+    <meta name="description" content="Что исправлено на интерактивных картах BroskiPlay по сообщениям игроков: перенесённые метки и найденные ошибки.">
+    <link rel="canonical" href="https://broskiplay.ru/fixes/">
+    <meta name="theme-color" content="#50e3c2">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Журнал исправлений карт — BroskiPlay">
+    <meta property="og:description" content="Что исправлено на интерактивных картах BroskiPlay по сообщениям игроков: перенесённые метки и найденные ошибки.">
+    <meta property="og:url" content="https://broskiplay.ru/fixes/">
+    <meta property="og:image" content="https://broskiplay.ru/og-preview.jpg">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/fonts/fonts.css?v=1">
+    <link rel="stylesheet" href="/css/spatial.css?v=1">
+    <link rel="stylesheet" href="/css/style.css?v=52">
+    <link rel="stylesheet" href="/css/category-page.css?v=7">
+    <script>
+        (function () {
+            var sys = "dark";
+            try { if (window.matchMedia("(prefers-color-scheme: light)").matches) sys = "light"; } catch (e) {}
+            var theme = sys;
+            try {
+                var saved = localStorage.getItem("bp_theme");
+                if ((saved === "light" || saved === "dark") && localStorage.getItem("bp_theme_sys") === sys) theme = saved;
+            } catch (e) {}
+            document.documentElement.setAttribute("data-theme", theme);
+        })();
+    </script>
+    <script src="/js/metrika.js?v=1" defer></script>
+</head>
+<body>
+<!-- topbar:start — верхнее меню сайта: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="topbar" id="topbar">
+    <div class="topbar-inner">
+        <a class="tb-brand" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="34" height="34" alt=""><span>BroskiPlay</span></a>
+        <button type="button" class="tb-burger" id="tb-burger" aria-expanded="false" aria-controls="tb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+        <div class="tb-panel" id="tb-panel">
+            <nav class="tb-nav" aria-label="Разделы сайта">
+                <a class="tb-link" href="/db/">База данных</a>
+                <div class="tb-dd" id="tb-upd">
+                    <a class="tb-link tb-dd-btn" href="/#updates" aria-haspopup="true" aria-expanded="false" aria-controls="tb-upd-menu">Обновления<span class="tb-dot" hidden></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+                    <div class="tb-menu" id="tb-upd-menu" hidden><a href="/#updates" id="tb-updates"><span>Что нового</span><small>новое на сайте</small></a><a href="/fixes/"><span>Журнал исправлений</span><small>правки меток</small></a></div>
+                </div>
+                <a class="tb-link tb-opt" href="/#community">Сообщество</a>
+            </nav>
+            <div class="tb-actions">
+                <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+                <a class="tb-icon" id="tb-search" href="/?search=1" aria-label="Найти игру" title="Найти игру"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></a>
+                <div class="ui-controls tb-theme"></div>
+                <div class="auth-card">
+                    <a class="auth-info" href="/cabinet/" title="Личный кабинет">
+                    <img id="auth-avatar" class="auth-avatar" src="" alt="Avatar">
+                    <div id="auth-status" class="auth-text">
+                    <b>Кабинет</b><br>
+                    <span>Войдите через Google для синхронизации меток</span>
+                    </div>
+                    </a>
+                    <button id="auth-btn" class="auth-btn"><svg class="google-icon" width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Войти с Google</span></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</header>
+<script src="/ui-feedback.js?v=5" defer></script>
+<script src="/js/firebase-lazy.js?v=1" defer></script>
+<script src="/js/auth-lite.js?v=2" defer></script>
+<script src="/js/topbar.js?v=9" defer></script>
+<!-- topbar:end -->
+<main class="site-shell legal cp">
+    <a class="back-link" href="/">← К картам</a>
+    <h1>Журнал исправлений</h1>
+    <p class="cp-lead" id="fx-lead">Здесь видно, что происходит с сообщениями игроков: принятые сообщения попадают сюда со статусом «в работе», а после правки карты — «выполнено» (или «отказ» с пояснением).</p>
+    <p>Нашли неточную метку? Откройте её окно на карте и нажмите «Неточное место?» (отметьте правильное место) или «Сообщить об ошибке». Автор разбирает сообщения вручную. В журнале — только дата, игра, карта и название метки: текст сообщения и данные автора сообщения не публикуются.</p>
+    <div class="fx-filters" id="fx-filters" role="group" aria-label="Статус" hidden></div>
+    <div id="fx-body"><p class="fx-empty">Загрузка…</p></div>
+</main>
+<script>
+// Записи журнала — из Firestore (коллекция fixes, читать может любой); правит их автор на странице /reports/
+(function () {
+    "use strict";
+    var CFG = {"games": {"stellar": {"folder": "stellar-blade-map", "name": "Stellar Blade", "single": false, "maps": {"eidos7": "Эйдос-7 (Eidos 7)", "xion": "Ксион (Xion City)", "wasteland": "Пустошь (Wasteland)", "altess-levoire": "Левуар «Высь» (Altess Levoire)", "matrix-11": "Матрица-11 (Matrix 11)", "great-desert": "Великая пустыня (Great Desert)", "abyss-levoire": "Левуар «Бездна» (Abyss Levoire)", "spire-4": "Шпиль-4 (Spire 4)", "eidos-9": "Эйдос-9 (Eidos 9)"}}, "tainted": {"folder": "tainted-grail-map", "name": "Tainted Grail", "single": false, "maps": {"horns-of-the-south": "Рога Юга", "cuanacht": "Кунахт", "forlorn-swords": "Забытые Мечи", "sarras": "Саррас"}}, "gothic": {"folder": "gothic-remake-map", "name": "Gothic 1 Remake", "single": true, "maps": {"valley-of-mines": "Долина рудников"}}, "dimraeth": {"folder": "dimraeth-map", "name": "Dimraeth", "single": false, "maps": {"wildwood": "Эрлвуд", "thelostcaverns": "Затерянные пещеры", "playerbase": "Святилище", "thegoblincaves": "Гоблинские пещеры"}}, "palworld": {"folder": "palworld-map", "name": "Palworld", "single": true, "maps": {"palpagos-islands": "Острова Палпагос"}}, "oblivion": {"folder": "oblivion-remake-map", "name": "Oblivion Remastered", "single": false, "maps": {"cyrodiil": "Сиродил", "shivering-isles": "Дрожащие острова"}}, "skyrim": {"folder": "skyrim-map", "name": "Skyrim", "single": false, "maps": {"skyrim": "Скайрим", "solstheim": "Солстейм"}}, "witcher3": {"folder": "witcher3-map", "name": "Ведьмак 3", "single": false, "maps": {"velen-novigrad": "Велен и Новиград", "skellige": "Скеллиге", "toussaint": "Туссент", "white-orchard": "Белый Сад", "kaer-morhen": "Каэр Морхен", "isle-of-mists": "Остров Туманов", "vizima-castle": "Королевский замок в Вызиме", "time-and-space": "Время и пространство", "olgierd-world": "Мир Гюнтера о'Дима", "land-of-fables": "Страна Сказок"}}, "cyberpunk2077": {"folder": "cyberpunk2077-map", "name": "Cyberpunk 2077", "single": true, "maps": {"night-city": "Найт-Сити"}}, "hogwarts": {"folder": "hogwarts-legacy-map", "name": "Hogwarts Legacy", "single": false, "maps": {"world": "Мир", "hogwarts": "Хогвартс", "hogsmeade": "Хогсмид"}}, "phantomblade": {"folder": "phantom-blade-zero-map", "name": "Phantom Blade Zero", "single": false, "maps": {"weeping-creek-valley": "Долина Плачущего ручья", "crimson-forest": "Багровый лес", "village-of-lu": "Деревня Лу", "pangzhen": "Панчжэнь", "the-mandates-encampment": "Лагерь Союза", "meigu-lake": "Озеро Мэйгу", "mountain-of-imprisonment": "Гора Заточения", "mount-soulrend": "Гора Разбитых Душ"}}, "rdr2": {"folder": "rdr2-map", "name": "Red Dead Redemption 2", "single": true, "maps": {"rdr2": "Запад: Нью-Ханаан, Амбарино, Гуарма"}}, "silverpalace": {"folder": "silver-palace-map", "name": "Silver Palace", "single": true, "maps": {"silver-palace": "Серебряный дворец"}}}, "legacy": []};
+    var FB = { apiKey: "AIzaSyBZ29h18Z1k0gE4dAEca5JH8yePQgxhaII", authDomain: "broskiplaymaps.firebaseapp.com", projectId: "broskiplaymaps", appId: "1:418362476965:web:59ce4e677b1a0a84d7404c" };
+    var KIND = { move: "Перенос метки", error: "Ошибка в метке" };
+    var STATUS = { work: "В работе", done: "Выполнено", declined: "Отказ" };
+    var MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+    var filter = "all", all = [];
+    var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+    var mine = [];
+    try { mine = JSON.parse(localStorage.getItem("bp_my_reports") || "[]").map(function (r) { return r.id; }); } catch (e) { /* localStorage недоступен */ }
+    function fmtDate(d) { var p = String(d || "").split("-"); return p.length === 3 ? (+p[2]) + " " + MONTHS[+p[1] - 1] + " " + p[0] : ""; }
+    function link(e) {
+        var g = CFG.games[e.game];
+        if (!g) return "";
+        return "/" + g.folder + "/" + (g.single || !e.map ? "" : e.map + "/") + (e.markerId ? "?marker=" + encodeURIComponent(e.markerId) : "");
+    }
+    function row(e) {
+        var g = CFG.games[e.game] || { name: e.game, maps: {} }, st = STATUS[e.status] ? e.status : "work";
+        var where = [g.name, g.single ? "" : (g.maps[e.map] || "")].filter(Boolean).join(" · ");
+        var closed = st !== "work" && e.closed && e.closed !== e.date ? (st === "done" ? "выполнено " : "отказ ") + fmtDate(e.closed).replace(/ \d{4}$/, "") : "";
+        var isMine = mine.indexOf(e.id) !== -1;
+        return '<li data-rid="' + esc(e.id) + '"' + (isMine ? ' class="fx-is-mine"' : "") + '>' +
+            '<span class="fx-status fx-st-' + st + '">' + STATUS[st] + '</span> ' +
+            '<span class="fx-kind fx-' + esc(e.kind) + '">' + esc(KIND[e.kind] || e.kind) + '</span> ' +
+            '<a href="' + esc(link(e)) + '">' + esc(e.title || "Метка") + '</a>' +
+            ' <span class="fx-where">' + esc([where, closed].filter(Boolean).join(" · ")) + '</span>' + (isMine ? '<span class="fx-mine"> · по вашему сообщению</span>' : "") +
+            (e.note ? '<div class="fx-note">' + esc(e.note) + '</div>' : "") + '</li>';
+    }
+    function render() {
+        var count = { all: all.length, work: 0, done: 0, declined: 0 };
+        all.forEach(function (e) { count[e.status] = (count[e.status] || 0) + 1; });
+        document.getElementById("fx-lead").textContent = all.length
+            ? "Сообщений игроков в журнале: " + all.length + " — выполнено " + count.done + ", в работе " + count.work + ", отказов " + count.declined + ". Спасибо всем, кто нажимает «Неточное место?» и «Сообщить об ошибке» в окне метки."
+            : "Здесь видно, что происходит с сообщениями игроков: принятые сообщения попадают сюда со статусом «в работе», а после правки карты — «выполнено» (или «отказ» с пояснением). Пока записей нет.";
+        var f = document.getElementById("fx-filters");
+        f.hidden = !all.length;
+        f.innerHTML = [["all", "Все"], ["work", "В работе"], ["done", "Выполнено"], ["declined", "Отказ"]].map(function (x) {
+            return '<button type="button" data-f="' + x[0] + '" aria-pressed="' + (filter === x[0]) + '">' + x[1] + " (" + (count[x[0]] || 0) + ")</button>";
+        }).join("");
+        var list = all.filter(function (e) { return filter === "all" || e.status === filter; });
+        var dates = [];
+        list.forEach(function (e) { if (dates.indexOf(e.date) === -1) dates.push(e.date); });
+        document.getElementById("fx-body").innerHTML = list.length ? dates.map(function (d) {
+            return "<h2>" + fmtDate(d) + '</h2><ul class="fx-list">' + list.filter(function (e) { return e.date === d; }).map(row).join("") + "</ul>";
+        }).join("") : '<p class="fx-empty">' + (all.length ? "Записей с таким статусом нет." : "Записей пока нет.") + "</p>";
+    }
+    document.getElementById("fx-filters").addEventListener("click", function (e) {
+        var b = e.target.closest("button[data-f]");
+        if (b) { filter = b.dataset.f; render(); }
+    });
+    function show(live) {
+        var seen = {};
+        all = live.concat(CFG.legacy).filter(function (e) { if (seen[e.id]) return false; seen[e.id] = 1; return true; });
+        all.sort(function (a, b) { return (b.date || "").localeCompare(a.date || "") || (b.t || 0) - (a.t || 0); });
+        render();
+    }
+    function start() {
+        if (!window.BPFirebase) { show([]); return; }
+        window.BPFirebase.load().then(function (fb) {
+            if (!fb.apps.length) fb.initializeApp(FB);
+            return fb.firestore().collection("fixes").orderBy("date", "desc").limit(500).get();
+        }).then(function (snap) {
+            show(snap.docs.map(function (d) { var x = d.data(); x.id = d.id; x.t = x.updatedAt && x.updatedAt.toMillis ? x.updatedAt.toMillis() : 0; return x; }));
+        }).catch(function (err) {
+            console.warn("Журнал исправлений: Firestore недоступен", err);
+            show([]);
+        });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+})();
+</script>
+</body>
+</html>
