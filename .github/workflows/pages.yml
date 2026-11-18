@@ -34,7 +34,7 @@ jobs:
 
       - name: Генерация страниц
         env:
-          JSC: ${{ github.workspace }}/scripts/jsc_node.js   # вместо macOS JavaScriptCore
+          JSC: ${{ github.workspace }}/scripts/jsc_node.cjs   # вместо macOS JavaScriptCore
         run: |
           python3 scripts/category_pages.py
           python3 scripts/db_pages.py

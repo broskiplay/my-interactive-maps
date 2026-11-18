@@ -32,7 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from seo import GAMES, SITE, ROOT  # noqa: E402
 
-JSC = os.environ.get("JSC") or "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"  # на Linux (Actions): scripts/jsc_node.js
+JSC = os.environ.get("JSC") or "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"  # на Linux (Actions): scripts/jsc_node.cjs
 MIN_MARKERS = 3          # меньше — страницы нет
 MAX_ROWS = 300           # строк в списке названий на одной странице
 CONFIG_VAR = {

@@ -10,7 +10,7 @@
 """
 import json, os, re, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JSC = os.environ.get("JSC") or "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"  # на Linux (Actions): scripts/jsc_node.js
+JSC = os.environ.get("JSC") or "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"  # на Linux (Actions): scripts/jsc_node.cjs
 
 def jsc(code):
     out = subprocess.run([JSC, "-e", code], capture_output=True, text=True)
