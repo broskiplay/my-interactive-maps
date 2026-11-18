@@ -26,12 +26,18 @@
     }
     function renderHero(last) {
         var cta = document.querySelector(".vx-cta"), old = $("hd-continue");
-        if (old) old.remove();
-        if (!cta || !last) return;
-        var a = document.createElement("a");
-        a.id = "hd-continue"; a.className = "sp-btn sp-pill hd-continue"; a.href = last.href;
-        a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Продолжить: ' + esc(last.title || last.name);
-        cta.prepend(a);
+        if (!cta || !last) { if (old) old.remove(); return; }
+        var label = "Продолжить: " + (last.title || last.name);
+        if (old && old.getAttribute("href") === last.href && old.textContent === label) return;
+        var a = old || document.createElement("a");
+        if (!old) {
+            a.id = "hd-continue"; a.className = "sp-btn sp-pill hd-continue";
+            a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span></span>';
+            cta.prepend(a);
+        }
+        if (a.getAttribute("href") !== last.href) a.href = last.href;
+        var caption = a.querySelector("span");
+        if (caption && caption.textContent !== label) caption.textContent = label;
     }
     // Достижения считаются из реального прогресса; дата получения запоминается в bp_ach (только на этом устройстве)
     function achievements(rows, found, favN, done) {
