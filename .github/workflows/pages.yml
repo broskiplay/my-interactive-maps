@@ -45,7 +45,7 @@ jobs:
           [ "$db" -gt 3000 ] && [ "$cat" -gt 300 ] && [ "$loc" -gt 30 ]
 
       - name: Подготовка к публикации
-        run: rm -rf scripts .github   # служебное — не выкладываем на сайт
+        run: rm -rf scripts .github tests   # служебное и тесты — не выкладываем на сайт
 
       - uses: actions/configure-pages@v5
 
