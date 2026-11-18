@@ -246,3 +246,74 @@ html { scroll-behavior: smooth; }
 @media(prefers-reduced-motion:reduce) {
   .game-library .game-search .lib-reset { transition:none; }
 }
+
+/* V2.5 — visual rhythm and restrained hierarchy across the homepage. */
+.game-library .section-heading,
+#recent-maps .recent-heading,
+.hd-pulse .hd-head,
+.vx-bento h3,
+.community-block h2,
+.donate-block h2,
+.updates-dropdown h2,
+.about > h2 {
+  letter-spacing:-.025em;
+}
+.game-library .section-heading h2,
+#recent-maps .recent-heading,
+.hd-pulse .hd-head h2,
+.community-block h2,
+.donate-block h2,
+.updates-dropdown h2,
+.about > h2 { text-wrap:balance; }
+.game-library .game-search {
+  padding:12px;
+  border-radius:22px;
+  background:color-mix(in srgb,var(--sp-card) 65%,transparent);
+  box-shadow:inset 0 0 0 1px var(--sp-rim);
+}
+.game-library .game-search .lib-sort { min-width:0; }
+.game-library .game-info { align-items:center; }
+.game-library .game-progress-heading strong { font-variant-numeric:tabular-nums; }
+.game-library details.game-dropdown[open] > summary .game-title { color:var(--sp-text); }
+.game-library .game-banner { isolation:isolate; }
+.game-library .game-banner::after { border-radius:inherit; }
+.recent-list .recent-item .recent-map { font-weight:720; line-height:1.25; }
+.recent-list .recent-item .recent-pct { font-size:12.5px; }
+.recent-list .recent-item .recent-bar { height:7px; }
+.recent-list .recent-item:focus-visible { outline-offset:3px; }
+@media(min-width:1050px) {
+  .recent-list:has(> .recent-cell:nth-child(3)) {
+    grid-template-columns:minmax(0,1.55fr) repeat(2,minmax(0,1fr));
+  }
+  .recent-list > .recent-cell:first-child .recent-item { min-height:172px; }
+}
+.vx-bento .vx-card,
+.about-grid .about-item {
+  border-radius:22px;
+}
+.vx-bento .vx-card h3 { font-size:15px; }
+.vx-bento .vx-card p { line-height:1.5; }
+.community-block,
+.donate-block,
+.hd-pulse,
+.about-grid .about-item {
+  border-color:var(--sp-rim);
+}
+.community-block h2,
+.donate-block h2,
+.about > h2 { font-size:clamp(20px,2vw,25px); }
+.updates-dropdown > summary:focus-visible,
+.vx-bento :is(a,button):focus-visible,
+.community-block a:focus-visible,
+.donate-block a:focus-visible {
+  outline:3px solid var(--sp-accent); outline-offset:3px;
+}
+@media(max-width:680px) {
+  .game-library .game-search { padding:10px; border-radius:18px; }
+  .game-library .section-heading { gap:4px; }
+  .game-library .section-heading p { line-height:1.45; }
+  .vx-bento .vx-card { padding:14px; }
+  .community-block h2,
+  .donate-block h2,
+  .about > h2 { font-size:21px; }
+}
