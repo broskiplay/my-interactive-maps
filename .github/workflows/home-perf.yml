@@ -37,7 +37,7 @@ jobs:
           node --check tests/home-perf.cjs
       - name: Install headless browser tooling
         run: |
-          npm install --no-save --no-package-lock playwright@1.56.1
+          npm install --no-save --no-package-lock playwright@1.56.1 lighthouse@12
           npx playwright install --with-deps chromium
       - name: Launch local site
         run: |
@@ -53,3 +53,23 @@ jobs:
         env:
           BP_TEST_URL: http://127.0.0.1:8000/
         run: node tests/home-perf.cjs
+      - name: Lighthouse mobile and desktop diagnostics
+        run: |
+          export CHROME_PATH="$(node -e 'console.log(require("playwright").chromium.executablePath())')"
+          npx lighthouse http://127.0.0.1:8000/ --only-categories=performance --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=/tmp/bp-lighthouse-mobile.json --quiet
+          npx lighthouse http://127.0.0.1:8000/ --only-categories=performance --preset=desktop --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=/tmp/bp-lighthouse-desktop.json --quiet
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const report = ['### Lighthouse performance diagnostics','','| Profile | Score | FCP | LCP | TBT | CLS |','|---|---:|---:|---:|---:|---:|'];
+          for (const profile of ['mobile','desktop']) {
+            const json = JSON.parse(fs.readFileSync('/tmp/bp-lighthouse-' + profile + '.json','utf8'));
+            const a = json.audits;
+            const val = id => a[id]?.displayValue || 'n/a';
+            const score = Math.round(100 * (json.categories.performance.score || 0));
+            report.push('| ' + profile + ' | ' + score + '/100 | ' + val('first-contentful-paint') + ' | ' + val('largest-contentful-paint') + ' | ' + val('total-blocking-time') + ' | ' + val('cumulative-layout-shift') + ' |');
+          }
+          report.push('','*Local GitHub-hosted CI run; simulated throttling, not production RUM or CrUX. Scores are observations, not release gates.*');
+          const out = report.join('\n') + '\n';
+          console.log(out);
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,out);
+          NODE
