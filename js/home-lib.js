@@ -62,6 +62,46 @@
     empty.className = "lib-empty"; empty.hidden = true;
     container.before(empty);
 
+    // Quick access and one-click reset, without touching existing search/filter logic.
+    var searchInput = $("game-search-input");
+    var reset = document.createElement("button");
+    reset.type = "button"; reset.className = "lib-reset";
+    reset.textContent = "Сбросить";
+    reset.title = "Сбросить поиск и фильтры";
+    reset.hidden = true;
+    if (search) {
+        var status = $("game-search-status");
+        if (status) search.insertBefore(reset, status); else search.appendChild(reset);
+    }
+    function updateReset() {
+        reset.hidden = mode === "all" && (!searchInput || !searchInput.value.trim());
+    }
+    reset.addEventListener("click", function () {
+        mode = "all";
+        write("bp_home_sort", mode);
+        if (searchInput) searchInput.value = "";
+        layout();
+        if (searchInput) { searchInput.focus(); searchInput.dispatchEvent(new Event("input", { bubbles:true })); }
+    });
+    if (searchInput) {
+        searchInput.addEventListener("input", updateReset);
+        searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && searchInput.value) {
+                searchInput.value = "";
+                searchInput.dispatchEvent(new Event("input", { bubbles:true }));
+                e.preventDefault();
+            }
+        });
+    }
+    document.addEventListener("keydown", function (e) {
+        if (e.key !== "/" || e.ctrlKey || e.altKey || e.metaKey || !searchInput) return;
+        var active = document.activeElement;
+        if (active && (active.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName))) return;
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    });
+
     function freshDate(c) {   // дата добавления / обновления из GAME_FRESH (js/script.js)
         var info = typeof GAME_FRESH !== "undefined" && GAME_FRESH[themeOf(c)];
         return info ? (info.updated || info.added || "") : "";
@@ -97,6 +137,10 @@
         var none = shown.length === 0;
         empty.hidden = !none;
         if (none) empty.textContent = mode === "mine" ? "Пока нет игр с отмеченными метками: найденное на картах появится здесь." : mode === "soon" ? "Анонсированных игр пока нет." : mode === "db" ? "Баз данных пока нет." : "Вы ещё не открывали карты на этом устройстве.";
+        // Re-run the existing search after changing the active filter, so its
+        // visible-result count reflects the combined search + filter state.
+        if (searchInput) searchInput.dispatchEvent(new Event("input", { bubbles:true }));
+        updateReset();
         if (typeof fitSuggestBanner === "function") fitSuggestBanner();
     }
     bar.addEventListener("click", function (e) {
