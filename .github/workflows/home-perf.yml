@@ -11,6 +11,7 @@ on:
       - 'css/home-v2.css'
       - 'tests/home-perf.cjs'
       - '.github/workflows/home-perf.yml'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
