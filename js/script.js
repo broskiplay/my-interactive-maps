@@ -717,15 +717,23 @@ function renderGames() {
 // Баннер «Здесь могла бы быть ваша игра» занимает свободные клетки последнего ряда сетки:
 // одна клетка — вертикальная карточка, несколько — горизонтальный баннер, ряд заполнен — строка во всю ширину.
 // Число колонок берётся из сетки (на главной 2, на /games/ — сколько влезает), скрытые поиском карточки не считаются.
+// Multiple filters, searches and ResizeObserver notifications may arrive in one frame.
+// Measure once after style changes have settled, then write only when values differ.
+let suggestFitFrame = 0;
 function fitSuggestBanner() {
-    const container = document.getElementById("games-container");
-    const banner = container && container.querySelector(":scope > .game-suggest-banner");
-    if (!banner) return;
-    const cols = getComputedStyle(container).gridTemplateColumns.split(" ").filter(Boolean).length || 1;
-    const visible = container.querySelectorAll(":scope > .game-dropdown:not([hidden]):not(.is-filtered), :scope > .game-placeholder:not([hidden])").length;
-    const free = visible % cols ? cols - visible % cols : cols;
-    banner.style.gridColumn = free === cols ? "1 / -1" : `span ${free}`;
-    banner.classList.toggle("is-cell", free === 1);
+    if (suggestFitFrame) return;
+    suggestFitFrame = requestAnimationFrame(() => {
+        suggestFitFrame = 0;
+        const container = document.getElementById("games-container");
+        const banner = container && container.querySelector(":scope > .game-suggest-banner");
+        if (!banner) return;
+        const cols = getComputedStyle(container).gridTemplateColumns.split(" ").filter(Boolean).length || 1;
+        const visible = container.querySelectorAll(":scope > .game-dropdown:not([hidden]):not(.is-filtered), :scope > .game-placeholder:not([hidden])").length;
+        const free = visible % cols ? cols - visible % cols : cols;
+        const span = free === cols ? "1 / -1" : `span ${free}`;
+        if (banner.style.gridColumn !== span) banner.style.gridColumn = span;
+        banner.classList.toggle("is-cell", free === 1);
+    });
 }
 
 // Бейджи на баннерах: «Новое» — неделю после добавления игры, «Обновлено» — неделю после крупного обновления
@@ -862,9 +870,7 @@ enhanceGameCards();
 initViewToggle();
 fitSuggestBanner();
 if ("ResizeObserver" in window && document.getElementById("games-container")) {
-    let fitFrame = 0;
-    new ResizeObserver(() => { cancelAnimationFrame(fitFrame); fitFrame = requestAnimationFrame(fitSuggestBanner); })
-        .observe(document.getElementById("games-container"));
+    new ResizeObserver(fitSuggestBanner).observe(document.getElementById("games-container"));
 }
 
 
@@ -923,20 +929,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameSearchStatus = document.getElementById("game-search-status");
     const gameCards = [...document.querySelectorAll("#games-container > .game-dropdown, #games-container > .game-placeholder")];
 
-    // Поиск по названию игры и доступным картам
+    // Static prerendered names only need normalization once, not on every keystroke.
+    const normalizeSearch = value => value.toLocaleLowerCase("ru").replace(/ё/g, "е").trim();
+    const searchIndex = new Map(gameCards.map(card => {
+        const title = card.querySelector(".game-title")?.textContent || "";
+        const names = [...card.querySelectorAll(".map-link:not(.map-link-db)")].map(link => link.textContent).join(" ");
+        return [card, normalizeSearch(`${title} ${names}`)];
+    }));
     gameSearchInput.addEventListener("input", () => {
-        const normalizeSearch = value => value.toLocaleLowerCase("ru").replace(/ё/g, "е").trim();
         const query = normalizeSearch(gameSearchInput.value);
         let visibleCount = 0;
         gameCards.forEach(card => {
-            const title = card.querySelector(".game-title")?.textContent || "";
-            const mapNames = [...card.querySelectorAll(".map-link:not(.map-link-db)")].map(link => link.textContent).join(" ");
-            const isMatch = !query || normalizeSearch(`${title} ${mapNames}`).includes(query);
-            card.hidden = !isMatch;
+            const isMatch = !query || searchIndex.get(card).includes(query);
+            if (card.hidden !== !isMatch) card.hidden = !isMatch;
             if (isMatch && !card.classList.contains("is-filtered")) visibleCount++;
         });
         fitSuggestBanner();
-        gameSearchStatus.textContent = query ? (visibleCount ? `Найдено игр: ${visibleCount}` : "По этому запросу и фильтру ничего не найдено.") : "";
+        const message = query ? (visibleCount ? `Найдено игр: ${visibleCount}` : "По этому запросу и фильтру ничего не найдено.") : "";
+        if (gameSearchStatus.textContent !== message) gameSearchStatus.textContent = message;
     });
 
 
