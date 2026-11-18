@@ -81,7 +81,7 @@
         write("bp_home_sort", mode);
         if (searchInput) searchInput.value = "";
         layout();
-        if (searchInput) { searchInput.focus(); searchInput.dispatchEvent(new Event("input", { bubbles:true })); }
+        if (searchInput) searchInput.focus();
     });
     if (searchInput) {
         searchInput.addEventListener("input", updateReset);
@@ -132,7 +132,8 @@
         if (order.some(function (c, i) { return c !== now[i]; })) order.forEach(function (c) { container.appendChild(c); });   // двигаем карточки, только если порядок изменился
         var tail = container.querySelector(":scope > .game-suggest-banner");
         if (tail && tail !== container.lastElementChild) container.appendChild(tail);   // баннер «Предложить игру» всегда в конце сетки
-        cards.forEach(function (c) { c.classList.toggle("is-filtered", shown.indexOf(c) < 0); });
+        var visibleSet = new Set(shown);
+        cards.forEach(function (c) { c.classList.toggle("is-filtered", !visibleSet.has(c)); });
         bar.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.mode === mode)); });
         var none = shown.length === 0;
         empty.hidden = !none;
@@ -140,11 +141,12 @@
         // Re-run the existing search after changing the active filter, so its
         // visible-result count reflects the combined search + filter state.
         if (searchInput) searchInput.dispatchEvent(new Event("input", { bubbles:true }));
+        else if (typeof fitSuggestBanner === "function") fitSuggestBanner();
         updateReset();
-        if (typeof fitSuggestBanner === "function") fitSuggestBanner();
     }
     bar.addEventListener("click", function (e) {
         var b = e.target.closest("button"); if (!b) return;
+        if (mode === b.dataset.mode) return;
         mode = b.dataset.mode; write("bp_home_sort", mode); layout();
     });
 
@@ -202,6 +204,14 @@
     function init() { layout(); renderProgressMenu(); }
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
     document.addEventListener("DOMContentLoaded", function () { });   // js/topbar.js (bpLastMap) подключён после этого файла
-    document.addEventListener("bp:progress", function () { layout(); renderProgressMenu(); });
+    // Progress for many maps may arrive in a burst: refresh the list at most once per frame.
+    var progressLayoutFrame = 0;
+    document.addEventListener("bp:progress", function () {
+        if (progressLayoutFrame) return;
+        progressLayoutFrame = requestAnimationFrame(function () {
+            progressLayoutFrame = 0;
+            layout(); renderProgressMenu();
+        });
+    });
     addEventListener("pageshow", function (e) { if (e.persisted) { favs = read("bp_fav", []); syncStars(); layout(); } });
 })();
