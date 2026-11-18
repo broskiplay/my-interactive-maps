@@ -923,18 +923,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameSearchStatus = document.getElementById("game-search-status");
     const gameCards = [...document.querySelectorAll("#games-container > .game-dropdown, #games-container > .game-placeholder")];
 
-    // Поиск
+    // Поиск по названию игры и доступным картам
     gameSearchInput.addEventListener("input", () => {
-        const query = gameSearchInput.value.trim().toLocaleLowerCase("ru");
+        const normalizeSearch = value => value.toLocaleLowerCase("ru").replace(/ё/g, "е").trim();
+        const query = normalizeSearch(gameSearchInput.value);
         let visibleCount = 0;
         gameCards.forEach(card => {
-            const title = card.querySelector(".game-title").textContent.trim().toLocaleLowerCase("ru");
-            const isMatch = !query || title.includes(query);
+            const title = card.querySelector(".game-title")?.textContent || "";
+            const mapNames = [...card.querySelectorAll(".map-link:not(.map-link-db)")].map(link => link.textContent).join(" ");
+            const isMatch = !query || normalizeSearch(`${title} ${mapNames}`).includes(query);
             card.hidden = !isMatch;
             if (isMatch) visibleCount++;
         });
         fitSuggestBanner();
-        gameSearchStatus.textContent = query ? (visibleCount ? `Найдено: ${visibleCount} из ${gameCards.length}` : "Игры не найдены. Проверьте запрос.") : "";
+        gameSearchStatus.textContent = query ? (visibleCount ? `Найдено игр: ${visibleCount} из ${gameCards.length}` : "Игры или карты не найдены. Проверьте запрос.") : "";
     });
 
 
@@ -1054,7 +1056,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderRecent();
     });
 
-    // Блок «Продолжить» над библиотекой: последние открытые карты всех игр (bp_recent пишет js/map-extras.js на картах)
+    // Блок «Продолжить» под библиотекой: последние открытые карты всех игр (bp_recent пишет js/map-extras.js на картах)
     const recentStore = new Map();
     window.bpProgress = { games: {}, maps: recentStore };   // читает js/home-lib.js («Продолжить» в шапке, «Мой прогресс», фильтры)
     function renderRecent() {

@@ -135,12 +135,17 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 :root:not(#vx) :is(.view-toggle, .lib-sort) button { border-radius: var(--sp-r-pill); }
 
 /* ---------- Hero: текст слева, окно-превью карты справа ---------- */
-.vx-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); align-items: center; gap: 48px; margin: 10px 0 40px; text-align: left; }
+.vx-hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; gap: 36px; margin: 10px 0 40px; padding: clamp(22px, 3.2vw, 42px); border: 1px solid var(--sp-rim); border-radius: 32px; background: linear-gradient(135deg, var(--sp-card), color-mix(in srgb, var(--sp-card) 76%, var(--sp-floor))); box-shadow: var(--sp-card-sh); text-align: left; }
+.vx-hero-copy { min-width: 0; max-width: 620px; }
 .vx-hero .eyebrow { margin-bottom: 16px; letter-spacing: .14em; }
-.vx-hero .home-title { text-align: left; font-size: clamp(34px, 4.6vw, 58px); font-weight: 750; line-height: 1.04; letter-spacing: -.035em; margin-bottom: 18px; }
-.vx-lead { max-width: 520px; margin: 0 0 26px; color: var(--sp-muted); font-size: clamp(16px, 1.4vw, 18.5px); line-height: 1.55; }
-.vx-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.vx-hero .home-title { max-width: 600px; text-align: left; font-size: clamp(34px, 3.8vw, 48px); font-weight: 750; line-height: 1.1; letter-spacing: -.035em; margin-bottom: 16px; }
+.vx-lead { max-width: 500px; margin: 0 0 22px; color: var(--sp-muted); font-size: clamp(16px, 1.35vw, 18px); line-height: 1.55; }
+.vx-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
 .vx-cta .sp-btn { min-height: 50px; padding: 12px 24px; font-size: 15px; font-weight: 600; }
+.vx-cta .sp-btn:not(.vx-cta-main) { background: transparent; box-shadow: none; color: var(--sp-muted); }
+.vx-cta .sp-btn:not(.vx-cta-main):hover { color: var(--sp-text); text-decoration: underline; text-underline-offset: 4px; transform: none; }
+.vx-cta .hd-continue { flex: 0 1 auto; border: 1px solid var(--sp-rim); background: var(--sp-btn); box-shadow: var(--sp-btn-sh); color: var(--sp-text); }
+.vx-cta .hd-continue:hover { text-decoration: none; box-shadow: var(--sp-btn-sh-up); color: var(--sp-accent); }
 .vx-cta .sp-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 :root:not(#vx) .vx-cta-main {
     background: linear-gradient(180deg, color-mix(in srgb, var(--sp-accent) 88%, #fff), var(--sp-accent)); color: #06121a; /* sp-ok: тёмный текст на акцентной заливке */
@@ -148,11 +153,21 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 }
 :root:not(#vx) .vx-cta-main:hover { color: #06121a; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 18px 42px -10px color-mix(in srgb, var(--sp-accent) 85%, transparent); } /* sp-ok */
 .vx-hero .hero-perks { justify-content: flex-start; }
-.vx-hero .hero-latest { margin-top: 16px; padding-left: 0; }
+.vx-hero .hero-perks svg { width: 18px; height: 18px; }
+.vx-hero-meta { display: grid; justify-items: start; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--sp-rim); }
+.vx-hero .hero-latest { margin: 0; padding: 0; font-size: 12px; }
+:root:not(#vx) .vx-hero .hero-latest-tag {
+    display: inline-flex; flex: none; align-items: center; width: auto; max-width: max-content;
+    padding: 2px 8px; border: 0; border-radius: var(--sp-r-pill); background: transparent; box-shadow: none;
+    color: var(--sp-muted); font-size: 10px; font-weight: 600; line-height: 1.2; letter-spacing: .06em;
+    text-transform: uppercase; white-space: nowrap;
+}
+.vx-hero .hero-latest time { color: var(--sp-muted); font-weight: 500; }
+.vx-hero .hero-latest-arr { color: var(--sp-muted); }
 
 /* окно в стиле visionOS: стекло, полоса окна с «точками», внутри — боковая панель и карта */
 .vx-window {
-    position: relative; justify-self: end; width: 100%; max-width: 470px; border-radius: 28px; padding: 8px; color: var(--sp-text);
+    position: relative; justify-self: end; width: 100%; max-width: 540px; border-radius: 28px; padding: 8px; color: var(--sp-text);
     background: var(--sp-glass-sheen), var(--sp-card);
     box-shadow: var(--sp-card-edge), var(--sp-raise-up);
     transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: var(--sp-t-card);
@@ -280,15 +295,17 @@ body:has(> .site-footer) { padding-bottom: 0; }
 @media (max-width: 1100px) { .vx-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
     .vx-hero { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .vx-hero-copy { justify-self: center; }
     .vx-hero .home-title { text-align: center; }
     .vx-lead { margin-inline: auto; }
     .vx-cta, .vx-hero .hero-perks { justify-content: center; }
-    .vx-window { display: none; }
+    .vx-window { justify-self: center; max-width: 520px; }
 }
 @media (max-width: 640px) {
     .vx-hero { margin-bottom: 28px; }
     .vx-hero .home-title { font-size: clamp(30px, 9vw, 40px); }
     .vx-window { border-radius: 24px; padding: 6px; }
+    .vx-hero-meta { justify-items: center; }
     .vx-win-cats { display: none; }
     .vx-bento { gap: 10px; margin-bottom: 36px; }
     :root:not(#vx) .vx-card { padding: 13px 12px 12px; border-radius: 18px; }
@@ -335,4 +352,73 @@ body:has(> .site-footer) { padding-bottom: 0; }
     :root:not(#vx) .topbar .auth-card:has(.auth-info:not(.has-avatar)):has(.auth-btn:not(.logout)):hover {
         box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cyan) 55%, transparent), inset 0 1px 0 var(--sp-rim-hi);
     }
+}
+
+/* ---------- Точность первого экрана и каталога ---------- */
+.vx-hero { gap: clamp(24px, 3vw, 36px); }
+.vx-hero .home-title { max-width: 570px; font-size: clamp(34px, 3.2vw, 42px); line-height: 1.08; }
+.vx-window { max-width: 560px; }
+.game-library { scroll-margin-top: 24px; }
+.game-library .section-heading { margin-bottom: 14px; }
+.game-library .section-heading h2 { font-size: clamp(22px, 2.2vw, 28px); }
+.game-library .game-search { gap: 8px 10px; margin-bottom: 14px; }
+:root:not(#vx) .game-library .game-search input { min-height: 48px; padding: 11px 18px; }
+.game-library .view-toggle { padding: 3px; }
+.game-library .view-toggle button { width: 40px; height: 40px; }
+.game-library .lib-sort { padding: 3px; }
+.game-library .lib-sort button { min-height: 40px; padding-inline: 12px; }
+.game-library .games-container { gap: 16px; }
+.game-library .game-banner { background: color-mix(in srgb, var(--game-accent, var(--sp-accent)) 8%, var(--sp-card)); }
+.game-library .game-info { min-height: 96px; padding: 13px 12px 10px; }
+.game-library .game-title { min-height: 2.5em; }
+.game-library .game-new { padding: 5px 10px; letter-spacing: .04em; }
+.game-library .game-fav { width: 40px; height: 40px; background: rgba(8, 12, 18, .72); /* sp-ok: тёмная подложка звезды сохраняет контраст на любой обложке */ box-shadow: 0 2px 12px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.22); /* sp-ok: контур и тень поверх ярких обложек */ }
+@media (max-width: 1000px) {
+    .vx-hero { gap: 24px; }
+    .vx-hero .home-title { max-width: 660px; }
+}
+@media (max-width: 680px) {
+    .vx-hero { gap: 16px; padding: 16px 14px; border-radius: 22px; }
+    .vx-hero .eyebrow { margin-bottom: 10px; font-size: 10px; }
+    .vx-hero .home-title { max-width: 540px; font-size: clamp(27px, 7.2vw, 32px); line-height: 1.06; margin-bottom: 12px; }
+    .vx-lead { max-width: 42ch; margin-bottom: 12px; font-size: 14px; line-height: 1.4; }
+    .vx-cta { gap: 8px; }
+    .vx-cta .sp-btn { min-height: 46px; padding: 10px 16px; }
+    .vx-cta .hd-continue { flex: 1 1 100%; justify-content: center; min-height: 44px; }
+    .vx-hero .hero-perks { gap: 6px; }
+    .vx-hero .hero-perks .sp-chip { min-height: 30px; padding: 5px 9px; font-size: 10.5px; }
+    .vx-hero-meta { gap: 6px; margin-top: 12px; padding-top: 10px; }
+    .vx-hero .hero-latest { gap: 7px; font-size: 11px; }
+    .vx-window { width: 100%; max-width: 520px; }
+    .vx-win-bar { height: 22px; }
+    .vx-win-map { aspect-ratio: 16 / 6; border-radius: 17px; }
+    .vx-win-foot { gap: 8px; padding: 7px 6px 3px; }
+    .vx-win-h { font-size: 11px; }
+    .game-library .section-heading { margin-bottom: 12px; }
+    .game-library .section-heading p { font-size: 13px; }
+    .game-library .game-search { gap: 8px; }
+    :root:not(#vx) .game-library .game-search input { flex-basis: 100%; min-height: 48px; }
+    .game-library .game-search .lib-sort { width: 100%; flex: 1 1 100%; margin-top: 0; padding: 3px; }
+    .game-library .game-search .lib-sort { min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; scroll-padding-inline: 6px; }
+    .game-library .lib-sort button { min-height: 44px; padding-inline: 11px; scroll-snap-align: start; }
+    .game-library .view-toggle { margin-left: auto; }
+    .game-library .view-toggle button { width: 44px; height: 44px; }
+    .game-library .games-container { gap: 11px; }
+    .game-library .games-container:not(.is-list) .game-info { min-height: 110px; padding: 10px 4px 5px; gap: 7px; }
+    .game-library .games-container:not(.is-list) .game-title { min-height: 2.5em; font-size: 13.5px; line-height: 1.25; }
+    .game-library .games-container:not(.is-list) .game-cta { min-height: 44px; }
+    .game-library .game-new { top: 6px; left: 6px; max-width: calc(100% - 54px); overflow: hidden; text-overflow: ellipsis; }
+    .game-library .game-fav { top: 6px; right: 6px; width: 44px; height: 44px; }
+}
+@media (max-width: 380px) {
+    .vx-hero .home-title { font-size: 28px; }
+    .vx-cta .sp-btn { padding-inline: 12px; font-size: 13px; }
+    .game-library .games-container:not(.is-list) { gap: 8px; }
+    .game-library .games-container:not(.is-list) .game-info { min-height: 116px; }
+}
+@media (max-width: 480px) {
+    /* На телефоне превью становится тонкой интерактивной полосой карты, без оконного декора. */
+    .vx-window { padding: 4px; border-radius: 18px; }
+    .vx-win-bar, .vx-win-foot { display: none; }
+    .vx-win-map { aspect-ratio: 16 / 5; border-radius: 14px; }
 }

@@ -1,11 +1,4 @@
-/* Главная: счётчики, «Ваш прогресс», «Новое и скоро» (js/home-dash.js). Цвета бренда: лайм и циан с аватарки. */
-.hd-stats { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
-.hd-stats li { display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 16px; border-radius: 999px; background: var(--sp-card, var(--page)); box-shadow: var(--sp-raise-sm); color: var(--muted); font-size: 13px; }
-.hd-stats b { font: 800 19px/1 var(--font-display, inherit); color: var(--text); font-variant-numeric: tabular-nums; }
-.hd-stats li:nth-child(1) b { color: var(--acid); }
-.hd-stats li:nth-child(3) b { color: var(--cyan); }
-html:not([data-theme="dark"]) .hd-stats li:nth-child(1) b { color: color-mix(in srgb, var(--acid) 55%, #1b2a00); } /* sp-ok: фирменный цвет / контраст на акценте */
-html:not([data-theme="dark"]) .hd-stats li:nth-child(3) b { color: color-mix(in srgb, var(--cyan) 60%, #003a4a); } /* sp-ok: фирменный цвет / контраст на акценте */
+/* Главная: «Ваш прогресс» и «Новое и скоро» (js/home-dash.js). Цвета бренда: лайм и циан с аватарки. */
 .hd-continue { gap: 8px; }
 .hd-continue svg { width: 15px; height: 15px; fill: currentColor; }
 
@@ -51,7 +44,6 @@ html:not([data-theme="dark"]) .hd-stats li:nth-child(3) b { color: color-mix(in 
     .hd-me, .hd-pulse { padding: 18px 16px; border-radius: 22px; }
     .hd-me-grid { grid-template-columns: 1fr; justify-items: stretch; }
     .hd-ring { margin: 0 auto; }
-    .hd-stats li { flex: 1 1 calc(50% - 10px); justify-content: center; }
 }
 
 .hd-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
@@ -73,14 +65,14 @@ html:not([data-theme="dark"]) .hd-ach li.is-on svg { color: #4d7a00; } /* sp-ok:
 .hd-ach b { font-size: 13px; line-height: 1.2; } .hd-ach li small { color: var(--muted); font-size: 11.5px; line-height: 1.25; }
 
 .vx-hero { position: relative; isolation: isolate; }
-.hd-art { position: absolute; inset: -24px -28px -24px 54%; z-index: -1; display: block; border-radius: 36px; overflow: hidden; text-decoration: none; opacity: .9;
+.hd-art { position: absolute; inset: 12px 12px 12px 54%; z-index: -1; display: block; border-radius: 24px; overflow: hidden; text-decoration: none; opacity: .34;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 35%); mask-image: linear-gradient(90deg, transparent 0, #000 35%); }
-.hd-art img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.05) blur(1px); transform: scale(1.06); }
+.hd-art img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) blur(2px); transform: scale(1.06); }
 .hd-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--sp-floor, #0d111b) 40%, transparent), color-mix(in srgb, var(--sp-floor, #0d111b) 82%, transparent)), /* sp-ok: фирменный цвет / контраст на акценте */
     radial-gradient(60% 80% at 80% 20%, color-mix(in srgb, var(--cyan) 22%, transparent), transparent); }
 html:not([data-theme="dark"]) .hd-art { opacity: .45; }
 .hd-art-tag { position: absolute; right: 24px; bottom: 14px; white-space: nowrap; z-index: 1; display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: color-mix(in srgb, #0d111b 78%, transparent); color: #eef2f6; font: 600 13px var(--font-body, inherit); } /* sp-ok: фирменный цвет / контраст на акценте */
 .hd-art-tag i { font-style: normal; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; background: #c7ff3f; color: #0d111b; } /* sp-ok: фирменный цвет / контраст на акценте */
-@media (max-width: 860px) { .hd-art { inset: 0 -12px; -webkit-mask-image: linear-gradient(180deg, transparent 40%, #000); mask-image: linear-gradient(180deg, transparent 40%, #000); opacity: .5; } .hd-art-tag { display: none; } }
+@media (max-width: 1000px) { .hd-art { display: none; } }
 
 .abstract-bg > span { filter: none; }

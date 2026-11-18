@@ -1,4 +1,4 @@
-// Главная: панель «Ваш прогресс», блок «Новое и скоро», счётчики в первом экране, кнопка «Продолжить» в hero.
+// Главная: панель «Ваш прогресс», блок «Новое и скоро», кнопка «Продолжить» в hero.
 // Данные только реальные: прогресс — window.bpProgress (js/script.js), избранное/последняя карта — localStorage, даты — GAME_FRESH.
 (function () {
     "use strict";
@@ -6,30 +6,13 @@
     if (!container) return;
     var $ = function (id) { return document.getElementById(id); };
     var read = function (k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
-    var fmt = function (n) { return Number(n).toLocaleString("ru-RU"); };
     var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
-    var plural = function (n, a, b, c) { var m = n % 100, d = n % 10; return m > 10 && m < 15 ? c : d === 1 ? a : d > 1 && d < 5 ? b : c; };
     var cards = [].slice.call(container.querySelectorAll(":scope > details.game-dropdown"));
     var themeOf = function (c) { var m = /theme-(\S+)/.exec(c.className); return m ? m[1] : ""; };
     var titleOf = function (c) { var t = c.querySelector(".game-title"); return t ? t.textContent.trim() : ""; };
     var accentOf = function (c) { return getComputedStyle(c).getPropertyValue("--game-accent").trim(); };
     var cardOf = function (t) { return container.querySelector("details.theme-" + t); };
     var fresh = typeof GAME_FRESH !== "undefined" ? GAME_FRESH : {};
-
-    // ---------- счётчики под первым экраном ----------
-    var stats = $("hd-stats");
-    function renderStats() {
-        if (!stats) return;
-        var maps = 0, marks = 0;
-        cards.forEach(function (c) {
-            maps += +c.dataset.maps || 1;
-            var t = c.querySelector(".game-progress-count"), m = t && /^[\d\s ]+/.exec(t.textContent);
-            if (m) marks += parseInt(m[0].replace(/\D/g, ""), 10) || 0;
-        });
-        var set = function (k, v) { var el = stats.querySelector('[data-k="' + k + '"]'); if (el) el.textContent = v; };
-        set("games", cards.length); set("maps", maps);
-        set("marks", marks ? fmt(Math.floor(marks / 1000) * 1000) + "+" : "");
-    }
 
     // ---------- «Продолжить» в hero и панель прогресса ----------
     function lastMap() {
@@ -180,7 +163,7 @@
         hero.prepend(art);
     }
 
-    function init() { renderHeroArt(); renderTabs(); renderStats(); renderMe(); renderPulse(); }
+    function init() { renderHeroArt(); renderTabs(); renderMe(); renderPulse(); }
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
     document.addEventListener("bp:progress", renderMe);
     addEventListener("bp:fav", renderMe);

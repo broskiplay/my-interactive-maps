@@ -148,7 +148,7 @@
     <link rel="preload" href="./fonts/inter-cyrillic-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="./fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
     <!-- Стили главной одним файлом: spatial + style + vision + home-dash (scripts/build_home_css.sh) -->
-    <link rel="stylesheet" href="./css/home.min.css?v=5">
+    <link rel="stylesheet" href="./css/home.min.css?v=15">
 
     <!-- Применяем сохранённую/системную тему до отрисовки (защита от мигания) -->
     <script>
@@ -175,7 +175,7 @@
     <script src="./js/home-lib.js?v=4" defer></script>
     <script src="./js/topbar.js?v=11" defer></script>
     <script src="./js/vision.js?v=3" defer></script>
-    <script src="./js/home-dash.js?v=6" defer></script>
+    <script src="./js/home-dash.js?v=7" defer></script>
     <script src="/js/metrika.js?v=1" defer></script>
 </head>
 <body>
@@ -185,6 +185,7 @@
         <button type="button" class="tb-burger" id="tb-burger" aria-expanded="false" aria-controls="tb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
         <div class="tb-panel" id="tb-panel">
             <nav class="tb-nav" aria-label="Разделы сайта">
+                <a class="tb-link" href="#games-heading">Игры</a>
                 <a class="tb-link" href="./db/">База данных</a>
                 <div class="tb-dd" id="tb-upd">
                     <a class="tb-link tb-dd-btn" href="#updates" aria-haspopup="true" aria-expanded="false" aria-controls="tb-upd-menu">Обновления<span class="tb-dot" hidden></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
@@ -225,15 +226,21 @@
 <main class="site-shell">
     <header class="hero vx-hero">
         <div class="vx-hero-copy">
-        <p class="eyebrow">Карты · находки · приключения</p>
-        <h1 class="home-title">Интерактивные карты от <span class="accent"><span class="accent-a">Broski</span><span class="accent-b">Play</span></span></h1>
-        <p class="vx-lead">Тысячи локаций, предметов и заданий — всё на русском, как в игре. Отмечайте найденное и продолжайте с любого устройства.</p>
+        <p class="eyebrow">BroskiPlay · карты и базы данных</p>
+        <h1 class="home-title">Исследуй мир. Отмечай находки.</h1>
+        <p class="vx-lead">Тысячи локаций, предметов и заданий — всё на русском. Отмечайте находки: прогресс сохранится без входа, а Google синхронизирует его между устройствами.</p>
         <div class="vx-cta">
             <a class="sp-btn sp-pill vx-cta-main" href="#games-heading">Открыть карты<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
             <a class="sp-btn sp-pill" href="./db/">База данных</a>
         </div>
-                <ul class="hd-stats" id="hd-stats" aria-label="Размер каталога"><li><b data-k="games"></b>игр</li><li><b data-k="maps"></b>карт</li><li><b data-k="marks"></b>меток</li></ul>
-        <!-- latest:start --><a class="hero-latest" href="#updates"><span class="hero-latest-tag">Обновление</span><time datetime="2026-11-18">18 ноября</time><span class="hero-latest-text">Скоро: карта Silver Palace</span><span class="hero-latest-arr" aria-hidden="true">→</span></a><!-- latest:end -->
+        <ul class="hero-perks" aria-label="Преимущества">
+            <li class="sp-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20.5 13.5-7 7-10-10v-7h7z"/><circle cx="8" cy="8" r="1.2"/></svg>Бесплатно</li>
+            <li class="sp-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Русский язык</li>
+            <li class="sp-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V7a5 5 0 0 1 10 0v4M5 11h14v10H5z"/><path d="m9 16 2 2 4-4"/></svg>Без регистрации</li>
+        </ul>
+        <div class="vx-hero-meta">
+            <!-- latest:start --><a class="hero-latest" href="#updates"><span class="hero-latest-tag">Обновление</span><time datetime="2026-11-18">18 ноября</time><span class="hero-latest-text">Скоро: карта Silver Palace</span><span class="hero-latest-arr" aria-hidden="true">→</span></a><!-- latest:end -->
+        </div>
         </div>
         <!-- Окно-превью карты (js/vision.js): метки нажимаются и отмечаются, счётчик и полоса прогресса меняются. Подложка — 4 тайла карты Скайрима. -->
         <div class="vx-window" id="vx-preview" data-tilt aria-label="Как выглядит карта: нажмите на метку, чтобы отметить её найденной" role="group">
@@ -265,23 +272,14 @@
         <span>Очередь правок</span><b id="admin-reports-count" hidden></b>
     </a>
 
-    <section class="hd-me" id="hd-me" aria-labelledby="hd-me-h" hidden></section>
-    <section class="hd-pulse" id="hd-pulse" aria-labelledby="hd-pulse-h" hidden></section>
-
-    <section class="recent-maps" id="recent-maps" aria-labelledby="recent-heading" hidden>
-        <!-- Крестик на карточке убирает карту из списка; она вернётся, когда её снова откроют (bp_recent пишет js/map-extras.js) -->
-        <h2 id="recent-heading" class="recent-heading">Продолжить</h2>
-        <div class="recent-list" id="recent-list"></div>
-    </section>
-
     <section class="game-library" aria-labelledby="games-heading">
         <div class="section-heading">
             <h2 id="games-heading">Библиотека игр</h2>
             <p>Выберите игру, чтобы открыть доступные карты</p>
         </div>
         <div class="game-search">
-            <label class="sr-only" for="game-search-input">Поиск игры</label>
-            <input id="game-search-input" type="search" placeholder="Найти игру, например Stellar Blade" autocomplete="off" aria-controls="games-container" aria-describedby="game-search-status">
+            <label class="sr-only" for="game-search-input">Найти игру или карту</label>
+            <input id="game-search-input" type="search" placeholder="Найти игру или карту, например Саррас" autocomplete="off" aria-controls="games-container" aria-describedby="game-search-status">
             <p class="game-search-status" id="game-search-status" role="status" aria-live="polite"></p>
         </div>
         
@@ -1065,6 +1063,14 @@
         <!-- games:end -->
     </section>
 
+    <section class="recent-maps" id="recent-maps" aria-labelledby="recent-heading" hidden>
+        <!-- Крестик на карточке убирает карту из списка; она вернётся, когда её снова откроют (bp_recent пишет js/map-extras.js) -->
+        <h2 id="recent-heading" class="recent-heading">Продолжить</h2>
+        <div class="recent-list" id="recent-list"></div>
+    </section>
+    <section class="hd-me" id="hd-me" aria-labelledby="hd-me-h" hidden></section>
+    <section class="hd-pulse" id="hd-pulse" aria-labelledby="hd-pulse-h" hidden></section>
+
     <!-- Bento: ключевые возможности с живыми элементами (js/vision.js) -->
     <section class="vx-bento" aria-label="Возможности сайта">
         <article class="vx-card" data-tilt>
@@ -1171,7 +1177,7 @@
     </div>
 
     <!-- changelog:start — блок генерируется: python3 scripts/changelog.py (не править вручную) -->
-    <section class="updates" id="updates" data-latest="644a34b0c4">
+    <section class="updates" id="updates" data-latest="2c2b797669">
         <details class="updates-dropdown">
             <summary>
                 <h2 id="updates-heading">Что нового<span class="updates-dot" role="img" aria-label="Есть непрочитанные обновления" hidden></span></h2>
@@ -1185,27 +1191,10 @@
                             <li>Скоро: карта Silver Palace — откроется 14 декабря 2026, в день выхода игры</li>
                             <li>Новая карта: Red Dead Redemption 2 — более 5500 меток (коллекционные предметы, легендарные животные и рыба, сокровища, лагеря, события). Растения и метки сетевой игры скрыты по умолчанию, включаются в сайдбаре.</li>
                             <li>Обновлённый дизайн: главная, карты и база данных в стиле «стекла» — полупрозрачные панели, единые кнопки и скругления, новый шрифт интерфейса.</li>
-                            <li>Карты на телефоне: окно метки целиком помещается на экране — карта сама сдвигается, кнопки «Найдено», заметки и флажки всегда видны внизу, длинный текст прокручивается.</li>
-                            <li>Фильтры на картах: кнопка «Только эта» у каждой категории и быстрые наборы категорий; переход «Карта | База данных» для Skyrim, Gothic и Tainted Grail.</li>
-                            <li>Исправлены мелкие ошибки оформления на главной и в базе данных.</li>
-                        </ul>
-                    </li>
-                    <li class="update-entry">
-                        <time datetime="2026-11-17">17 ноября 2026</time>
-                        <ul>
-                            <li>База данных Tainted Grail стала удобнее. Поиск теперь подсказывает совпадения в других разделах. У предметов появились вид «Таблица» с сортировкой по урону, броне, весу и цене, фильтры «Есть на карте» и по качеству. В записях появились ссылки на связанные задания, локации, эффекты, комплекты и похожие предметы, подсказки при наведении и переход к предыдущей и следующей записи. «← К списку» возвращает к тем же фильтрам. На карте в окне метки есть кнопка «В базе →»</li>
-                            <li>Gothic 1 Remake: перевод как в игре и база данных. Названия и описания меток на карте теперь совпадают с русской локализацией игры. Появилась база данных из файлов игры: 867 предметов с иконками и характеристиками, 156 рецептов, 95 заданий с целями и этапами, 160 персонажей и 27 существ с набросками из глоссария, 18 локаций, книги и записки с иллюстрациями</li>
-                            <li>Gothic 1 Remake: заклинания, гильдии и распорядок дня NPC. В базе данных появились разделы «Заклинания» (все 50 заклинаний: круг магии, мана, урон по кругам, руны и свитки) и «Гильдии» (кто с кем дружит, кто кого старше по рангу, кто за кого заступается, что меняется после гибели магов огня, участники гильдий). У персонажей теперь указаны гильдия и распорядок дня по часам. Метки на карте получили значки из интерфейса игры</li>
-                            <li>Skyrim: база данных из файлов игры. 8871 предмет с картинками (3D-модели игры, снятые как в инвентаре), 382 задания, 393 существа, 1073 персонажа, 733 места, 201 заклинание, 179 эффектов, 345 подсказок экранов загрузки, книги с иллюстрациями. Оформление как в меню игры. В окне метки на карте есть кнопка «В базе →». Названия на карте сверены с русской локализацией игры</li>
-                            <li>База данных Skyrim: исправлены названия писем и приказов, у 48 видов оружия (стеклянное, двемерское, орочье, стальное и др.) картинки теперь показывают оружие сбоку</li>
-                            <li>База Skyrim стала удобнее: в каталоге появились фильтр по DLC и сортировка по урону, броне, цене и весу, оружие и броня показываются таблицей, поиск подсказывает записи и подсвечивает совпадения, есть полоска «Недавно смотрели». На страницах записей характеристики вынесены в плашки, длинные списки сворачиваются, справа есть оглавление, а цели квестов оформлены чек-листом.</li>
-                            <li>Главная: на карточках игр появилась кнопка «Открыть карту», список карт показывается по наведению. Добавлен переключатель «сетка / список», на телефоне игры идут в две колонки, а «Мы в соцсетях» и «Поддержать» объединены в одну тонкую полосу</li>
-                            <li>Карты: новая кнопка «Слои» — сетка координат, названия регионов и тепловая карта плотности меток</li>
-                            <li>База данных: карточки игр в три колонки, хлебные крошки и кнопка «вверх» на длинных страницах, вкладки разделов возвращают в каталог с теми же фильтрами</li>
                         </ul>
                     </li>
                 </ol>
-                <a class="updates-all" href="./updates/">Все обновления — ещё 13 дат →</a>
+                <a class="updates-all" href="./updates/">Все обновления →</a>
             </div>
         </details>
         <script>
@@ -1242,7 +1231,7 @@
             </article>
             <article class="about-item about-src">
                 <h3>Откуда карты</h3>
-                <p>Мы не рисуем карты с нуля: метки и подложки основаны на открытых картах игрового сообщества. Англоязычные карты переводим целиком, а названия мест, предметов и персонажей стараемся давать по официальной русской локализации — чтобы на карте было написано то же, что в игре. Где одного источника мало, сводим несколько и правим координаты и стыки. Все карты работают на нашем движке: одинаковое управление, заметки, поиск и работа без интернета.</p>
+                <p>Мы не рисуем карты с нуля: метки и подложки основаны на открытых картах игрового сообщества. Англоязычные карты переводим целиком, а названия мест, предметов и персонажей стараемся давать по официальной русской локализации — чтобы на карте было написано то же, что в игре. Где одного источника мало, сводим несколько и правим координаты и стыки. Все карты работают на нашем движке: одинаковое управление, заметки и поиск.</p>
             </article>
         </div>
     </section>
