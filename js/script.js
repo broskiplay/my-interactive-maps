@@ -1075,7 +1075,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const accent = card ? getComputedStyle(card).getPropertyValue("--game-accent").trim() : "";
             const pct = r.total ? Math.round(r.found / r.total * 100) : 0;
             const sameName = !title || r.name === title;
+            const cover = card?.querySelector(".game-banner-art, .game-banner-image");
+            const coverSrc = cover?.getAttribute("src") || "";
             return `<div class="recent-cell"><a class="recent-item" href="${esc(r.href)}"${accent ? ` style="--recent-accent:${esc(accent)}"` : ""}>` +
+                `${coverSrc ? `<img class="recent-cover" src="${esc(coverSrc)}" alt="" loading="lazy" decoding="async">` : ""}` +
                 `<span class="recent-game">${esc(title)}</span><span class="recent-map">${esc(sameName ? "Карта" : r.name)}</span>` +
                 `<span class="recent-bar" aria-hidden="true"><i style="width:${pct}%"></i></span>` +
                 `<span class="recent-pct">${r.found ? `${pct}% · ${r.found.toLocaleString("ru-RU")} / ${formatMarkers(r.total)}` : formatMarkers(r.total)}</span></a>` +
