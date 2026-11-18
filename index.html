@@ -149,6 +149,7 @@
     <link rel="preload" href="./fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
     <!-- Стили главной одним файлом: spatial + style + vision + home-dash (scripts/build_home_css.sh) -->
     <link rel="stylesheet" href="./css/home.min.css?v=15">
+    <link rel="stylesheet" href="./css/home-v2.css?v=1">
 
     <!-- Применяем сохранённую/системную тему до отрисовки (защита от мигания) -->
     <script>
@@ -271,6 +272,19 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 0 1 8 0v1H8V7Z"/><rect x="6" y="8" width="12" height="11" rx="6"/><path d="M12 11v8M3 13h3M18 13h3M4 8l2.5 2M20 8l-2.5 2M4 19l2.5-2M20 19l-2.5-2"/></svg>
         <span>Очередь правок</span><b id="admin-reports-count" hidden></b>
     </a>
+
+    <section class="bp-benefits" aria-label="Возможности BroskiPlay">
+        <div class="bp-benefit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15"/><path d="M12 10v4"/></svg><div><strong>Карты на русском</strong><span>Локации, предметы и метки</span></div></div>
+        <div class="bp-benefit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1zM12 6v14"/></svg><div><strong>Базы данных</strong><span>Предметы, задания и персонажи</span></div></div>
+        <div class="bp-benefit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a5 5 0 0 1-1-10 7 7 0 0 1 13 2 4 4 0 0 1-1 8H7zM12 11v8m-3-3 3 3 3-3"/></svg><div><strong>Сохранение прогресса</strong><span>В браузере и через Google</span></div></div>
+        <div class="bp-benefit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></svg><div><strong>Быстрый доступ</strong><span>Продолжайте с последней карты</span></div></div>
+    </section>
+
+    <section class="recent-maps" id="recent-maps" aria-labelledby="recent-heading" hidden>
+        <!-- Крестик на карточке убирает карту из списка; она вернётся, когда её снова откроют (bp_recent пишет js/map-extras.js) -->
+        <h2 id="recent-heading" class="recent-heading">Продолжить</h2>
+        <div class="recent-list" id="recent-list"></div>
+    </section>
 
     <section class="game-library" aria-labelledby="games-heading">
         <div class="section-heading">
@@ -1063,11 +1077,6 @@
         <!-- games:end -->
     </section>
 
-    <section class="recent-maps" id="recent-maps" aria-labelledby="recent-heading" hidden>
-        <!-- Крестик на карточке убирает карту из списка; она вернётся, когда её снова откроют (bp_recent пишет js/map-extras.js) -->
-        <h2 id="recent-heading" class="recent-heading">Продолжить</h2>
-        <div class="recent-list" id="recent-list"></div>
-    </section>
     <section class="hd-me" id="hd-me" aria-labelledby="hd-me-h" hidden></section>
     <section class="hd-pulse" id="hd-pulse" aria-labelledby="hd-pulse-h" hidden></section>
 
