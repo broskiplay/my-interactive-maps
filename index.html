@@ -149,7 +149,7 @@
     <link rel="preload" href="./fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
     <!-- Стили главной одним файлом: spatial + style + vision + home-dash (scripts/build_home_css.sh) -->
     <link rel="stylesheet" href="./css/home.min.css?v=15">
-    <link rel="stylesheet" href="./css/home-v2.css?v=1">
+    <link rel="stylesheet" href="./css/home-v2.css?v=2">
 
     <!-- Применяем сохранённую/системную тему до отрисовки (защита от мигания) -->
     <script>
@@ -229,7 +229,7 @@
         <div class="vx-hero-copy">
         <p class="eyebrow">BroskiPlay · карты и базы данных</p>
         <h1 class="home-title">Исследуй мир. Отмечай находки.</h1>
-        <p class="vx-lead">Тысячи локаций, предметов и заданий — всё на русском. Отмечайте находки: прогресс сохранится без входа, а Google синхронизирует его между устройствами.</p>
+        <p class="vx-lead">Исследуй игровые миры на русском, находи секреты и отмечай собранное. Прогресс сохраняется без регистрации и синхронизируется через Google.</p>
         <div class="vx-cta">
             <a class="sp-btn sp-pill vx-cta-main" href="#games-heading">Открыть карты<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
             <a class="sp-btn sp-pill" href="./db/">База данных</a>
@@ -276,18 +276,18 @@
 
     <section class="recent-maps" id="recent-maps" aria-labelledby="recent-heading" hidden>
         <!-- Крестик на карточке убирает карту из списка; она вернётся, когда её снова откроют (bp_recent пишет js/map-extras.js) -->
-        <h2 id="recent-heading" class="recent-heading">Продолжить</h2>
+        <h2 id="recent-heading" class="recent-heading">Продолжить исследование</h2>
         <div class="recent-list" id="recent-list"></div>
     </section>
 
     <section class="game-library" aria-labelledby="games-heading">
         <div class="section-heading">
             <h2 id="games-heading">Библиотека игр</h2>
-            <p>Выберите игру, чтобы открыть доступные карты</p>
+            <p>Выбери игру, открой нужную локацию и продолжай исследование.</p>
         </div>
         <div class="game-search">
             <label class="sr-only" for="game-search-input">Найти игру или карту</label>
-            <input id="game-search-input" type="search" placeholder="Найти игру или карту, например Саррас" autocomplete="off" aria-controls="games-container" aria-describedby="game-search-status">
+            <input id="game-search-input" type="search" placeholder="Поиск игры или локации…" autocomplete="off" aria-controls="games-container" aria-describedby="game-search-status">
             <p class="game-search-status" id="game-search-status" role="status" aria-live="polite"></p>
         </div>
         
