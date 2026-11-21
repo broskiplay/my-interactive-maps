@@ -1,0 +1,1323 @@
+[
+ {
+  "name": "Ледяная стрела",
+  "en": "Ice Bolt",
+  "slug": "ice-bolt",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_IceBolt",
+  "kind": "Руна и свиток",
+  "circle": 1,
+  "school": "Лёд",
+  "mana": [
+   1
+  ],
+  "use": "при применении и в секунду удержания",
+  "use_k": "NormalContinuous",
+  "dmg": [
+   [
+    "Урон (лёд)",
+    20,
+    [
+     [
+      2,
+      30
+     ],
+     [
+      4,
+      40
+     ],
+     [
+      6,
+      50
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": null,
+  "rune": "ice-bolt",
+  "scroll": "ice-bolt-2",
+  "desc": "Ледяная стрела, пронзающая доспехи и плоть."
+ },
+ {
+  "name": "Кулак ветра",
+  "en": "Fist of Wind",
+  "slug": "fist-of-wind",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_FistOfWind",
+  "kind": "Руна и свиток",
+  "circle": 1,
+  "school": "Ветер",
+  "mana": [
+   2
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (ветер)",
+    20,
+    [
+     [
+      2,
+      30
+     ],
+     [
+      4,
+      40
+     ],
+     [
+      5,
+      50
+     ],
+     [
+      6,
+      70
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": 7.0,
+  "rune": "fist-of-wind",
+  "scroll": "fist-of-wind-2",
+  "desc": "Порыв ветра, отбрасывающий врагов в определённой области."
+ },
+ {
+  "name": "Свет",
+  "en": "Light",
+  "slug": "light",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Light",
+  "kind": "Руна и свиток",
+  "circle": 1,
+  "school": "Разум",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "light",
+  "scroll": "light-2",
+  "desc": "Божественное сияние Инноса озаряет путь."
+ },
+ {
+  "name": "Сон",
+  "en": "Sleep",
+  "slug": "sleep",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Sleep",
+  "kind": "Руна и свиток",
+  "circle": 2,
+  "school": "Разум",
+  "mana": [
+   3
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": 15.0,
+  "rune": "sleep",
+  "scroll": "sleep-2",
+  "desc": "Пора ненадолго смежить веки…"
+ },
+ {
+  "name": "Шаровая молния",
+  "en": "Ball Lightning",
+  "slug": "ball-lightning",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_BallLightning",
+  "kind": "Руна и свиток",
+  "circle": 2,
+  "school": "Энергия",
+  "mana": [
+   5,
+   1,
+   1,
+   2
+  ],
+  "use": "за каждую ступень заряда",
+  "use_k": "Rechargeable",
+  "dmg": [
+   [
+    "Урон (энергия)",
+    70,
+    [
+     [
+      4,
+      90
+     ],
+     [
+      5,
+      110
+     ],
+     [
+      6,
+      130
+     ]
+    ]
+   ],
+   [
+    "Урон (энергия)",
+    90,
+    [
+     [
+      4,
+      110
+     ],
+     [
+      5,
+      130
+     ],
+     [
+      6,
+      150
+     ]
+    ]
+   ],
+   [
+    "Урон (энергия)",
+    110,
+    [
+     [
+      4,
+      130
+     ],
+     [
+      5,
+      150
+     ],
+     [
+      6,
+      170
+     ]
+    ]
+   ],
+   [
+    "Урон (энергия)",
+    150,
+    [
+     [
+      4,
+      170
+     ],
+     [
+      5,
+      200
+     ],
+     [
+      6,
+      220
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": null,
+  "rune": "ball-lightning",
+  "scroll": "ball-lightning-2",
+  "desc": "Призывает искрящийся энергией шар, сокрушающий всё на своём пути."
+ },
+ {
+  "name": "Огненный шар",
+  "en": "Fireball",
+  "slug": "fireball",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_FireBall",
+  "kind": "Руна и свиток",
+  "circle": 3,
+  "school": "Огонь",
+  "mana": [
+   1,
+   2,
+   2
+  ],
+  "use": "за каждую ступень заряда",
+  "use_k": "Rechargeable",
+  "dmg": [
+   [
+    "Урон (огонь)",
+    90,
+    [
+     [
+      4,
+      110
+     ],
+     [
+      5,
+      130
+     ],
+     [
+      6,
+      150
+     ]
+    ]
+   ],
+   [
+    "Урон (огонь)",
+    110,
+    [
+     [
+      4,
+      130
+     ],
+     [
+      5,
+      150
+     ],
+     [
+      6,
+      170
+     ]
+    ]
+   ],
+   [
+    "Урон (огонь)",
+    130,
+    [
+     [
+      4,
+      150
+     ],
+     [
+      5,
+      170
+     ],
+     [
+      6,
+      200
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": null,
+  "rune": "fireball",
+  "scroll": "fireball-2",
+  "desc": "Сфера чистого пламени, несущая врагам неминуемую гибель."
+ },
+ {
+  "name": "Ледяная глыба",
+  "en": "Ice Block",
+  "slug": "ice-block",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_IceBlock",
+  "kind": "Руна и свиток",
+  "circle": 3,
+  "school": "Лёд",
+  "mana": [
+   3
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (лёд)",
+    60,
+    [
+     [
+      5,
+      80
+     ],
+     [
+      6,
+      100
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": 7.2,
+  "rune": "ice-block",
+  "scroll": "ice-block-2",
+  "desc": "Магический холод, обращающий врагов в ледяные фигуры."
+ },
+ {
+  "name": "Телекинез",
+  "en": "Telekinesis",
+  "slug": "telekinesis",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Telekinesis",
+  "kind": "Руна и свиток",
+  "circle": 3,
+  "school": "Разум",
+  "mana": [
+   3
+  ],
+  "use": "при применении и в секунду удержания",
+  "use_k": "NormalContinuous",
+  "dmg": [],
+  "heal": [],
+  "range": 15.0,
+  "rune": "telekinesis",
+  "scroll": "telekinesis-2",
+  "desc": "Дотянитесь до недоступного!"
+ },
+ {
+  "name": "Пирокинез",
+  "en": "Pyrokinesis",
+  "slug": "pyrokinesis",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Pyrokinesis",
+  "kind": "Руна и свиток",
+  "circle": 3,
+  "school": "Огонь",
+  "mana": [
+   5
+  ],
+  "use": "в секунду, пока удерживаете",
+  "use_k": "Continuous",
+  "dmg": [
+   [
+    "Урон (огонь)",
+    20,
+    [
+     [
+      5,
+      35
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": 15.0,
+  "rune": "pyrokinesis",
+  "scroll": "pyrokinesis-2",
+  "desc": "Мощь Инноса, поджигающая всё, чего касается."
+ },
+ {
+  "name": "Чары",
+  "en": "Charm",
+  "slug": "charm",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Charm",
+  "kind": "Руна и свиток",
+  "circle": 3,
+  "school": "Разум",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": 15.0,
+  "rune": "charm",
+  "scroll": "charm-2",
+  "desc": "Почему бы нам не забыть о случившемся?"
+ },
+ {
+  "name": "Контроль",
+  "en": "Control",
+  "slug": "control",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Control",
+  "kind": "Руна и свиток",
+  "circle": 4,
+  "school": "Разум",
+  "mana": [
+   5
+  ],
+  "use": "зависит от уровня цели",
+  "use_k": "TargetLevel",
+  "dmg": [],
+  "heal": [],
+  "range": 20.0,
+  "rune": "control",
+  "scroll": "control-2",
+  "desc": "На непродолжительное время даёт возможность управлять телом и разумом цели."
+ },
+ {
+  "name": "Молния",
+  "en": "Chain Lightning",
+  "slug": "chain-lightning",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_ChainLightning",
+  "kind": "Руна и свиток",
+  "circle": 4,
+  "school": "Энергия",
+  "mana": [
+   5
+  ],
+  "use": "в секунду, пока удерживаете",
+  "use_k": "Continuous",
+  "dmg": [
+   [
+    "Урон (энергия)",
+    20,
+    [
+     [
+      5,
+      35
+     ],
+     [
+      6,
+      45
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": 15.0,
+  "rune": "chain-lightning",
+  "scroll": "chain-lightning-2",
+  "desc": "Молния, проникающая сквозь доспехи и дробящая кости."
+ },
+ {
+  "name": "Кулак шторма",
+  "en": "Storm Fist",
+  "slug": "storm-fist",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_StormFist",
+  "kind": "Руна и свиток",
+  "circle": 4,
+  "school": "Ветер",
+  "mana": [
+   10
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (ветер)",
+    120,
+    [
+     [
+      6,
+      160
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": 7.0,
+  "rune": "storm-fist",
+  "scroll": "storm-fist-2",
+  "desc": "Мощный порыв ветра, разрушающий всё, чего коснётся."
+ },
+ {
+  "name": "Уничтожение нежити",
+  "en": "Death to the Undead",
+  "slug": "death-to-the-undead",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_DeathToTheUndead",
+  "kind": "Руна и свиток",
+  "circle": 4,
+  "school": "Разум",
+  "mana": [
+   25
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (энергия)",
+    500,
+    []
+   ]
+  ],
+  "heal": [],
+  "range": 5.0,
+  "rune": "death-to-the-undead",
+  "scroll": "death-to-the-undead-2",
+  "desc": "Священное заклинание, обращающее нежить в прах."
+ },
+ {
+  "name": "Огненный шторм",
+  "en": "Storm of Fire",
+  "slug": "storm-of-fire",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_StormOfFire",
+  "kind": "Руна и свиток",
+  "circle": 4,
+  "school": "Огонь",
+  "mana": [
+   30
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (огонь)",
+    250,
+    [
+     [
+      6,
+      300
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": null,
+  "rune": "storm-of-fire",
+  "scroll": "storm-of-fire-2",
+  "desc": "Бушующее пламя, пожирающее всё на своём пути."
+ },
+ {
+  "name": "Ледяная волна",
+  "en": "Wave of Ice",
+  "slug": "wave-of-ice",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_IceWave",
+  "kind": "Руна и свиток",
+  "circle": 5,
+  "school": "Лёд",
+  "mana": [
+   15
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (лёд)",
+    120,
+    [
+     [
+      6,
+      150
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": 6.0,
+  "rune": "wave-of-ice",
+  "scroll": "wave-of-ice-2",
+  "desc": "Мощная ледяная волна, замораживающая всё на своём пути и пронзающая болью каждого, кого коснётся."
+ },
+ {
+  "name": "Огненный дождь",
+  "en": "Rain of Fire",
+  "slug": "rain-of-fire",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_FireRain",
+  "kind": "Руна и свиток",
+  "circle": 5,
+  "school": "Огонь",
+  "mana": [
+   20
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (огонь)",
+    50,
+    []
+   ]
+  ],
+  "heal": [],
+  "range": null,
+  "rune": "rain-of-fire",
+  "scroll": "rain-of-fire-2",
+  "desc": "Мощь Инноса, принявшая форму огненного потока, который обрушивается на головы врагов."
+ },
+ {
+  "name": "Дыхание смерти",
+  "en": "Breath of Death",
+  "slug": "breath-of-death",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_BreathOfDeath",
+  "kind": "Только руна",
+  "circle": 6,
+  "school": "Ветер",
+  "mana": [
+   15
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (ветер)",
+    150,
+    []
+   ]
+  ],
+  "heal": [],
+  "range": 10.0,
+  "rune": "breath-of-death",
+  "scroll": "",
+  "desc": "Морозная дымка, лишающая жизненных сил."
+ },
+ {
+  "name": "Волна смерти Уризеля",
+  "en": "Uriziel's Wave of Death",
+  "slug": "uriziels-wave-of-death",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_UrizielWaveOfDeath",
+  "kind": "Только руна",
+  "circle": 6,
+  "school": "Энергия",
+  "mana": [
+   40
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [
+   [
+    "Урон (энергия)",
+    90,
+    []
+   ]
+  ],
+  "heal": [],
+  "range": 7.5,
+  "rune": "uriziels-wave-of-death",
+  "scroll": "",
+  "desc": "Руна «Уризель»."
+ },
+ {
+  "name": "Огненная стрела",
+  "en": "Fire Bolt",
+  "slug": "fire-bolt",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_FireBolt",
+  "kind": "Руна и свиток",
+  "circle": null,
+  "school": "Огонь",
+  "mana": [
+   1
+  ],
+  "use": "при применении и в секунду удержания",
+  "use_k": "NormalContinuous",
+  "dmg": [
+   [
+    "Урон (огонь)",
+    35,
+    [
+     [
+      2,
+      40
+     ],
+     [
+      4,
+      50
+     ],
+     [
+      6,
+      65
+     ]
+    ]
+   ]
+  ],
+  "heal": [],
+  "range": null,
+  "rune": "fire-bolt",
+  "scroll": "fire-bolt-2",
+  "desc": "Огненная стрела, обжигающая врагов магическим пламенем."
+ },
+ {
+  "name": "Исцеление",
+  "en": "Healing",
+  "slug": "healing",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_Heal",
+  "kind": "Руна и свиток",
+  "circle": null,
+  "school": "Разум",
+  "mana": [
+   2
+  ],
+  "use": "в секунду, пока удерживаете",
+  "use_k": "Continuous",
+  "dmg": [],
+  "heal": [
+   [
+    0,
+    4
+   ],
+   [
+    1,
+    4
+   ],
+   [
+    2,
+    6
+   ],
+   [
+    3,
+    10
+   ],
+   [
+    4,
+    15
+   ],
+   [
+    5,
+    20
+   ],
+   [
+    6,
+    30
+   ]
+  ],
+  "range": 15.0,
+  "rune": "healing",
+  "scroll": "healing-2",
+  "desc": "Исцеляет тело, успокаивает разум."
+ },
+ {
+  "name": "Молитва Инносу",
+  "en": "Pray to Innos",
+  "slug": "pray-to-innos",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_InnosPray",
+  "kind": "Только свиток",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "pray-to-innos",
+  "desc": "Да возгорится мощь Инноса."
+ },
+ {
+  "name": "Страх",
+  "en": "Fear",
+  "slug": "fear",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_Fear",
+  "kind": "Только свиток",
+  "circle": null,
+  "school": "Разум",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": 10.0,
+  "rune": "",
+  "scroll": "fear",
+  "desc": "Вызывает у выбранной цели страх, вынуждающий спасаться бегством."
+ },
+ {
+  "name": "Уменьшение тролля",
+  "en": "Shrink Troll",
+  "slug": "shrink-troll",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_Shrink",
+  "kind": "Только свиток",
+  "circle": null,
+  "school": "Разум",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": 15.0,
+  "rune": "",
+  "scroll": "shrink-troll",
+  "desc": "Уменьшает даже самых крупных троллей."
+ },
+ {
+  "name": "Телепортация в Болотный лагерь",
+  "en": "Teleport to the Swamp Camp",
+  "slug": "teleport-to-the-swamp-camp",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_TeleportToSwampCamp",
+  "kind": "Телепортация",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "teleport-to-the-swamp-camp",
+  "scroll": "",
+  "desc": "Позволяет перенестись в Болотный лагерь."
+ },
+ {
+  "name": "Телепортация в затопленную башню",
+  "en": "Teleport to the Sunken Tower",
+  "slug": "teleport-to-the-sunken-tower",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_TeleportToSunkenTower",
+  "kind": "Телепортация",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "rune-teleport-to-the-sunken-tower",
+  "scroll": "",
+  "desc": "Позволяет перенестись в затопленную башню."
+ },
+ {
+  "name": "Телепортация к магам воды",
+  "en": "Teleport to the Water Mages",
+  "slug": "teleport-to-the-water-mages",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_TeleportToMagiciansOfWater",
+  "kind": "Телепортация",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "teleport-to-the-water-mages",
+  "scroll": "",
+  "desc": "Позволяет перенестись в пещеры магов круга воды."
+ },
+ {
+  "name": "Телепортация к магам огня",
+  "en": "Teleport to the Fire Mages",
+  "slug": "teleport-to-the-fire-mages",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_TeleportToMagiciansOfFire",
+  "kind": "Телепортация",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "teleport-to-the-fire-mages",
+  "scroll": "",
+  "desc": "Позволяет перенестись в покои магов круга огня."
+ },
+ {
+  "name": "Телепортация к некроманту",
+  "en": "Teleport to the Necromancer",
+  "slug": "teleport-to-the-necromancer",
+  "icon": "icons/T_ItemIcon_ItAr_Rune_TeleportToNecromancer",
+  "kind": "Телепортация",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "teleport-to-the-necromancer",
+  "scroll": "",
+  "desc": "Позволяет перенестись в библиотеку Ксардаса."
+ },
+ {
+  "name": "Призыв скелетов",
+  "en": "Summon Skeletons",
+  "slug": "summon-skeletons",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_SummonSkeletons",
+  "kind": "Призыв",
+  "circle": null,
+  "school": "",
+  "mana": [
+   10
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "summon-skeletons",
+  "desc": "Наделяет кости подобием жизни."
+ },
+ {
+  "name": "Призыв голема",
+  "en": "Summon Golem",
+  "slug": "summon-golem",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_SummonGolem",
+  "kind": "Призыв",
+  "circle": null,
+  "school": "",
+  "mana": [
+   15
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "summon-golem",
+  "desc": "Магия трансформации стихий. Голем понимает два приказа: следовать и атаковать."
+ },
+ {
+  "name": "Призыв демона",
+  "en": "Summon Demon",
+  "slug": "summon-demon",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_SummonDemon",
+  "kind": "Призыв",
+  "circle": null,
+  "school": "",
+  "mana": [
+   20
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "summon-demon",
+  "desc": "Воин из другого измерения сделает невыносимой жизнь любого, кто встанет у него на пути."
+ },
+ {
+  "name": "Армия тьмы",
+  "en": "Summon Army of Darkness",
+  "slug": "summon-army-of-darkness",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_SummonArmyOfDarkness",
+  "kind": "Призыв",
+  "circle": null,
+  "school": "",
+  "mana": [
+   25
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "summon-army-of-darkness",
+  "desc": "Поднимает из земли слуг Белиара."
+ },
+ {
+  "name": "Превращение в кротокрыса",
+  "en": "Transform into Molerat",
+  "slug": "transform-into-molerat",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformMolerat",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-molerat",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в мясного жука",
+  "en": "Transform into Meatbug",
+  "slug": "transform-into-meatbug",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformMeatbug",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-meatbug",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в падальщика",
+  "en": "Transform into Scavenger",
+  "slug": "transform-into-scavenger",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformScavenger",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   5
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-scavenger",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в волка",
+  "en": "Transform into Wolf",
+  "slug": "transform-into-wolf",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformWolf",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   10
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-wolf",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в шершня",
+  "en": "Transform into Bloodfly",
+  "slug": "transform-into-bloodfly",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformBloodfly",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   10
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-bloodfly",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в шныга",
+  "en": "Transform into Lurker",
+  "slug": "transform-into-lurker",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformLurker",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   15
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-lurker",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в ящера",
+  "en": "Transform into Lizard",
+  "slug": "transform-into-lizard",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformLizard",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   15
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-lizard",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в орочью гончую",
+  "en": "Transform into Orc Dog",
+  "slug": "transform-into-orc-dog",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformOrcDog",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   20
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-orc-dog",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в ползуна",
+  "en": "Transform into Minecrawler",
+  "slug": "transform-into-minecrawler",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformMinecrawler",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   20
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-minecrawler",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в глорха",
+  "en": "Transform into Snapper",
+  "slug": "transform-into-snapper",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformSnapper",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   25
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-snapper",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в кусача",
+  "en": "Transform into Biter",
+  "slug": "transform-into-biter",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformBiter",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   30
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-biter",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в бритвозуба",
+  "en": "Transform into Razor",
+  "slug": "transform-into-razor",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformRazor",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   35
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-razor",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в ищейку",
+  "en": "Transform into Bloodhound",
+  "slug": "transform-into-bloodhound",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformBloodhound",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   35
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-bloodhound",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в огненного ящера",
+  "en": "Transform into Fire Lizard",
+  "slug": "transform-into-fire-lizard",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformFireLizard",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   35
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-fire-lizard",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в мракориса",
+  "en": "Transform into Shadowbeast",
+  "slug": "transform-into-shadowbeast",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformShadowbeast",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   50
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-shadowbeast",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в болотожора",
+  "en": "Transform into Swampshark",
+  "slug": "transform-into-swampshark",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformSwampshark",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   60
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-swampshark",
+  "desc": ""
+ },
+ {
+  "name": "Превращение в гарпию",
+  "en": "Transform into Harpy",
+  "slug": "transform-into-harpy",
+  "icon": "icons/T_ItemIcon_ItAr_Scroll_TransformHarpy",
+  "kind": "Превращение",
+  "circle": null,
+  "school": "",
+  "mana": [
+   60
+  ],
+  "use": "за применение",
+  "use_k": "Normal",
+  "dmg": [],
+  "heal": [],
+  "range": null,
+  "rune": "",
+  "scroll": "transform-into-harpy",
+  "desc": ""
+ }
+]

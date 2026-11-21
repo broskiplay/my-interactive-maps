@@ -1,0 +1,390 @@
+/* =========================================================================================
+   ГЛАВНАЯ, обновление 21.11.2026: компактный первый экран с превью карты, «Продолжить», каталог.
+   Подключается последним (после css/ui-system.css) и только на главной — web/app/(home)/layout.tsx.
+   Геометрия главной: кнопки, фильтры, поля, переключатели и кнопки-значки — радиус 8 px;
+   карточки и крупные панели — 16 px; меню — 12 px; плашки — 6 px.
+   Шрифты: Unbounded — крупные заголовки (h1, h2), Manrope — интерфейс и названия игр.
+   Цвета — только токены --bx-* (scripts/spatial_lint.py).
+   ========================================================================================= */
+
+.bx-app {
+    --h-r-ctl: var(--radius-sm);     /* 8 px — все элементы управления */
+    --h-r-card: var(--radius-xl);    /* 16 px — карточки и панели */
+    --h-r-menu: var(--radius-lg);    /* 12 px — выпадающие меню */
+    --h-r-tag: var(--radius-xs);     /* 6 px — плашки */
+    --h-t: .18s var(--bx-ease);
+}
+
+/* ---------- единый радиус элементов управления (включая шапку и навигацию на главной) ---------- */
+.bx-app :is(.bx-btn, .game-cta, .lib-sort button, .lib-dd-btn, .view-toggle button, .bx-search, .bx-icon-btn, .bx-round, .bx-live,
+    .game-fav, .recent-dismiss, .bx-social-btn, .bx-head-link, .bx-rail-item, .bx-donate, .bx-suggest-btn, .game-suggest-plus),
+.bx-top .auth-card, html[data-shell] .bx-top .auth-card { border-radius: var(--h-r-ctl); }
+.bx-search kbd { border-radius: var(--radius-xs); }
+.bx-find-list { border-radius: var(--h-r-menu); }
+.bx-find-list a, .map-link, .lib-menu button { border-radius: var(--radius-xs); }
+
+/* нажатие: короткое «утапливание» без изменения размеров соседей */
+.bx-app :is(.bx-btn, .game-cta, .lib-sort button, .lib-dd-btn, .view-toggle button, .bx-icon-btn, .game-fav, .recent-dismiss):active {
+    transform: scale(.97); transition-duration: .08s;
+}
+
+/* ---------- первый экран: широкий компактный баннер ----------
+   Компьютер: текст слева, иллюстрация игры — правая часть баннера до верхнего, правого и нижнего краёв,
+   слева плавно растворяется в фоне. Сверху справа поверх картинки — название игры и кнопка «Открыть карту».
+   Телефон: заголовок → описание → широкое превью → две кнопки в ряд. */
+.bx-hero {
+    position: relative; isolation: isolate; overflow: hidden;
+    display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "title" "lead" "cta";
+    align-content: center; min-height: 236px;
+    padding: 28px clamp(20px, 2.6vw, 36px); border-radius: var(--h-r-card); border: 1px solid var(--bx-line);
+    background: var(--bx-bg-2);
+}
+.bx-hero > :not(.bx-art) { position: relative; z-index: 1; }
+.bx-hero-title { grid-area: title; max-width: 54%; font: 800 clamp(30px, 3vw, 44px)/1.08 var(--bx-font-display); letter-spacing: -.025em; }
+.bx-hero-title > span { display: block; white-space: nowrap; }
+.bx-hero-title em { font-style: normal; color: var(--bx-lime-ink); }
+.bx-hero-lead { grid-area: lead; margin-top: 10px; color: var(--bx-muted); font-size: 16px; line-height: 1.45; }
+.bx-hero-cta { grid-area: cta; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.bx-hero-cta .bx-btn { height: 44px; min-height: 44px; padding: 0 18px; font-size: 14px; font-weight: 700; box-shadow: none; }
+.bx-hero-cta .bx-btn svg { width: 17px; height: 17px; transition: transform var(--h-t); }
+.bx-hero-cta .bx-btn-primary:hover svg { transform: translateX(3px); }
+
+.bx-art { position: absolute; z-index: 0; top: 0; right: 0; bottom: 0; width: 64%; display: block; color: var(--bx-text); }
+.bx-art-link { position: absolute; inset: 0; display: block; color: inherit; }
+.bx-art-media {
+    position: absolute; inset: 0; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, var(--bx-bg) 42%);
+    mask-image: linear-gradient(90deg, transparent 0, var(--bx-bg) 42%);
+}
+.bx-art-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; opacity: 0; transition: opacity .9s var(--bx-ease), transform 1.2s var(--bx-ease); }
+.bx-art-img.is-on { opacity: 1; }
+.bx-art:hover .bx-art-img.is-on { transform: scale(1.03); }
+.bx-art-link:focus-visible { outline: 2px solid var(--bx-cyan); outline-offset: -2px; border-radius: 0 var(--h-r-card) var(--h-r-card) 0; }
+/* стрелки ‹ › — снизу справа поверх картинки */
+.bx-art-nav { position: absolute; z-index: 1; right: 14px; bottom: 14px; display: flex; gap: 6px; }
+.bx-art-arrow {
+    display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border-radius: var(--h-r-ctl);
+    border: 1px solid var(--bx-line-2); background: color-mix(in srgb, var(--bx-bg) 74%, transparent); backdrop-filter: blur(6px);
+    color: var(--bx-text); cursor: pointer; transition: background var(--h-t), color var(--h-t), border-color var(--h-t);
+}
+.bx-art-arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.bx-art-arrow:hover { background: var(--bx-lime); color: var(--bx-on-lime); border-color: transparent; }
+.bx-art-arrow:focus-visible { outline: 2px solid var(--bx-cyan); outline-offset: 2px; }
+.bx-art-top {
+    position: absolute; z-index: 1; top: 14px; right: 14px; max-width: calc(100% - 28px);
+    display: flex; align-items: center; gap: 14px; padding: 5px 5px 5px 14px; border-radius: var(--radius-md);
+    border: 1px solid var(--bx-line-2); background: color-mix(in srgb, var(--bx-bg) 74%, transparent); backdrop-filter: blur(6px);
+}
+.bx-art-top b { min-width: 0; font: 800 15px/1.15 var(--bx-font); letter-spacing: -.01em; animation: h-fade .5s var(--bx-ease); }
+.bx-art-go {
+    flex: none; display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 8px 0 12px; border-radius: var(--h-r-ctl);
+    background: var(--bx-lime); color: var(--bx-on-lime); font-size: 13px; font-weight: 800; white-space: nowrap;
+}
+.bx-art-go svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--h-t); }
+.bx-art:hover .bx-art-go svg { transform: translateX(2px); }
+@keyframes h-fade { from { opacity: 0; } }
+
+/* ---------- «Продолжить» ---------- */
+.bx-hero + .recent-maps, .bx-hero + .bx-section { margin-top: 28px; }
+.recent-maps .bx-head { margin-bottom: 12px; }
+.recent-more { padding: 6px 10px; }
+/* компьютер: две последние карты, остальные — по «Показать ещё» (без полупустого ряда) */
+@media (min-width: 561px) { .recent-list:not(.is-all) > .recent-cell:nth-child(n+3) { display: none; } }
+.recent-maps:not([hidden]) + .game-library { margin-top: 28px; }
+.recent-maps .bx-head h2 { font-size: 20px; }
+/* компактные горизонтальные карточки: превью игры (целиком, contain на тёмном фоне) | название, полоса и % | стрелка.
+   Компьютер — две в ряд; телефон — по одной на всю ширину друг под другом (до 3, закрытая сменяется следующей). */
+.recent-list { display: grid; grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: auto; gap: 12px; overflow: visible; margin: 0; padding: 0; }
+.recent-cell { position: relative; min-width: 0; }
+.recent-item, .recent-item.has-thumb {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: none; align-items: center; gap: 0;
+    min-height: 0; height: 100%; padding: 0; overflow: hidden; border-radius: var(--h-r-card); border: 1px solid var(--bx-line);
+    background: var(--bx-surface); box-shadow: none; transition: border-color var(--h-t), background var(--h-t);
+}
+.recent-item:hover { transform: none; border-color: color-mix(in srgb, var(--recent-accent) 45%, var(--bx-line-2)); background: var(--bx-surface-2); box-shadow: none; }
+.recent-item:focus-visible { outline: 2px solid var(--bx-cyan); outline-offset: 2px; }
+/* превью: пропорции обложки (16:9), картинка целиком без увеличения; поля — тёмные */
+.recent-thumb { grid-area: auto; align-self: stretch; display: grid; place-items: center; width: 176px; min-height: 99px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 0; background: var(--bx-bg); }
+.recent-thumb img { width: 100%; height: 100%; min-height: 0; object-fit: contain; padding: 0; }
+.recent-body { display: grid; gap: 2px; min-width: 0; padding: 10px 14px 10px 16px; }
+.recent-game { grid-area: auto; color: var(--bx-text); font: 700 16px/1.25 var(--bx-font); white-space: normal; overflow-wrap: anywhere; overflow: visible; text-overflow: clip; }
+.recent-map { grid-area: auto; display: block; color: var(--bx-muted); font: 500 12.5px/1.3 var(--bx-font); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: unset; }
+.recent-prog { display: flex; align-items: center; gap: 12px; margin-top: 8px; min-width: 0; }
+.recent-bar { grid-area: auto; flex: 1; height: 8px; margin: 0; border-radius: 4px; background: var(--bx-surface-3); }
+.recent-bar i { background: var(--bx-lime); border-radius: 4px; }
+.recent-pct { grid-area: auto; flex: none; min-width: 3.4ch; text-align: right; color: var(--bx-text); font: 600 14px/1 var(--bx-font); font-variant-numeric: tabular-nums; }
+.recent-go {
+    grid-area: auto; display: grid; place-items: center; width: 38px; height: 38px; margin: 0 16px 0 2px; border-radius: var(--h-r-ctl);
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); color: var(--bx-text); transition: background var(--h-t), color var(--h-t), border-color var(--h-t);
+}
+.recent-go svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.recent-item:hover .recent-go { background: var(--bx-lime); color: var(--bx-on-lime); border-color: transparent; }
+/* «убрать»: маленькая кнопка в правом верхнем углу карточки — не закрывает превью, текст и стрелку */
+.recent-dismiss {
+    top: 3px; right: 3px; left: auto; width: 24px; height: 24px; min-width: 24px; min-height: 24px; transform: none;
+    background: none; color: var(--bx-faint); opacity: 1; transition: opacity var(--h-t), color var(--h-t);
+}
+.recent-dismiss:hover { opacity: 1; color: var(--bx-text); background: var(--bx-bg); }
+.recent-dismiss:active { transform: scale(.94); }
+.recent-dismiss svg { width: 14px; height: 14px; }
+
+/* ---------- каталог: заголовок и панель ---------- */
+.game-library > .bx-head { margin-bottom: 14px; }
+.bx-head h2 { font-family: var(--bx-font-display); }
+.lib-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.lib-bar .lib-sort { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 8px; overflow: visible; padding: 0; }
+.lib-bar .lib-order { order: 2; margin-left: auto; }
+.lib-bar .view-toggle { order: 3; }
+.lib-sort button, .lib-dd-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 40px; min-height: 40px; padding: 0 14px; border: 1px solid var(--bx-line-2);
+    background: var(--bx-surface); color: var(--bx-muted); font: 600 14px/1 var(--bx-font); white-space: nowrap;
+    transition: color var(--h-t), border-color var(--h-t), background var(--h-t), box-shadow var(--h-t), transform var(--h-t);
+}
+.lib-sort button:hover, .lib-dd-btn:hover { color: var(--bx-text); border-color: color-mix(in srgb, var(--bx-cyan) 45%, var(--bx-line-2)); background: var(--bx-surface-2); }
+.lib-sort > button[aria-pressed="true"], .lib-more .lib-dd-btn.is-on {
+    color: var(--bx-on-lime); background: var(--bx-lime); border-color: transparent; box-shadow: none;
+}
+.lib-order .lib-dd-btn.is-on { color: var(--bx-text); border-color: color-mix(in srgb, var(--bx-cyan) 55%, transparent); }
+.lib-dd-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--h-t); }
+.lib-dd.is-open .lib-dd-btn { color: var(--bx-text); border-color: var(--bx-cyan); }
+.lib-dd.is-open .lib-dd-btn svg { transform: rotate(180deg); }
+.lib-more .lib-dd-btn.is-on { color: var(--bx-on-lime); }
+
+.lib-dd { position: relative; }
+.lib-menu {
+    position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; min-width: 210px;
+    display: grid; gap: 2px; padding: 6px; border-radius: var(--h-r-menu);
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); box-shadow: var(--bx-sh-pop);
+    transform-origin: top left; animation: h-menu .16s var(--bx-ease);
+}
+.lib-order .lib-menu { left: auto; right: 0; transform-origin: top right; }
+.lib-menu button {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; padding: 0 10px 0 12px;
+    border: 0; background: none; color: var(--bx-text); font: 600 14px/1.2 var(--bx-font); text-align: left; transition: background var(--h-t);
+}
+.lib-menu button:hover, .lib-menu button:focus-visible { background: var(--bx-surface-3); outline: none; }
+.lib-menu button svg { width: 16px; height: 16px; fill: none; stroke: var(--bx-lime-ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.lib-menu button[aria-checked="true"] { color: var(--bx-lime-ink); }
+.lib-menu button[aria-checked="true"] svg { opacity: 1; }
+
+/* «Сетка / Список»: две кнопки-значка 40×40 с радиусом 8 px */
+.lib-bar .view-toggle { display: flex; gap: 6px; padding: 0; border: 0; background: none; }
+.lib-bar .view-toggle button {
+    display: grid; place-items: center; width: 40px; height: 40px; padding: 0;
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface); color: var(--bx-muted);
+    transition: color var(--h-t), border-color var(--h-t), background var(--h-t);
+}
+.lib-bar .view-toggle button:hover { color: var(--bx-text); border-color: color-mix(in srgb, var(--bx-cyan) 45%, var(--bx-line-2)); }
+.lib-bar .view-toggle button[aria-pressed="true"] { color: var(--bx-text); border-color: var(--bx-line-2); background: var(--bx-surface-3); }
+.lib-bar .view-toggle svg { width: 18px; height: 18px; }
+
+/* ---------- каталог: карточки ---------- */
+.games-container:not(.is-list) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.game-dropdown {
+    padding: 0; border-radius: var(--h-r-card); border: 1px solid var(--bx-line); background: var(--bx-surface); box-shadow: none;
+    transition: transform .22s var(--bx-ease), box-shadow .22s var(--bx-ease), border-color .22s;
+}
+.game-dropdown:hover, .game-dropdown[open] {
+    transform: translateY(-2px); border-color: color-mix(in srgb, var(--game-accent) 45%, var(--bx-line-2)); box-shadow: none;
+}
+.game-dropdown > summary { border-radius: inherit; }
+.game-dropdown > summary:focus-visible { outline: 2px solid var(--bx-cyan); outline-offset: 2px; }
+.game-banner { border-radius: calc(var(--h-r-card) - 1px) calc(var(--h-r-card) - 1px) 0 0; }
+.game-banner::after { display: none; }   /* обложка без затемнения — заметнее интерфейса */
+.game-dropdown:hover .game-banner-art { transform: scale(1.04); }
+.games-container:not(.is-list) .game-banner { aspect-ratio: 2 / 1; }   /* ниже обложка — плотнее сетка */
+
+.game-info { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px 12px; }
+.game-title-block { gap: 2px; }
+.game-title { font: 700 15px/1.3 var(--bx-font); letter-spacing: -.005em; overflow-wrap: anywhere; }
+.game-meta { font-size: 12px; }
+.games-container:not(.is-list) .game-meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.games-container:not(.is-list) .game-meta i { margin: 0 4px; }
+.game-progress { margin-top: 4px; gap: 8px; }
+.games-container:not(.is-list) .game-progress.is-empty { display: none; }   /* полоса — только когда есть прогресс */
+.game-progress-track { height: 6px; border-radius: 6px; }
+.game-progress strong { min-width: 3ch; text-align: right; font-size: 13px; }
+.game-indicators { display: flex; gap: 8px; margin-top: auto; }
+.game-indicators .game-cta { flex: none; }
+.game-cta {
+    height: 34px; min-height: 34px; padding: 0 12px; gap: 6px; border: 1px solid var(--bx-line-2);
+    background: var(--bx-surface-2); color: var(--bx-lime-ink); font-size: 13px; font-weight: 700;
+    transition: background var(--h-t), color var(--h-t), border-color var(--h-t), box-shadow var(--h-t), transform var(--h-t);
+}
+.game-cta b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: var(--h-r-tag); background: color-mix(in srgb, var(--bx-lime) 16%, transparent); font-size: 12px; font-weight: 800; }
+.game-dropdown:hover .game-cta, .game-dropdown[open] .game-cta { background: var(--bx-lime); color: var(--bx-on-lime); border-color: transparent; box-shadow: none; }
+.game-dropdown:hover .game-cta b, .game-dropdown[open] .game-cta b { background: color-mix(in srgb, var(--bx-on-lime) 14%, transparent); }
+.game-indicators .game-arrow { display: none; }   /* стрелка — уже внутри кнопки или не нужна */
+.game-cta.is-pick::after {
+    content: ""; width: 16px; height: 16px; flex: none; background: currentColor; transition: transform var(--h-t);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.game-cta.is-pick > svg { display: none; }
+.game-dropdown[open] .game-cta.is-pick::after { transform: rotate(180deg); }
+
+/* избранное: квадратная кнопка-значок 36×36 (8 px), справа сверху на обложке */
+.game-fav {
+    top: 10px; right: 10px; width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+    border: 1px solid var(--bx-line-2); background: color-mix(in srgb, var(--bx-bg) 78%, transparent); color: var(--bx-text);
+    transition: opacity var(--h-t), transform var(--h-t), color var(--h-t), border-color var(--h-t), background var(--h-t);
+}
+.game-fav svg { width: 18px; height: 18px; }
+.game-fav:hover { transform: none; color: var(--bx-lime-ink); border-color: color-mix(in srgb, var(--bx-lime) 50%, transparent); }
+.game-fav[aria-pressed="true"] { background: color-mix(in srgb, var(--bx-bg) 70%, transparent); }
+.game-fav.is-pop svg { animation: h-pop .38s var(--bx-ease); }
+
+/* плашки «Новое / Обновлено / Скоро»: одна высота, отступ, шрифт и радиус в обоих видах и на всех ширинах */
+.game-new, .is-list .game-new {
+    top: 10px; left: 10px; height: 24px; min-height: 24px; padding: 0 8px; border-radius: var(--h-r-tag);
+    display: inline-flex; align-items: center; font: 800 12px/1 var(--bx-font); letter-spacing: .01em; white-space: nowrap;
+    box-shadow: 0 2px 10px -2px color-mix(in srgb, var(--bx-bg) 80%, transparent);
+}
+.game-new.is-soon, .is-list .game-new.is-soon {
+    background: color-mix(in srgb, var(--bx-bg) 82%, transparent); color: var(--bx-text); box-shadow: inset 0 0 0 1px var(--bx-line-2);
+}
+.game-new.is-soon span { color: var(--bx-cyan-ink); }
+
+/* меню выбора карты — поверх соседних карточек (раскладка из home-neo.css) */
+.maps-list { border-radius: var(--h-r-menu); padding: 6px; transform-origin: top center; animation: h-menu .18s var(--bx-ease); }
+.map-link { min-height: 44px; }
+
+/* ---------- вид «Список» ---------- */
+.games-container.is-list { gap: 10px; }
+.is-list .game-dropdown:hover, .is-list .game-dropdown[open] { transform: none; }
+.is-list .game-dropdown > summary { flex-direction: row; align-items: stretch; }
+.is-list .game-banner { width: 184px; flex: none; aspect-ratio: 16 / 9; border-radius: calc(var(--h-r-card) - 1px) 0 0 calc(var(--h-r-card) - 1px); }
+.is-list .game-info { flex: 1; min-width: 0; flex-direction: row; align-items: center; gap: 16px; padding: 12px 16px; }
+.is-list .game-title-block { flex: 1; min-width: 0; }
+.is-list .game-indicators { margin-top: 0; flex: none; }
+.is-list .game-indicators .game-cta { flex: none; min-width: 168px; }
+.is-list .game-fav { top: auto; bottom: 8px; right: 8px; width: 32px; height: 32px; min-width: 32px; min-height: 32px; }
+.is-list .game-fav svg { width: 16px; height: 16px; }
+.is-list .game-new { top: 8px; left: 8px; }
+
+/* «Предложить игру» и финальный блок — те же радиусы */
+.game-suggest-banner { border-radius: var(--h-r-card); }
+.bx-cta { border-radius: var(--h-r-card); }
+.lib-empty, .bx-empty { border-radius: var(--h-r-card); }
+
+@keyframes h-menu { from { opacity: 0; transform: translateY(-4px) scale(.98); } }
+@keyframes h-pop { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+
+/* ---------- адаптив ---------- */
+@media (max-width: 1100px) {
+    .bx-art { width: 60%; }
+    .bx-hero-title { font-size: clamp(28px, 3.1vw, 36px); }
+}
+/* планшет и телефон: превью — под пояснением, кнопки — под превью */
+@media (max-width: 860px) {
+    .bx-hero { grid-template-areas: "title" "lead" "art" "cta"; min-height: 0; padding: 18px; }
+    .bx-hero-title { max-width: none; font-size: clamp(24px, 5vw, 36px); }
+    .bx-hero-lead { margin-top: 6px; font-size: 15px; }
+    .bx-art { grid-area: art; position: relative; inset: auto; width: auto; margin-top: 14px; aspect-ratio: 2.4 / 1; border-radius: var(--radius-lg); overflow: hidden; }
+    .bx-art-media { -webkit-mask-image: none; mask-image: none; }
+    .bx-art-link:focus-visible { border-radius: var(--radius-lg); }
+    .bx-art-nav { right: 8px; bottom: 8px; }
+    .bx-art-arrow { width: 32px; height: 32px; }
+    .bx-art-top { top: 8px; right: 8px; left: auto; max-width: calc(100% - 16px); gap: 10px; padding: 4px 4px 4px 10px; }
+    .bx-art-top b { font-size: 13px; }
+    .bx-art-go { height: 30px; font-size: 12px; padding: 0 6px 0 10px; }
+    .bx-hero-cta { margin-top: 14px; }
+    .games-container:not(.is-list) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}
+@media (max-width: 680px) {
+    .lib-bar { gap: 8px; }
+    .lib-bar .lib-sort { flex: 1 1 100%; gap: 6px; }
+    .lib-bar .lib-order { margin-left: 0; flex: 1 1 auto; }
+    .lib-bar .lib-order .lib-dd-btn { width: 100%; justify-content: space-between; }
+    .lib-order .lib-menu { left: 0; right: auto; transform-origin: top left; }
+    /* «Ещё» стоит у правого края ряда фильтров: меню прижато к правому краю ряда и не выходит за экран */
+    .lib-bar .lib-sort { position: relative; }
+    .lib-bar .lib-more { position: static; }
+    .lib-more .lib-menu { left: auto; right: 0; max-width: 100%; transform-origin: top right; }
+    .is-list .game-indicators .game-cta { min-width: 0; }
+}
+@media (max-width: 560px) {
+    .bx-hero { padding: 14px; }
+    .bx-hero-title { font-size: clamp(22px, 6.6vw, 28px); line-height: 1.1; }
+    .bx-hero-title > span { white-space: normal; }
+    .bx-hero-lead { font-size: 14px; }
+    .bx-art { margin-top: 12px; aspect-ratio: 2 / 1; }
+    .bx-art-top b { font-size: 12.5px; }
+    .bx-hero-cta { flex-wrap: nowrap; gap: 8px; margin-top: 12px; }
+    .bx-hero-cta .bx-btn { flex: 1 1 0; min-width: 0; height: 44px; min-height: 44px; padding: 0 10px; font-size: 14px; }
+    /* две колонки: компактная информация, кнопка во всю ширину карточки */
+    .games-container:not(.is-list) { gap: 10px; }
+    .games-container:not(.is-list) .game-info { padding: 8px 10px 10px; gap: 8px; }
+    .games-container:not(.is-list) .game-title { font-size: 14px; line-height: 1.25; }
+    .games-container:not(.is-list) .game-meta { font-size: 11.5px; }
+    .games-container:not(.is-list) .game-meta i, .games-container:not(.is-list) .game-progress-count { display: none; }
+    .games-container:not(.is-list) .game-indicators .game-cta { flex: 1; padding: 0 6px; font-size: 12.5px; }
+    .games-container:not(.is-list) .game-fav { top: 6px; right: 6px; width: 30px; height: 30px; min-width: 30px; min-height: 30px; }
+    .games-container:not(.is-list) .game-fav svg { width: 15px; height: 15px; }
+    .games-container:not(.is-list) .game-new { top: 6px; left: 6px; height: 20px; min-height: 20px; padding: 0 6px; font-size: 11px; }
+    .bx-hero + .recent-maps, .bx-hero + .bx-section { margin-top: 22px; }
+    .lib-sort button, .lib-dd-btn { padding: 0 12px; font-size: 13.5px; }
+    /* «Список» на телефоне: миниатюра слева, название в две строки, справа — компактная кнопка-значок */
+    .is-list .game-banner { width: 112px; height: auto; aspect-ratio: 16 / 9; align-self: center; margin: 10px 0 10px 10px; border-radius: var(--radius-md); }
+    .is-list .game-dropdown { padding: 0; }
+    .is-list .game-dropdown > summary { gap: 0; align-items: center; }
+    .is-list .game-info { gap: 10px; padding: 10px 12px; }
+    .is-list .game-title { font-size: 15px; line-height: 1.25; }
+    .is-list .game-cta { width: 44px; height: 44px; min-height: 44px; min-width: 44px; padding: 0; justify-content: center; }
+    .is-list .game-cta > span, .is-list .game-cta b { display: none; }
+    .is-list .game-cta.is-direct { font-size: 0; gap: 0; }
+    .is-list .game-new { top: 4px; left: 4px; height: 20px; min-height: 20px; padding: 0 6px; font-size: 11px; }
+    .is-list .game-new-sep, .is-list .game-new.is-soon span { display: none; }
+    .is-list .game-fav { top: 4px; right: 4px; bottom: auto; width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
+    .is-list .game-fav svg { width: 14px; height: 14px; }
+    /* телефон: по одной карточке на всю ширину, та же горизонтальная компоновка, меньше превью и отступы */
+    .recent-list { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    /* телефон: по одной карточке, до трёх, кнопка «Показать ещё» не нужна */
+    .recent-more { display: none; }
+    .recent-list > .recent-cell:nth-child(n+4) { display: none; }
+    .recent-maps:not([hidden]) + .game-library { margin-top: 22px; }
+    .recent-item, .recent-item.has-thumb { grid-template-columns: 38% minmax(0, 1fr) auto; }
+    .recent-thumb { width: 100%; min-height: 0; }
+    .recent-body { padding: 8px 10px 8px 12px; }
+    .recent-game { font-size: 14.5px; }
+    .recent-map { font-size: 12px; }
+    .recent-prog { gap: 8px; margin-top: 6px; }
+    .recent-bar { height: 6px; }
+    .recent-pct { font-size: 13px; }
+    .recent-go { width: 36px; height: 36px; margin: 0 10px 8px 0; align-self: end; }
+    .recent-body { padding-right: 6px; }
+}
+@media (max-width: 360px) {
+    .lib-sort button, .lib-dd-btn { padding: 0 10px; font-size: 13px; }
+    .bx-hero-cta .bx-btn svg { display: none; }
+    .games-container:not(.is-list) .game-cta.is-pick::after { display: none; }
+}
+@media (pointer: coarse) {
+    .lib-sort button, .lib-dd-btn, .lib-bar .view-toggle button { height: 44px; min-height: 44px; }
+    .lib-bar .view-toggle button { width: 44px; }
+    .lib-menu button { min-height: 44px; }
+    .game-cta { height: 40px; min-height: 40px; }
+    .recent-dismiss { top: 1px; right: 1px; width: 30px; height: 30px; min-width: 30px; min-height: 30px; }
+}
+
+/* ---------- «уменьшить движение»: без сдвигов, масштабов и «вспышек», только мгновенная смена состояния ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .bx-app :is(.bx-btn, .game-cta, .lib-sort button, .lib-dd-btn, .view-toggle button, .bx-icon-btn, .game-fav, .recent-dismiss):active,
+    .game-dropdown:hover, .game-dropdown[open], .recent-item:hover { transform: none; }
+    .recent-dismiss:active { transform: none; }
+    .bx-art:hover .bx-art-img.is-on { transform: none; }
+    .bx-art-img { transition: none; }
+    .game-dropdown:hover .game-banner-art { transform: none; }
+    .lib-menu, .maps-list, .game-fav.is-pop svg, .bx-art-top b { animation: none; }
+}
+
+/* телефон, сетка в 2 колонки: в узкой карточке число меток уходит под название, длинные слова переносятся */
+@media (max-width: 560px) {
+    .games-container:not(.is-list) .maps-list { padding: 4px; }
+    .games-container:not(.is-list) .map-link { flex-wrap: wrap; row-gap: 2px; padding: 8px 10px; }
+    .games-container:not(.is-list) .map-name { flex: 1 1 100%; gap: 8px; overflow-wrap: anywhere; line-height: 1.3; }
+    .games-container:not(.is-list) .map-name svg { flex: none; }
+    .games-container:not(.is-list) .map-name:has(svg) + .status { padding-left: 24px; }
+    .games-container:not(.is-list) .status { flex: 1 1 100%; justify-content: flex-start; }
+}

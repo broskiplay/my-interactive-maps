@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tdm-reservation" content="1">
+    <title>Личный кабинет — BroskiPlay</title>
+    <meta name="description" content="Личный кабинет BroskiPlay: избранное, достижения и последние карты на всех устройствах.">
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://broskiplay.ru/cabinet/">
+    <meta name="theme-color" content="#50e3c2">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=4">
+    <link rel="stylesheet" href="../css/spatial.css?v=dark2">
+    <link rel="stylesheet" href="../css/style.css?v=dark1">
+    <link rel="stylesheet" href="../css/vision.css?v=dark3">
+    <style>.cab{max-width:760px;margin:clamp(16px,4vw,32px) auto 60px;padding:0 16px;display:grid;gap:16px}.cab-card{padding:22px;border-radius:var(--sp-r-lg);background:var(--sp-card);box-shadow:var(--sp-card-sh)}.cab h1{margin:0 0 6px}.cab :is(h1,h2){font-family:var(--font-display)}.cab p,.cab li{color:var(--sp-muted)}.cab form{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.cab input{flex:1;min-width:200px}.cab-msg{min-height:1.4em;margin:0}.cab-msg.bad{color:#ff8a7a}.cab dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:12px 0}.cab dd{margin:0;color:var(--sp-text)}.cab ul{padding-left:18px;margin:8px 0 0}.cab .cab-achs{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}.cab-achs li{display:grid;gap:2px;padding:12px 14px;border-radius:var(--sp-r-sm);background:var(--sp-well);box-shadow:var(--sp-press)}.cab-achs li:not(.is-on) b{color:var(--sp-muted)}.cab-achs li:not(.is-on) svg{opacity:.55}.cab-achs li.is-on{opacity:1;box-shadow:var(--sp-press),inset 0 0 0 1px color-mix(in srgb,var(--cyan) 55%,transparent)}.cab-prog{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}.cab-prog>p{grid-column:1/-1}.cab-ring{width:110px;height:110px;border-radius:50%;display:grid;place-content:center;text-align:center;background:conic-gradient(var(--acid) calc(var(--v)*1%),var(--sp-well) 0)}.cab-ring b{font-size:22px;color:var(--sp-text);background:var(--sp-card);border-radius:50%;width:84px;height:84px;display:grid;place-items:center}.cab-ring span{display:none}.cab-bars{list-style:none;padding:0;display:grid;gap:8px}.cab-bars li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;color:var(--sp-text)}.cab-bar{grid-column:1/-1;height:6px;border-radius:9px;background:var(--sp-well);overflow:hidden}.cab-bar i{display:block;height:100%;background:var(--pa,var(--acid))}@media(max-width:560px){.cab-prog{grid-template-columns:1fr}}.cab-achs b{color:var(--sp-text)}.cab-achs li.is-on b{color:var(--acid)}.cab-card{display:grid;gap:14px;align-content:start}.cab-card>*{margin:0}.cab h1{font-size:clamp(28px,4vw,38px);line-height:1.1}.cab h2{font-size:22px;line-height:1.2}.cab h2 small{font-size:15px;color:var(--sp-muted);font-weight:600;margin-left:6px}.cab .sp-btn{border-radius:var(--sp-r-pill);min-height:46px;padding:10px 22px;font-size:15px;white-space:normal;text-align:center}.cab .sp-btn.sp-pill,#cab-google{justify-self:start}.cab-card form{margin:0}.cab .sp-field{min-height:46px;padding:10px 16px}#cab-out,#cab-in{display:grid;gap:14px}#cab-out[hidden],#cab-in[hidden]{display:none}.cab-bars{margin:0}.cab-prog{margin-top:2px}.cab-prog>div{display:grid;gap:12px;justify-items:start}.cab-prog>div p{margin:0}.cab-prog>div .cab-bars{width:100%}.cab dl{margin:0}#cab-in .sp-btn{justify-self:start}.cab-btns{display:flex;gap:10px;flex-wrap:wrap}.cab-note{font-size:13px}.cab-note a{color:var(--cyan)}.bp-slot.bp-slot-side{display:none}.bp-slot.bp-slot-flow{min-height:250px;margin:8px 0 0}@media(min-width:1600px){.bp-slot.bp-slot-flow{display:none}.bp-slot.bp-slot-side{display:block;position:fixed;z-index:1;top:calc(var(--bx-top-h,72px) + 28px);width:300px;max-width:none;min-height:600px;margin:0;left:calc(50vw + 46px - 704px)}.bp-slot.bp-slot-side+.bp-slot-side{left:calc(50vw + 46px + 404px)}}</style>
+    <script>
+        (function () {
+            // Тема по системе телефона: светлая → светлая, тёмная или не задана → тёмная.
+            // Ручной выбор переключателем действует, пока система сама не сменит тему.
+            document.documentElement.setAttribute("data-theme", "dark");
+        })();
+    </script>
+    <script src="/js/metrika.js?v=1" defer></script>
+</head>
+<body>
+<!-- topbar:start — верхнее меню сайта: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="topbar" id="topbar">
+    <div class="topbar-inner">
+        <a class="tb-brand" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="34" height="34" alt=""><span>BroskiPlay</span></a>
+        <button type="button" class="tb-burger" id="tb-burger" aria-expanded="false" aria-controls="tb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+        <div class="tb-panel" id="tb-panel">
+            <nav class="tb-nav" aria-label="Разделы сайта">
+                <a class="tb-link" href="/db/">База данных</a>
+                <a class="tb-link" href="/cabinet/">Кабинет</a>
+                <div class="tb-dd" id="tb-upd">
+                    <a class="tb-link tb-dd-btn" href="/#updates" aria-haspopup="true" aria-expanded="false" aria-controls="tb-upd-menu">Обновления<span class="tb-dot" hidden></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+                    <div class="tb-menu" id="tb-upd-menu" hidden><a href="/#updates" id="tb-updates"><span>Что нового</span><small>новое на сайте</small></a><a href="/fixes/"><span>Журнал исправлений</span><small>правки меток</small></a></div>
+                </div>
+                <a class="tb-link tb-opt" href="/#community">Сообщество</a>
+            </nav>
+            <div class="tb-actions">
+                <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+                <a class="tb-icon" id="tb-search" href="/?search=1" aria-label="Найти игру" title="Найти игру"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></a>
+                <div class="auth-card">
+                    <div class="auth-info">
+                    <img id="auth-avatar" class="auth-avatar" src="" alt="Avatar">
+                    <div id="auth-status" class="auth-text">
+                    <b>Гостевой режим</b><br>
+                    <span>Войдите через Google для синхронизации меток</span>
+                    </div>
+                    </div>
+                    <button id="auth-btn" class="auth-btn"><svg class="google-icon" width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Войти с Google</span></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="cab">
+  <section class="cab-card">
+    <h1>Личный кабинет</h1>
+    <p>Избранное, достижения и последние карты — на всех ваших устройствах. Вход через Google — тот же аккаунт, что на картах. Прогресс по меткам на картах хранится как раньше.</p>
+    <div id="cab-out">
+      <button class="sp-btn sp-primary sp-pill" id="cab-google" type="button">Войти через Google</button>
+    </div>
+    <div id="cab-in" hidden>
+      <p>Вы вошли как <b id="cab-mail"></b></p>
+      <dl><dt>Избранные игры</dt><dd id="cab-fav">—</dd><dt>Карт в «Продолжить»</dt><dd id="cab-maps">0</dd></dl>
+      <div class="cab-btns"><button class="sp-btn sp-primary" id="cab-sync" type="button">Синхронизировать</button> <button class="sp-btn" id="cab-exit" type="button">Выйти</button></div>
+      <h2>История активности</h2><ul id="cab-hist"></ul>
+    </div>
+    <p class="cab-msg" id="cab-msg" role="status"></p>
+  </section>
+<section class="cab-card" id="app"><h2>Приложение</h2>
+    <p>Сайт можно установить как приложение на телефон или компьютер: отдельный значок, запуск без адресной строки браузера, открытые карты запоминаются для быстрого запуска.</p>
+    <button class="sp-btn sp-primary sp-pill" id="cab-install" type="button" hidden>Установить приложение</button>
+    <p id="cab-install-done" hidden>Приложение уже установлено — вы сейчас в нём.</p></section>
+<section class="cab-card"><h2>Ваш прогресс</h2>
+    <p>Сводка обновляется, когда вы открываете главную страницу после работы на картах.</p>
+    <div class="cab-prog" id="cab-prog"></div></section>
+  <section class="cab-card"><h2>Достижения <small id="cab-ach-n"></small></h2>
+    <p>Открываются по ходу отметок на картах. Даты хранятся на этом устройстве, а после входа синхронизируются.</p>
+    <ul class="cab-achs" id="cab-achs"></ul></section>
+<div class="bp-slot bp-slot-flow" data-bp-slot="cabinet_m"></div>
+</main>
+<div class="bp-slot bp-slot-side" data-bp-slot="cabinet"></div><div class="bp-slot bp-slot-side" data-bp-slot="cabinet"></div>
+<script src="/js/firebase-lazy.js?v=1" defer></script>
+<script src="/js/auth-lite.js?v=5" defer></script>
+<script src="../js/topbar.js?v=11" defer></script>
+<script src="/js/progress-core.js?v=2" defer></script>
+<script src="../js/cabinet.js?v=1" defer></script>
+<script src="/js/bp-slot.js?v=7" defer></script>
+<script src="/js/pwa.js?v=4" defer></script>
+</body>
+</html>

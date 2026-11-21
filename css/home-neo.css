@@ -1,0 +1,296 @@
+/* =========================================================================================
+   ГЛАВНАЯ — «Spatial» в цветах канала (2026-11-19). Разметка: web/components/home/*.tsx.
+   Токены --bx-*, шапка, навигация, подвал — в css/shell.css (общий каркас всех страниц), здесь только блоки главной.
+   Глубина — слоями: подложка → поверхность → приподнятая карточка; мягкие тени снизу, тонкие светящиеся кромки,
+   линии орбит. Без «жидкого стекла»: заливки плотные, размытие не используется.
+   Цвета: лайм — главные действия и активное, голубой — второстепенное и значки, серо-синий — контуры.
+   Палитра — токены --bx-* (ниже); правила используют только их (scripts/spatial_lint.py).
+   ========================================================================================= */
+
+/* акцент каждой игры: кромка карточки при наведении, полоска прогресса, «Продолжить» */
+.game-dropdown { --game-accent: var(--bx-cyan); }
+.theme-gothic { --game-accent: #d98f3d; }
+.theme-dimraeth { --game-accent: #e8c773; }
+.theme-palworld { --game-accent: #e0a63a; }
+.theme-oblivion { --game-accent: #d8742f; }
+.theme-skyrim { --game-accent: #6fa8d4; }
+.theme-witcher3 { --game-accent: #c8372c; }
+.theme-cyberpunk2077 { --game-accent: #ff5c57; }
+.theme-rdr2 { --game-accent: #e8b64a; }
+.theme-gta6 { --game-accent: #ff8fc8; }
+.theme-hogwarts { --game-accent: #e2b660; }
+.theme-phantomblade { --game-accent: #d23c2e; }
+.theme-silverpalace { --game-accent: #8fa6ff; }
+.theme-tainted { --game-accent: #e0803a; }
+
+/* ---------- основа ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bx-top-h) + 16px); -webkit-text-size-adjust: 100%; }
+body {
+    margin: 0; min-height: 100vh; overflow-x: hidden;
+    font: 400 15px/1.5 var(--bx-font); color: var(--bx-text); background: var(--bx-bg);
+    -webkit-font-smoothing: antialiased;
+}
+/* дальний слой: мягкое свечение в цветах канала и лёгкое зерно (без сетки; фиксированы, не перерисовываются при прокрутке) */
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        radial-gradient(55vw 42vw at 85% -8%, color-mix(in srgb, var(--bx-cyan) 13%, transparent), transparent 70%),
+        radial-gradient(38vw 30vw at 30% 8%, color-mix(in srgb, var(--bx-cyan) 5%, transparent), transparent 70%),
+        radial-gradient(50vw 38vw at 0% 100%, color-mix(in srgb, var(--bx-lime) 8%, transparent), transparent 70%),
+        radial-gradient(40vw 30vw at 100% 85%, color-mix(in srgb, var(--bx-cyan) 5%, transparent), transparent 70%),
+        var(--bx-bg);
+}
+/* зерно: убирает «ступеньки» на градиентах, фон выглядит глубже */
+body::after {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -.01em; }
+p { margin: 0; }
+[hidden] { display: none !important; }
+svg { flex: none; }
+:focus-visible { outline: 2px solid var(--bx-cyan); outline-offset: 3px; }
+::selection { background: color-mix(in srgb, var(--bx-lime) 35%, transparent); }
+
+/* ---------- первый экран — css/home-v3.css ---------- */
+
+/* ---------- «Продолжить» ---------- */
+/* компактная горизонтальная лента; на телефоне листается вбок */
+.recent-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; }
+.recent-cell { position: relative; min-width: 0; }
+.recent-item {
+    --recent-accent: var(--bx-cyan);
+    display: grid; gap: 4px; padding: 9px 40px 10px 14px; border-radius: var(--radius-xl); border: 1px solid var(--bx-line);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--recent-accent) 12%, var(--bx-surface)), var(--bx-surface) 60%);
+    box-shadow: var(--bx-sh-1); transition: transform .2s var(--bx-ease), border-color .2s;
+}
+.recent-item:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--recent-accent) 55%, transparent); }
+.recent-game { font-size: 12px; color: var(--bx-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.recent-map { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.recent-bar { height: 4px; border-radius: 4px; background: var(--bx-surface-3); overflow: hidden; }
+.recent-bar i { display: block; height: 100%; border-radius: inherit; background: var(--recent-accent); }
+.recent-map { font-size: 15px; }
+.recent-bar { height: 3px; }
+.recent-pct { font-size: 12px; color: var(--bx-muted); }
+.recent-dismiss { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; color: var(--bx-faint); }
+.recent-dismiss svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.recent-dismiss:hover { color: var(--bx-text); background: var(--bx-surface-3); }
+
+/* ---------- библиотека ---------- */
+.game-search { display: flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; }
+.lib-sort { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.lib-sort button, .view-toggle button {
+    flex: none; height: 36px; padding: 0 14px; border-radius: var(--radius-md); border: 1px solid var(--bx-line);
+    background: var(--bx-surface); color: var(--bx-muted); font-size: 13px; font-weight: 600; white-space: nowrap;
+    transition: color .2s, border-color .2s, background .2s;
+}
+.lib-sort button:hover, .view-toggle button:hover { color: var(--bx-text); border-color: var(--bx-line-2); }
+.lib-sort button[aria-pressed="true"] { color: var(--bx-on-lime); background: var(--bx-lime); border-color: transparent; }
+.view-toggle { display: flex; gap: 4px; flex: none; padding: 3px; border-radius: var(--radius-lg); border: 1px solid var(--bx-line); background: var(--bx-surface); }
+.view-toggle button { display: grid; place-items: center; width: 32px; height: 30px; padding: 0; border: 0; border-radius: var(--radius-sm); background: none; }
+.view-toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.view-toggle button[aria-pressed="true"] { color: var(--bx-cyan-ink); background: var(--bx-surface-3); }
+.lib-empty, .bx-empty { margin: 0 0 16px; padding: 18px; border-radius: var(--radius-xl); border: 1px dashed var(--bx-line-2); color: var(--bx-muted); text-align: center; }
+.lib-empty + .bx-empty:not([hidden]) { display: none; }
+
+.games-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
+.game-dropdown.is-cat-out, .game-dropdown.is-filtered { display: none; }
+
+.game-dropdown {
+    position: relative; min-width: 0; border-radius: var(--bx-r);
+    border: 1px solid var(--bx-line); background: var(--bx-surface); box-shadow: var(--bx-sh-1);
+    transition: transform .25s var(--bx-ease), box-shadow .25s var(--bx-ease), border-color .25s;
+}
+.game-dropdown > summary { list-style: none; display: flex; flex-direction: column; height: 100%; cursor: pointer; border-radius: inherit; outline-offset: 2px; }
+.game-dropdown > summary::-webkit-details-marker { display: none; }
+.game-dropdown:hover, .game-dropdown[open] {
+    transform: translateY(-4px); border-color: color-mix(in srgb, var(--game-accent) 55%, transparent);
+    box-shadow: var(--bx-sh-2), 0 0 0 1px color-mix(in srgb, var(--game-accent) 30%, transparent), 0 18px 50px -24px var(--game-accent);
+}
+.game-dropdown[open] { z-index: 20; }
+
+.game-banner { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: calc(var(--bx-r) - 1px) calc(var(--bx-r) - 1px) 0 0; background: var(--bx-bg); }
+.game-banner::after { content: ""; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(transparent, color-mix(in srgb, var(--bx-surface) 80%, transparent)); pointer-events: none; }
+.game-banner-art { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--bx-ease); }
+.game-dropdown:hover .game-banner-art { transform: scale(1.05); }
+.stellar-banner .game-banner-art { object-position: right center; }
+.game-new {
+    position: absolute; z-index: 2; top: 12px; left: 12px; height: 26px; padding: 0 10px; border-radius: var(--radius-sm);
+    display: inline-flex; align-items: center; font-size: 12px; font-weight: 800; letter-spacing: .02em;
+    background: var(--bx-lime); color: var(--bx-on-lime);
+}
+.game-new.is-upd { background: var(--bx-cyan); }
+.game-new-sep { font-style: normal; white-space: pre; }
+.game-new.is-soon { background: var(--bx-surface-3); color: var(--bx-text); box-shadow: inset 0 0 0 1px var(--bx-line-2); }
+.game-fav {
+    position: absolute; z-index: 2; top: 10px; right: 10px; display: grid; place-items: center; width: 36px; height: 36px; padding: 0;
+    border-radius: 50%; border: 1px solid var(--bx-line-2); background: color-mix(in srgb, var(--bx-bg) 75%, transparent); color: var(--bx-white);
+    opacity: 0; transition: opacity .2s, transform .2s var(--bx-ease), color .2s;
+}
+.game-fav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.game-dropdown:hover .game-fav, .game-fav:focus-visible, .game-fav[aria-pressed="true"] { opacity: 1; }
+.game-fav:hover { transform: scale(1.08); }
+.game-fav[aria-pressed="true"] { color: var(--bx-lime); border-color: color-mix(in srgb, var(--bx-lime) 50%, transparent); }
+.game-fav[aria-pressed="true"] svg { fill: currentColor; }
+@media (hover: none) { .game-fav { opacity: 1; } }
+
+.game-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; padding: 14px 16px 16px; }
+.game-title-block { min-width: 0; display: grid; gap: 4px; }
+.game-title { font-size: 17px; font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
+.game-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; color: var(--bx-muted); font-size: 13px; }
+.game-meta i { font-style: normal; color: var(--bx-faint); }
+.game-progress { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.game-progress.is-empty { display: none; }
+.game-progress-track { flex: 1; height: 5px; border-radius: 5px; overflow: hidden; background: var(--bx-surface-3); }
+.game-progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--game-accent); transition: width .6s var(--bx-ease); }
+.game-progress strong { font-size: 12px; font-weight: 700; color: var(--bx-text); font-variant-numeric: tabular-nums; }
+.game-indicators { flex: none; display: flex; }
+.game-indicators .game-cta { flex: 1; justify-content: center; }
+.is-list .game-indicators .game-cta { flex: none; }
+.game-cta {
+    display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px; border-radius: var(--radius-lg);
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); color: var(--bx-text); font-size: 13px; font-weight: 700; white-space: nowrap;
+    transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+.game-cta svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s var(--bx-ease); }
+.game-dropdown:hover .game-cta, .game-dropdown[open] .game-cta { background: var(--bx-lime); color: var(--bx-on-lime); border-color: transparent; box-shadow: var(--bx-glow-lime); }
+.game-dropdown:hover .game-cta.is-direct svg { transform: translateX(2px); }
+.game-dropdown[open] .game-cta.is-pick svg { transform: rotate(180deg); }
+
+/* Список карт поверх соседей в обоих видах и на всех ширинах: не участвует в высоте ряда. */
+.maps-list {
+    position: absolute; z-index: 5; left: -1px; right: -1px; top: calc(100% + 8px);
+    display: grid; gap: 2px; max-height: min(360px, 60vh); overflow-y: auto; padding: 6px;
+    border-radius: var(--radius-xl); border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); box-shadow: var(--bx-sh-pop);
+    animation: bx-drop .2s var(--bx-ease);
+}
+.maps-list::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
+.map-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: var(--radius-md); font-size: 14px; transition: background .15s; }
+.map-link:hover, .map-link:focus-visible { background: var(--bx-surface-3); }
+.map-name { display: flex; align-items: center; gap: 10px; min-width: 0; font-weight: 600; }
+.map-name svg { width: 16px; height: 16px; color: var(--game-accent); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.status { display: flex; align-items: center; gap: 8px; flex: none; color: var(--bx-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.status svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.map-link:not(.is-untouched) .map-progress { color: var(--bx-lime-ink); font-weight: 700; }
+.map-link-db .map-name svg { color: var(--bx-cyan-ink); }
+
+/* вид «Список» */
+.games-container.is-list { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.is-list .game-dropdown:hover, .is-list .game-dropdown[open] { transform: none; }
+.is-list .game-dropdown > summary { flex-direction: row; align-items: stretch; }
+/* summary с height: 100% растягивался на всю раскрытую карточку: баннер вытягивался и обрезался, список карт налезал на следующую */
+.is-list .game-dropdown[open] > summary { height: auto; }
+.is-list .game-banner { width: 168px; flex: none; aspect-ratio: 16 / 9; border-radius: calc(var(--bx-r) - 1px) 0 0 calc(var(--bx-r) - 1px); }
+.is-list .game-banner::after { display: none; }
+.is-list .game-new { top: 8px; left: 8px; height: 22px; font-size: 11px; }
+.is-list .game-info { flex-direction: row; align-items: center; }
+.is-list .maps-list { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+
+.game-suggest-banner {
+    display: flex; align-items: center; gap: 16px; margin-top: 20px; padding: 18px 20px; border-radius: var(--bx-r);
+    border: 1px dashed var(--bx-line-2); background: color-mix(in srgb, var(--bx-surface) 60%, transparent);
+    transition: border-color .2s, background .2s;
+}
+.game-suggest-banner:hover { border-color: var(--bx-cyan); background: var(--bx-surface); }
+.game-suggest-plus { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: var(--radius-lg); color: var(--bx-cyan-ink); background: color-mix(in srgb, var(--bx-cyan) 12%, transparent); }
+.game-suggest-plus svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.game-suggest-copy { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.game-suggest-title { font-weight: 700; }
+.game-suggest-sub { color: var(--bx-muted); font-size: 14px; }
+.game-suggest-cta { display: inline-flex; align-items: center; gap: 6px; color: var(--bx-cyan-ink); font-weight: 700; font-size: 14px; white-space: nowrap; }
+.game-suggest-cta svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- финальный призыв ---------- */
+.bx-cta {
+    /* баннер всегда тёмный (картинка тёмная) — в обеих темах */
+    --bx-text: var(--bx-cta-ink); --bx-muted: var(--bx-cta-muted); --bx-lime-ink: var(--bx-lime);
+    position: relative; isolation: isolate; overflow: hidden; margin-top: 64px;
+    display: flex; align-items: center; min-height: clamp(320px, 34vw, 420px);
+    padding: clamp(28px, 4vw, 56px) clamp(24px, 4vw, 56px); border-radius: var(--bx-r-lg);
+    border: 1px solid color-mix(in srgb, var(--bx-lime) 22%, var(--bx-line));
+    background: var(--bx-cta-bg); color: var(--bx-text);
+    box-shadow: var(--bx-sh-2);
+}
+.bx-cta-img {
+    position: absolute; z-index: -1; top: 0; right: 0; bottom: 0; width: 66%; height: 100%;
+    object-fit: cover; object-position: 30% 50%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 28%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 28%);
+}
+.bx-cta-copy { position: relative; max-width: 40%; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.bx-cta h2 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 800; letter-spacing: -.03em; line-height: 1.08; }
+.bx-cta h2 span { display: block; color: var(--bx-lime-ink); text-shadow: 0 0 24px color-mix(in srgb, var(--bx-lime) 45%, transparent); }
+.bx-cta p { color: var(--bx-muted); font-size: 17px; margin-bottom: 8px; }
+.bx-cta-btns { display: flex; flex-wrap: wrap; gap: 12px; max-width: 100%; }
+.bx-cta-btns .bx-btn { max-width: 100%; }
+#cta-continue-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- экран загрузки карты ---------- */
+.loading-screen { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 16px; background: var(--bx-scrim); }
+.loading-panel {
+    width: min(420px, 100%); padding: 32px 28px; border-radius: var(--radius-3xl); text-align: center;
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface); box-shadow: var(--bx-sh-pop);
+    animation: bx-drop .25s var(--bx-ease);
+}
+.loading-eyebrow { color: var(--bx-cyan-ink); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.loading-title { margin: 10px 0 6px; font-size: 22px; font-weight: 800; }
+.loading-tip { min-height: 1.5em; color: var(--bx-muted); font-size: 14px; }
+.loading-track { display: block; width: min(260px, 90%); height: 6px; margin: 20px auto 12px; border-radius: var(--radius-xs); overflow: hidden; background: var(--bx-surface-3); }
+.loading-track span { display: block; width: 38%; height: 100%; border-radius: inherit; background: var(--bx-lime); animation: bx-sweep 1.3s ease-in-out infinite; }
+.loading-caption { color: var(--bx-faint); font-size: 11px; letter-spacing: .08em; }
+
+/* ---------- появление при прокрутке ---------- */
+.bx-js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--bx-ease), transform .6s var(--bx-ease); }
+.bx-js [data-reveal].is-in { opacity: 1; transform: none; }
+
+@keyframes bx-float { 50% { transform: translateY(-10px) rotate(-1deg); } }
+@keyframes bx-sweep { from { transform: translateX(-110%); } to { transform: translateX(280%); } }
+
+/* ---------- адаптив ---------- */
+@media (max-width: 1100px) {
+    .bx-cta-img { width: 72%; }
+    .bx-cta-copy { max-width: 44%; }
+}
+@media (max-width: 860px) {
+    .recent-list {
+        grid-auto-columns: min(78%, 280px); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+        margin: 0 -16px; padding: 2px 16px 4px; scroll-padding-inline: 16px;
+    }
+    .recent-list::-webkit-scrollbar { display: none; }
+    .recent-cell { scroll-snap-align: start; }
+    .bx-cta { flex-direction: column; align-items: stretch; min-height: 0; padding: 0 0 28px; }
+    .bx-cta-img {
+        position: relative; z-index: 0; width: 100%; height: auto; aspect-ratio: 16 / 9;
+        -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+        mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+    }
+    .bx-cta-copy { max-width: none; margin-top: -8px; padding: 0 22px; }
+}
+@media (max-width: 680px) {
+    .game-dropdown:hover, .game-dropdown[open] { transform: none; }
+    .game-suggest-banner { flex-wrap: wrap; }
+    .game-suggest-copy { flex: 1 1 calc(100% - 64px); }
+    .game-suggest-cta { margin-left: 60px; }
+}
+@media (max-width: 560px) {
+    .games-container { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .is-list .game-banner { width: 112px; }
+    .is-list .game-cta span { display: none; }
+    .is-list .game-cta { width: 38px; padding: 0; justify-content: center; }
+}
+
+/* ---------- «уменьшить движение» ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    .bx-js [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* Фирменные шрифты: Unbounded — заголовки и названия игр, Manrope — остальное (--bx-font). */
+.bx-main :is(h1, h2), .bx-dialog h2, .game-title, .recent-map, .game-suggest-title, .loading-title { font-family: var(--bx-font-display); letter-spacing: -.01em; }

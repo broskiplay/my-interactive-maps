@@ -1,0 +1,805 @@
+{
+ "_comment": "Генерируется: python3 scripts/prerender_home.py (карточки рисует js/script.js). Не править вручную.",
+ "games": [
+  {
+   "key": "stellar",
+   "maps": 9,
+   "bannerClass": "game-banner stellar-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./stellar-blade-map/logo-card.webp",
+    "srcset": "./stellar-blade-map/logo-card-720.webp 720w, ./stellar-blade-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "fetchpriority": "high",
+    "decoding": "async",
+    "alt": "Stellar Blade — выбрать локацию"
+   },
+   "title": "Stellar Blade",
+   "progressLabel": "Общий прогресс Stellar Blade",
+   "count": {
+    "text": "1 139 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "9 карт",
+   "direct": null,
+   "links": [
+    {
+     "href": "./stellar-blade-map/eidos7/",
+     "className": "map-link is-untouched",
+     "title": "Эйдос-7 (Eidos 7): 0 из 147 меток, 0% исследовано",
+     "name": "Эйдос-7 (Eidos 7)",
+     "icon": "marker",
+     "progress": "147 меток"
+    },
+    {
+     "href": "./stellar-blade-map/xion/",
+     "className": "map-link is-untouched",
+     "title": "Ксион (Xion City): 0 из 166 меток, 0% исследовано",
+     "name": "Ксион (Xion City)",
+     "icon": "marker",
+     "progress": "166 меток"
+    },
+    {
+     "href": "./stellar-blade-map/wasteland/",
+     "className": "map-link is-untouched",
+     "title": "Пустошь (Wasteland): 0 из 234 меток, 0% исследовано",
+     "name": "Пустошь (Wasteland)",
+     "icon": "marker",
+     "progress": "234 метки"
+    },
+    {
+     "href": "./stellar-blade-map/altess-levoire/",
+     "className": "map-link is-untouched",
+     "title": "Левуар «Высь» (Altess Levoire): 0 из 26 меток, 0% исследовано",
+     "name": "Левуар «Высь» (Altess Levoire)",
+     "icon": "marker",
+     "progress": "26 меток"
+    },
+    {
+     "href": "./stellar-blade-map/matrix-11/",
+     "className": "map-link is-untouched",
+     "title": "Матрица-11 (Matrix 11): 0 из 129 меток, 0% исследовано",
+     "name": "Матрица-11 (Matrix 11)",
+     "icon": "marker",
+     "progress": "129 меток"
+    },
+    {
+     "href": "./stellar-blade-map/great-desert/",
+     "className": "map-link is-untouched",
+     "title": "Великая пустыня (Great Desert): 0 из 229 меток, 0% исследовано",
+     "name": "Великая пустыня (Great Desert)",
+     "icon": "marker",
+     "progress": "229 меток"
+    },
+    {
+     "href": "./stellar-blade-map/abyss-levoire/",
+     "className": "map-link is-untouched",
+     "title": "Левуар «Бездна» (Abyss Levoire): 0 из 29 меток, 0% исследовано",
+     "name": "Левуар «Бездна» (Abyss Levoire)",
+     "icon": "marker",
+     "progress": "29 меток"
+    },
+    {
+     "href": "./stellar-blade-map/spire-4/",
+     "className": "map-link is-untouched",
+     "title": "Шпиль-4 (Spire 4): 0 из 125 меток, 0% исследовано",
+     "name": "Шпиль-4 (Spire 4)",
+     "icon": "marker",
+     "progress": "125 меток"
+    },
+    {
+     "href": "./stellar-blade-map/eidos-9/",
+     "className": "map-link is-untouched",
+     "title": "Эйдос-9 (Eidos 9): 0 из 54 меток, 0% исследовано",
+     "name": "Эйдос-9 (Eidos 9)",
+     "icon": "marker",
+     "progress": "54 метки"
+    }
+   ]
+  },
+  {
+   "key": "tainted",
+   "maps": 4,
+   "bannerClass": "game-banner tainted-banner",
+   "badge": {
+    "className": "game-new is-upd",
+    "text": "Обновлено"
+   },
+   "img": {
+    "class": "game-banner-art",
+    "src": "./tainted-grail-map/logo-card.webp",
+    "srcset": "./tainted-grail-map/logo-card-720.webp 720w, ./tainted-grail-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "decoding": "async",
+    "alt": "Tainted Grail: The Fall of Avalon — выбрать локацию"
+   },
+   "title": "Tainted Grail: The Fall of Avalon",
+   "progressLabel": "Общий прогресс Tainted Grail",
+   "count": {
+    "text": "4 775 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "4 карты",
+   "direct": null,
+   "links": [
+    {
+     "href": "./tainted-grail-map/horns-of-the-south/",
+     "className": "map-link is-untouched",
+     "title": "Рога Юга: 0 из 1530 меток, 0% исследовано",
+     "name": "Рога Юга",
+     "icon": "marker",
+     "progress": "1 530 меток"
+    },
+    {
+     "href": "./tainted-grail-map/cuanacht/",
+     "className": "map-link is-untouched",
+     "title": "Кунахт: 0 из 1493 меток, 0% исследовано",
+     "name": "Кунахт",
+     "icon": "marker",
+     "progress": "1 493 метки"
+    },
+    {
+     "href": "./tainted-grail-map/forlorn-swords/",
+     "className": "map-link is-untouched",
+     "title": "Забытые Мечи: 0 из 1110 меток, 0% исследовано",
+     "name": "Забытые Мечи",
+     "icon": "marker",
+     "progress": "1 110 меток"
+    },
+    {
+     "href": "./tainted-grail-map/sarras/",
+     "className": "map-link is-untouched",
+     "title": "Саррас: 0 из 642 меток, 0% исследовано",
+     "name": "Саррас",
+     "icon": "marker",
+     "progress": "642 метки"
+    },
+    {
+     "href": "./db/tainted-grail/",
+     "className": "map-link map-link-db",
+     "title": "Предметы, задания, бестиарий, таланты",
+     "name": "База данных",
+     "icon": "db",
+     "progress": null
+    }
+   ]
+  },
+  {
+   "key": "gothic",
+   "maps": 1,
+   "bannerClass": "game-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./gothic-remake-map/logo-card.webp",
+    "srcset": "./gothic-remake-map/logo-card-720.webp 720w, ./gothic-remake-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Gothic 1 Remake — выбрать локацию"
+   },
+   "title": "Gothic 1 Remake",
+   "progressLabel": "Общий прогресс Gothic 1 Remake",
+   "count": {
+    "text": "1 714 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": null,
+   "direct": null,
+   "links": [
+    {
+     "href": "./gothic-remake-map/",
+     "className": "map-link is-untouched",
+     "title": "Долина рудников: 0 из 1714 меток, 0% исследовано",
+     "name": "Долина рудников",
+     "icon": "marker",
+     "progress": "1 714 меток"
+    },
+    {
+     "href": "./db/gothic-remake/",
+     "className": "map-link map-link-db",
+     "title": "Предметы, задания, бестиарий, гильдии",
+     "name": "База данных",
+     "icon": "db",
+     "progress": null
+    }
+   ]
+  },
+  {
+   "key": "dimraeth",
+   "maps": 4,
+   "bannerClass": "game-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./dimraeth-map/logo-card.webp",
+    "srcset": "./dimraeth-map/logo-card-720.webp 720w, ./dimraeth-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Dimraeth — выбрать локацию"
+   },
+   "title": "Dimraeth",
+   "progressLabel": "Общий прогресс Dimraeth",
+   "count": {
+    "text": "328 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "4 карты",
+   "direct": null,
+   "links": [
+    {
+     "href": "./dimraeth-map/wildwood/",
+     "className": "map-link is-untouched",
+     "title": "Эрлвуд: 0 из 246 меток, 0% исследовано",
+     "name": "Эрлвуд",
+     "icon": "marker",
+     "progress": "246 меток"
+    },
+    {
+     "href": "./dimraeth-map/thelostcaverns/",
+     "className": "map-link is-untouched",
+     "title": "Затерянные пещеры: 0 из 12 меток, 0% исследовано",
+     "name": "Затерянные пещеры",
+     "icon": "marker",
+     "progress": "12 меток"
+    },
+    {
+     "href": "./dimraeth-map/playerbase/",
+     "className": "map-link is-untouched",
+     "title": "Святилище: 0 из 9 меток, 0% исследовано",
+     "name": "Святилище",
+     "icon": "marker",
+     "progress": "9 меток"
+    },
+    {
+     "href": "./dimraeth-map/thegoblincaves/",
+     "className": "map-link is-untouched",
+     "title": "Гоблинские пещеры: 0 из 61 меток, 0% исследовано",
+     "name": "Гоблинские пещеры",
+     "icon": "marker",
+     "progress": "61 метка"
+    }
+   ]
+  },
+  {
+   "key": "palworld",
+   "maps": 1,
+   "bannerClass": "game-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./palworld-map/logo-card.webp",
+    "srcset": "./palworld-map/logo-card-720.webp 720w, ./palworld-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Palworld — выбрать локацию"
+   },
+   "title": "Palworld",
+   "progressLabel": "Общий прогресс Palworld",
+   "count": {
+    "text": "4 624 метки в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": null,
+   "direct": {
+    "class": "game-cta is-direct",
+    "href": "./palworld-map/",
+    "aria-label": "Открыть карту: Palworld"
+   },
+   "links": [
+    {
+     "href": "./palworld-map/",
+     "className": "map-link is-untouched",
+     "title": "Острова Палпагос: 0 из 4624 меток, 0% исследовано",
+     "name": "Острова Палпагос",
+     "icon": "marker",
+     "progress": "4 624 метки"
+    }
+   ]
+  },
+  {
+   "key": "oblivion",
+   "maps": 2,
+   "bannerClass": "game-banner oblivion-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./oblivion-remake-map/logo-card.webp",
+    "srcset": "./oblivion-remake-map/logo-card-720.webp 720w, ./oblivion-remake-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Oblivion Remastered — выбрать карту"
+   },
+   "title": "Oblivion Remastered",
+   "progressLabel": "Общий прогресс Oblivion Remastered",
+   "count": {
+    "text": "1 256 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "2 карты",
+   "direct": null,
+   "links": [
+    {
+     "href": "./oblivion-remake-map/cyrodiil/",
+     "className": "map-link is-untouched",
+     "title": "Сиродил: 0 из 1118 меток, 0% исследовано",
+     "name": "Сиродил",
+     "icon": "marker",
+     "progress": "1 118 меток"
+    },
+    {
+     "href": "./oblivion-remake-map/shivering-isles/",
+     "className": "map-link is-untouched",
+     "title": "Дрожащие острова: 0 из 138 меток, 0% исследовано",
+     "name": "Дрожащие острова",
+     "icon": "marker",
+     "progress": "138 меток"
+    }
+   ]
+  },
+  {
+   "key": "skyrim",
+   "maps": 2,
+   "bannerClass": "game-banner skyrim-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./skyrim-map/logo-card.webp",
+    "srcset": "./skyrim-map/logo-card-720.webp 720w, ./skyrim-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Skyrim — выбрать карту"
+   },
+   "title": "Skyrim",
+   "progressLabel": "Общий прогресс Skyrim",
+   "count": {
+    "text": "1 017 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "2 карты",
+   "direct": null,
+   "links": [
+    {
+     "href": "./skyrim-map/skyrim/",
+     "className": "map-link is-untouched",
+     "title": "Скайрим: 0 из 904 меток, 0% исследовано",
+     "name": "Скайрим",
+     "icon": "marker",
+     "progress": "904 метки"
+    },
+    {
+     "href": "./skyrim-map/solstheim/",
+     "className": "map-link is-untouched",
+     "title": "Солстейм: 0 из 113 меток, 0% исследовано",
+     "name": "Солстейм",
+     "icon": "marker",
+     "progress": "113 меток"
+    },
+    {
+     "href": "./db/skyrim/",
+     "className": "map-link map-link-db",
+     "title": "Предметы, задания, бестиарий, заклинания",
+     "name": "База данных",
+     "icon": "db",
+     "progress": null
+    }
+   ]
+  },
+  {
+   "key": "witcher3",
+   "maps": 10,
+   "bannerClass": "game-banner witcher3-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./witcher3-map/logo-card.webp",
+    "srcset": "./witcher3-map/logo-card-720.webp 720w, ./witcher3-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Ведьмак 3: Дикая Охота — выбрать карту"
+   },
+   "title": "Ведьмак 3",
+   "progressLabel": "Общий прогресс Ведьмак 3",
+   "count": {
+    "text": "1 796 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "10 карт",
+   "direct": null,
+   "links": [
+    {
+     "href": "./witcher3-map/velen-novigrad/",
+     "className": "map-link is-untouched",
+     "title": "Велен и Новиград: 0 из 1020 меток, 0% исследовано",
+     "name": "Велен и Новиград",
+     "icon": "marker",
+     "progress": "1 020 меток"
+    },
+    {
+     "href": "./witcher3-map/skellige/",
+     "className": "map-link is-untouched",
+     "title": "Скеллиге: 0 из 377 меток, 0% исследовано",
+     "name": "Скеллиге",
+     "icon": "marker",
+     "progress": "377 меток"
+    },
+    {
+     "href": "./witcher3-map/toussaint/",
+     "className": "map-link is-untouched",
+     "title": "Туссент: 0 из 144 меток, 0% исследовано",
+     "name": "Туссент",
+     "icon": "marker",
+     "progress": "144 метки"
+    },
+    {
+     "href": "./witcher3-map/white-orchard/",
+     "className": "map-link is-untouched",
+     "title": "Белый Сад: 0 из 128 меток, 0% исследовано",
+     "name": "Белый Сад",
+     "icon": "marker",
+     "progress": "128 меток"
+    },
+    {
+     "href": "./witcher3-map/kaer-morhen/",
+     "className": "map-link is-untouched",
+     "title": "Каэр Морхен: 0 из 35 меток, 0% исследовано",
+     "name": "Каэр Морхен",
+     "icon": "marker",
+     "progress": "35 меток"
+    },
+    {
+     "href": "./witcher3-map/isle-of-mists/",
+     "className": "map-link is-untouched",
+     "title": "Остров Туманов: 0 из 42 меток, 0% исследовано",
+     "name": "Остров Туманов",
+     "icon": "marker",
+     "progress": "42 метки"
+    },
+    {
+     "href": "./witcher3-map/vizima-castle/",
+     "className": "map-link is-untouched",
+     "title": "Королевский замок в Вызиме: 0 из 8 меток, 0% исследовано",
+     "name": "Королевский замок в Вызиме",
+     "icon": "marker",
+     "progress": "8 меток"
+    },
+    {
+     "href": "./witcher3-map/time-and-space/",
+     "className": "map-link is-untouched",
+     "title": "Время и пространство: 0 из 27 меток, 0% исследовано",
+     "name": "Время и пространство",
+     "icon": "marker",
+     "progress": "27 меток"
+    },
+    {
+     "href": "./witcher3-map/olgierd-world/",
+     "className": "map-link is-untouched",
+     "title": "Мир Гюнтера о'Дима: 0 из 13 меток, 0% исследовано",
+     "name": "Мир Гюнтера о'Дима",
+     "icon": "marker",
+     "progress": "13 меток"
+    },
+    {
+     "href": "./witcher3-map/land-of-fables/",
+     "className": "map-link is-untouched",
+     "title": "Страна Сказок: 0 из 2 меток, 0% исследовано",
+     "name": "Страна Сказок",
+     "icon": "marker",
+     "progress": "2 метки"
+    }
+   ]
+  },
+  {
+   "key": "cyberpunk2077",
+   "maps": 1,
+   "bannerClass": "game-banner cyberpunk2077-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./cyberpunk2077-map/logo-card.webp",
+    "srcset": "./cyberpunk2077-map/logo-card-720.webp 720w, ./cyberpunk2077-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Cyberpunk 2077 — открыть карту Найт-Сити"
+   },
+   "title": "Cyberpunk 2077",
+   "progressLabel": "Общий прогресс Cyberpunk 2077",
+   "count": {
+    "text": "2 335 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": null,
+   "direct": {
+    "class": "game-cta is-direct",
+    "href": "./cyberpunk2077-map/",
+    "aria-label": "Открыть карту: Cyberpunk 2077"
+   },
+   "links": [
+    {
+     "href": "./cyberpunk2077-map/",
+     "className": "map-link is-untouched",
+     "title": "Найт-Сити: 0 из 2335 меток, 0% исследовано",
+     "name": "Найт-Сити",
+     "icon": "marker",
+     "progress": "2 335 меток"
+    }
+   ]
+  },
+  {
+   "key": "hogwarts",
+   "maps": 3,
+   "bannerClass": "game-banner hogwarts-banner",
+   "badge": null,
+   "img": {
+    "class": "game-banner-art",
+    "src": "./hogwarts-legacy-map/logo-card.webp",
+    "srcset": "./hogwarts-legacy-map/logo-card-720.webp 720w, ./hogwarts-legacy-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Hogwarts Legacy — выбрать карту"
+   },
+   "title": "Hogwarts Legacy",
+   "progressLabel": "Общий прогресс Hogwarts Legacy",
+   "count": {
+    "text": "1 983 метки в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "3 карты",
+   "direct": null,
+   "links": [
+    {
+     "href": "./hogwarts-legacy-map/world/",
+     "className": "map-link is-untouched",
+     "title": "Мир: 0 из 1110 меток, 0% исследовано",
+     "name": "Мир",
+     "icon": "marker",
+     "progress": "1 110 меток"
+    },
+    {
+     "href": "./hogwarts-legacy-map/hogwarts/",
+     "className": "map-link is-untouched",
+     "title": "Хогвартс: 0 из 645 меток, 0% исследовано",
+     "name": "Хогвартс",
+     "icon": "marker",
+     "progress": "645 меток"
+    },
+    {
+     "href": "./hogwarts-legacy-map/hogsmeade/",
+     "className": "map-link is-untouched",
+     "title": "Хогсмид: 0 из 228 меток, 0% исследовано",
+     "name": "Хогсмид",
+     "icon": "marker",
+     "progress": "228 меток"
+    }
+   ]
+  },
+  {
+   "key": "phantomblade",
+   "maps": 8,
+   "bannerClass": "game-banner phantomblade-banner",
+   "badge": {
+    "className": "game-new",
+    "text": "Новое"
+   },
+   "img": {
+    "class": "game-banner-art",
+    "src": "./phantom-blade-zero-map/logo-card.webp",
+    "srcset": "./phantom-blade-zero-map/logo-card-720.webp 720w, ./phantom-blade-zero-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Phantom Blade Zero — выбрать карту"
+   },
+   "title": "Phantom Blade Zero",
+   "progressLabel": "Общий прогресс Phantom Blade Zero",
+   "count": {
+    "text": "2 407 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": "8 карт",
+   "direct": null,
+   "links": [
+    {
+     "href": "./phantom-blade-zero-map/weeping-creek-valley/",
+     "className": "map-link is-untouched",
+     "title": "Долина Плачущего ручья: 0 из 305 меток, 0% исследовано",
+     "name": "Долина Плачущего ручья",
+     "icon": "marker",
+     "progress": "305 меток"
+    },
+    {
+     "href": "./phantom-blade-zero-map/crimson-forest/",
+     "className": "map-link is-untouched",
+     "title": "Багровый лес: 0 из 301 меток, 0% исследовано",
+     "name": "Багровый лес",
+     "icon": "marker",
+     "progress": "301 метка"
+    },
+    {
+     "href": "./phantom-blade-zero-map/village-of-lu/",
+     "className": "map-link is-untouched",
+     "title": "Деревня Лу: 0 из 318 меток, 0% исследовано",
+     "name": "Деревня Лу",
+     "icon": "marker",
+     "progress": "318 меток"
+    },
+    {
+     "href": "./phantom-blade-zero-map/pangzhen/",
+     "className": "map-link is-untouched",
+     "title": "Панчжэнь: 0 из 554 меток, 0% исследовано",
+     "name": "Панчжэнь",
+     "icon": "marker",
+     "progress": "554 метки"
+    },
+    {
+     "href": "./phantom-blade-zero-map/the-mandates-encampment/",
+     "className": "map-link is-untouched",
+     "title": "Лагерь Союза: 0 из 257 меток, 0% исследовано",
+     "name": "Лагерь Союза",
+     "icon": "marker",
+     "progress": "257 меток"
+    },
+    {
+     "href": "./phantom-blade-zero-map/meigu-lake/",
+     "className": "map-link is-untouched",
+     "title": "Озеро Мэйгу: 0 из 401 меток, 0% исследовано",
+     "name": "Озеро Мэйгу",
+     "icon": "marker",
+     "progress": "401 метка"
+    },
+    {
+     "href": "./phantom-blade-zero-map/mountain-of-imprisonment/",
+     "className": "map-link is-untouched",
+     "title": "Гора Заточения: 0 из 194 меток, 0% исследовано",
+     "name": "Гора Заточения",
+     "icon": "marker",
+     "progress": "194 метки"
+    },
+    {
+     "href": "./phantom-blade-zero-map/mount-soulrend/",
+     "className": "map-link is-untouched",
+     "title": "Гора Разбитых Душ: 0 из 77 меток, 0% исследовано",
+     "name": "Гора Разбитых Душ",
+     "icon": "marker",
+     "progress": "77 меток"
+    }
+   ]
+  },
+  {
+   "key": "rdr2",
+   "maps": 1,
+   "bannerClass": "game-banner rdr2-banner",
+   "badge": {
+    "className": "game-new",
+    "text": "Новое"
+   },
+   "img": {
+    "class": "game-banner-art",
+    "src": "./rdr2-map/logo-card.webp",
+    "srcset": "./rdr2-map/logo-card-720.webp 720w, ./rdr2-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Red Dead Redemption 2 — открыть карту Дикого Запада"
+   },
+   "title": "Red Dead Redemption 2",
+   "progressLabel": "Общий прогресс Red Dead Redemption 2",
+   "count": {
+    "text": "1 464 метки в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": null,
+   "direct": {
+    "class": "game-cta is-direct",
+    "href": "./rdr2-map/",
+    "aria-label": "Открыть карту: Red Dead Redemption 2"
+   },
+   "links": [
+    {
+     "href": "./rdr2-map/",
+     "className": "map-link is-untouched",
+     "title": "Запад: Нью-Ханаан, Амбарино, Гуарма: 0 из 1464 меток, 0% исследовано",
+     "name": "Запад: Нью-Ханаан, Амбарино, Гуарма",
+     "icon": "marker",
+     "progress": "1 464 метки"
+    }
+   ]
+  },
+  {
+   "key": "gta6",
+   "maps": 1,
+   "bannerClass": "game-banner gta6-banner",
+   "badge": {
+    "className": "game-new",
+    "text": "Новое"
+   },
+   "img": {
+    "class": "game-banner-art",
+    "src": "./gta6-map/logo-card.webp",
+    "srcset": "./gta6-map/logo-card-720.webp 720w, ./gta6-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Grand Theft Auto VI — открыть карту штата Леонида"
+   },
+   "title": "Grand Theft Auto VI",
+   "progressLabel": "Общий прогресс Grand Theft Auto VI",
+   "count": {
+    "text": "1 342 метки в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": null,
+   "direct": {
+    "class": "game-cta is-direct",
+    "href": "./gta6-map/",
+    "aria-label": "Открыть карту: Grand Theft Auto VI"
+   },
+   "links": [
+    {
+     "href": "./gta6-map/",
+     "className": "map-link is-untouched",
+     "title": "Штат Леонида: 0 из 1342 меток, 0% исследовано",
+     "name": "Штат Леонида",
+     "icon": "marker",
+     "progress": "1 342 метки"
+    }
+   ]
+  },
+  {
+   "key": "silverpalace",
+   "maps": 1,
+   "bannerClass": "game-banner silverpalace-banner",
+   "badge": {
+    "className": "game-new is-soon",
+    "text": "Скоро · 14 декабря"
+   },
+   "img": {
+    "class": "game-banner-art",
+    "src": "./silver-palace-map/logo-card.webp",
+    "srcset": "./silver-palace-map/logo-card-720.webp 720w, ./silver-palace-map/logo-card.webp 1080w",
+    "sizes": "(max-width: 480px) calc(100vw - 32px), (max-width: 860px) calc(100vw - 48px), 560px",
+    "loading": "lazy",
+    "decoding": "async",
+    "alt": "Silver Palace — открыть карту Серебряного дворца"
+   },
+   "title": "Silver Palace",
+   "progressLabel": "Общий прогресс Silver Palace",
+   "count": {
+    "text": "2 089 меток в прогрессе",
+    "title": "Метки, которые можно отметить найденными. Служебные метки (города, торговцы, точки быстрого перемещения и т. п.) есть на карте, но в прогресс не входят."
+   },
+   "indicatorsTitle": null,
+   "direct": {
+    "class": "game-cta is-direct",
+    "href": "./silver-palace-map/",
+    "aria-label": "Открыть карту: Silver Palace"
+   },
+   "links": [
+    {
+     "href": "./silver-palace-map/",
+     "className": "map-link is-untouched",
+     "title": "Серебряный дворец: 0 из 2089 меток, 0% исследовано",
+     "name": "Серебряный дворец",
+     "icon": "marker",
+     "progress": "2 089 меток"
+    }
+   ]
+  }
+ ],
+ "suggest": {
+  "href": "https://forms.gle/S1dA8ivejnYkdB1HA",
+  "className": "game-suggest-banner is-cell",
+  "style": "grid-column: 1 / -1;",
+  "title": "Здесь могла бы быть ваша игра",
+  "sub": "Предложите карту — она попадёт в очередь на добавление.",
+  "cta": "Предложить игру →"
+ }
+}

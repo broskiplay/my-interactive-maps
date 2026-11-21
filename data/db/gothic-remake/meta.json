@@ -1,0 +1,37 @@
+{
+ "game": "Gothic 1 Remake",
+ "sections": {
+  "weapons": "Оружие ближнего боя",
+  "ranged": "Луки и арбалеты",
+  "armor": "Доспехи",
+  "upgrades": "Улучшения доспехов",
+  "jewelry": "Амулеты и кольца",
+  "magic": "Руны и свитки",
+  "ammo": "Стрелы и болты",
+  "potions": "Зелья и напитки",
+  "food": "Еда",
+  "ingredients": "Растения и материалы",
+  "trophies": "Трофеи",
+  "recipes": "Рецепты и чертежи",
+  "books": "Книги и записки",
+  "keys": "Ключи",
+  "quest": "Предметы для заданий",
+  "misc": "Разное"
+ },
+ "maps": {
+  "valley-of-mines": "Долина Рудников"
+ },
+ "counts": {
+  "items": 867,
+  "quests": 95,
+  "bestiary": 27,
+  "characters": 160,
+  "lore": 0,
+  "talents": 0,
+  "effects": 0,
+  "locations": 18,
+  "tips": 0,
+  "spells": 50,
+  "guilds": 20
+ }
+}

@@ -1,0 +1,63 @@
+/* Шрифт иконок Palworld (из MapGenie) */
+@font-face {
+	font-family: 'icomoon';
+	src: url('icomoon.woff?v=1') format('woff'),
+		url('icomoon.ttf?v=1') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon' !important;
+	speak: never;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.icon-tree:before { content: "\e900"; color: #ffffff; }
+.icon-treasure_map_dig_spot:before { content: "\e901"; color: #ffffff; }
+.icon-treasure_chest:before { content: "\e902"; color: #ffffff; }
+.icon-syndicate_tower:before { content: "\e903"; color: #ffffff; }
+.icon-supply_drop:before { content: "\e904"; color: #ffffff; }
+.icon-statue_of_power:before { content: "\e905"; color: #ffffff; }
+.icon-skill_fruit_tree:before { content: "\e906"; color: #ffffff; }
+.icon-side_quest:before { content: "\e907"; color: #ffffff; }
+.icon-sealed_realm:before { content: "\e908"; color: #ffffff; }
+.icon-respawn_point:before { content: "\e909"; color: #ffffff; }
+.icon-predator_pal:before { content: "\e90a"; color: #ffffff; }
+.icon-point_of_interest:before { content: "\e90b"; color: #ffffff; }
+.icon-pal_sphere:before { content: "\e90c"; color: #ffffff; }
+.icon-pal_merchant:before { content: "\e90d"; color: #ffffff; }
+.icon-pal:before { content: "\e90e"; color: #ffffff; }
+.icon-npc:before { content: "\e90f"; color: #ffffff; }
+.icon-miscellaneous:before { content: "\e910"; color: #ffffff; }
+.icon-mining_site:before { content: "\e911"; color: #ffffff; }
+.icon-merchant:before { content: "\e912"; color: #ffffff; }
+.icon-memo:before { content: "\e913"; color: #ffffff; }
+.icon-main_quest:before { content: "\e914"; color: #ffffff; }
+.icon-locked_chest:before { content: "\e915"; color: #ffffff; }
+.icon-location:before { content: "\e916"; color: #ffffff; }
+.icon-lifmunk_effigy:before { content: "\e917"; color: #ffffff; }
+.icon-hexolite_quartz:before { content: "\e918"; color: #ffffff; }
+.icon-fishing_spot:before { content: "\e919"; color: #ffffff; }
+.icon-fast_travel:before { content: "\e91a"; color: #ffffff; }
+.icon-enemy_camp:before { content: "\e91b"; color: #ffffff; }
+.icon-elemental_chest:before { content: "\e91c"; color: #ffffff; }
+.icon-egg:before { content: "\e91d"; color: #ffffff; }
+.icon-easter_egg:before { content: "\e91e"; color: #ffffff; }
+.icon-dungeon:before { content: "\e91f"; color: #ffffff; }
+.icon-dog_coin:before { content: "\e920"; color: #ffffff; }
+.icon-crude_oil:before { content: "\e921"; color: #ffffff; }
+.icon-collectible_1:before { content: "\e922"; color: #ffffff; }
+.icon-chromite:before { content: "\e923"; color: #ffffff; }
+.icon-captured_pal:before { content: "\e924"; color: #ffffff; }
+.icon-bounty_npc:before { content: "\e925"; color: #ffffff; }
+.icon-bounty:before { content: "\e926"; color: #ffffff; }
+.icon-boss:before { content: "\e927"; color: #ffffff; }
+.icon-biome_boss:before { content: "\e928"; color: #ffffff; }
+.icon-alpha_pal:before { content: "\e929"; color: #ffffff; }

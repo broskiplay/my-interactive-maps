@@ -1,0 +1,230 @@
+/* =========================================================================================
+   ОБЩАЯ РАСКЛАДКА ВСЕХ КАРТ. Подключается ПОСЛЕДНЕЙ таблицей стилей в каждом *-map/index.html.
+   Здесь — только положение и размеры: карта, боковая панель, язычок, верхнее меню, кнопки справа вверху,
+   зум, окно метки. Цвета, шрифты, рамки и фон панели остаются в css/style.css каждой игры.
+   Если игре нужно что-то сдвинуть — правим здесь для всех, а не в её style.css.
+   ========================================================================================= */
+
+/* ---------- Размеры ---------- */
+:root {
+    --sidebar-width: 380px;
+    --bp-gap: 10px;                 /* отступ элементов от края экрана */
+    --bp-btn: 40px;                 /* круглые кнопки над картой (слои, «только карта») */
+    --bp-top-h: 40px;               /* высота верхнего ряда */
+}
+@media (pointer: coarse) { :root { --bp-btn: 44px; --bp-top-h: 44px; } }
+@media (min-width: 1440px) { :root { --sidebar-width: 420px; } } /* после уплотнения панели; тест 460 px в две колонки — ?sb=2col (css/map-ux.css) */
+@media (max-width: 700px) { :root { --sidebar-width: 320px; } }
+@media (max-width: 480px) { :root { --sidebar-width: 100vw; } }
+
+/* ---------- Страница — ровно экран. Если что-то вылезает вправо (язычок открытой панели на 100vw, меню),
+   телефон не должен «уменьшать» всю страницу: от этого кнопки справа обрезаются, а сверху и снизу чёрные полосы. ---------- */
+html[data-game], html[data-game] body { width: 100%; max-width: 100vw; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; }
+@supports (overflow: clip) { html[data-game], html[data-game] body { overflow: clip; } }
+@media (max-width: 480px) { html[data-game] body:has(#sidebar:not(.collapsed)) #sidebar-toggle-btn { display: none; } }
+
+/* ---------- Карта и боковая панель ---------- */
+html[data-game] #map, html[data-game] #map-empty { position: fixed; top: 0; right: 0; bottom: 0; left: var(--sidebar-width); transition: left .3s ease; }
+html[data-game] body:has(#sidebar.collapsed) #map, html[data-game] body:has(#sidebar.collapsed) #map-empty { left: 0; }
+html[data-game] #sidebar { position: fixed; top: 0; bottom: 0; left: 0; right: auto; width: var(--sidebar-width); max-width: 100vw; z-index: 10; transition: transform .3s ease; }
+html[data-game] #sidebar.collapsed { transform: translateX(-100%); }
+@media (max-width: 480px) {
+    html[data-game] #map, html[data-game] #map-empty { left: 0 !important; }
+}
+
+/* ---------- Язычок сворачивания: одного размера и на одной высоте во всех играх ---------- */
+html[data-game] #sidebar-toggle-btn {
+    position: fixed; top: 50%; left: var(--sidebar-width); z-index: 11; transform: translateY(-50%);
+    width: 20px; height: 52px; padding: 0; transition: left .3s ease, width .2s ease, color .2s ease, box-shadow .25s ease;
+}
+html[data-game] #sidebar-toggle-btn:hover { width: 24px; }
+html[data-game] body:has(#sidebar.collapsed) #sidebar-toggle-btn { left: 0; }
+@media (pointer: coarse) { html[data-game] #sidebar-toggle-btn, html[data-game] #sidebar-toggle-btn:hover { width: 26px; height: 60px; } }
+
+/* ---------- Верхний ряд — ОДНА строка flex (#mtb): «Главная» · меню / «бургер» · «Слои» · «Только карта».
+   Кнопки «Слои» и «Только карта» js/map-ux.js кладёт внутрь ряда (.bp-tr — последний элемент), поэтому
+   ничего не считается «на глаз»: ряд от края до края, элементы встают друг за другом с одним зазором. ---------- */
+html[data-game] body #mtb.mtb {
+    top: var(--bp-gap); right: var(--bp-gap); min-height: var(--bp-top-h); gap: 8px;
+    left: calc(var(--sidebar-width) + 14px);
+}
+html[data-game] body:has(#sidebar.collapsed) #mtb.mtb { left: 40px; }
+@media (max-width: 700px) {
+    html[data-game] body #mtb.mtb, html[data-game] body:has(#sidebar.collapsed) #mtb.mtb { left: var(--bp-gap); }
+}
+/* «бургер» — такая же круглая кнопка, как «Слои» и «Только карта», и стоит вплотную к ним */
+@media (max-width: 1100px) {
+    html[data-game] #mtb .mtb-burger { width: var(--bp-btn); height: var(--bp-btn); flex: none; margin-left: auto; border-radius: var(--radius-lg); }
+}
+
+.bp-tr { display: flex; flex: none; align-items: center; gap: 8px; margin-left: auto; pointer-events: auto; }
+@media (max-width: 1100px) { #mtb .bp-tr { margin-left: 0; } } /* к краю ряд прижимает «бургер» */
+.bp-tr:empty { display: none; }
+.bp-tr-solo { position: fixed; z-index: 1101; top: var(--bp-gap); right: var(--bp-gap); }
+html[data-game] .bp-tr > .bp-focus-btn {
+    position: static; inset: auto; width: var(--bp-btn); height: var(--bp-btn); min-width: 0; min-height: 0; margin: 0; border-radius: var(--radius-lg); opacity: 1;
+}
+/* режим «только карта»: из ряда остаются только эти кнопки */
+html[data-game] .bp-focus #mtb.mtb { display: flex; left: auto; }
+html[data-game] .bp-focus #mtb.mtb > :not(.bp-tr) { display: none; }
+
+/* панель «Слои» — под кнопкой, у правого края */
+html[data-game] .bp-layers-panel { top: calc(var(--bp-gap) + var(--bp-top-h) + 10px); right: var(--bp-gap); }
+
+/* ---------- Зум: под верхним рядом, один размер ---------- */
+html[data-game] .leaflet-top { top: calc(var(--bp-gap) + var(--bp-top-h) + 4px); }
+html[data-game] .leaflet-top .leaflet-control { margin-top: 10px; }
+html[data-game] .leaflet-left .leaflet-control { margin-left: var(--bp-gap); }
+html[data-game] .leaflet-bar a, html[data-game] .leaflet-bar a:hover { width: 36px; height: 36px; line-height: 36px; }
+@media (pointer: coarse) { html[data-game] .leaflet-bar a, html[data-game] .leaflet-bar a:hover { width: 44px; height: 44px; line-height: 44px; } }
+
+/* «← К записи» — под верхним рядом */
+html[data-game] .bp-back-db { top: calc(var(--bp-gap) + var(--bp-top-h) + 12px); }
+
+/* ---------- Окно метки: длинный текст прокручивается, кнопки («Найдено», флажки, заметка) всегда видны внизу ----------
+   js/map-ux.js раскладывает содержимое на .bp-pop-body (текст) и .bp-pop-foot (кнопки). */
+html[data-game] .leaflet-popup-content.leaflet-popup-scrolled { display: flex; flex-direction: column; overflow: hidden; }
+html[data-game] .leaflet-popup-scrolled > .bp-pop-root { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+html[data-game] .leaflet-popup-scrolled .bp-pop-body {
+    flex: 1 1 auto; min-height: 80px; overflow-y: auto; overscroll-behavior: contain; margin-right: -6px; padding-right: 6px;
+    -webkit-mask: linear-gradient(#000 calc(100% - 22px), transparent); mask: linear-gradient(#000 calc(100% - 22px), transparent);
+}
+html[data-game] .leaflet-popup-scrolled .bp-pop-foot, html[data-game] .leaflet-popup-scrolled > .ms-nav, html[data-game] .leaflet-popup-scrolled .bp-report-row { flex: none; }
+html[data-game] .leaflet-popup-scrolled .bp-pop-foot { padding-top: 6px; }
+.bp-pop-foot > .bp-marks:first-child { margin-top: 0; }
+.bp-pop-foot > [class*="-done-btn"] { margin-top: 10px; }
+
+/* ---------- visionOS (2026-11-18): хром над картой — шрифт Inter, как на главной.
+   Боковая панель, заголовки и окна меток остаются в шрифтах своей игры (оформление игры). ---------- */
+html[data-game] :is(.mtb, .mtb-menu, .bp-presets-l, .bp-crumbs, .maplibregl-ctrl-attrib) { font-family: var(--font-ui); }
+html[data-game] .mtb :is(.mtb-link, .mtb-menu a, .mtb-menu small, .auth-mini-btn, .mtb-social span) { font-family: var(--font-ui); letter-spacing: -.005em; }
+html[data-game] .mtb-home { font-family: var(--font-ui); font-weight: 700; letter-spacing: -.02em; }
+html[data-game] .mtb-nav, html[data-game] .mtb-home { border-radius: var(--radius-lg); }
+
+/* =========================================================================================
+   visionOS-стекло над картой (2026-11-18) — тот же рецепт, что у шапки главной (css/vision.css):
+   размытие var(--sp-blur-strong), светлая кромка сверху (--sp-glass-edge) и мягкая тень.
+   Боковая панель остаётся сплошной и прижатой к краю; меняется только «хром» поверх карты.
+   ========================================================================================= */
+:root { --bp-top-h: 48px; }
+@media (pointer: coarse) { :root { --bp-top-h: 52px; } }
+html[data-game] {
+    --bp-glow: inset 0 0 0 1px color-mix(in srgb, var(--sp-accent) 55%, var(--sp-rim)), 0 0 18px -4px color-mix(in srgb, var(--sp-accent) 45%, transparent);
+    --bp-chip-glass: color-mix(in srgb, var(--sp-tint) 9%, transparent);
+    --bp-chip-edge: inset 0 0 0 1px var(--sp-rim), inset 0 1px 0 var(--sp-rim-hi);
+}
+
+/* ---------- Шапка — одна капсула. Стекло на ::before: у самой капсулы нет backdrop-filter,
+   поэтому выпадающие меню внутри неё размывают карту, а не пустоту ---------- */
+html[data-game] body #mtb.mtb { padding: 4px; border-radius: var(--radius-lg); isolation: isolate; pointer-events: auto; }
+html[data-game] #mtb.mtb::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+    background: var(--sp-glass-sheen), var(--sp-bar-glass);
+    box-shadow: var(--sp-glass-edge), var(--sp-raise);
+}
+html[data-game] .bp-focus #mtb.mtb::before { display: none; } /* «только карта»: остаются одни кнопки */
+html[data-game] #mtb .mtb-pill { background: none; box-shadow: none; }
+html[data-game] #mtb .mtb-home { padding: 3px 14px 3px 3px; }
+html[data-game] #mtb .mtb-home img { box-shadow: var(--sp-hairline), var(--sp-raise-sm); }
+@media (min-width: 1101px) { /* в капсуле «Игры» и «База данных» — текстовые ссылки, как на главной */
+    html[data-game] #mtb .mtb-link { background: none; box-shadow: none; color: color-mix(in srgb, var(--sp-text) 78%, transparent); font-weight: 500; }
+}
+html[data-game] #mtb .mtb-link:is(:hover, :focus-visible), html[data-game] #mtb .mtb-home:is(:hover, :focus-visible) {
+    background: color-mix(in srgb, var(--sp-tint) 12%, transparent); box-shadow: inset 0 1px 0 var(--sp-rim-hi); color: var(--sp-text); transform: none;
+}
+html[data-game] #mtb .mtb-link[aria-expanded="true"] { background: color-mix(in srgb, var(--sp-tint) 16%, transparent); box-shadow: inset 0 0 0 1px var(--sp-rim); color: var(--sp-text); }
+/* круглые кнопки в капсуле — прозрачное стекло с кромкой, как справа в шапке главной */
+html[data-game] #mtb :is(.mtb-social, .auth-mini-btn, .mtb-burger, .bp-tr > .bp-focus-btn),
+html[data-game] #mtb :is(.mtb-social, .auth-mini-btn):hover { background: var(--bp-chip-glass); box-shadow: var(--bp-chip-edge); }
+html[data-game] #mtb .bp-tr > .bp-focus-btn { width: var(--bp-btn); height: var(--bp-btn); }
+html[data-game] .bp-focus #mtb .bp-tr > .bp-focus-btn { /* без капсулы кнопки сами стеклянные */
+    background: var(--sp-glass-sheen), var(--sp-pill-glass);
+    box-shadow: var(--sp-glass-edge), var(--sp-raise-sm);
+}
+@media (max-width: 1100px) {
+    html[data-game] #mtb .mtb-panel { /* меню «бургера» — такое же стекло */
+        background: var(--sp-glass-sheen), var(--sp-glass); box-shadow: var(--sp-glass-edge), var(--sp-overlay); border-radius: var(--radius-2xl);
+    }
+    html[data-game] #mtb .mtb-link { background: var(--bp-chip-glass); box-shadow: var(--bp-chip-edge); }
+}
+@media (max-width: 700px) { html[data-game] #mtb .mtb-panel { top: calc(var(--bp-gap) + var(--bp-top-h) + 8px); } }
+
+/* ---------- Зум — одна вертикальная стеклянная «таблетка» с двумя круглыми кнопками ---------- */
+html[data-game] .leaflet-bar {
+    display: flex; flex-direction: column; gap: 2px; padding: 4px; border-radius: var(--radius-lg);
+    background: var(--sp-glass-sheen), var(--sp-pill-glass);
+    box-shadow: var(--sp-glass-edge), var(--sp-raise);
+}
+html[data-game] .leaflet-bar a, html[data-game] .leaflet-bar a:hover { margin: 0; border-radius: var(--radius-lg) !important; background: none; box-shadow: none; }
+html[data-game] .leaflet-bar a:hover { background: color-mix(in srgb, var(--sp-tint) 14%, transparent); color: var(--sp-accent); }
+html[data-game] .leaflet-bar a.leaflet-disabled { background: none; opacity: .4; }
+
+/* ---------- Панель «Слои», «← К записи», кнопка свёртывания панели — то же стекло ---------- */
+html[data-game] :is(.bp-layers-panel, .bp-back-db) {
+    background: var(--sp-glass-sheen), var(--sp-glass);
+    box-shadow: var(--sp-glass-edge), var(--sp-overlay);
+}
+html[data-game] .bp-layers-panel { border-radius: var(--radius-lg); }
+
+/* ---------- Окно метки: блик по стеклу и кромка, круглее углы ---------- */
+html[data-game] .leaflet-popup .leaflet-popup-content-wrapper { background: var(--sp-glass-sheen), var(--sp-glass); border-radius: var(--radius-2xl); }
+
+/* ---------- Наведение: лёгкое увеличение и подсветка краёв (без наклона — по карте кликают) ---------- */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    html[data-game] :is(
+        #mtb .mtb-social, #mtb .auth-mini-btn, #mtb .bp-tr > .bp-focus-btn, .leaflet-bar a, .leaflet-popup a.leaflet-popup-close-button,
+        #sidebar .btn-group button, #sidebar .add-marker-btn, #sidebar .io-row button, #sidebar .bp-chip, #sidebar .map-switch-btn,
+        #sidebar .region-select, #sidebar .map-select, #sidebar .region-progress > summary, #sidebar .auth-mini-btn, .leaflet-popup button
+    ) { transition: transform .2s var(--sp-ease), box-shadow .2s, background-color .2s, color .2s; }
+    html[data-game] :is(
+        #mtb .mtb-social, #mtb .auth-mini-btn, #mtb .bp-tr > .bp-focus-btn, .leaflet-bar a, .leaflet-popup a.leaflet-popup-close-button,
+        #sidebar .btn-group button, #sidebar .add-marker-btn, #sidebar .io-row button, #sidebar .bp-chip, #sidebar .map-switch-btn,
+        #sidebar .region-select, #sidebar .map-select, #sidebar .region-progress > summary, #sidebar .auth-mini-btn, .leaflet-popup button
+    ):hover { transform: var(--sp-hover-scale); box-shadow: var(--sp-btn-sh-up, var(--sp-btn-sh)), var(--bp-glow); }
+    html[data-game] :is(#mtb .mtb-social, #mtb .auth-mini-btn, #mtb .bp-tr > .bp-focus-btn):hover { box-shadow: var(--bp-chip-edge), var(--bp-glow); }
+    html[data-game] .leaflet-bar a:hover { box-shadow: var(--bp-glow); transform: translateY(-1px); }
+    /* строки категорий и карточки прогресса — увеличение меньше, чтобы не упираться в край панели */
+    html[data-game] #sidebar :is(.filter-item, .progress-card) { transition: transform .2s var(--sp-ease), box-shadow .2s, background-color .2s; }
+    html[data-game] #sidebar .filter-item:hover { transform: none; box-shadow: var(--bp-glow); }
+    html[data-game] #sidebar .progress-card:hover { transform: none; box-shadow: var(--sp-raise, none), var(--bp-glow); }
+    html[data-game] :is(#sidebar, #mtb, .leaflet-popup) :is(button, a, summary, select, .filter-item):active { transform: none; }
+}
+
+/* Окно метки сбоку от метки (js/bp-map.js → mode "right"/"left"): ни сверху, ни снизу целиком не помещается —
+   окно во всю высоту карты рядом с меткой, без хвостика; раскрывается от метки */
+.leaflet-popup.bp-side { margin: 0; }
+.leaflet-popup.bp-side .leaflet-popup-tip-container { display: none; }
+html[data-game] .leaflet-popup.bp-side .leaflet-popup-content-wrapper { transform-origin: 0 50%; }
+html[data-game] .leaflet-popup.bp-side-left .leaflet-popup-content-wrapper { transform-origin: 100% 50%; }
+
+/* Геометрия кнопок, полей и фильтров — css/ui-system.css.
+   Здесь остаётся расположение элементов и размер язычка панели. */
+
+/* ---------- Узкий экран + открыто окно метки: зум и язычок панели не лезут поверх окна ---------- */
+@media (max-width: 700px) {
+    html[data-game] body:has(.leaflet-popup) :is(.leaflet-bar, #sidebar-toggle-btn) { opacity: 0; visibility: hidden; pointer-events: none; }
+    html[data-game] :is(.leaflet-bar, #sidebar-toggle-btn) { transition: opacity .15s, visibility .15s; }
+}
+/* строка «1 из N» не заходит под крестик (28 px + отступ) */
+/* крестик 40px (--icon-size) у края попапа: строка стрелок кончается за ~12px до него */
+html[data-game] .leaflet-popup .ms-nav { margin-right: calc(var(--icon-size, 40px) + 4px); }
+
+/* ---------- Карта в каркасе сайта (шапка и навигация как на главной: web/components/map/map-shell.tsx, css/shell.css).
+   .bx-map — область под шапкой и правее навигации (на телефоне — над нижней панелью). transform делает её
+   «экраном» для всех position: fixed внутри: карта, панель, язычок и окна меток считают отступы от неё, а не от окна. ---------- */
+html[data-game] { --bx-dock: 0px; }
+@media (max-width: 860px) { html[data-game] { --bx-dock: calc(64px + env(safe-area-inset-bottom)); } }
+html[data-game] .bx-map { position: fixed; z-index: 1; top: var(--bx-top-h); left: var(--bx-rail-w); right: 0; bottom: var(--bx-dock); overflow: hidden; transform: translateZ(0); }
+html[data-game] .bx-map-raw { display: contents; }
+/* кнопки «Слои» и «Только карта» — справа вверху карты (js/map-ux.js кладёт их в #mtb) */
+html[data-game] .bx-map-tr { position: fixed; z-index: 1100; top: var(--bp-gap); right: var(--bp-gap); display: flex; pointer-events: none; }
+/* подсказки и уведомления, которые скрипты вешают на body, — над нижней панелью навигации */
+html[data-game] body > :is(.bp-suggest, #bp-notify, .support-toast) { margin-bottom: var(--bx-dock); }
+/* режим «только карта» — без шапки и навигации */
+html[data-game] body.bp-focus :is(.bx-top, .bx-rail) { display: none; }
+html[data-game] body.bp-focus .bx-map { top: 0; left: 0; bottom: 0; }
+
+/* Смартфон: кнопки зума «+/−» скрыты — зум жестами (щипок, двойной тап) */
+@media (max-width: 700px) {
+    html[data-game] .leaflet-control-zoom { display: none !important; }
+}

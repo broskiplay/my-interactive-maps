@@ -1,0 +1,2221 @@
+[
+ {
+  "key": "Human_OldCamp_OreBaron",
+  "name": "Рудные бароны",
+  "camp": "Старый лагерь",
+  "slug": "oldcamp-orebaron",
+  "rel": {
+   "друзья": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_Convoy_OldCamp"
+   ],
+   "нейтральны": [
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "младше": [
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow"
+   ],
+   "презирают": [
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_FireMage": "недружелюбны",
+   "Human_NewCamp_WaterMage": "недружелюбны",
+   "Human_NewCamp_Mercenary": "недружелюбны",
+   "Human_NewCamp_Rogue": "недружелюбны",
+   "Human_NewCamp_Scraper": "недружелюбны",
+   "Human_NewCamp_Peasant": "недружелюбны",
+   "Human_SwampCamp_Guru": "недружелюбны",
+   "Human_SwampCamp_Templar": "недружелюбны",
+   "Human_SwampCamp_Novice": "недружелюбны",
+   "Human_SwampCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Kalomnist": "недружелюбны",
+   "None": "недружелюбны"
+  },
+  "protect": [
+   "Human_OldCamp_Digger",
+   "Human_OldCamp_WomanSlave"
+  ],
+  "members": [
+   [
+    "gomez",
+    "Гомез",
+    1
+   ],
+   [
+    "arto",
+    "Арто",
+    0
+   ],
+   [
+    "bartholo",
+    "Бартоло",
+    0
+   ],
+   [
+    "raven",
+    "Ворон",
+    0
+   ],
+   [
+    "scar",
+    "Шрам",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_OldCamp_FireMage",
+  "name": "Маги огня",
+  "camp": "Старый лагерь",
+  "slug": "oldcamp-firemage",
+  "rel": {
+   "друзья": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp",
+    "Human_DemonSummoner"
+   ],
+   "нейтральны": [
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_OldCamp_OreBaron"
+   ],
+   "младше": [
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger"
+   ],
+   "презирают": [
+    "Human_OldCamp_WomanSlave",
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_SwampCamp_Guru": "друзья",
+   "Human_SwampCamp_Templar": "друзья",
+   "Human_SwampCamp_Novice": "друзья",
+   "Human_SwampCamp_WomanSlave": "друзья",
+   "Human_SwampCamp_Kalomnist": "друзья",
+   "None": "недружелюбны"
+  },
+  "protect": [
+   "Human_OldCamp_Digger",
+   "Human_OldCamp_WomanSlave"
+  ],
+  "members": [
+   [
+    "corristo",
+    "Корристо",
+    1
+   ],
+   [
+    "damarok",
+    "Дамарок",
+    0
+   ],
+   [
+    "drago",
+    "Драго",
+    0
+   ],
+   [
+    "rodriguez",
+    "Родригез",
+    0
+   ],
+   [
+    "torrez",
+    "Торрез",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_DemonSummoner": "Заклинатель демонов",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_OldCamp_Guard",
+  "name": "Стражники",
+  "camp": "Старый лагерь",
+  "slug": "oldcamp-guard",
+  "rel": {
+   "друзья": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_Convoy_OldCamp"
+   ],
+   "нейтральны": [
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage"
+   ],
+   "младше": [
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger"
+   ],
+   "презирают": [
+    "Human_OldCamp_WomanSlave",
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_FireMage": "недружелюбны",
+   "Human_NewCamp_WaterMage": "недружелюбны",
+   "Human_NewCamp_Mercenary": "недружелюбны",
+   "Human_NewCamp_Rogue": "недружелюбны",
+   "Human_NewCamp_Scraper": "недружелюбны",
+   "Human_NewCamp_Peasant": "недружелюбны",
+   "Human_SwampCamp_Guru": "недружелюбны",
+   "Human_SwampCamp_Templar": "недружелюбны",
+   "Human_SwampCamp_Novice": "недружелюбны",
+   "Human_SwampCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Kalomnist": "недружелюбны",
+   "None": "недружелюбны"
+  },
+  "protect": [
+   "Human_OldCamp_Digger",
+   "Human_OldCamp_WomanSlave"
+  ],
+  "members": [
+   [
+    "thorus",
+    "Торус",
+    1
+   ],
+   [
+    "aaron",
+    "Арон",
+    0
+   ],
+   [
+    "asghan",
+    "Асган",
+    0
+   ],
+   [
+    "bloodwyn",
+    "Бладвин",
+    0
+   ],
+   [
+    "brandick",
+    "Брендик",
+    0
+   ],
+   [
+    "bullit",
+    "Буллит",
+    0
+   ],
+   [
+    "drake",
+    "Дрейк",
+    0
+   ],
+   [
+    "cutter",
+    "Каттер",
+    0
+   ],
+   [
+    "kirgo",
+    "Кирго",
+    0
+   ],
+   [
+    "orry",
+    "Орри",
+    0
+   ],
+   [
+    "pacho",
+    "Пачо",
+    0
+   ],
+   [
+    "scatty",
+    "Скатти",
+    0
+   ],
+   [
+    "skip",
+    "Скип",
+    0
+   ],
+   [
+    "scorpio",
+    "Скорпио",
+    0
+   ],
+   [
+    "stone",
+    "Стоун",
+    0
+   ],
+   [
+    "ulbert",
+    "Ульберт",
+    0
+   ],
+   [
+    "fletcher",
+    "Флетчер",
+    0
+   ],
+   [
+    "jackal",
+    "Шакал",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_OldCamp_Shadow",
+  "name": "Призраки",
+  "camp": "Старый лагерь",
+  "slug": "oldcamp-shadow",
+  "rel": {
+   "друзья": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_Convoy_OldCamp"
+   ],
+   "нейтральны": [
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard"
+   ],
+   "младше": [
+    "Human_OldCamp_Digger"
+   ],
+   "презирают": [
+    "Human_OldCamp_WomanSlave",
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_FireMage": "недружелюбны",
+   "Human_NewCamp_WaterMage": "недружелюбны",
+   "Human_NewCamp_Mercenary": "недружелюбны",
+   "Human_NewCamp_Rogue": "недружелюбны",
+   "Human_NewCamp_Scraper": "недружелюбны",
+   "Human_NewCamp_Peasant": "недружелюбны",
+   "Human_SwampCamp_Guru": "недружелюбны",
+   "Human_SwampCamp_Templar": "недружелюбны",
+   "Human_SwampCamp_Novice": "недружелюбны",
+   "Human_SwampCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Kalomnist": "недружелюбны",
+   "None": "недружелюбны"
+  },
+  "protect": [
+   "Human_OldCamp_Digger",
+   "Human_OldCamp_WomanSlave"
+  ],
+  "members": [
+   [
+    "diego",
+    "Диего",
+    1
+   ],
+   [
+    "alberto",
+    "Альберто",
+    0
+   ],
+   [
+    "viper",
+    "Вайпер",
+    0
+   ],
+   [
+    "dexter",
+    "Декстер",
+    0
+   ],
+   [
+    "cavalorn",
+    "Кавалорн",
+    0
+   ],
+   [
+    "cohsel",
+    "Косель",
+    0
+   ],
+   [
+    "santino",
+    "Сантино",
+    0
+   ],
+   [
+    "sly",
+    "Слай",
+    0
+   ],
+   [
+    "whistler",
+    "Уистлер",
+    0
+   ],
+   [
+    "fingers",
+    "Фингерс",
+    0
+   ],
+   [
+    "fisk",
+    "Фиск",
+    0
+   ],
+   [
+    "ian",
+    "Ян",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_OldCamp_Digger",
+  "name": "Рудокопы",
+  "camp": "Старый лагерь",
+  "slug": "oldcamp-digger",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "друзья": [
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_Convoy_OldCamp"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow"
+   ],
+   "презирают": [
+    "Human_OldCamp_WomanSlave"
+   ],
+   "младше": [
+    "None"
+   ]
+  },
+  "after": {
+   "Human_NewCamp_WaterMage": "недружелюбны",
+   "Human_NewCamp_Mercenary": "недружелюбны",
+   "Human_NewCamp_Rogue": "недружелюбны",
+   "Human_NewCamp_Scraper": "недружелюбны",
+   "Human_NewCamp_Peasant": "недружелюбны",
+   "Human_SwampCamp_Guru": "недружелюбны",
+   "Human_SwampCamp_Templar": "недружелюбны",
+   "Human_SwampCamp_Novice": "недружелюбны",
+   "Human_SwampCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Kalomnist": "недружелюбны",
+   "None": "недружелюбны"
+  },
+  "protect": [],
+  "members": [
+   [
+    "gravo",
+    "Граво",
+    1
+   ],
+   [
+    "aleph",
+    "Алеф",
+    0
+   ],
+   [
+    "guy",
+    "Гай",
+    0
+   ],
+   [
+    "garp",
+    "Гарп",
+    0
+   ],
+   [
+    "glen",
+    "Глен",
+    0
+   ],
+   [
+    "grimes",
+    "Граймс",
+    0
+   ],
+   [
+    "grim",
+    "Грим",
+    0
+   ],
+   [
+    "graham",
+    "Грэхем",
+    0
+   ],
+   [
+    "dusty",
+    "Дасти",
+    0
+   ],
+   [
+    "jesse",
+    "Джесс",
+    0
+   ],
+   [
+    "kyle",
+    "Кайл",
+    0
+   ],
+   [
+    "mud",
+    "Мад",
+    0
+   ],
+   [
+    "melvin",
+    "Мелвин",
+    0
+   ],
+   [
+    "snipes",
+    "Снайпс",
+    0
+   ],
+   [
+    "snaf",
+    "Снаф",
+    0
+   ],
+   [
+    "herek",
+    "Херек",
+    0
+   ],
+   [
+    "huno",
+    "Хуно",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_OldCamp_WomanSlave",
+  "name": "Заключённые (Старый лагерь)",
+  "camp": "Старый лагерь",
+  "slug": "oldcamp-womanslave",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "друзья": [
+    "Human_OldCamp_WomanSlave"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "None"
+   ]
+  },
+  "after": {
+   "Human_NewCamp_WaterMage": "недружелюбны",
+   "Human_NewCamp_Mercenary": "недружелюбны",
+   "Human_NewCamp_Rogue": "недружелюбны",
+   "Human_NewCamp_Scraper": "недружелюбны",
+   "Human_NewCamp_Peasant": "недружелюбны",
+   "Human_SwampCamp_Guru": "недружелюбны",
+   "Human_SwampCamp_Templar": "недружелюбны",
+   "Human_SwampCamp_Novice": "недружелюбны",
+   "Human_SwampCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Kalomnist": "недружелюбны",
+   "None": "недружелюбны"
+  },
+  "protect": [],
+  "members": [
+   [
+    "velaya",
+    "Велая",
+    0
+   ],
+   [
+    "seraphia",
+    "Серафия",
+    0
+   ],
+   [
+    "syra",
+    "Сира",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_Convoy_OldCamp",
+  "name": "Обоз Старого лагеря",
+  "camp": "Старый лагерь",
+  "slug": "convoy-oldcamp",
+  "rel": {
+   "друзья": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp"
+   ],
+   "нейтральны": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {},
+  "protect": [],
+  "members": [],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_NewCamp_WaterMage",
+  "name": "Маги воды",
+  "camp": "Новый лагерь",
+  "slug": "newcamp-watermage",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "друзья": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_Convoy_NewCamp",
+    "Human_DemonSummoner"
+   ]
+  },
+  "rank": {
+   "младше": [
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant"
+   ],
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_Digger": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Guru": "друзья",
+   "Human_SwampCamp_Templar": "друзья",
+   "Human_SwampCamp_Novice": "друзья",
+   "Human_SwampCamp_WomanSlave": "друзья",
+   "Human_SwampCamp_Kalomnist": "друзья",
+   "None": "друзья"
+  },
+  "protect": [
+   "Human_NewCamp_Peasant",
+   "Human_NewCamp_Scraper"
+  ],
+  "members": [
+   [
+    "saturas",
+    "Сатурас",
+    1
+   ],
+   [
+    "cronos",
+    "Кронос",
+    0
+   ],
+   [
+    "merdarion",
+    "Мердарион",
+    0
+   ],
+   [
+    "myxir",
+    "Миксир",
+    0
+   ],
+   [
+    "nefarius",
+    "Нефариус",
+    0
+   ],
+   [
+    "riordian",
+    "Риордиан",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_DemonSummoner": "Заклинатель демонов",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_NewCamp_Mercenary",
+  "name": "Наёмники",
+  "camp": "Новый лагерь",
+  "slug": "newcamp-mercenary",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "друзья": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_Convoy_NewCamp",
+    "Human_DemonSummoner"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_NewCamp_WaterMage"
+   ],
+   "младше": [
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant"
+   ],
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_Digger": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "Human_SwampCamp_Guru": "друзья",
+   "Human_SwampCamp_Templar": "друзья",
+   "Human_SwampCamp_Novice": "друзья",
+   "Human_SwampCamp_WomanSlave": "друзья",
+   "Human_SwampCamp_Kalomnist": "друзья",
+   "None": "друзья"
+  },
+  "protect": [
+   "Human_NewCamp_Peasant",
+   "Human_NewCamp_Scraper"
+  ],
+  "members": [
+   [
+    "lee",
+    "Ли",
+    1
+   ],
+   [
+    "baloro",
+    "Балоро",
+    0
+   ],
+   [
+    "gorn",
+    "Горн",
+    0
+   ],
+   [
+    "cord",
+    "Корд",
+    0
+   ],
+   [
+    "okyl",
+    "Окил",
+    0
+   ],
+   [
+    "torlof",
+    "Торлоф",
+    0
+   ],
+   [
+    "kharim",
+    "Харим",
+    0
+   ],
+   [
+    "haenno",
+    "Хэнно",
+    0
+   ],
+   [
+    "jarvis",
+    "Ярвис",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_DemonSummoner": "Заклинатель демонов",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_NewCamp_Rogue",
+  "name": "Разбойники",
+  "camp": "Новый лагерь",
+  "slug": "newcamp-rogue",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_OldCamp"
+   ],
+   "друзья": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary"
+   ],
+   "младше": [
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant"
+   ],
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_Digger": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "Human_NewCamp_WaterMage": "нейтральны",
+   "Human_NewCamp_Mercenary": "нейтральны",
+   "Human_NewCamp_Rogue": "нейтральны",
+   "Human_SwampCamp_Guru": "друзья",
+   "Human_SwampCamp_Templar": "друзья",
+   "Human_SwampCamp_Novice": "друзья",
+   "Human_SwampCamp_WomanSlave": "друзья",
+   "Human_SwampCamp_Kalomnist": "друзья",
+   "Human_DemonSummoner": "друзья",
+   "None": "друзья"
+  },
+  "protect": [
+   "Human_NewCamp_Peasant",
+   "Human_NewCamp_Scraper"
+  ],
+  "members": [
+   [
+    "lares",
+    "Ларес",
+    1
+   ],
+   [
+    "buster",
+    "Бастер",
+    0
+   ],
+   [
+    "butch",
+    "Бутч",
+    0
+   ],
+   [
+    "wedge",
+    "Ведж",
+    0
+   ],
+   [
+    "wolf",
+    "Волк",
+    0
+   ],
+   [
+    "jacko",
+    "Джако",
+    0
+   ],
+   [
+    "drax",
+    "Дракс",
+    0
+   ],
+   [
+    "killian",
+    "Килиан",
+    0
+   ],
+   [
+    "lefty",
+    "Лефти",
+    0
+   ],
+   [
+    "mordrag",
+    "Мордраг",
+    0
+   ],
+   [
+    "renyu",
+    "Рену",
+    0
+   ],
+   [
+    "roscoe",
+    "Роско",
+    0
+   ],
+   [
+    "ratford",
+    "Рэтфорд",
+    0
+   ],
+   [
+    "cipher",
+    "Сайфер",
+    0
+   ],
+   [
+    "silas",
+    "Силас",
+    0
+   ],
+   [
+    "ulmar",
+    "Ульмар",
+    0
+   ],
+   [
+    "sharky",
+    "Шарки",
+    0
+   ],
+   [
+    "shrike",
+    "Шрайк",
+    0
+   ],
+   [
+    "aidan",
+    "Эйдан",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_DemonSummoner": "Заклинатель демонов",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_NewCamp_Scraper",
+  "name": "Скребки",
+  "camp": "Новый лагерь",
+  "slug": "newcamp-scraper",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_OldCamp"
+   ],
+   "друзья": [
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue"
+   ],
+   "равны": [
+    "Human_NewCamp_Peasant"
+   ],
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_Digger": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [
+   [
+    "swiney",
+    "Суини",
+    1
+   ],
+   [
+    "senyan",
+    "Сеньян",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_NewCamp_Peasant",
+  "name": "Крестьяне",
+  "camp": "Новый лагерь",
+  "slug": "newcamp-peasant",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_OldCamp"
+   ],
+   "друзья": [
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue"
+   ],
+   "равны": [
+    "Human_NewCamp_Scraper"
+   ],
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_Digger": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [
+   [
+    "rice-lord",
+    "Рисовый Лорд",
+    1
+   ],
+   [
+    "homer",
+    "Гомер",
+    0
+   ],
+   [
+    "horatio",
+    "Горацио",
+    0
+   ],
+   [
+    "jeremiah",
+    "Иеремия",
+    0
+   ],
+   [
+    "malon",
+    "Малон",
+    0
+   ],
+   [
+    "pock",
+    "Пок",
+    0
+   ],
+   [
+    "rayk",
+    "Райк",
+    0
+   ],
+   [
+    "rufus",
+    "Руфус",
+    0
+   ],
+   [
+    "jan",
+    "Янек",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_Convoy_NewCamp",
+  "name": "Обоз Нового лагеря",
+  "camp": "Новый лагерь",
+  "slug": "convoy-newcamp",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist"
+   ],
+   "недружелюбны": [
+    "Human_Convoy_OldCamp"
+   ],
+   "друзья": [
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ]
+  },
+  "rank": {
+   "презирают": [
+    "None"
+   ]
+  },
+  "after": {},
+  "protect": [],
+  "members": [],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_SwampCamp_Guru",
+  "name": "Гуру",
+  "camp": "Болотный лагерь",
+  "slug": "swampcamp-guru",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ],
+   "друзья": [
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ],
+   "недружелюбны": [
+    "Human_SwampCamp_Kalomnist"
+   ]
+  },
+  "rank": {
+   "младше": [
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [
+   [
+    "yberion",
+    "Ю’Берион",
+    1
+   ],
+   [
+    "baal-cadar",
+    "Идол Кадар",
+    0
+   ],
+   [
+    "baal-lukor",
+    "Идол Люкор",
+    0
+   ],
+   [
+    "baal-namib",
+    "Идол Намиб",
+    0
+   ],
+   [
+    "baal-orun",
+    "Идол Оран",
+    0
+   ],
+   [
+    "baal-tyon",
+    "Идол Тион",
+    0
+   ],
+   [
+    "baal-tondral",
+    "Идол Тондрал",
+    0
+   ],
+   [
+    "cor-kalom",
+    "Кор Галом",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_SwampCamp_Templar",
+  "name": "Храмовники",
+  "camp": "Болотный лагерь",
+  "slug": "swampcamp-templar",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ],
+   "друзья": [
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ],
+   "недружелюбны": [
+    "Human_SwampCamp_Kalomnist"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_SwampCamp_Guru"
+   ],
+   "младше": [
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "Human_NewCamp_WaterMage": "друзья",
+   "Human_NewCamp_Mercenary": "друзья",
+   "Human_NewCamp_Rogue": "друзья",
+   "Human_NewCamp_Scraper": "друзья",
+   "Human_NewCamp_Peasant": "друзья",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [
+   [
+    "cor-angar",
+    "Кор Ангар",
+    1
+   ],
+   [
+    "gor-na-bar",
+    "Гор На Бар",
+    0
+   ],
+   [
+    "gor-na-vid",
+    "Гор На Вид",
+    0
+   ],
+   [
+    "gor-na-dun",
+    "Гор На Дан",
+    0
+   ],
+   [
+    "gor-na-drak",
+    "Гор На Драк",
+    0
+   ],
+   [
+    "gor-na-zar",
+    "Гор На Зар",
+    0
+   ],
+   [
+    "gor-na-kosh",
+    "Гор На Кош",
+    0
+   ],
+   [
+    "gor-na-ran",
+    "Гор На Ран",
+    0
+   ],
+   [
+    "gor-na-toth",
+    "Гор На Тоф",
+    0
+   ],
+   [
+    "gor-hanis",
+    "Гор Ханис",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_SwampCamp_Novice",
+  "name": "Послушники",
+  "camp": "Болотный лагерь",
+  "slug": "swampcamp-novice",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ],
+   "друзья": [
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ],
+   "недружелюбны": [
+    "Human_SwampCamp_Kalomnist"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar"
+   ],
+   "младше": [
+    "Human_SwampCamp_WomanSlave"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [
+   [
+    "balor",
+    "Балор",
+    0
+   ],
+   [
+    "viran",
+    "Вайран",
+    0
+   ],
+   [
+    "ghorim",
+    "Горрим",
+    0
+   ],
+   [
+    "darrion",
+    "Даррион",
+    0
+   ],
+   [
+    "baal-isidro",
+    "Идол Исидро",
+    0
+   ],
+   [
+    "baal-kagan",
+    "Идол Каган",
+    0
+   ],
+   [
+    "baal-netbek",
+    "Идол Нетбек",
+    0
+   ],
+   [
+    "baal-parvez",
+    "Идол Парвез",
+    0
+   ],
+   [
+    "baal-taran",
+    "Идол Таран",
+    0
+   ],
+   [
+    "joru",
+    "Йору",
+    0
+   ],
+   [
+    "caine",
+    "Каин",
+    0
+   ],
+   [
+    "lester",
+    "Лестер",
+    0
+   ],
+   [
+    "nyras",
+    "Нирас",
+    0
+   ],
+   [
+    "talas",
+    "Талас",
+    0
+   ],
+   [
+    "theron",
+    "Терон",
+    0
+   ],
+   [
+    "fortuno",
+    "Фортуно",
+    0
+   ],
+   [
+    "harlok",
+    "Харлок",
+    0
+   ],
+   [
+    "shrat",
+    "Шрет",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_SwampCamp_WomanSlave",
+  "name": "Заключённые (Болотный лагерь)",
+  "camp": "Болотный лагерь",
+  "slug": "swampcamp-womanslave",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp"
+   ],
+   "друзья": [
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ],
+   "недружелюбны": [
+    "Human_SwampCamp_Kalomnist"
+   ]
+  },
+  "rank": {
+   "старше": [
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice"
+   ]
+  },
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [
+   [
+    "natalia",
+    "Наталья",
+    0
+   ],
+   [
+    "chani",
+    "Чани",
+    0
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_SwampCamp_Kalomnist",
+  "name": "Последователи Кор Галома",
+  "camp": "Болотный лагерь",
+  "slug": "swampcamp-kalomnist",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Scraper",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave"
+   ],
+   "друзья": [
+    "Human_SwampCamp_Kalomnist"
+   ]
+  },
+  "rank": {},
+  "after": {
+   "Human_OldCamp_OreBaron": "недружелюбны",
+   "Human_OldCamp_FireMage": "друзья",
+   "Human_OldCamp_Guard": "недружелюбны",
+   "Human_OldCamp_Shadow": "недружелюбны",
+   "Human_OldCamp_WomanSlave": "недружелюбны",
+   "None": "друзья"
+  },
+  "protect": [],
+  "members": [],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ },
+ {
+  "key": "Human_Bandit",
+  "name": "Бандиты",
+  "camp": "Лагерь бандитов",
+  "slug": "bandit",
+  "rel": {
+   "друзья": [
+    "Human_Bandit"
+   ]
+  },
+  "rank": {},
+  "after": {},
+  "protect": [],
+  "members": [
+   [
+    "arlin",
+    "Арлин",
+    0
+   ],
+   [
+    "brannok",
+    "Браннок",
+    0
+   ],
+   [
+    "quentin",
+    "Квентин",
+    0
+   ],
+   [
+    "torik",
+    "Торик",
+    0
+   ]
+  ],
+  "names": {
+   "Human_Bandit": "Бандиты"
+  }
+ },
+ {
+  "key": "Human_DemonSummoner",
+  "name": "Заклинатель демонов",
+  "camp": "Башня Ксардаса",
+  "slug": "demonsummoner",
+  "rel": {
+   "нейтральны": [
+    "Human_OldCamp_OreBaron",
+    "Human_OldCamp_FireMage",
+    "Human_OldCamp_Guard",
+    "Human_OldCamp_Shadow",
+    "Human_OldCamp_Digger",
+    "Human_OldCamp_WomanSlave",
+    "Human_Convoy_OldCamp",
+    "Human_NewCamp_WaterMage",
+    "Human_NewCamp_Mercenary",
+    "Human_NewCamp_Rogue",
+    "Human_NewCamp_Peasant",
+    "Human_Convoy_NewCamp",
+    "Human_SwampCamp_Guru",
+    "Human_SwampCamp_Templar",
+    "Human_SwampCamp_Novice",
+    "Human_SwampCamp_WomanSlave",
+    "Human_SwampCamp_Kalomnist",
+    "Human_Bandit",
+    "None"
+   ],
+   "друзья": [
+    "Human_NewCamp_Scraper",
+    "Human_DemonSummoner"
+   ]
+  },
+  "rank": {},
+  "after": {},
+  "protect": [],
+  "members": [
+   [
+    "xardas",
+    "Ксардас",
+    1
+   ]
+  ],
+  "names": {
+   "Human_OldCamp_Guard": "Стражники",
+   "Human_OldCamp_Shadow": "Призраки",
+   "Human_NewCamp_Mercenary": "Наёмники",
+   "Human_NewCamp_Peasant": "Крестьяне",
+   "Human_SwampCamp_WomanSlave": "Заключённые (Болотный лагерь)",
+   "None": "Без гильдии",
+   "Human_OldCamp_WomanSlave": "Заключённые (Старый лагерь)",
+   "Human_SwampCamp_Kalomnist": "Последователи Кор Галома",
+   "Human_NewCamp_WaterMage": "Маги воды",
+   "Human_SwampCamp_Novice": "Послушники",
+   "Human_SwampCamp_Guru": "Гуру",
+   "Human_NewCamp_Rogue": "Разбойники",
+   "Human_OldCamp_OreBaron": "Рудные бароны",
+   "Human_NewCamp_Scraper": "Скребки",
+   "Human_Convoy_NewCamp": "Обоз Нового лагеря",
+   "Human_SwampCamp_Templar": "Храмовники",
+   "Human_OldCamp_Digger": "Рудокопы",
+   "Human_Convoy_OldCamp": "Обоз Старого лагеря",
+   "Human_Bandit": "Бандиты",
+   "Human_DemonSummoner": "Заклинатель демонов",
+   "Human_OldCamp_FireMage": "Маги огня"
+  }
+ }
+]

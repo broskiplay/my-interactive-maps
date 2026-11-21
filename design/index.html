@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tdm-reservation" content="1">
+    <title>Дизайн — BroskiPlay</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Справочник оформления BroskiPlay: базовые токены и геометрия (spatial.css, ui-system.css), каркас и блоки главной (--bx-*), палитры карт (--sp-*), правила.">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=4">
+    <link rel="stylesheet" href="../css/spatial.css?v=dark2">
+    <link rel="stylesheet" href="../css/shell.css?v=dark3">
+    <link rel="stylesheet" href="../css/home-neo.css?v=bg4">
+    <link rel="stylesheet" href="../css/ui-system.css?v=dark6">
+    <!-- тема у сайта одна — тёмная (светлую и переключатель убрали 2026-11-19); data-theme="dark" стоит на <html> -->
+    <style>
+        /* только раскладка справочника — оформление берётся из css/shell.css и css/home-neo.css */
+        /* страница в каркасе сайта (web/lib/pages.ts): общая шапка и навигация, оглавление — над разделами */
+        .ds-main > .ds-toc { margin-bottom: 24px; }
+        .ds-intro { display: grid; gap: 14px; max-width: 820px; }
+        .ds-intro h1 { font-size: clamp(32px, 4.4vw, 52px); font-weight: 800; letter-spacing: -.01em; }
+        .ds-intro h1 span { color: var(--bx-lime-ink); }
+        .ds-lead, .ds-note { color: var(--bx-muted); max-width: 820px; }
+        .ds-lead { font-size: 17px; }
+        .ds-note { font-size: 14px; margin: -8px 0 18px; }
+        .ds-toc { display: flex; flex-wrap: wrap; gap: 8px; }
+        .ds-toc a { height: 36px; padding: 0 14px; display: inline-flex; align-items: center; border-radius: 10px; border: 1px solid var(--bx-line); background: var(--bx-surface); color: var(--bx-muted); font-size: 13px; font-weight: 600; }
+        .ds-toc a:hover { color: var(--bx-text); border-color: var(--bx-line-2); }
+        code, pre { font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+        code { padding: 1px 6px; border-radius: 6px; background: var(--bx-surface-2); border: 1px solid var(--bx-line); color: var(--bx-text); }
+        pre { margin: 0; padding: 10px 12px; overflow: auto; white-space: pre-wrap; border-radius: 12px; background: var(--bx-bg); border: 1px solid var(--bx-line); color: var(--bx-muted); }
+
+        .ds-panel { display: grid; gap: 14px; align-content: start; padding: 20px; border-radius: var(--bx-r); border: 1px solid var(--bx-line); background: var(--bx-surface); box-shadow: var(--bx-sh-1); min-width: 0; }
+        .ds-panel h3 { font-size: 16px; font-weight: 700; }
+        .ds-panel > p { color: var(--bx-muted); font-size: 14px; }
+        .ds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; }
+        .ds-wide { grid-column: 1 / -1; }
+        .ds-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+        /* слои глубины */
+        .ds-depth { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+        .ds-l0 { padding: 22px; border-radius: var(--bx-r-lg); background: var(--bx-bg); border: 1px solid var(--bx-line); }
+        .ds-l1 { display: grid; gap: 14px; padding: 20px; border-radius: var(--bx-r); background: var(--bx-surface); border: 1px solid var(--bx-line); box-shadow: var(--bx-sh-1); }
+        .ds-l2 { padding: 14px 16px; border-radius: 16px; background: var(--bx-surface-2); border: 1px solid var(--bx-line-2); box-shadow: var(--bx-sh-2); display: grid; gap: 10px; }
+        .ds-l3 { height: 8px; border-radius: 8px; background: var(--bx-surface-3); overflow: hidden; }
+        .ds-l3 i { display: block; width: 58%; height: 100%; border-radius: inherit; background: var(--bx-lime); }
+        .ds-legend { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+        .ds-legend li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; color: var(--bx-muted); font-size: 14px; }
+        .ds-legend b { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); color: var(--bx-lime-ink); font-weight: 800; }
+        .ds-legend strong { display: block; color: var(--bx-text); }
+
+        /* токены */
+        .ds-tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+        .ds-tok { display: grid; gap: 8px; padding: 10px; border-radius: 16px; border: 1px solid var(--bx-line); background: var(--bx-surface); min-width: 0; }
+        .ds-tok-demo { height: 56px; border-radius: 12px; border: 1px solid var(--bx-line); }
+        .ds-tok-stage { padding: 14px; border-radius: 12px; background: var(--bx-bg); }
+        .ds-tok-stage .ds-tok-demo { background: var(--bx-surface-2); border-color: transparent; }
+        .ds-tok-name { font: 600 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--bx-cyan-ink); overflow-wrap: anywhere; }
+        .ds-tok-use { color: var(--bx-muted); font-size: 12.5px; }
+        .ds-tok-val { color: var(--bx-faint); font: 11.5px ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+
+        /* геометрия */
+        .ds-geo { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .ds-geo th, .ds-geo td { padding: 10px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--bx-line); }
+        .ds-geo th { color: var(--bx-faint); font-size: 12px; font-weight: 600; }
+        .ds-geo td:first-child { color: var(--bx-text); font-weight: 600; }
+        .ds-geo td { color: var(--bx-muted); }
+        .ds-geo tr:last-child td { border-bottom: 0; }
+        .ds-geo-wrap { overflow-x: auto; }
+        .ds-space { display: grid; gap: 6px; }
+        .ds-space div { display: grid; grid-template-columns: 90px 1fr; gap: 10px; align-items: center; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--bx-muted); }
+        .ds-space i { display: block; height: 10px; border-radius: var(--radius-xs); background: var(--bx-cyan); }
+
+        /* шрифт */
+        .ds-type { display: grid; gap: 14px; }
+        .ds-type div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--bx-line); }
+        .ds-type div:last-child { border-bottom: 0; padding-bottom: 0; }
+        .ds-type small { color: var(--bx-faint); font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+        /* навигация-образец: в каркасе она закреплена у края, здесь — в потоке */
+        .ds-rail .bx-rail { position: relative; inset: auto; z-index: auto; width: auto; height: auto; flex-direction: row; justify-content: flex-start; gap: 6px; padding: 8px; border: 1px solid var(--bx-line); border-radius: 20px; background: var(--bx-bg); }
+        .ds-rail .bx-rail-item { width: 84px; padding: 12px 4px; font-size: 11px; }
+        .ds-rail .bx-rail-item.is-active::before { left: 30%; right: 30%; top: -9px; bottom: auto; width: auto; height: 3px; border-radius: 0 0 3px 3px; }
+        .ds-top-demo { position: relative; top: auto; z-index: auto; border: 1px solid var(--bx-line); border-radius: 20px; }
+
+        /* карточка игры-образец */
+        .ds-card { max-width: 360px; }
+        .ds-recent { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+
+        /* палитры карт: тот же набор элементов в каждой теме игры */
+        .scopes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+        .scope { display: grid; gap: 12px; padding: 16px; border-radius: var(--bx-r); background: var(--sp-base); color: var(--sp-text); box-shadow: 0 0 0 1px var(--sp-edge); font-family: var(--bx-font); }
+        .scope-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+        .scope-head b { font-size: 14px; font-weight: 700; }
+        .scope-head small { color: var(--sp-muted); font-size: 12px; }
+        .scope .sp-card { padding: 14px 16px; display: grid; gap: 10px; }
+        .scope .sp-btn { padding: 8px 14px; }
+        .scope p { color: var(--sp-muted); font-size: 13px; }
+        .scope a { color: var(--sp-accent); }
+        .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .swatches i { height: 24px; border-radius: 8px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sp-text) 14%, transparent); }
+        /* «Шапка и меню в палитре игры»: копия каркаса из раздела «Каркас» внутри data-sp-scope */
+        .ds-shellgame { display: grid; gap: 12px; padding: 16px; border-radius: var(--bx-r); background: var(--sp-sunk); }
+        .ds-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+        .ds-picks button { height: 32px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--bx-line); background: var(--bx-surface); color: var(--bx-muted); font: 600 12px var(--bx-font); cursor: pointer; }
+        .ds-picks button:hover { color: var(--bx-text); border-color: var(--bx-line-2); }
+        .ds-picks button[aria-pressed="true"] { color: var(--bx-lime-ink); border-color: var(--bx-lime); }
+        .ds-map {
+            position: relative; min-height: 220px; padding: 16px; border-radius: var(--bx-r); overflow: hidden; color: var(--sp-text);
+            background:
+                radial-gradient(circle at 22% 30%, color-mix(in srgb, var(--sp-accent) 45%, var(--sp-base)) 0 9%, transparent 10%),
+                radial-gradient(circle at 70% 62%, color-mix(in srgb, var(--sp-muted) 50%, var(--sp-base)) 0 16%, transparent 17%),
+                repeating-linear-gradient(35deg, color-mix(in srgb, var(--sp-muted) 40%, var(--sp-base)) 0 14px, color-mix(in srgb, var(--sp-muted) 28%, var(--sp-base)) 14px 28px);
+        }
+        .ds-map .sp-glass { position: absolute; left: 16px; bottom: 16px; right: 72px; padding: 14px 16px; display: grid; gap: 8px; }
+        .ds-map .sp-glass p { color: var(--sp-muted); font-size: 13px; }
+        .ds-map .zoom { position: absolute; top: 16px; right: 16px; display: grid; gap: 8px; }
+        /* «Свернуть меню»: кусок боковой панели карты шириной телефона, список прокручивается под кнопку */
+        .ds-phone { display: flex; flex-direction: column; width: min(100%, 360px); height: 320px; overflow-y: auto; border-radius: var(--bx-r); background: var(--sp-base); color: var(--sp-text); box-shadow: 0 0 0 1px var(--sp-edge); }
+        .ds-phone-list { display: grid; gap: 8px; padding: 12px 12px 0; }
+        .ds-phone-list span { display: flex; justify-content: space-between; min-height: 44px; align-items: center; padding: 0 14px; border-radius: var(--radius-lg); background: var(--sp-card); font-size: 14px; }
+        .ds-phone-list small { color: var(--sp-muted); font-variant-numeric: tabular-nums; }
+        /* «Боковая панель карты»: макет общего шаблона (web/components/map/map-sidebar.ts) в палитре игры; настоящие стили — css/map-ux.css §5/5б */
+        .ds-sb-wrap { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 22px; align-items: start; }
+        .ds-sb { display: grid; gap: 10px; align-content: start; max-height: 680px; overflow-y: auto; padding: 8px 16px 16px; border-radius: var(--bx-r); background: var(--sp-base); color: var(--sp-text); box-shadow: 0 0 0 1px var(--sp-edge); font-family: var(--bx-font); }
+        .ds-sb svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .ds-sb-logo { display: flex; align-items: center; height: 48px; font: 800 20px/1.1 var(--bx-font-display); color: var(--sp-text); text-decoration: none; }
+        .ds-sb-seg { display: flex; gap: 4px; padding: 4px; border-radius: var(--radius-full); background: var(--sp-sunk, var(--sp-base)); box-shadow: inset 0 0 0 1px var(--sp-edge); }
+        .ds-sb-seg span { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; border-radius: var(--radius-full); color: var(--sp-muted); font-size: 12.5px; font-weight: 600; }
+        .ds-sb-seg span:first-child { background: var(--sp-btn); color: var(--sp-text); }
+        .ds-sb-field { display: grid; gap: 4px; }
+        .ds-sb-label { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--sp-muted); font: 600 11px/1.2 var(--bx-font); letter-spacing: .08em; text-transform: uppercase; }
+        .ds-sb .sp-field { width: 100%; min-height: 44px; }
+        .ds-sb-search { position: sticky; top: -8px; z-index: 1; padding: 4px 0; background: var(--sp-base); }
+        .ds-sb-prog { display: grid; gap: 6px; padding: 8px 12px; border-radius: 12px; background: var(--sp-card); }
+        .ds-sb-prog b { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+        .ds-sb-prog .sp-track { height: 4px; }
+        .ds-sb-prog small { color: var(--sp-muted); font-size: 11.5px; }
+        .ds-sb-act { display: flex; gap: 6px; }
+        .ds-sb-act .sp-btn { flex: 1 1 0; min-width: 0; height: 40px; min-height: 40px; padding: 6px 8px; font-size: 12.5px; line-height: 1.15; }
+        .ds-sb-act .ds-sq { flex: 0 0 40px; padding: 0; font-size: 18px; }
+        .ds-sb-sets { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+        .ds-sb-sets .sp-chip { flex: none; min-height: 30px; padding: 4px 12px; font-size: 12px; white-space: nowrap; }
+        .ds-sb-sets .sp-chip:first-child { color: var(--sp-accent); }
+        .ds-sb-group { display: grid; gap: 4px; }
+        .ds-sb-gh { display: flex; align-items: center; gap: 6px; padding: 6px 0 2px; font-size: 13px; font-weight: 700; }
+        .ds-sb-gh small { margin-left: auto; color: var(--sp-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+        .ds-sb-gh.is-collapsed svg { transform: rotate(-90deg); }
+        .ds-sb-row { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 5px 6px 5px 10px; border-radius: var(--radius-lg); background: var(--sp-card); font-size: 13.5px; }
+        .ds-sb-row i { width: 18px; height: 18px; flex: none; border-radius: 50%; background: var(--sp-accent); }
+        .ds-sb-row span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ds-sb-row small { color: var(--sp-muted); font-variant-numeric: tabular-nums; }
+        .ds-sb-row b { width: 28px; text-align: center; color: var(--sp-muted); opacity: .55; }
+        .ds-sb-row.is-off { opacity: .45; }
+        .ds-sb-about { padding: 10px 12px; border-radius: 12px; background: var(--sp-card); color: var(--sp-muted); font-size: 13px; font-weight: 600; }
+        .ds-sb-legend { counter-reset: sb; display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; color: var(--bx-muted); font-size: 14px; }
+        .ds-sb-legend li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; }
+        .ds-sb-legend li::before { counter-increment: sb; content: counter(sb); display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); color: var(--bx-lime-ink); font-weight: 800; font-size: 12px; }
+        .ds-sb-legend strong { color: var(--bx-text); }
+        .ds-accents { display: flex; flex-wrap: wrap; gap: 8px; }
+        .ds-accents span { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--game-accent) 45%, transparent); font-size: 13px; font-weight: 600; }
+        .ds-accents i { width: 10px; height: 10px; border-radius: 50%; background: var(--game-accent); }
+
+        .rules { display: grid; gap: 12px; margin: 0; padding-left: 20px; color: var(--bx-muted); max-width: 880px; }
+        .rules b { color: var(--bx-text); }
+        .ds-sw { display: inline-block; width: 22px; height: 22px; margin-right: 8px; vertical-align: middle; border-radius: 6px; border: 1px solid var(--bx-line-2); }
+        .ds-demo-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .ds-truth h3 { margin: 26px 0 10px; font-size: 17px; }
+        .ds-foot { margin: 56px 0 40px; padding-top: 22px; border-top: 1px solid var(--bx-line); color: var(--bx-faint); font-size: 13px; }
+
+        @media (max-width: 860px) {
+            .ds-depth, .ds-sb-wrap { grid-template-columns: minmax(0, 1fr); }
+            .ds-type div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+        }
+        @media (max-width: 680px) {
+            .ds-top-demo .bx-search { display: none; }
+            .ds-rail .bx-rail-item { width: auto; flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<main class="bx-main ds-main">
+    <nav class="ds-toc" aria-label="Разделы справочника">
+        <a href="#truth">Visual source of truth</a><a href="#depth">Слои</a><a href="#tokens">Токены</a><a href="#geometry">Геометрия</a><a href="#type">Шрифт</a><a href="#shell">Каркас</a>
+        <a href="#parts">Блоки главной</a><a href="#maps">Палитры карт</a><a href="#rules">Правила</a><a href="#how">How to use this file</a>
+    </nav>
+    <section class="ds-intro">
+        <span class="bx-badge"><i></i>Справочник оформления</span>
+        <h1>Дизайн <span>BroskiPlay</span></h1>
+        <p class="ds-lead">Образец — главная. Основа всего сайта — базовые токены (<code>--bg-*</code>, <code>--accent-*</code>, <code>--text-*</code>,
+            <code>--border-*</code>, <code>--radius-*</code>, <code>--space-*</code>) в начале <code>css/spatial.css</code>.
+            Каркас (шапка, навигация, подвал) — классы <code>.bx-*</code> в <code>css/shell.css</code>, его токены <code>--bx-*</code> ссылаются на базовые;
+            блоки главной — <code>css/home-neo.css</code>. Единые размеры и состояния кнопок, полей, фильтров и карточек на главной, картах и в базе —
+            <code>css/ui-system.css</code>, он подключается последним. У карт своя палитра каждой игры — токены <code>--sp-*</code>.
+            Заливки плотные, без «жидкого стекла»; глубина — тремя уровнями поверхностей и мягкими тенями.</p>
+    </section>
+
+    <!-- ===================== источник истины ===================== -->
+    <section class="bx-section ds-truth" id="truth">
+        <div class="bx-head"><h2>Visual source of truth</h2></div>
+        <p class="ds-note">Этот раздел — обязательная спецификация для главной, <code>/db/</code> и всех новых страниц. Значения — только через токены из <code>css/spatial.css</code> и <code>css/shell.css</code>; вписанные hex и «свои» радиусы в стилях страниц запрещены.</p>
+
+        <h3>1. Цвета</h3>
+        <div class="ds-panel ds-geo-wrap"><table class="ds-geo">
+            <thead><tr><th>Роль</th><th>Значение</th><th>Токен</th></tr></thead>
+            <tbody>
+                <tr><td><i class="ds-sw" style="background: var(--bg-base);"></i>Фон страницы</td><td><code>#0d111b</code></td><td><code>--bg-base</code> / <code>--bx-bg</code></td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--bg-surface);"></i>Панели и карточки</td><td><code>#162231</code> / <code>#1b2938</code></td><td><code>--bg-surface</code> / <code>--bg-elevated</code> (<code>--bx-surface</code>, <code>--bx-surface-2</code>)</td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--accent-primary);"></i>Лайм — главное действие, активный пункт</td><td><code>#c7ff3f</code></td><td><code>--accent-primary</code> / <code>--bx-lime</code>, текст — <code>--bx-lime-ink</code></td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--accent-secondary);"></i>Циан — ссылки, значки, фокус</td><td><code>#54dcff</code></td><td><code>--accent-secondary</code> / <code>--bx-cyan</code></td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--text-primary);"></i>Текст</td><td><code>#f4f7fa</code></td><td><code>--text-primary</code> / <code>--bx-text</code></td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--text-muted);"></i>Muted (вторичный — <code>#b8c6d1</code>)</td><td><code>#8da4b5</code></td><td><code>--text-muted</code>, <code>--text-secondary</code> / <code>--bx-muted</code></td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--border-default);"></i>Границы (обычная / сильная)</td><td><code>#2a3a4a</code> / <code>#354757</code></td><td><code>--border-default</code> / <code>--border-strong</code> (<code>--bx-line</code>, <code>--bx-line-2</code>)</td></tr>
+                <tr><td><i class="ds-sw" style="background: var(--text-on-accent);"></i>Текст на лайме</td><td><code>#0d111b</code></td><td><code>--text-on-accent</code> / <code>--bx-on-lime</code></td></tr>
+            </tbody>
+        </table></div>
+
+        <h3>2. Радиусы</h3>
+        <div class="ds-panel ds-geo-wrap"><table class="ds-geo">
+            <thead><tr><th>Элемент</th><th>Радиус</th><th>Токен</th></tr></thead>
+            <tbody>
+                <tr><td>Hero и крупные панели</td><td>24px</td><td><code>--radius-3xl</code></td></tr>
+                <tr><td>Карточки игр и баз</td><td>16px</td><td><code>--radius-xl</code></td></tr>
+                <tr><td>Кнопки, поля</td><td>12px</td><td><code>--radius-lg</code></td></tr>
+                <tr><td>Фильтры, чипы, вкладки</td><td>10px</td><td><code>--radius-md</code></td></tr>
+                <tr><td>Изображение внутри карточки</td><td>наследует верхний радиус карточки: у карточки <code>overflow: hidden</code>, у картинки своего радиуса нет</td><td>—</td></tr>
+            </tbody>
+        </table></div>
+
+        <h3>3. Кнопки главной</h3>
+        <p class="ds-note" style="margin: 0 0 12px;">Классы из <code>css/ui-system.css</code>, без локальных переопределений размеров. Высота 44 (<code>--control-height</code>), padding <code>0 var(--space-5)</code>, текст 14/600 Manrope, зазор до значка 8, радиус 12.</p>
+        <div class="ds-panel">
+            <div class="ds-demo-row">
+                <a class="bx-btn bx-btn-primary" href="#truth">Primary · лайм<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+                <a class="bx-btn" href="#truth">Secondary · тёмная</a>
+                <a class="bx-btn" href="#truth" style="color: var(--bx-lime-ink);">Кнопка карточки</a>
+            </div>
+            <ul class="rules">
+                <li><b>Primary</b> — <code>.bx-btn.bx-btn-primary</code>: заливка <code>--accent-primary</code>, текст <code>--text-on-accent</code>. Одна на блок.</li>
+                <li><b>Secondary</b> — <code>.bx-btn</code>: фон <code>--bg-elevated</code>, контур <code>--border-strong</code>, текст <code>--text-primary</code>.</li>
+                <li><b>Кнопка карточки</b> — secondary с лаймовым текстом во всю ширину карточки; при наведении на карточку — лаймовая заливка, текст <code>--text-on-accent</code>. На главной это <code>.game-cta</code>; на остальных страницах — <code>.bx-btn</code>, потому что старый <code>.game-cta</code> из <code>css/style.css</code> тянет устаревшие стили.</li>
+                <li><b>Hover</b> — подъём на 1px, контур циан (у primary — свечение <code>--glow-lime</code>). <b>Focus-visible</b> — обводка 2px <code>--accent-secondary</code>, отступ 3px. <b>Active</b> — без подъёма, <code>scale(.97)</code>.</li>
+                <li><b>Стрелка</b> — SVG внутри кнопки, при hover сдвигается вправо на 3px. Подчёркивания у ссылок-кнопок нет; ссылка-текст со стрелкой не оформляется <code>text-decoration</code> на весь inline-flex.</li>
+            </ul>
+        </div>
+
+        <h3>4. Hero</h3>
+        <ul class="rules">
+            <li>Заголовок (Unbounded 800, ключевое слово — <code>--bx-lime-ink</code>) и описание — слева; иллюстрация — справа, часть того же баннера (маска слева, без вложенной карточки, без текста и счётчиков поверх).</li>
+            <li>CTA-кнопки — под описанием: сначала primary, затем secondary, зазор 10.</li>
+            <li>Радиус 24, контур <code>--border-default</code>, фон <code>--bg-base</code>/<code>--bg-surface</code>.</li>
+            <li>Телефон (≤760): порядок «заголовок → описание → иллюстрация → кнопки»; кнопки во всю ширину, друг под другом, текст не обрезается.</li>
+        </ul>
+
+        <h3>5. Страница <code>/db/</code></h3>
+        <ul class="rules">
+            <li>Hero «База <em>данных</em>» с кнопками <b>«Выбрать игру»</b> (primary, к карточкам <code>#games</code>) и <b>«Все карты»</b> (secondary, <code>/#games</code>).</li>
+            <li>Карточки баз — как карточки игр главной: радиус 16, фон <code>--bg-surface</code>, контур <code>--border-default</code>, обложка 16:9, название, статистика с иконками в 2 колонки, внизу кнопка карточки (<code>.bx-btn.dbh-open</code>) «Открыть базу →».</li>
+            <li>Сетка: 3 колонки шире 1180px, 2 колонки 761–1180px, 1 колонка ≤760px.</li>
+            <li>Под карточками — значок карты циан, «Записи связаны с интерактивными картами» и «Все карты →» как <code>.bx-btn</code> (без подчёркивания, стрелка внутри кнопки).</li>
+            <li>Стили страницы — <code>css/db.css</code>, блок <code>.dbh-*</code>; разметка — <code>hub()</code> в <code>scripts/db_pages.py</code>. Только раскладка: цвета, радиусы и кнопки — из токенов и классов выше.</li>
+        </ul>
+
+        <h3>6. Адаптив</h3>
+        <div class="ds-panel ds-geo-wrap"><table class="ds-geo">
+            <thead><tr><th>Ширина</th><th>Каркас</th><th>Hero</th><th>Карточки</th></tr></thead>
+            <tbody>
+                <tr><td>1440</td><td>шапка + боковая навигация</td><td>текст слева, иллюстрация справа, кнопки в ряд</td><td>3 колонки</td></tr>
+                <tr><td>1024</td><td>шапка + боковая навигация (контент ≈ 870px)</td><td>как на 1440</td><td>2 колонки</td></tr>
+                <tr><td>768</td><td>шапка + нижняя навигация</td><td>как на 1440, иллюстрация уже</td><td>2 колонки</td></tr>
+                <tr><td>390</td><td>компактная шапка + нижняя фиксированная навигация, отступ снизу под неё</td><td>заголовок → описание → иллюстрация → кнопки друг под другом</td><td>1 колонка, обложка 16:9</td></tr>
+            </tbody>
+        </table></div>
+        <p class="ds-note" style="margin: 10px 0 0;">На всех ширинах: без горизонтальной прокрутки, текст не выходит за карточки, без огромных пустых областей.</p>
+
+        <h3>7. Запрет локальных исключений</h3>
+        <p class="ds-note" style="margin: 0;">Для <code>/db/</code> (и любой страницы) нельзя вводить свои радиусы, цвета, тени, высоты кнопок и состояния, если их нет в этом файле. Нужен новый вариант — сначала описать его здесь, потом использовать.</p>
+    </section>
+
+    <!-- ===================== слои ===================== -->
+    <section class="bx-section" id="depth">
+        <div class="bx-head"><h2>Слои глубины</h2></div>
+        <p class="ds-note">Три уровня плотных поверхностей: фон → карточка → приподнятое. Лайм — главное действие и активное, голубой — ссылки, значки, фокус и кромка при наведении, серо-синий — контуры.</p>
+        <div class="ds-depth">
+            <div class="ds-l0">
+                <div class="ds-l1">
+                    <b>Карточка</b>
+                    <div class="ds-l2">
+                        <span style="color: var(--bx-muted); font-size: 13px;">Всплывающий список, приподнятый блок</span>
+                        <div class="ds-row"><button class="bx-btn bx-btn-primary" type="button">Главная</button><button class="bx-btn" type="button">Обычная</button></div>
+                    </div>
+                    <span class="ds-l3"><i></i></span>
+                </div>
+            </div>
+            <ol class="ds-legend">
+                <li><b>0</b><span><strong>Фон страницы</strong><code>--bg-base</code> (= <code>--bx-bg</code>), навигация, шапка. Дальний слой: два пятна света и тонкая сетка (<code>body::before</code>).</span></li>
+                <li><b>1</b><span><strong>Карточки и блоки</strong><code>--bg-surface</code> (= <code>--bx-surface</code>) + контур <code>--border-default</code> + тень <code>--shadow-card</code>.</span></li>
+                <li><b>2</b><span><strong>Кнопки, списки, дорожки, выделенное</strong><code>--bg-elevated</code> (= <code>--bx-surface-2</code> и <code>--bx-surface-3</code>) + <code>--border-strong</code>; при наведении — <code>--shadow-hover</code>, кромка циан, подъём 1 px (карточки — 3 px).</span></li>
+                <li><b>⌨</b><span><strong>Поля ввода</strong><code>--bg-input</code>: поиск, поля, текст заметок.</span></li>
+                <li><b>∞</b><span><strong>Окна</strong>«О проекте», загрузка карты: <code>--bg-surface</code> + <code>--shadow-hover</code>, скругление 20–24 px, фон затемняется <code>--bx-scrim</code>.</span></li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- ===================== токены ===================== -->
+    <section class="bx-section" id="tokens">
+        <div class="bx-head"><h2>Токены</h2></div>
+        <p class="ds-note">Значения ниже читаются из CSS при открытии страницы — поменяли токен, справочник показал новое значение сам. Базовые токены — в начале <code>css/spatial.css</code>; тема у сайта одна — тёмная.
+            <code>--bx-*</code> (каркас), <code>--sp-*</code> (главная) и <code>--ui-*</code> (Tailwind, <code>web/app/globals.css</code>) теперь ссылаются на базовые. В правилах страниц — только токены; свои цвета и тени ловит <code>scripts/spatial_lint.py</code>.</p>
+        <h3 style="margin: 0 0 12px;">Базовые цвета</h3>
+        <div class="ds-tokens" id="tok-base"></div>
+        <h3 style="margin: 28px 0 12px;">Тени и свечения</h3>
+        <div class="ds-tokens" id="tok-shadow"></div>
+        <h3 style="margin: 28px 0 12px;">Скругления</h3>
+        <div class="ds-tokens" id="tok-radius"></div>
+        <h3 style="margin: 28px 0 12px;">Отступы, размеры, движение</h3>
+        <div class="ds-grid">
+            <div class="ds-panel"><h3>Отступы <code>--space-*</code></h3><div class="ds-space" id="tok-space"></div></div>
+            <div class="ds-panel" style="align-content: start;"><div class="ds-tokens" id="tok-size" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));"></div></div>
+        </div>
+        <h3 style="margin: 28px 0 12px;">Каркас <code>--bx-*</code></h3>
+        <p class="ds-note" style="margin: 0 0 12px;">Свои значения остались только у эфира, баннера «Начни играть» и затемнения; остальные — ссылки на базовые токены.</p>
+        <div class="ds-tokens" id="tok-color"></div>
+    </section>
+
+    <!-- ===================== геометрия ===================== -->
+    <section class="bx-section" id="geometry">
+        <div class="bx-head"><h2>Геометрия</h2></div>
+        <p class="ds-note">Одна на главной, картах (во всех палитрах) и в базе — <code>css/ui-system.css</code>. Круглыми остаются только аватары, метки на карте, индикаторы и дорожки прогресса; правила «все кнопки — капсулы» поверх системы не добавлять.</p>
+        <div class="ds-panel ds-geo-wrap">
+            <table class="ds-geo">
+                <thead><tr><th>Элемент</th><th>Размер</th><th>Скругление</th><th>Классы</th></tr></thead>
+                <tbody>
+                    <tr><td>Кнопки: главная / обычная / тихая</td><td>высота 44 (<code>--control-height</code>), текст 14/600, зазор 8</td><td>12 (<code>--radius-lg</code>)</td><td><code>.bx-btn</code>, <code>.bx-btn-primary</code>, <code>.sp-btn</code>, <code>.sp-primary</code>, <code>.sp-ghost</code>, <code>.auth-btn</code>, <code>.game-cta</code></td></tr>
+                    <tr><td>Кнопки-значки</td><td>40×40 (<code>--icon-size</code>), 44×44 на сенсорных экранах. Значок — строго по центру: <code>display:grid; place-items:center; padding:0; line-height:0</code>, значок — SVG или CSS-маска фиксированного размера (18–20), не символ шрифта («＋», «⋯», «×» смещаются метриками). Если в кнопке есть скрытый текст (<code>font-size:0</code>) и значок в <code>::before</code> — <code>display:flex; align-items:center; justify-content:center</code>, не grid: текст займёт вторую строку и сдвинет значок вверх. Надёжнее всего — значок <code>position:absolute; inset:0; margin:auto</code>. У кнопки-значка всегда <code>padding:0</code>: общие правила кнопок дают отступы 8×12, и в квадрате 40 значок съезжает. Проверять замером (значок на равном расстоянии от краёв), а не на глаз. При наведении и нажатии значок не сдвигается относительно кнопки</td><td>12</td><td><code>.bx-round</code>, <code>.bx-icon-btn</code>, <code>.sp-icon</code>, <code>.sp-round</code>, <code>.game-fav</code></td></tr>
+                    <tr><td>«Свернуть меню» (только телефон ≤480)</td><td>высота 44, во всю ширину панели с полями 12, текст 14/600</td><td>12</td><td><code>.sidebar-collapse-mobile</code> — цвет от <code>--sp-accent</code></td></tr>
+                    <tr><td>Поля, поиск, списки выбора</td><td>от 44, фон <code>--bg-input</code></td><td>12</td><td><code>.bx-search</code>, <code>.sp-field</code>, поиск в базе и на карте</td></tr>
+                    <tr><td>Фильтры, чипы, вкладки</td><td>от 36 (<code>--filter-height</code>), 44 на сенсорных</td><td>10 (<code>--radius-md</code>)</td><td><code>.sp-chip</code>, <code>.bp-chip</code>, <code>.lib-sort button</code>, вкладки базы</td></tr>
+                    <tr><td>Карточки игр и блоки</td><td>картинка внутри — 12</td><td>16 (<code>--radius-xl</code>)</td><td><code>.game-dropdown</code>, <code>.recent-item</code>, <code>.sp-card</code>, <code>.db-game</code></td></tr>
+                    <tr><td>Метки / меню и внутренние панели</td><td>—</td><td>8 / 12</td><td><code>.bx-badge</code>, <code>.game-new</code> / <code>.maps-list</code>, <code>.bx-find-list</code></td></tr>
+                    <tr><td>Первый экран / баннер, окна</td><td>—</td><td>24 / 20</td><td><code>.bx-hero</code> / <code>.bx-cta</code>, <code>.bx-dialog</code>, попапы меток</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="ds-note" style="margin: 14px 0 0;">Состояния у всех: наведение (кромка циан, подъём 1 px), фокус с клавиатуры — обводка 2 px циан, нажатие — без подъёма, недоступно — прозрачность 45 %, загрузка (<code>aria-busy</code>, <code>.is-loading</code>). При «уменьшить движение» анимации выключаются.</p>
+    </section>
+
+    <!-- ===================== шрифт ===================== -->
+    <section class="bx-section" id="type">
+        <div class="bx-head"><h2>Шрифт</h2></div>
+        <p class="ds-note">Фирменные шрифты (свои, <code>fonts/</code>): <b>Unbounded</b> — заголовки, название сайта, названия игр и карт (<code>--bx-font-display</code>);
+            <b>Manrope</b> — всё остальное (<code>--bx-font</code>, на картах <code>--font-ui</code>). Inter отвергнут. Цифры в счётчиках — <code>tabular-nums</code>.</p>
+        <div class="ds-panel ds-type">
+            <div><small>hero · Unbounded 36–48 / 800<br>телефон 28–32</small><span class="bx-hero-title" style="font-family: var(--bx-font-display); font-size: clamp(28px, 4vw, 48px); line-height: 1.1;">Карты игр <span>на русском</span></span></div>
+            <div><small>h2 раздела · Unbounded 24 / 800<br>телефон 20</small><span style="font-family: var(--bx-font-display); font-size: 24px; font-weight: 800; letter-spacing: -.01em;">Библиотека игр</span></div>
+            <div><small>карточка · Unbounded 16 / 600</small><span class="game-title">The Elder Scrolls V: Skyrim</span></div>
+            <div><small>бренд · Unbounded 16 / 800, заглавные</small><span class="bx-brand-name"><span>Broski</span><span>Play</span></span></div>
+            <div><small>кнопки · Manrope 14 / 600</small><span style="font-size: 14px; font-weight: 600;">Открыть карту</span></div>
+            <div><small>текст · Manrope 15 / 400</small><span>Отмечайте найденное — прогресс сохранится на всех устройствах.</span></div>
+            <div><small>второй план · 13–14</small><span style="color: var(--bx-muted); font-size: 14px;">1 139 меток в прогрессе · 9 карт</span></div>
+        </div>
+    </section>
+
+    <!-- ===================== каркас ===================== -->
+    <section class="bx-section" id="shell">
+        <div class="bx-head"><h2>Каркас</h2></div>
+        <p class="ds-note">Разметка — <code>web/components/shell/*.tsx</code>, одна на главную, карты и базу. Стили страниц каркас не трогают: всё — классы <code>.bx-*</code>.</p>
+        <div class="ds-grid">
+            <div class="ds-panel ds-wide">
+                <h3>Шапка</h3>
+                <div class="bx-top ds-top-demo">
+                    <span class="bx-brand"><img src="../icons/logo-badge-96.png" alt="" width="44" height="44"><span class="bx-brand-name"><span>Broski</span><span>Play</span></span></span>
+                    <label class="bx-search">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                        <input type="search" placeholder="Найти игру или карту" aria-label="Найти игру или карту">
+                        <kbd>/</kbd>
+                    </label>
+                    <span class="bx-actions">
+                        <button class="bx-icon-btn" type="button" aria-label="Новое"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><b>3</b></button>
+                        <span class="auth-card">
+                            <a class="auth-info" href="#shell" title="Личный кабинет"><span class="auth-guest" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg></span><span class="auth-text"><b>Кабинет</b><br><span>Войдите через Google для синхронизации меток</span></span></a>
+                            <button class="auth-btn" type="button"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Войти с Google</span></button>
+                        </span>
+                    </span>
+                </div>
+                <pre>.bx-top · .bx-brand (BROSKI — лайм, PLAY — циан, Unbounded заглавными) · .bx-search (+ kbd) · .bx-icon-btn (+ b — счётчик)
+.auth-card у гостя — одна пилюля [значок Кабинет | G Войти с Google]; со входом — аватар (.has-avatar) и «Выйти» (.logout)
+на телефоне (≤680) поле прячется за кнопку .bx-search-btn, .bx-top.is-search раскрывает его; у гостя остаётся значок Google</pre>
+            </div>
+            <div class="ds-panel ds-wide ds-rail">
+                <h3>Навигация</h3>
+                <p>На компьютере — колонка слева (<code>--bx-rail-w</code>), на телефоне (≤860) — нижняя панель. Неактивные пункты — серые (<code>--bx-muted</code>), при наведении светлеют. Активный — акцент (<code>--bx-lime-ink</code>): значок, подпись, подложка и полоска; на страницах игры окрашивается в цвет игры — так задумано, не менять.</p>
+                <nav class="bx-rail" aria-label="Образец навигации">
+                    <a class="bx-rail-item is-active" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20h-5v-6h-6v6H4z"/></svg><span>Главная</span></a>
+                    <a class="bx-rail-item" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><g transform="translate(.15 .15) scale(.046875)" stroke-width="26"><path d="M84 106 140 84Q156 78 172 84L196 96H234A22 22 0 0 0 278 96H316L340 84Q356 78 372 84L428 106C466 160 500 300 504 360 506 400 490 422 468 422 452 422 440 414 430 404L382 360C370 350 360 346 348 346H164C152 346 142 350 130 360L82 404C72 414 60 422 44 422 22 422 4 400 6 360 8 300 42 160 84 106Z"/><circle cx="130" cy="180" r="36"/><circle cx="326" cy="265" r="36"/><path d="M178 216H214V248H246V280H214V312H178V280H146V248H178Z"/><g fill="currentColor" stroke="none"><circle cx="384" cy="147" r="16"/><circle cx="349" cy="180" r="16"/><circle cx="418" cy="180" r="16"/><circle cx="384" cy="213" r="16"/></g></g></svg><span>Игры</span></a>
+                    <a class="bx-rail-item" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v6c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8v-6M4.5 11.5v6c0 1.6 3.4 2.8 7.5 2.8s7.5-1.2 7.5-2.8v-6"/></svg><span>База</span></a>
+                    <a class="bx-rail-item" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><span>Новое</span></a>
+                </nav>
+                <pre>.bx-rail · .bx-rail-item · .is-active (страница) · пункта «Избранное» нет: избранное — звёздочка на карточке игры</pre>
+            </div>
+            <div class="ds-panel">
+                <h3>Кнопки</h3>
+                <div class="ds-row">
+                    <a class="bx-btn bx-btn-primary" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M8 5.5v13l10.5-6.5z"/></svg>Открыть карту</a>
+                    <a class="bx-btn" href="#shell">Все игры</a>
+                    <button class="sp-btn sp-ghost" type="button">Отмена</button>
+                </div>
+                <div class="ds-row">
+                    <button class="bx-btn" type="button" disabled>Недоступна</button>
+                    <button class="bx-btn" type="button" aria-busy="true">Загрузка…</button>
+                </div>
+                <div class="ds-row">
+                    <button class="bx-round" type="button" aria-label="Назад"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+                    <button class="bx-round" type="button" aria-label="Вперёд"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+                    <button class="bx-icon-btn" type="button" aria-label="Найти"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+                    <button class="bx-head-link" type="button">Смотреть все<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+                </div>
+                <pre>главная .bx-btn-primary / .sp-primary (лайм, свечение при наведении) · обычная .bx-btn / .sp-btn · тихая .sp-ghost / .bx-head-link
+значки .bx-round · .bx-icon-btn — квадрат 40, скругление 12 (не круг); значок SVG/маска по центру, не символ шрифта (пример: «＋»/«⋯» в сайдбаре карт)
+React: &lt;Button variant="primary | secondary | ghost | icon"&gt; (web/components/ui/button.tsx)</pre>
+            </div>
+            <div class="ds-panel">
+                <h3>Метки и значки</h3>
+                <div class="ds-row">
+                    <span class="bx-badge"><i></i>Обновлено сегодня</span>
+                    <a class="bx-latest" href="#shell"><b>Новое</b><time>19.11</time><span>Skyrim: 120 меток</span></a>
+                </div>
+                <div class="ds-row" style="position: relative; min-height: 26px;">
+                    <span class="game-new" style="position: static;">Новое</span>
+                    <span class="game-new is-upd" style="position: static;">Обновлено</span>
+                    <span class="game-new is-soon" style="position: static;">Скоро</span>
+                </div>
+                <pre>.bx-badge · .bx-latest · .game-new / .is-upd / .is-soon</pre>
+            </div>
+            <div class="ds-panel">
+                <h3>Подвал</h3>
+                <div class="ds-row">
+                    <a class="bx-social-btn bx-twitch" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3 3 6.5V19h4v2h2.5l2-2h3.2L20 13.7V3H4Zm14 9.8-2.6 2.6h-3.6l-2 2v-2H6.6V5H18v7.8ZM15 7.6h-1.8v4.6H15V7.6Zm-4.6 0H8.6v4.6h1.8V7.6Z"/></svg>Twitch</a>
+                    <a class="bx-social-btn bx-twitch is-live" href="#shell"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3 3 6.5V19h4v2h2.5l2-2h3.2L20 13.7V3H4Zm14 9.8-2.6 2.6h-3.6l-2 2v-2H6.6V5H18v7.8ZM15 7.6h-1.8v4.6H15V7.6Zm-4.6 0H8.6v4.6h1.8V7.6Z"/></svg>В эфире</a>
+                </div>
+                <a class="bx-donate" href="#shell">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                    <span class="bx-donate-text"><b>Поддержать проект</b><span>цель из data/goal.json</span></span>
+                    <span class="bx-donate-bar"><i style="width: 46%"></i></span>
+                </a>
+                <pre>.bx-social-btn · .bx-twitch.is-live · .bx-donate (+ .bx-donate-bar)</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== блоки главной ===================== -->
+    <section class="bx-section" id="parts">
+        <div class="bx-head"><h2>Блоки главной</h2></div>
+        <p class="ds-note">Разметка — <code>web/components/home/*.tsx</code>, стили — <code>css/home-neo.css</code>. У каждой игры свой акцент <code>--game-accent</code> (класс <code>.theme-&lt;игра&gt;</code>): кромка при наведении, полоска прогресса.</p>
+        <div class="ds-grid">
+            <div class="ds-panel">
+                <h3>Карточка игры</h3>
+                <details class="game-dropdown theme-skyrim ds-card">
+                    <summary>
+                        <div class="game-banner">
+                            <span class="game-new is-upd">Обновлено</span>
+                            <img class="game-banner-art" src="../skyrim-map/logo-card-720.webp" alt="" width="720" height="405" loading="lazy">
+                            <button class="game-fav" type="button" aria-pressed="true" aria-label="Убрать из избранного: The Elder Scrolls V: Skyrim" title="Убрать из избранного"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.2 2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.4 2.8 1-6-4.3-4.2 6-.9z"/></svg></button>
+                        </div>
+                        <div class="game-info">
+                            <div class="game-title-block">
+                                <span class="game-title">The Elder Scrolls V: Skyrim</span>
+                                <span class="game-meta"><span>2 карты</span><i>·</i><span>4 210 меток</span></span>
+                                <div class="game-progress"><span class="game-progress-track"><span style="width: 34%"></span></span><strong>34%</strong></div>
+                            </div>
+                            <span class="game-indicators"><span class="game-cta is-pick"><span>Выбрать карту</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></span>
+                        </div>
+                    </summary>
+                    <div class="maps-list">
+                        <a class="map-link" href="#parts"><span class="map-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>Скайрим</span><span class="status"><span class="map-progress">41%</span></span></a>
+                        <a class="map-link is-untouched" href="#parts"><span class="map-name"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>Солстейм</span><span class="status"><span class="map-progress">0%</span></span></a>
+                    </div>
+                </details>
+                <pre>&lt;details class="game-dropdown theme-skyrim"&gt; · .game-fav — звёздочка «В избранное» (bp_fav): избранные игры идут первыми в библиотеке и в меню «Игры»; отдельной кнопки/фильтра «Избранное» на сайте нет
+наведение: подъём, кромка акцентом игры, кнопка лаймом; клик раскрывает .maps-list
+на компьютере список всплывает под карточкой; на телефоне (≤680) — внутри карточки, ровно под кнопкой «Выбрать карту»: та же ширина, без боковых полей (margin: 8px 0 0)</pre>
+            </div>
+            <div class="ds-panel">
+                <h3>«Продолжить» и пусто</h3>
+                <div class="recent-list ds-recent">
+                    <div class="recent-cell theme-skyrim"><a class="recent-item" href="#parts" style="--recent-accent: var(--game-accent)"><span class="recent-game">Skyrim</span><span class="recent-map">Солстейм</span><span class="recent-bar"><i style="width: 22%"></i></span><span class="recent-pct">22% найдено</span></a></div>
+                    <div class="recent-cell theme-witcher3"><a class="recent-item" href="#parts" style="--recent-accent: var(--game-accent)"><span class="recent-game">Ведьмак 3</span><span class="recent-map">Велен</span><span class="recent-bar"><i style="width: 63%"></i></span><span class="recent-pct">63% найдено</span></a></div>
+                </div>
+                <p class="bx-empty" style="margin: 0;">Ничего не найдено — попробуйте другое название</p>
+                <pre>.recent-item (--recent-accent) · .bx-empty</pre>
+            </div>
+            <div class="ds-panel">
+                <h3>Загрузка карты</h3>
+                <div class="loading-panel" style="width: 100%; animation: none; box-shadow: var(--bx-sh-1);">
+                    <div class="loading-eyebrow">Загружаем карту</div>
+                    <div class="loading-title">Велен</div>
+                    <div class="loading-tip">Совет: клавиша F — поиск по меткам</div>
+                    <span class="loading-track"><span></span></span>
+                    <div class="loading-caption">BROSKIPLAY</div>
+                </div>
+                <pre>.loading-screen &gt; .loading-panel · .loading-track</pre>
+            </div>
+            <div class="ds-wide">
+                <section class="bx-cta" style="margin-top: 0;">
+                    <img class="bx-cta-img" src="../img/cta-start-960.webp" alt="" width="960" height="540" loading="lazy">
+                    <div class="bx-cta-copy">
+                        <h2>Начни играть <span>уже сегодня</span></h2>
+                        <p>Баннер тёмный — под картинку (<code>--bx-cta-*</code>).</p>
+                        <a class="bx-btn bx-btn-primary" href="#parts">Выбрать игру</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== палитры карт ===================== -->
+    <section class="bx-section" id="maps">
+        <div class="bx-head"><h2>Палитры карт</h2></div>
+        <p class="ds-note">Каркас у карт общий с главной, а интерфейс самой карты (боковая панель, попапы, кнопки над тайлами) — в палитре игры:
+            <code>&lt;html data-game="…"&gt;</code> + строка в блоке 1 <code>css/spatial.css</code>, примитивы <code>.sp-*</code>. Цвета у каждой игры свои, а размеры и скругления — общие (раздел «Геометрия»).
+            Новая палитра появится здесь, если вписать её в <code>THEMES</code> внизу страницы.</p>
+        <div class="scopes" id="scopes"></div>
+
+        <div class="ds-grid" style="margin-top: 18px;">
+            <div class="ds-panel ds-wide">
+                <h3>Над картой</h3>
+                <div class="ds-map" data-sp-scope="witcher3">
+                    <div class="zoom"><button class="sp-btn sp-round sp-float" type="button" aria-label="Приблизить">+</button><button class="sp-btn sp-round sp-float" type="button" aria-label="Отдалить">−</button></div>
+                    <div class="sp-glass">
+                        <b>Попап метки</b>
+                        <p>Плотное окно палитры игры, тонкий контур и тень парения.</p>
+                        <button class="sp-btn sp-primary" type="button" style="width: 100%; padding: 8px 14px;">Отметить найденным</button>
+                    </div>
+                </div>
+                <pre>.sp-btn.sp-float — кнопка поверх тайлов (40×40, скругление 12) · .sp-glass — окно над картой (--sp-overlay)
+попап метки и окна карты — скругление 20, кнопки в попапе — 44 / 12 (css/ui-system.css, html[data-game] …)</pre>
+            </div>
+            <div class="ds-panel ds-wide ds-rail">
+                <h3>Шапка и меню в палитре игры</h3>
+                <p>На карте и в базе игры шапка, левое меню (на телефоне — нижняя панель), подвал и окна берут цвета палитры игры.
+                    Надпись BROSKIPLAY остаётся фирменной: лайм и циан, на бумаге свитков — тёмные оттенки.</p>
+                <div class="ds-picks" id="shellPicks" role="group" aria-label="Палитра каркаса"></div>
+                <div class="ds-shellgame" id="shellGame" data-sp-scope="witcher3"></div>
+                <pre>css/shell.css: html[data-game] (и блок data-sp-scope="&lt;игра&gt;") → токены --bx-* и базовые --bg-*/--text-*/--accent-* на .bx-top, .bx-rail, .bx-footer, .bx-dialog
+считаются из --sp-base / --sp-text / --sp-muted / --sp-accent / --sp-tint игры; база игры — с уточнениями палитры из css/db.css
+новая игра — только строка в css/spatial.css, каркас подхватит её сам</pre>
+            </div>
+            <div class="ds-panel ds-wide" id="sidebar-tpl">
+                <h3>Боковая панель карты — шаблон для новой игры</h3>
+                <p>Одна панель на все 13 игр: порядок, подписи и геометрию задаёт сборка (<code>web/lib/sidebar.ts</code> → <code>web/components/map/map-sidebar.ts</code>),
+                    стили — <code>css/map-ux.css</code> §5 и §5б. Игра даёт только логотип, свои элементы управления и категории — в палитре <code>data-game</code>.
+                    Ширина 380 px (от 1440 px — 420), прокручивается только <code>.scroll-body</code>, поиск закреплён сверху.</p>
+                <div class="ds-picks" id="sbPicks" role="group" aria-label="Палитра панели"></div>
+                <div class="ds-sb-wrap">
+                    <div class="ds-sb" id="sbDemo" data-sp-scope="witcher3" aria-label="Образец боковой панели карты">
+                        <a class="ds-sb-logo" href="#sidebar-tpl">Новая игра</a>
+                        <div class="ds-sb-seg"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>Карта</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>База данных</span></div>
+                        <div class="ds-sb-field"><p class="ds-sb-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>Карта</p><select class="sp-field" aria-label="Карта"><option>Мир</option><option>Подземелья</option></select></div>
+                        <div class="ds-sb-field"><p class="ds-sb-label"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Область</p><select class="sp-field" aria-label="Область"><option>Вся карта</option><option>Север</option></select></div>
+                        <div class="ds-sb-search"><input class="sp-field" type="search" placeholder="Поиск: сундук, торговец…" aria-label="Поиск по меткам"></div>
+                        <div class="ds-sb-prog"><b>Найдено 312 / 1 140 · 27%</b><span class="sp-track"><i style="width: 27%"></i></span><small>В подсчёте: эта карта, все категории</small></div>
+                        <div class="ds-sb-act"><button class="sp-btn" type="button">Скрыть все</button><button class="sp-btn" type="button">Скрыть найденные</button><button class="sp-btn ds-sq" type="button" aria-label="Добавить свою метку">＋</button><button class="sp-btn ds-sq" type="button" aria-label="Ещё: экспорт, импорт">⋯</button></div>
+                        <div class="ds-sb-sets"><button class="sp-chip" type="button">Сбросить фильтры</button><button class="sp-chip" type="button">Коллекции</button><button class="sp-chip" type="button">Сундуки</button><button class="sp-chip" type="button">Задания</button></div>
+                        <div class="ds-sb-group">
+                            <div class="ds-sb-gh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>Локации<small>40 / 128</small></div>
+                            <div class="ds-sb-row"><i></i><span>Город</span><small>4 / 9</small><b>⋯</b></div>
+                            <div class="ds-sb-row"><i></i><span>Подземелье</span><small>12 / 47</small><b>⋯</b></div>
+                            <div class="ds-sb-row is-off"><i></i><span>Торговец</span><small>24 / 72</small><b>⋯</b></div>
+                        </div>
+                        <div class="ds-sb-group"><div class="ds-sb-gh is-collapsed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>Коллекционные предметы<small>88 / 310</small></div></div>
+                        <div class="ds-sb-about">О карте</div>
+                    </div>
+                    <ol class="ds-sb-legend">
+                        <li><span><strong>Логотип</strong> — одна ссылка «к началу карты» на <code>/&lt;игра&gt;-map/</code>, строка 48 px: картинка высотой 40 px или текст <code>.logo-main</code> (Unbounded). Крошек и подзаголовков нет.</span></li>
+                        <li><span><strong>«Карта | База данных»</strong> — появляется сам, если есть <code>data/db/&lt;игра&gt;</code>; 32 px, на сенсорных 44.</span></li>
+                        <li><span><strong>«Карта» и «Область»</strong> — выпадающие списки 44 px с подписью-значком. Поле без выбора (одна карта, нет областей) скрыто.</span></li>
+                        <li><span><strong>Поиск</strong> — 44 px, закреплён у верха прокрутки; первыми в списке — совпавшие категории. Особая возможность игры — подсказкой под полем (<code>.search-hint</code>).</span></li>
+                        <li><span><strong>Прогресс</strong> — одной строкой «Найдено N / M · P%», полоса 4 px и пояснение, что в подсчёте.</span></li>
+                        <li><span><strong>Действия</strong> — одна строка 40 px (44 на сенсорных): «Показать/Скрыть все», «Скрыть найденные», «＋» своя метка, «⋯» экспорт и импорт.</span></li>
+                        <li><span><strong>Наборы</strong> — чипы в одну строку с прокруткой, «Сбросить фильтры» первым и акцентом игры. Особые фильтры игры — в «Дополнительные фильтры».</span></li>
+                        <li><span><strong>Категории</strong> — группы сворачиваются (счётчик — сумма видимых строк); строка 36 px: значок → название → найдено/всего → «⋯» (подсветить, только эта). Выключенная — бледнее. Пустые на этой карте скрыты.</span></li>
+                        <li><span><strong>Внизу</strong> — подпись источника (<code>.bp-credit</code>) и «О карте» (генерируется).</span></li>
+                    </ol>
+                </div>
+                <pre>Исходник новой игры — &lt;игра&gt;-map/index.html (порядок внутри .section не важен, сборка расставит; подписи полей ставит компонент):
+&lt;div id="sidebar"&gt;
+  &lt;div class="sidebar-header"&gt;&lt;div class="header-top-row"&gt;&lt;h1&gt;&lt;img src=&quot;logo.webp&quot; alt=&quot;Название игры&quot;&gt;&lt;/h1&gt;&lt;/div&gt;&lt;/div&gt;   — или &lt;span class="logo-main"&gt;Название&lt;/span&gt;
+  &lt;div class="section"&gt;
+    &lt;div id="map-switch" class="map-switch"&gt;&lt;/div&gt;                     — «Карта» (или &lt;select id="map-select"&gt;)
+    &lt;select id="region-select"&gt;&lt;/select&gt;                               — «Область», если есть
+    &lt;div class="search-wrap"&gt;&lt;input type="search" id="search-input"&gt;&lt;div class="search-results" id="search-results"&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class="progress-card"&gt;… #progress-value, #progress-bar &gt; #progress-fill, #progress-count …&lt;/div&gt;
+    &lt;div class="btn-group"&gt;#show-all-btn, #hide-all-btn, #hide-found-btn&lt;/div&gt;
+    &lt;button id="add-marker-btn" class="add-marker-btn"&gt;   &lt;div class="io-row"&gt;экспорт / импорт&lt;/div&gt;   #import-progress-input, #io-status
+  &lt;/div&gt;
+  &lt;div class="filters-list" id="filters-container"&gt;&lt;/div&gt;
+  &lt;p class="bp-credit"&gt;…&lt;/p&gt;   &lt;details class="bp-about"&gt; — scripts/build_map_about.py
+&lt;/div&gt;
+Свои фоны, размеры и порядок в css/style.css игры не задавать — только палитра в css/spatial.css. Новый тип элемента — правило в parseSidebar (web/lib/sidebar.ts).</pre>
+            </div>
+            <div class="ds-panel ds-wide">
+                <h3>«Свернуть меню» — только на телефоне</h3>
+                <p>Закреплена внизу боковой панели карты на ширине до 480 px, на компьютере её нет. Геометрия общая — 44 / 12, как у кнопок;
+                    цвет — акцент палитры игры (<code>--sp-accent</code>): контур, заливка-оттенок, текст и стрелка. Список категорий плавно уходит под кнопку. Прокрутите образец.</p>
+                <div class="ds-picks" id="collapsePicks" role="group" aria-label="Палитра образца"></div>
+                <div class="ds-phone" id="collapseDemo" data-sp-scope="witcher3">
+                    <div class="ds-phone-list">
+                        <span>Места силы<small>12</small></span><span>Знаки вопроса<small>148</small></span><span>Сокровища<small>63</small></span>
+                        <span>Логова чудовищ<small>27</small></span><span>Торговцы<small>19</small></span><span>Гвинт<small>31</small></span><span>Доски объявлений<small>9</small></span>
+                    </div>
+                    <button type="button" class="sidebar-collapse-mobile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg><span>Свернуть меню</span></button>
+                </div>
+                <pre>&lt;button class="sidebar-collapse-mobile"&gt; — последний элемент #sidebar в исходнике карты; стиль и показ ≤480 — css/ui-system.css
+у игр в css/style.css только display: none (старые правила перекрыты); .ds-phone — показ в справочнике на любой ширине</pre>
+            </div>
+            <div class="ds-panel ds-wide">
+                <h3>Акценты игр на главной</h3>
+                <div class="ds-accents" id="accents"></div>
+                <pre>.theme-&lt;игра&gt; { --game-accent: … } — в начале css/home-neo.css</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== правила ===================== -->
+    <section class="bx-section" id="rules">
+        <div class="bx-head"><h2>Правила</h2></div>
+        <ul class="rules">
+            <li><b>Образец — главная.</b> Новые страницы берут каркас (<code>web/components/shell/</code>) и токены (<code>--bx-*</code> или базовые <code>--bg-*</code>, <code>--radius-*</code>, <code>--space-*</code>); свои фоны, тени, контуры и скругления не задают.</li>
+            <li><b>Цвета канала.</b> Фон <code>#0d111b</code>, поверхности <code>#162231</code> / <code>#1b2938</code>, лайм <code>#c7ff3f</code>, циан <code>#54dcff</code>. Без фиолетового и без «жидкого стекла» в каркасе.</li>
+            <li><b>Шрифты бренда.</b> Unbounded — заголовки и названия, Manrope — остальное. Inter не возвращать.</li>
+            <li><b>Одна геометрия.</b> Кнопки 44 / 12, значки 40 / 12, фильтры 36 / 10, карточки 16 — из <code>css/ui-system.css</code>, он подключается последним (каркасы Next, исходники карт, <code>CSS_PARTS</code> базы). Круглое — только аватары, метки, индикаторы и прогресс.</li>
+            <li><b>Лайм — одно главное действие на блок.</b> Голубой — ссылки, значки, фокус. Активный пункт и выбранный фильтр — лайм.</li>
+            <li><b>Тема одна — тёмная.</b> Светлую тему, переключатель и выбор по системе убрали 2026-11-19: правил <code>[data-theme="light"]</code> и <code>prefers-color-scheme</code> не добавлять. Лайм как цвет текста — <code>--bx-lime-ink</code>.</li>
+            <li><b>Палитры игр — только у карт.</b> Строка в блоке 1 <code>css/spatial.css</code> и <code>data-game</code>; положение элементов карты — в <code>css/map-base.css</code>.</li>
+            <li><b>Боковая панель карты — общий шаблон.</b> Новая игра даёт в <code>#sidebar</code> только логотип, свои элементы и категории (раздел «Палитры карт» → «Боковая панель карты»); порядок, подписи и размеры — сборка и <code>css/map-ux.css</code> §5, в стилях игры их не переопределять.</li>
+            <li><b>Список карт на телефоне — ровно под кнопкой.</b> <code>.maps-list</code> той же ширины, что «Выбрать карту», без своих боковых отступов (<code>css/home-neo.css</code>, ≤680).</li>
+            <li><b>«Свернуть меню» — только телефон.</b> Кнопка 44 / 12 в цвете акцента игры (<code>--sp-accent</code>), одна на все карты — <code>css/ui-system.css</code>; капсулой не делать.</li>
+            <li><b>Над картой — с кольцом.</b> Кнопкам на тайлах <code>--sp-float</code>, окнам <code>.sp-glass</code> + <code>--sp-overlay</code>.</li>
+            <li><b>Осознанное исключение</b> (цвет бренда, акцент игры) — <code>/* sp-ok: причина */</code> в той же строке, иначе <code>spatial_lint.py</code> остановит публикацию.</li>
+            <li><b>Отвергнуто:</b> светлая тема, плавающая панель карты, нижняя шторка фильтров, медная перекраска, счётчик игр на главной, блок «Категории» на главной.</li>
+        </ul>
+    </section>
+
+    <section class="bx-section" id="how">
+        <div class="bx-head"><h2>How to use this file</h2></div>
+        <p class="ds-note" style="margin: 0;">Перед изменением визуала сначала прочитать этот файл, затем проверить главную и <code>/db/</code> на localhost, сохранить существующие токены и радиусы, не создавать локальные исключения без явного описания здесь.</p>
+    </section>
+
+    <p class="ds-foot">Страница закрыта от поиска · <a href="/" style="color: var(--bx-cyan-ink);">на главную</a></p>
+</main>
+
+<script>
+(function () {
+    var root = document.documentElement;
+
+    function val(name) { return getComputedStyle(root).getPropertyValue(name).trim(); }
+    function tok(box, t, demo) {
+        var el = document.createElement("div");
+        el.className = "ds-tok";
+        el.innerHTML = demo + '<div><div class="ds-tok-name">' + t[0] + '</div><div class="ds-tok-use">' + t[1] + '</div><div class="ds-tok-val"></div></div>';
+        el.querySelector(".ds-tok-val").textContent = val(t[0]);
+        document.getElementById(box).appendChild(el);
+    }
+    function swatch(t) { return '<div class="ds-tok-demo" style="background: var(' + t[0] + ')"></div>'; }
+    [
+        ["--bg-base", "фон страницы, слой 0"], ["--bg-surface", "карточки и блоки, слой 1"], ["--bg-elevated", "кнопки, списки, дорожки, слой 2"],
+        ["--bg-input", "поля ввода, поиск"],
+        ["--border-default", "контур по умолчанию"], ["--border-strong", "контур кнопок и полей"],
+        ["--text-primary", "основной текст"], ["--text-secondary", "второй план"], ["--text-muted", "подписи, подсказки"],
+        ["--accent-primary", "лайм: главное действие, выбранное"], ["--text-on-accent", "текст на лайме"],
+        ["--accent-secondary", "циан: ссылки, фокус, наведение"], ["--status-danger", "ошибка, удаление"]
+    ].forEach(function (t) { tok("tok-base", t, swatch(t)); });
+    [
+        ["--shadow-card", "карточка, плитка (= --bx-sh-1)"], ["--shadow-hover", "наведение, окна (= --bx-sh-2, --bx-sh-pop)"],
+        ["--glow-lime", "главная кнопка при наведении"], ["--glow-cyan", "поле в фокусе"], ["--sp-focus-ring", "кольцо фокуса полей"]
+    ].forEach(function (t) { tok("tok-shadow", t, '<div class="ds-tok-stage"><div class="ds-tok-demo" style="box-shadow: var(' + t[0] + ')"></div></div>'); });
+    [
+        ["--radius-xs", "дорожка загрузки"], ["--radius-sm", "метки, строки списков"], ["--radius-md", "фильтры, чипы, вкладки"],
+        ["--radius-lg", "кнопки, значки, поля, меню"], ["--radius-xl", "карточки (= --bx-r)"], ["--radius-2xl", "окна, баннер, попап метки"],
+        ["--radius-3xl", "первый экран (= --bx-r-lg)"], ["--radius-full", "аватары, прогресс"]
+    ].forEach(function (t) { tok("tok-radius", t, '<div class="ds-tok-demo" style="background: var(--bg-elevated); border-radius: var(' + t[0] + ')"></div>'); });
+    ["1", "2", "3", "4", "5", "6", "8", "10", "12", "16"].forEach(function (n) {
+        var d = document.createElement("div");
+        d.innerHTML = "<span>--space-" + n + "</span><i></i>";
+        d.querySelector("i").style.width = "var(--space-" + n + ")";
+        d.querySelector("span").title = val("--space-" + n);
+        document.getElementById("tok-space").appendChild(d);
+    });
+    [
+        ["--control-height", "кнопки, поля"], ["--icon-size", "кнопки-значки (сенсор 44)"], ["--filter-height", "фильтры (сенсор 44)"],
+        ["--motion-duration", "переходы"], ["--bx-top-h", "шапка (телефон 64)"], ["--bx-rail-w", "навигация (телефон 0)"],
+        ["--bx-font", "основной шрифт"], ["--bx-font-display", "заголовки"]
+    ].forEach(function (t) { tok("tok-size", t, ""); });
+    [
+        ["--bx-bg", "фон страницы"], ["--bx-surface", "карточки"], ["--bx-surface-2", "кнопки, списки"], ["--bx-surface-3", "дорожки, выделенное"],
+        ["--bx-line", "контур"], ["--bx-line-2", "контур кнопок"], ["--bx-text", "текст"], ["--bx-muted", "второй план"], ["--bx-faint", "подписи"],
+        ["--bx-lime", "лайм"], ["--bx-lime-ink", "лайм как цвет текста"], ["--bx-on-lime", "текст на лайме"],
+        ["--bx-cyan", "циан"], ["--bx-cyan-ink", "циан как цвет текста"], ["--bx-live", "эфир Twitch (своё)"],
+        ["--bx-cta-bg", "баннер «Начни играть» (своё)"], ["--bx-scrim", "затемнение под окном (своё)"]
+    ].forEach(function (t) { tok("tok-color", t, swatch(t)); });
+
+    var THEMES = [
+        ["home", "Главная", "сайт (--sp-*)"],
+        ["stellar", "Stellar Blade"], ["palworld", "Palworld"], ["tainted", "Tainted Grail"], ["gothic", "Gothic Remake"],
+        ["dimraeth", "Dimraeth"], ["oblivion", "Oblivion Remastered", "бумага"], ["skyrim", "Skyrim", "бумага"],
+        ["witcher3", "The Witcher 3"], ["cyberpunk", "Cyberpunk 2077"], ["rdr2", "Red Dead Redemption 2"], ["gta6", "Grand Theft Auto VI"],
+        ["hogwarts", "Hogwarts Legacy"], ["phantomblade", "Phantom Blade Zero"]
+    ];
+    var scopes = document.getElementById("scopes");
+    THEMES.forEach(function (t) {
+        var el = document.createElement("section");
+        el.className = "scope";
+        el.setAttribute("data-sp-scope", t[0]);
+        el.innerHTML =
+            '<div class="scope-head"><b>' + t[1] + '</b><small>' + (t[2] || t[0]) + '</small></div>' +
+            '<div class="swatches" aria-hidden="true"><i style="background: var(--sp-base)"></i><i style="background: var(--sp-card)"></i><i style="background: var(--sp-btn)"></i><i style="background: var(--sp-accent)"></i><i style="background: var(--sp-muted)"></i></div>' +
+            '<div class="sp-card"><b>Боковая панель</b><p>Текст второго плана и <a href="#maps">ссылка</a>.</p>' +
+            '<div class="ds-row" style="gap: 8px;"><button class="sp-btn" type="button">Кнопка</button><button class="sp-btn sp-primary" type="button">Главная</button><button class="sp-btn" type="button" aria-pressed="true">Нажата</button></div>' +
+            '<input class="sp-field" placeholder="Поиск по меткам" aria-label="Поиск по меткам"><span class="sp-track"><i style="width: 54%"></i></span></div>';
+        scopes.appendChild(el);
+    });
+
+    // каркас в палитре игры: копии шапки и меню из раздела «Каркас», палитра — data-sp-scope
+    var shellGame = document.getElementById("shellGame"), picks = document.getElementById("shellPicks");
+    var topDemo = document.querySelector("#shell .ds-top-demo"), railDemo = document.querySelector("#shell .bx-rail");
+    if (shellGame && topDemo && railDemo) {
+        shellGame.appendChild(topDemo.cloneNode(true));
+        var rail = railDemo.cloneNode(true);
+        rail.setAttribute("aria-label", "Образец навигации в палитре игры");
+        shellGame.appendChild(rail);
+        THEMES.forEach(function (t) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.textContent = t[1];
+            b.setAttribute("aria-pressed", String(t[0] === shellGame.getAttribute("data-sp-scope")));
+            b.addEventListener("click", function () {
+                shellGame.setAttribute("data-sp-scope", t[0]);
+                picks.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+            });
+            picks.appendChild(b);
+        });
+    }
+
+    // выбор палитры для образца: «Боковая панель карты», «Свернуть меню»
+    function picker(boxId, demoId) {
+        var demo = document.getElementById(demoId), box = document.getElementById(boxId);
+        if (!demo || !box) return;
+        THEMES.forEach(function (t) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.textContent = t[1];
+            b.setAttribute("aria-pressed", String(t[0] === demo.getAttribute("data-sp-scope")));
+            b.addEventListener("click", function () {
+                demo.setAttribute("data-sp-scope", t[0]);
+                box.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+            });
+            box.appendChild(b);
+        });
+    }
+    picker("sbPicks", "sbDemo");
+    picker("collapsePicks", "collapseDemo");
+
+    var ACC = [["stellar", "Stellar Blade", "game-dropdown"], ["tainted", "Tainted Grail"], ["gothic", "Gothic"], ["dimraeth", "Dimraeth"],
+        ["palworld", "Palworld"], ["oblivion", "Oblivion"], ["skyrim", "Skyrim"], ["witcher3", "Ведьмак 3"], ["cyberpunk2077", "Cyberpunk 2077"],
+        ["rdr2", "RDR 2"], ["gta6", "GTA VI"], ["hogwarts", "Hogwarts Legacy"], ["phantomblade", "Phantom Blade Zero"], ["silverpalace", "Silver Palace"]];
+    var acc = document.getElementById("accents");
+    ACC.forEach(function (a) {
+        var s = document.createElement("span");
+        // у Stellar Blade своего класса нет — акцент по умолчанию у .game-dropdown (циан)
+        s.className = a[2] ? "ds-acc-default" : "theme-" + a[0];
+        if (a[2]) s.style.setProperty("--game-accent", "var(--bx-cyan)");
+        s.innerHTML = "<i></i>" + a[1];
+        acc.appendChild(s);
+    });
+})();
+</script>
+</body>
+</html>
