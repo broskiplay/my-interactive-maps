@@ -1,0 +1,864 @@
+{
+ "_comment": "Список игр главной (home/), страниц категорий и README. Порядок = порядок в библиотеке. Карта с одной локацией открывается по /<folder>/, с несколькими — /<folder>/<id>/. fresh: added/updated/release — даты для бейджей «Новое», «Обновлено», «Скоро».",
+ "games": [
+  {
+   "key": "stellar",
+   "title": "Stellar Blade",
+   "folder": "stellar-blade-map",
+   "banner": {
+    "kind": "art",
+    "src": "/stellar-blade-map/logo-card.webp",
+    "srcset": "/stellar-blade-map/logo-card-720.webp 720w, /stellar-blade-map/logo-card.webp 1080w",
+    "alt": "Stellar Blade"
+   },
+   "storage": {
+    "user": "sb_user2_",
+    "found": "sb_found_",
+    "cloud": ""
+   },
+   "maps": [
+    {
+     "id": "eidos7",
+     "name": "Эйдос-7 (Eidos 7)",
+     "markersFile": "stellar_blade_eidos-7_markers.json"
+    },
+    {
+     "id": "xion",
+     "name": "Ксион (Xion City)",
+     "markersFile": "stellar_blade_xion-city_markers.json"
+    },
+    {
+     "id": "wasteland",
+     "name": "Пустошь (Wasteland)",
+     "markersFile": "stellar_blade_wasteland_markers.json"
+    },
+    {
+     "id": "altess-levoire",
+     "name": "Левуар «Высь» (Altess Levoire)",
+     "markersFile": "stellar_blade_altess-levoire_markers.json"
+    },
+    {
+     "id": "matrix-11",
+     "name": "Матрица-11 (Matrix 11)",
+     "markersFile": "stellar_blade_matrix-11_markers.json"
+    },
+    {
+     "id": "great-desert",
+     "name": "Великая пустыня (Great Desert)",
+     "markersFile": "stellar_blade_great-desert_markers.json"
+    },
+    {
+     "id": "abyss-levoire",
+     "name": "Левуар «Бездна» (Abyss Levoire)",
+     "markersFile": "stellar_blade_abyss-levoire_markers.json"
+    },
+    {
+     "id": "spire-4",
+     "name": "Шпиль-4 (Spire 4)",
+     "markersFile": "stellar_blade_spire-4_markers.json"
+    },
+    {
+     "id": "eidos-9",
+     "name": "Эйдос-9 (Eidos 9)",
+     "markersFile": "stellar_blade_eidos-9_markers.json"
+    }
+   ],
+   "fresh": {
+    "updated": "2026-11-07"
+   }
+  },
+  {
+   "key": "tainted",
+   "title": "Tainted Grail: The Fall of Avalon",
+   "folder": "tainted-grail-map",
+   "banner": {
+    "kind": "art",
+    "src": "/tainted-grail-map/logo-card.webp",
+    "srcset": "/tainted-grail-map/logo-card-720.webp 720w, /tainted-grail-map/logo-card.webp 1080w",
+    "alt": "Tainted Grail: The Fall of Avalon"
+   },
+   "storage": {
+    "user": "tg_user_",
+    "found": "tg_found_",
+    "cloud": "tg_"
+   },
+   "maps": [
+    {
+     "id": "horns-of-the-south",
+     "name": "Рога Юга",
+     "markersFile": "tainted_grail_horns-of-the-south_markers.json"
+    },
+    {
+     "id": "cuanacht",
+     "name": "Кунахт",
+     "markersFile": "tainted_grail_cuanacht_markers.json"
+    },
+    {
+     "id": "forlorn-swords",
+     "name": "Забытые Мечи",
+     "markersFile": "tainted_grail_forlorn-swords_markers.json"
+    },
+    {
+     "id": "sarras",
+     "name": "Саррас",
+     "markersFile": "tainted_grail_sarras_markers.json"
+    }
+   ],
+   "db": "/db/tainted-grail/",
+   "fresh": {
+    "updated": "2026-11-16"
+   }
+  },
+  {
+   "key": "gothic",
+   "title": "Gothic 1 Remake",
+   "folder": "gothic-remake-map",
+   "banner": {
+    "kind": "art",
+    "src": "/gothic-remake-map/logo.svg",
+    "alt": "Gothic 1 Remake"
+   },
+   "storage": {
+    "user": "gr_user_",
+    "found": "gr_found_",
+    "cloud": "gr_"
+   },
+   "maps": [
+    {
+     "id": "valley-of-mines",
+     "name": "Долина рудников",
+     "markersFile": "gothic_remake_valley-of-mines_markers.json"
+    }
+   ],
+   "db": "/db/gothic-remake/",
+   "fresh": {
+    "updated": "2026-11-07"
+   }
+  },
+  {
+   "key": "dimraeth",
+   "title": "Dimraeth",
+   "folder": "dimraeth-map",
+   "banner": {
+    "kind": "logo",
+    "src": "/dimraeth-map/logo-640.webp",
+    "srcset": "/dimraeth-map/logo-400.webp 400w, /dimraeth-map/logo-640.webp 640w",
+    "alt": "Dimraeth"
+   },
+   "storage": {
+    "user": "dr_user_",
+    "found": "dr_found_",
+    "cloud": "dr_"
+   },
+   "maps": [
+    {
+     "id": "wildwood",
+     "name": "Эрлвуд",
+     "markersFile": "dimraeth_wildwood_markers.json"
+    },
+    {
+     "id": "thelostcaverns",
+     "name": "Затерянные пещеры",
+     "markersFile": "dimraeth_thelostcaverns_markers.json"
+    },
+    {
+     "id": "playerbase",
+     "name": "Святилище",
+     "markersFile": "dimraeth_playerbase_markers.json"
+    },
+    {
+     "id": "thegoblincaves",
+     "name": "Гоблинские пещеры",
+     "markersFile": "dimraeth_thegoblincaves_markers.json"
+    }
+   ]
+  },
+  {
+   "key": "palworld",
+   "title": "Palworld",
+   "folder": "palworld-map",
+   "banner": {
+    "kind": "logo",
+    "src": "/palworld-map/logo-title.png",
+    "alt": "Palworld"
+   },
+   "storage": {
+    "user": "pw_user_",
+    "found": "pw_found_",
+    "cloud": "pw_"
+   },
+   "maps": [
+    {
+     "id": "palpagos-islands",
+     "name": "Острова Палпагос",
+     "markersFile": "palworld_palpagos-islands_markers.json"
+    }
+   ]
+  },
+  {
+   "key": "oblivion",
+   "title": "Oblivion Remastered",
+   "folder": "oblivion-remake-map",
+   "banner": {
+    "kind": "art",
+    "src": "/oblivion-remake-map/logo-card.webp",
+    "srcset": "/oblivion-remake-map/logo-card-720.webp 720w, /oblivion-remake-map/logo-card.webp 1080w",
+    "alt": "Oblivion Remastered"
+   },
+   "storage": {
+    "user": "ob_user_",
+    "found": "ob_found_",
+    "cloud": "ob_"
+   },
+   "maps": [
+    {
+     "id": "cyrodiil",
+     "name": "Сиродил",
+     "markersFile": "oblivion_cyrodiil_markers.json"
+    },
+    {
+     "id": "shivering-isles",
+     "name": "Дрожащие острова",
+     "markersFile": "oblivion_shivering-isles_markers.json"
+    }
+   ]
+  },
+  {
+   "key": "skyrim",
+   "title": "Skyrim",
+   "folder": "skyrim-map",
+   "banner": {
+    "kind": "art",
+    "src": "/skyrim-map/logo-card.webp",
+    "srcset": "/skyrim-map/logo-card-720.webp 720w, /skyrim-map/logo-card.webp 1080w",
+    "alt": "Skyrim"
+   },
+   "storage": {
+    "user": "sk_user_",
+    "found": "sk_found_",
+    "cloud": "sk_"
+   },
+   "maps": [
+    {
+     "id": "skyrim",
+     "name": "Скайрим",
+     "markersFile": "skyrim_skyrim_markers.json"
+    },
+    {
+     "id": "solstheim",
+     "name": "Солстейм",
+     "markersFile": "skyrim_solstheim_markers.json"
+    }
+   ],
+   "db": "/db/skyrim/",
+   "fresh": {
+    "added": "2026-11-05"
+   }
+  },
+  {
+   "key": "witcher3",
+   "title": "Ведьмак 3",
+   "folder": "witcher3-map",
+   "banner": {
+    "kind": "art",
+    "src": "/witcher3-map/logo-card.webp",
+    "srcset": "/witcher3-map/logo-card-720.webp 720w, /witcher3-map/logo-card.webp 1080w",
+    "alt": "Ведьмак 3: Дикая Охота"
+   },
+   "storage": {
+    "user": "w3_user_",
+    "found": "w3_found_",
+    "cloud": "w3_"
+   },
+   "maps": [
+    {
+     "id": "velen-novigrad",
+     "name": "Велен и Новиград",
+     "markersFile": "witcher3_velen-novigrad_markers.json"
+    },
+    {
+     "id": "skellige",
+     "name": "Скеллиге",
+     "markersFile": "witcher3_skellige_markers.json"
+    },
+    {
+     "id": "toussaint",
+     "name": "Туссент",
+     "markersFile": "witcher3_toussaint_markers.json"
+    },
+    {
+     "id": "white-orchard",
+     "name": "Белый Сад",
+     "markersFile": "witcher3_white-orchard_markers.json"
+    },
+    {
+     "id": "kaer-morhen",
+     "name": "Каэр Морхен",
+     "markersFile": "witcher3_kaer-morhen_markers.json"
+    },
+    {
+     "id": "isle-of-mists",
+     "name": "Остров Туманов",
+     "markersFile": "witcher3_isle-of-mists_markers.json"
+    },
+    {
+     "id": "vizima-castle",
+     "name": "Королевский замок в Вызиме",
+     "markersFile": "witcher3_vizima-castle_markers.json"
+    },
+    {
+     "id": "time-and-space",
+     "name": "Время и пространство",
+     "markersFile": "witcher3_time-and-space_markers.json"
+    },
+    {
+     "id": "olgierd-world",
+     "name": "Мир Гюнтера о'Дима",
+     "markersFile": "witcher3_olgierd-world_markers.json"
+    },
+    {
+     "id": "land-of-fables",
+     "name": "Страна Сказок",
+     "markersFile": "witcher3_land-of-fables_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-07"
+   }
+  },
+  {
+   "key": "cyberpunk2077",
+   "title": "Cyberpunk 2077",
+   "folder": "cyberpunk2077-map",
+   "banner": {
+    "kind": "art",
+    "src": "/cyberpunk2077-map/logo-card.webp",
+    "srcset": "/cyberpunk2077-map/logo-card-720.webp 720w, /cyberpunk2077-map/logo-card.webp 1080w",
+    "alt": "Cyberpunk 2077"
+   },
+   "storage": {
+    "user": "cp_user_",
+    "found": "cp_found_",
+    "cloud": "cp_"
+   },
+   "maps": [
+    {
+     "id": "night-city",
+     "name": "Найт-Сити",
+     "markersFile": "cyberpunk2077_night-city_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-09"
+   }
+  },
+  {
+   "key": "hogwarts",
+   "title": "Hogwarts Legacy",
+   "folder": "hogwarts-legacy-map",
+   "banner": {
+    "kind": "art",
+    "src": "/hogwarts-legacy-map/logo-card.webp",
+    "srcset": "/hogwarts-legacy-map/logo-card-720.webp 720w, /hogwarts-legacy-map/logo-card.webp 1080w",
+    "alt": "Hogwarts Legacy"
+   },
+   "storage": {
+    "user": "hl_user_",
+    "found": "hl_found_",
+    "cloud": "hl_"
+   },
+   "maps": [
+    {
+     "id": "world",
+     "name": "Мир",
+     "markersFile": "hogwarts_world_markers.json"
+    },
+    {
+     "id": "hogwarts",
+     "name": "Хогвартс",
+     "markersFile": "hogwarts_hogwarts_markers.json"
+    },
+    {
+     "id": "hogsmeade",
+     "name": "Хогсмид",
+     "markersFile": "hogwarts_hogsmeade_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-11"
+   }
+  },
+  {
+   "key": "phantomblade",
+   "title": "Phantom Blade Zero",
+   "folder": "phantom-blade-zero-map",
+   "banner": {
+    "kind": "art",
+    "src": "/phantom-blade-zero-map/logo-card.webp",
+    "srcset": "/phantom-blade-zero-map/logo-card-720.webp 720w, /phantom-blade-zero-map/logo-card.webp 1080w",
+    "alt": "Phantom Blade Zero"
+   },
+   "storage": {
+    "user": "pb_user_",
+    "found": "pb_found_",
+    "cloud": "pb_"
+   },
+   "maps": [
+    {
+     "id": "weeping-creek-valley",
+     "name": "Долина Плачущего ручья",
+     "markersFile": "phantomblade_weeping-creek-valley_markers.json"
+    },
+    {
+     "id": "crimson-forest",
+     "name": "Багровый лес",
+     "markersFile": "phantomblade_crimson-forest_markers.json"
+    },
+    {
+     "id": "village-of-lu",
+     "name": "Деревня Лу",
+     "markersFile": "phantomblade_village-of-lu_markers.json"
+    },
+    {
+     "id": "pangzhen",
+     "name": "Панчжэнь",
+     "markersFile": "phantomblade_pangzhen_markers.json"
+    },
+    {
+     "id": "the-mandates-encampment",
+     "name": "Лагерь Союза",
+     "markersFile": "phantomblade_the-mandates-encampment_markers.json"
+    },
+    {
+     "id": "meigu-lake",
+     "name": "Озеро Мэйгу",
+     "markersFile": "phantomblade_meigu-lake_markers.json"
+    },
+    {
+     "id": "mountain-of-imprisonment",
+     "name": "Гора Заточения",
+     "markersFile": "phantomblade_mountain-of-imprisonment_markers.json"
+    },
+    {
+     "id": "mount-soulrend",
+     "name": "Гора Разбитых Душ",
+     "markersFile": "phantomblade_mount-soulrend_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-13"
+   }
+  },
+  {
+   "key": "rdr2",
+   "title": "Red Dead Redemption 2",
+   "folder": "rdr2-map",
+   "banner": {
+    "kind": "art",
+    "src": "/rdr2-map/logo-card.webp",
+    "srcset": "/rdr2-map/logo-card-720.webp 720w, /rdr2-map/logo-card.webp 1080w",
+    "alt": "Red Dead Redemption 2"
+   },
+   "storage": {
+    "user": "rd_user_",
+    "found": "rd_found_",
+    "cloud": "rd_"
+   },
+   "maps": [
+    {
+     "id": "rdr2",
+     "name": "Запад: Нью-Ханаан, Амбарино, Гуарма",
+     "markersFile": "rdr2_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-18"
+   }
+  },
+  {
+   "key": "gta6",
+   "title": "Grand Theft Auto VI",
+   "folder": "gta6-map",
+   "banner": {
+    "kind": "art",
+    "src": "/gta6-map/logo-card.webp",
+    "srcset": "/gta6-map/logo-card-720.webp 720w, /gta6-map/logo-card.webp 1080w",
+    "alt": "Grand Theft Auto VI"
+   },
+   "storage": {
+    "user": "g6_user_",
+    "found": "g6_found_",
+    "cloud": "g6_"
+   },
+   "maps": [
+    {
+     "id": "leonida",
+     "name": "Штат Леонида",
+     "markersFile": "gta6_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-21"
+   }
+  },
+  {
+   "key": "silverpalace",
+   "title": "Silver Palace",
+   "folder": "silver-palace-map",
+   "banner": {
+    "kind": "art",
+    "src": "/silver-palace-map/logo-card.webp",
+    "srcset": "/silver-palace-map/logo-card-720.webp 720w, /silver-palace-map/logo-card.webp 1080w",
+    "alt": "Silver Palace"
+   },
+   "storage": {
+    "user": "slv_user_",
+    "found": "slv_found_",
+    "cloud": "slv_"
+   },
+   "maps": [
+    {
+     "id": "silver-palace",
+     "name": "Серебряный дворец",
+     "markersFile": "silver-palace_markers.json"
+    }
+   ],
+   "fresh": {
+    "release": "2026-12-14",
+    "added": "2026-12-14"
+   }
+  },
+  {
+   "key": "dragonsword",
+   "title": "DragonSword: Awakening",
+   "folder": "dragonsword-awakening-map",
+   "banner": {
+    "kind": "art",
+    "src": "/dragonsword-awakening-map/logo-card.webp",
+    "srcset": "/dragonsword-awakening-map/logo-card-720.webp 720w, /dragonsword-awakening-map/logo-card.webp 1080w",
+    "alt": "DragonSword: Awakening"
+   },
+   "storage": {
+    "user": "dsa_user_",
+    "found": "dsa_found_",
+    "cloud": "dsa_"
+   },
+   "maps": [
+    {
+     "id": "orbis",
+     "name": "Орбис",
+     "markersFile": "dragonsword_orbis_markers.json"
+    },
+    {
+     "id": "altar-of-the-dragon",
+     "name": "Алтарь Дракона",
+     "markersFile": "dragonsword_altar-of-the-dragon_markers.json"
+    },
+    {
+     "id": "fang-bandits-arena",
+     "name": "Арена Клыков Разбойников",
+     "markersFile": "dragonsword_fang-bandits-arena_markers.json"
+    },
+    {
+     "id": "rock-tribe-base",
+     "name": "База Каменного племени",
+     "markersFile": "dragonsword_rock-tribe-base_markers.json"
+    },
+    {
+     "id": "coastal-cliff-cave-outpost",
+     "name": "База в пещере прибрежных утёсов",
+     "markersFile": "dragonsword_coastal-cliff-cave-outpost_markers.json"
+    },
+    {
+     "id": "vanak-the-bloody-hook",
+     "name": "Банак Кровавый Крюк",
+     "markersFile": "dragonsword_vanak-the-bloody-hook_markers.json"
+    },
+    {
+     "id": "tower-of-amplitude",
+     "name": "Башня Вибрации",
+     "markersFile": "dragonsword_tower-of-amplitude_markers.json"
+    },
+    {
+     "id": "tower-of-crushing",
+     "name": "Башня Сокрушения",
+     "markersFile": "dragonsword_tower-of-crushing_markers.json"
+    },
+    {
+     "id": "tower-of-gale",
+     "name": "Башня Шквала",
+     "markersFile": "dragonsword_tower-of-gale_markers.json"
+    },
+    {
+     "id": "endless-summoning-grounds",
+     "name": "Бесконечное место призыва",
+     "markersFile": "dragonsword_endless-summoning-grounds_markers.json"
+    },
+    {
+     "id": "ghagaroach-of-blazeflame",
+     "name": "Гагарочи Алого Пламени",
+     "markersFile": "dragonsword_ghagaroach-of-blazeflame_markers.json"
+    },
+    {
+     "id": "ghagaroach-of-thunderbolt",
+     "name": "Гагарочи Молнии",
+     "markersFile": "dragonsword_ghagaroach-of-thunderbolt_markers.json"
+    },
+    {
+     "id": "ghagaroach-of-venom",
+     "name": "Гагарочи Мутности",
+     "markersFile": "dragonsword_ghagaroach-of-venom_markers.json"
+    },
+    {
+     "id": "ghagaroach-of-frostbite",
+     "name": "Гагарочи Хладолёда",
+     "markersFile": "dragonsword_ghagaroach-of-frostbite_markers.json"
+    },
+    {
+     "id": "gallore-the-collapse",
+     "name": "Галор Распада",
+     "markersFile": "dragonsword_gallore-the-collapse_markers.json"
+    },
+    {
+     "id": "furcas-the-starving-ghost-of-corrosion",
+     "name": "Голодный дух коррозии Фуркас",
+     "markersFile": "dragonsword_furcas-the-starving-ghost-of-corrosion_markers.json"
+    },
+    {
+     "id": "ghoul-greed",
+     "name": "Гуль жадности",
+     "markersFile": "dragonsword_ghoul-greed_markers.json"
+    },
+    {
+     "id": "drosophia-of-breaker",
+     "name": "Драсофир Ударной волны",
+     "markersFile": "dragonsword_drosophia-of-breaker_markers.json"
+    },
+    {
+     "id": "drosophia-of-bloodburst",
+     "name": "Драсофир Ярости",
+     "markersFile": "dragonsword_drosophia-of-bloodburst_markers.json"
+    },
+    {
+     "id": "corrupted-cave",
+     "name": "Заражённая пещера",
+     "markersFile": "dragonsword_corrupted-cave_markers.json"
+    },
+    {
+     "id": "sunken-ruins",
+     "name": "Затонувшие руины / Руины под волнами",
+     "markersFile": "dragonsword_sunken-ruins_markers.json"
+    },
+    {
+     "id": "earthlander-of-the-ravenous-earth",
+     "name": "Землянин Голодной Земли",
+     "markersFile": "dragonsword_earthlander-of-the-ravenous-earth_markers.json"
+    },
+    {
+     "id": "residual-worm-cleanup-zone",
+     "name": "Зона зачистки оставшихся Червей",
+     "markersFile": "dragonsword_residual-worm-cleanup-zone_markers.json"
+    },
+    {
+     "id": "forest-of-entangled-roots",
+     "name": "Лес Переплетённых Корней",
+     "markersFile": "dragonsword_forest-of-entangled-roots_markers.json"
+    },
+    {
+     "id": "dragon-worshipper-hideout",
+     "name": "Логово Поклонников дракона",
+     "markersFile": "dragonsword_dragon-worshipper-hideout_markers.json"
+    },
+    {
+     "id": "nest-of-the-great-worm",
+     "name": "Логово гигантского червя",
+     "markersFile": "dragonsword_nest-of-the-great-worm_markers.json"
+    },
+    {
+     "id": "mantius-of-amplitude",
+     "name": "Мантиас Вибрации",
+     "markersFile": "dragonsword_mantius-of-amplitude_markers.json"
+    },
+    {
+     "id": "mantius-of-crushing",
+     "name": "Мантиас Сокрушения",
+     "markersFile": "dragonsword_mantius-of-crushing_markers.json"
+    },
+    {
+     "id": "mantius-of-gale",
+     "name": "Мантиас Шквала",
+     "markersFile": "dragonsword_mantius-of-gale_markers.json"
+    },
+    {
+     "id": "where-the-giant-sleeps",
+     "name": "Место, где спит Великан",
+     "markersFile": "dragonsword_where-the-giant-sleeps_markers.json"
+    },
+    {
+     "id": "tomb-of-greed",
+     "name": "Могила жадности",
+     "markersFile": "dragonsword_tomb-of-greed_markers.json"
+    },
+    {
+     "id": "the-graveyard-where-tragedy-sleeps",
+     "name": "Некрополь, где спит трагедия",
+     "markersFile": "dragonsword_the-graveyard-where-tragedy-sleeps_markers.json"
+    },
+    {
+     "id": "steelheart-fortress-defense-raid",
+     "name": "Оборона крепости Стального сердца (Рейд)",
+     "markersFile": "dragonsword_steelheart-fortress-defense-raid_markers.json"
+    },
+    {
+     "id": "steelheart-fortress-defense-scenario",
+     "name": "Оборона крепости Стального сердца (Сюжет)",
+     "markersFile": "dragonsword_steelheart-fortress-defense-scenario_markers.json"
+    },
+    {
+     "id": "steelheart-fortress-armory",
+     "name": "Оружейная крепости Стального сердца",
+     "markersFile": "dragonsword_steelheart-fortress-armory_markers.json"
+    },
+    {
+     "id": "corrupted-bedchamber",
+     "name": "Оскверненная спальня",
+     "markersFile": "dragonsword_corrupted-bedchamber_markers.json"
+    },
+    {
+     "id": "barduk-the-corrupted",
+     "name": "Падший Бардук",
+     "markersFile": "dragonsword_barduk-the-corrupted_markers.json"
+    },
+    {
+     "id": "warg-cave",
+     "name": "Пещера Варгов",
+     "markersFile": "dragonsword_warg-cave_markers.json"
+    },
+    {
+     "id": "goblin-bandits-cave",
+     "name": "Пещера шайки гоблинов",
+     "markersFile": "dragonsword_goblin-bandits-cave_markers.json"
+    },
+    {
+     "id": "warg-enclosure",
+     "name": "Питомник Варгов",
+     "markersFile": "dragonsword_warg-enclosure_markers.json"
+    },
+    {
+     "id": "chase-toward-the-end-raid",
+     "name": "Погоня к финалу (Рейд)",
+     "markersFile": "dragonsword_chase-toward-the-end-raid_markers.json"
+    },
+    {
+     "id": "chase-toward-the-end-scenario",
+     "name": "Погоня к финалу (Сюжет)",
+     "markersFile": "dragonsword_chase-toward-the-end-scenario_markers.json"
+    },
+    {
+     "id": "underground-goblin-village",
+     "name": "Подземная деревня гоблинов",
+     "markersFile": "dragonsword_underground-goblin-village_markers.json"
+    },
+    {
+     "id": "the-elemental-sanctuary",
+     "name": "Пристанище духов",
+     "markersFile": "dragonsword_the-elemental-sanctuary_markers.json"
+    },
+    {
+     "id": "collapsed-sanctuary",
+     "name": "Разрушенное Святилище",
+     "markersFile": "dragonsword_collapsed-sanctuary_markers.json"
+    },
+    {
+     "id": "cracked-crevice",
+     "name": "Расщелина",
+     "markersFile": "dragonsword_cracked-crevice_markers.json"
+    },
+    {
+     "id": "dragon-worshipper-ruins",
+     "name": "Руины Поклонников дракона",
+     "markersFile": "dragonsword_dragon-worshipper-ruins_markers.json"
+    },
+    {
+     "id": "ancient-ruins",
+     "name": "Руины старого замка",
+     "markersFile": "dragonsword_ancient-ruins_markers.json"
+    },
+    {
+     "id": "silver-tusk-bandits-supply-depot",
+     "name": "Склад припасов банды Серебряного Клыка",
+     "markersFile": "dragonsword_silver-tusk-bandits-supply-depot_markers.json"
+    },
+    {
+     "id": "trace-of-the-giant",
+     "name": "След великана",
+     "markersFile": "dragonsword_trace-of-the-giant_markers.json"
+    },
+    {
+     "id": "rusted-tusk-bandits-treasure-vault",
+     "name": "Сокровищница банды Ржавого Клыка",
+     "markersFile": "dragonsword_rusted-tusk-bandits-treasure-vault_markers.json"
+    },
+    {
+     "id": "dark-swamp",
+     "name": "Тёмное болото",
+     "markersFile": "dragonsword_dark-swamp_markers.json"
+    },
+    {
+     "id": "ashen-ruins",
+     "name": "Цитадель Пепла",
+     "markersFile": "dragonsword_ashen-ruins_markers.json"
+    },
+    {
+     "id": "mercenary-crew-promotion-exam-veteran",
+     "name": "Экзамен корпуса наёмников на повышение ранга (ветеран)",
+     "markersFile": "dragonsword_mercenary-crew-promotion-exam-veteran_markers.json"
+    },
+    {
+     "id": "mercenary-crew-promotion-exam-novice",
+     "name": "Экзамен корпуса наёмников на повышение ранга (низкий ранг)",
+     "markersFile": "dragonsword_mercenary-crew-promotion-exam-novice_markers.json"
+    },
+    {
+     "id": "mercenary-crew-promotion-exam-intermediate",
+     "name": "Экзамен корпуса наёмников на повышение ранга (средний ранг)",
+     "markersFile": "dragonsword_mercenary-crew-promotion-exam-intermediate_markers.json"
+    },
+    {
+     "id": "eroded-underground-cemetery",
+     "name": "Эродированные катакомбы",
+     "markersFile": "dragonsword_eroded-underground-cemetery_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-22"
+   }
+  },
+  {
+   "key": "ms2",
+   "title": "Mortal Shell II",
+   "folder": "mortal-shell-2-map",
+   "banner": {
+    "kind": "art",
+    "src": "/mortal-shell-2-map/logo-card.webp",
+    "srcset": "/mortal-shell-2-map/logo-card-720.webp 720w, /mortal-shell-2-map/logo-card.webp 1080w",
+    "alt": "Mortal Shell II"
+   },
+   "storage": {
+    "user": "ms2_user_",
+    "found": "ms2_found_",
+    "cloud": "ms2_"
+   },
+   "maps": [
+    {
+     "id": "fallgrim",
+     "name": "Фолгрим",
+     "markersFile": "ms2_markers.json"
+    }
+   ],
+   "fresh": {
+    "added": "2026-11-23"
+   }
+  }
+ ]
+}

@@ -1,0 +1,89 @@
+# Сборка и публикация сайта broskiplay.ru на GitHub Pages.
+# Главная и страницы карт собираются из web/ (Next.js + Tailwind CSS + shadcn/ui), см. web/README.md.
+# Сгенерированные страницы (база данных db/, страницы категорий <игра>/c/, страницы локаций <игра>/<карта>/)
+# в репозитории не хранятся — их создают генераторы из scripts/ и Next при каждом push в main. Выкладывается папка _site/.
+# Настройка репозитория: Settings → Pages → Source: «GitHub Actions».
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Сначала генераторы: category_pages.py дописывает ссылки на категории в страницы карт (<игра>-map/index.html),
+      # которые потом читает Next. Страницы локаций <игра>/<карта>/ теперь собирает Next (scripts/map_pages.py не нужен).
+      - name: Генерация страниц
+        env:
+          JSC: ${{ github.workspace }}/scripts/jsc_node.cjs   # вместо macOS JavaScriptCore
+        run: |
+          python3 scripts/category_pages.py
+          python3 scripts/db_pages.py
+
+      # Next.js (web/): главная, страницы карт, отдельные страницы, база данных и категории карт в общем каркасе (шапка + навигация как на главной).
+      # assemble.mjs собирает готовый сайт в _site/: файлы из корня + страницы Next поверх.
+      - name: Главная и карты (Next.js)
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: |
+          npm ci --prefix web
+          npm run build --prefix web
+          npm run site --prefix web
+          grep -q 'id="games-container"' _site/index.html && [ -d _site/_next/static ]
+          db=$(find _site/db -name index.html | wc -l); cat=$(find _site -path '_site/*-map/c/*' -name index.html | wc -l)
+          loc=$(ls -d _site/*-map/*/index.html | grep -v '/c/' | wc -l); maps=$(grep -l 'class="bx-rail"' _site/*-map/index.html | wc -l)
+          echo "страниц: база $db, категории $cat, локации $loc, карты в каркасе $maps"
+          # что-то сломалось в сборке — не выкладываем сайт без страниц
+          # пороги — чуть ниже текущих (2026-11-19: база 16 818, категории 558, локации 42, карты 13): заметная просадка останавливает выкладку
+          [ "$db" -gt 15000 ] && [ "$cat" -gt 500 ] && [ "$loc" -gt 38 ] && [ "$maps" -ge 13 ]
+          # база данных — в каркасе сайта (assemble.mjs вставляет страницы db_pages.py в шаблон Next)
+          grep -q 'class="bx-rail"' _site/db/index.html && grep -q 'class="bx-rail"' _site/db/skyrim/index.html
+          # отдельные страницы (Next, web/lib/pages.ts) и категории карт (assemble.mjs) — тоже в каркасе
+          for f in updates/index.html cabinet/index.html fixes/index.html reports/index.html design/index.html privacy.html 404.html; do
+            grep -q 'class="bx-rail"' "_site/$f" || { echo "нет каркаса: $f"; exit 1; }
+          done
+          ccat=$(grep -rl 'class="bx-rail"' --include=index.html _site/*-map/c | wc -l); [ "$ccat" -eq "$cat" ]
+
+      # Битые локальные ссылки и ресурсы во всех HTML, синтаксис общего JS и кода карт
+      - name: Проверка ссылок и скриптов
+        run: |
+          python3 scripts/check_links.py _site
+          for f in js/*.js *-map/js/*.js; do node --check "$f" || exit 1; done
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

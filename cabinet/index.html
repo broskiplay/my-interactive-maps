@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tdm-reservation" content="1">
+    <title>Личный кабинет — BroskiPlay</title>
+    <meta name="description" content="Личный кабинет BroskiPlay: профиль, недавние карты, избранные игры и достижения на всех устройствах.">
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://broskiplay.ru/cabinet/">
+    <meta name="theme-color" content="#0d111b">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=4">
+    <link rel="stylesheet" href="../css/spatial.css?v=dark2">
+    <link rel="stylesheet" href="../css/style.css?v=dark1">
+    <link rel="stylesheet" href="../css/vision.css?v=dark3">
+    <link rel="stylesheet" href="../css/cabinet.css?v=5">
+    <script>
+        (function () {
+            // Тема по системе телефона: светлая → светлая, тёмная или не задана → тёмная.
+            // Ручной выбор переключателем действует, пока система сама не сменит тему.
+            document.documentElement.setAttribute("data-theme", "dark");
+        })();
+    </script>
+    <script src="/js/metrika.js?v=1" defer></script>
+</head>
+<body>
+<!-- topbar:start — верхнее меню сайта: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="topbar" id="topbar">
+    <div class="topbar-inner">
+        <a class="tb-brand" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="34" height="34" alt=""><span>BroskiPlay</span></a>
+        <button type="button" class="tb-burger" id="tb-burger" aria-expanded="false" aria-controls="tb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+        <div class="tb-panel" id="tb-panel">
+            <nav class="tb-nav" aria-label="Разделы сайта">
+                <a class="tb-link" href="/db/">База данных</a>
+                <a class="tb-link" href="/cabinet/">Кабинет</a>
+                <div class="tb-dd" id="tb-upd">
+                    <a class="tb-link tb-dd-btn" href="/#updates" aria-haspopup="true" aria-expanded="false" aria-controls="tb-upd-menu">Обновления<span class="tb-dot" hidden></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></a>
+                    <div class="tb-menu" id="tb-upd-menu" hidden><a href="/#updates" id="tb-updates"><span>Что нового</span><small>новое на сайте</small></a><a href="/fixes/"><span>Журнал исправлений</span><small>правки меток</small></a></div>
+                </div>
+                <a class="tb-link tb-opt" href="/#community">Сообщество</a>
+            </nav>
+            <div class="tb-actions">
+                <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="social-btn tb-social social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+                <a class="tb-icon" id="tb-search" href="/?search=1" aria-label="Найти игру" title="Найти игру"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></a>
+                <div class="auth-card">
+                    <div class="auth-info">
+                    <img id="auth-avatar" class="auth-avatar" src="" alt="Avatar">
+                    <div id="auth-status" class="auth-text">
+                    <b>Гостевой режим</b><br>
+                    <span>Войдите через Google для синхронизации меток</span>
+                    </div>
+                    </div>
+                    <button id="auth-btn" class="auth-btn"><svg class="google-icon" width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Войти с Google</span></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="cab" id="cab" aria-busy="true">
+  <h1 class="cab-h1">Личный кабинет</h1>
+
+  <!-- 1. Профиль -->
+  <section class="cab-profile cab-panel" aria-label="Профиль">
+    <span class="cab-ava-wrap"><img class="cab-ava" id="cab-ava" alt="" width="88" height="88" hidden><svg class="cab-ava-guest" id="cab-ava-guest" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 19.5c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5"/></svg></span>
+    <div class="cab-who">
+      <h2 class="cab-name" id="cab-name">Гость</h2>
+      <p class="cab-state" id="cab-state" role="status" data-state="loading"><svg class="cab-state-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#cab-i-cloud"/></svg><span id="cab-state-text">Проверяем вход…</span></p>
+    </div>
+    <div class="cab-acts">
+      <button class="bx-btn bx-btn-primary" id="cab-google" type="button" hidden><svg viewBox="0 0 48 48" aria-hidden="true" class="cab-g"><path fill="currentColor" d="M24 20v8.4h11.7c-.5 3-3.6 8.8-11.7 8.8-7 0-12.8-5.8-12.8-13s5.7-13 12.8-13c4 0 6.7 1.7 8.2 3.2l5.6-5.4C34.2 5.7 29.6 3.6 24 3.6 12.7 3.6 3.6 12.7 3.6 24S12.7 44.4 24 44.4c11.8 0 19.6-8.3 19.6-19.9 0-1.3-.1-2.4-.3-3.4H24z"/></svg>Войти через Google</button>
+      <button class="bx-btn" id="cab-edit" type="button" hidden aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg><span>Изменить профиль</span></button>
+      <button class="bx-btn" id="cab-settings" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#cab-i-gear"/></svg><span>Настройки</span></button>
+    </div>
+  </section>
+
+  <!-- 2. Продолжить -->
+  <section class="cab-sec" aria-labelledby="cab-h-cont">
+    <h2 class="cab-h2" id="cab-h-cont">Продолжить</h2>
+    <div class="cab-cont" id="cab-cont">
+      <div class="cab-skel cab-skel-main"></div><div class="cab-skel cab-skel-side"></div>
+    </div>
+  </section>
+
+  <!-- 3. Избранное -->
+  <section class="cab-sec" aria-labelledby="cab-h-fav">
+    <div class="cab-sec-head">
+      <h2 class="cab-h2" id="cab-h-fav">Избранное</h2>
+      <button class="bx-btn" id="cab-fav-add" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Добавить игры</span></button>
+    </div>
+    <div class="cab-fav" id="cab-fav"></div>
+  </section>
+
+  <!-- 4. Достижения -->
+  <section class="cab-sec" aria-labelledby="cab-h-ach">
+    <div class="cab-sec-head">
+      <h2 class="cab-h2" id="cab-h-ach">Достижения <small id="cab-ach-n"></small></h2>
+      <button class="bx-btn" id="cab-ach-all" type="button" aria-expanded="false" aria-controls="cab-ach-list">Показать все</button>
+    </div>
+    <div class="cab-ach cab-panel" id="cab-ach">
+      <div class="cab-ach-top">
+        <ul class="cab-ach-got" id="cab-ach-got"></ul>
+        <div class="cab-ach-next" id="cab-ach-next"></div>
+      </div>
+      <ul class="cab-ach-list" id="cab-ach-list" hidden></ul>
+    </div>
+  </section>
+
+  <!-- 5. Служебная полоса -->
+  <section class="cab-bar cab-panel" aria-label="Данные и приложение">
+    <p class="cab-bar-state" id="cab-bar-state" data-state="loading"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#cab-i-cloud"/></svg><span id="cab-bar-text">Проверяем вход…</span></p>
+    <div class="cab-bar-acts">
+      <button class="bx-btn cab-link-btn" id="cab-sync" type="button" hidden>Синхронизировать</button>
+      <button class="bx-btn" id="cab-install" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg><span>Установить приложение</span></button>
+      <p class="cab-bar-note" id="cab-install-done" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Приложение установлено — вы сейчас в нём</p>
+    </div>
+    <p class="cab-bar-hint">Кабинет синхронизирует профиль, избранное, достижения и недавние карты. Отметки на картах сохраняются в облако на самих картах.</p>
+  </section>
+
+  <div class="bp-slot bp-slot-flow" data-bp-slot="cabinet_m"></div>
+</main>
+<div class="bp-slot bp-slot-side" data-bp-slot="cabinet"></div><div class="bp-slot bp-slot-side" data-bp-slot="cabinet"></div>
+
+<!-- Окно: профиль -->
+<dialog class="bx-dialog cab-dlg" id="cab-dlg-profile" aria-labelledby="cab-dlg-profile-h">
+  <form class="cab-dlg-in" id="cab-profile-form" novalidate>
+    <div class="bx-dialog-head"><h2 id="cab-dlg-profile-h">Профиль</h2><button class="bx-icon-btn cab-x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#cab-i-x"/></svg></button></div>
+    <label class="cab-field"><span>Отображаемое имя</span><input class="bx-input" id="cab-name-in" name="name" maxlength="32" autocomplete="nickname" required aria-describedby="cab-name-err"></label>
+    <p class="cab-err" id="cab-name-err" role="alert"></p>
+    <fieldset class="cab-avas"><legend>Аватар</legend><div class="cab-avas-grid" id="cab-avas"></div></fieldset>
+    <p class="cab-dlg-note">Имя и аватар сохраняются в вашем аккаунте и видны только вам.</p>
+    <div class="cab-dlg-acts"><button class="bx-btn" type="button" data-close>Отмена</button><button class="bx-btn bx-btn-primary" type="submit">Сохранить</button></div>
+  </form>
+</dialog>
+
+<!-- Окно: настройки -->
+<dialog class="bx-dialog cab-dlg" id="cab-dlg-settings" aria-labelledby="cab-dlg-settings-h">
+  <div class="cab-dlg-in">
+    <div class="bx-dialog-head"><h2 id="cab-dlg-settings-h">Настройки</h2><button class="bx-icon-btn cab-x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#cab-i-x"/></svg></button></div>
+    <section class="cab-set" aria-labelledby="cab-set-backup">
+      <h3 id="cab-set-backup">Резервная копия</h3>
+      <p>Файл со всем, что сайт хранит в этом браузере: отметки на картах, свои метки, заметки, избранное, достижения и недавние карты.</p>
+      <div class="cab-dlg-acts cab-start"><button class="bx-btn" id="cab-export" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg><span>Скачать копию</span></button>
+        <button class="bx-btn" id="cab-import" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 19.5h14"/></svg><span>Восстановить из файла</span></button>
+        <input type="file" id="cab-import-file" accept="application/json,.json" hidden></div>
+      <div class="cab-restore" id="cab-restore" hidden></div>
+      <p class="cab-msg" id="cab-backup-msg" role="status"></p>
+    </section>
+    <section class="cab-set" aria-labelledby="cab-set-hist">
+      <h3 id="cab-set-hist">История синхронизаций</h3>
+      <ul class="cab-hist" id="cab-hist"></ul>
+    </section>
+    <section class="cab-set" aria-labelledby="cab-set-acc">
+      <h3 id="cab-set-acc">Аккаунт</h3>
+      <p id="cab-acc-text">Вы не вошли. Данные хранятся только в этом браузере.</p>
+      <div class="cab-dlg-acts cab-start"><button class="bx-btn" id="cab-exit" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg><span>Выйти</span></button>
+        <button class="bx-btn bx-btn-primary" id="cab-google-2" type="button" hidden>Войти через Google</button></div>
+    </section>
+    <div id="cab-dev-slot"></div>
+  </div>
+</dialog>
+
+<!-- Окно: выбор избранных игр -->
+<dialog class="bx-dialog cab-dlg" id="cab-dlg-fav" aria-labelledby="cab-dlg-fav-h">
+  <div class="cab-dlg-in">
+    <div class="bx-dialog-head"><h2 id="cab-dlg-fav-h">Избранные игры</h2><button class="bx-icon-btn cab-x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#cab-i-x"/></svg></button></div>
+    <p>Избранные игры идут первыми на главной и в меню «Игры».</p>
+    <ul class="cab-pick" id="cab-pick"></ul>
+    <div class="cab-dlg-acts"><button class="bx-btn bx-btn-primary" type="button" data-close>Готово</button></div>
+  </div>
+</dialog>
+
+<svg width="0" height="0" class="cab-defs" aria-hidden="true" focusable="false">
+  <symbol id="cab-i-cloud" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.7 4.7 0 0 0 7 18.5z"/></symbol>
+  <symbol id="cab-i-device" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="12" rx="2"/><path d="M8.5 20h7M12 16.5V20"/></symbol>
+  <symbol id="cab-i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l2-1.6-2-3.4-2.4.9a7.7 7.7 0 0 0-2.6-1.5L14 2.5h-4l-.4 2.4A7.7 7.7 0 0 0 7 6.4l-2.4-.9-2 3.4 2 1.6a7.6 7.6 0 0 0 0 3l-2 1.6 2 3.4 2.4-.9a7.7 7.7 0 0 0 2.6 1.5l.4 2.4h4l.4-2.4a7.7 7.7 0 0 0 2.6-1.5l2.4.9 2-3.4z"/></symbol>
+  <symbol id="cab-i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="cab-i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="cab-i-star" viewBox="0 0 24 24"><path d="m12 3.2 2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.4 2.8 1-6-4.3-4.2 6-.9z"/></symbol>
+  <symbol id="cab-i-arrow" viewBox="0 0 24 24"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></symbol>
+  <symbol id="cab-i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+</svg>
+<script src="/js/firebase-lazy.js?v=1" defer></script>
+<script src="/js/auth-lite.js?v=6" defer></script>
+<script src="../js/topbar.js?v=12" defer></script>
+<script src="/js/progress-core.js?v=4" defer></script>
+<script src="../js/cabinet.js?v=6" defer></script>
+<script src="/js/bp-slot.js?v=12" defer></script>
+<script src="/js/pwa.js?v=6" defer></script>
+</body>
+</html>

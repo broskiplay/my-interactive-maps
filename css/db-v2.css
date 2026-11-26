@@ -1,0 +1,300 @@
+/* База данных игр — редизайн 2026-11 (scripts/db_pages.py → CSS_PARTS, последним после db.css и ui-system.css).
+   Геометрия и шрифты — как у новой главной и /db/: Manrope в интерфейсе, Unbounded в заголовках; радиусы 16 у панелей,
+   8 у управления, 6 у плашек. Палитра — своя у каждой игры (css/spatial.css :root[data-game], у Skyrim — db.css).
+   Шапка каталога: широкий баннер img/db-banners/<игра>.webp + настоящие заголовок, описание и кнопки (Game.hero);
+   каталог: разделы слева (.dbc-side), поиск и фильтры над результатами (.db-qbox, .db-tools), плотные плитки и таблица;
+   страницы записей: полоса игры .dbs — компактная лента с тем же баннером. */
+
+html:root[data-game]:not([data-x]) {
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Unbounded", "Manrope", system-ui, sans-serif;
+  --font-heading: var(--font-display);
+  --font-label: var(--font-body);
+  --g-label: var(--font-body);
+  --s-label: var(--font-body);
+  --dbv-r-panel: 16px; --dbv-r-ctl: 8px; --dbv-r-tag: 6px;
+  --dbv-line: color-mix(in srgb, var(--sp-text) 13%, transparent);
+  --dbv-line-hi: color-mix(in srgb, var(--sp-text) 24%, transparent);
+  --dbv-panel: color-mix(in srgb, var(--sp-base) 90%, var(--sp-text) 4%);
+  --dbv-panel-hi: color-mix(in srgb, var(--sp-base) 84%, var(--sp-text) 8%);
+  --dbv-on-accent: var(--sp-base);
+}
+html[data-game="tainted"] { --dbv-banner: url("/img/db-banners/tainted-grail-960.webp"); }
+html[data-game="gothic"] { --dbv-banner: url("/img/db-banners/gothic-remake-960.webp"); }
+html[data-game="skyrim"] { --dbv-banner: url("/img/db-banners/skyrim-960.webp"); }
+html[data-game] .cp.db, html[data-game] .cp.db :is(button, input, select) { font-family: var(--font-body); }
+
+/* ================= шапка каталога ================= */
+html[data-game] .cp.db:has(.dbc) { max-width: 1320px; }
+.cp.db .dbx.dbb { min-height: 300px; margin: 4px 0 24px; border-radius: var(--dbv-r-panel); background: var(--sp-base);
+  box-shadow: inset 0 0 0 1px var(--dbv-line); align-items: center; }
+.dbb .dbx-fx { z-index: 0; }
+.dbb-bg { position: absolute; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+/* затемнение под текстом слева — фон и так тёмный, достаточно лёгкого перехода */
+.dbb .dbx-fx::after { content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sp-base) 82%, transparent) 0%, color-mix(in srgb, var(--sp-base) 40%, transparent) 46%, transparent 72%); }
+.dbb .dbx-in { width: 54%; max-width: 620px; padding: 32px 36px; }
+.cp.db .dbb h1 { font: 700 clamp(26px, 3vw, 40px)/1.15 var(--font-display); letter-spacing: -.01em; text-transform: none; text-shadow: 0 2px 18px rgba(0, 0, 0, .55); } /* sp-ok: тень текста на баннере */
+.cp.db .dbb h1 small { margin-bottom: 12px; font: 800 11px/1.3 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--sp-accent); }
+.cp.db .dbb .dbx-lead { display: block; max-width: 440px; margin: 12px 0 0; color: color-mix(in srgb, var(--sp-text) 82%, transparent); font: 500 14.5px/1.55 var(--font-body); }
+.dbx-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
+.cp.db .dbx-acts a.dbx-map { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; padding: 0 16px; border-radius: var(--dbv-r-ctl);
+  background: var(--sp-accent); color: var(--dbv-on-accent); box-shadow: none; text-decoration: none; font: 800 14px var(--font-body); transition: filter .15s, transform .15s; }
+.cp.db .dbx-acts a.dbx-map span { font: inherit; letter-spacing: 0; text-transform: none; }
+.cp.db .dbx-acts .dbx-map .sp-ico { width: 16px; height: 16px; padding: 0; color: inherit; fill: none; stroke: currentColor; stroke-width: 2.2; }
+.cp.db .dbx-acts a.dbx-map:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.cp.db .dbx-acts .dbx-rnd { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--dbv-line-hi); border-radius: var(--dbv-r-ctl);
+  background: color-mix(in srgb, var(--sp-base) 60%, transparent); color: var(--sp-text); box-shadow: none; font: 700 13px var(--font-body); cursor: pointer; }
+.cp.db .dbx-acts .dbx-rnd svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.cp.db .dbx-acts .dbx-rnd span { display: inline; }
+.cp.db .dbx-acts .dbx-rnd:hover { border-color: var(--sp-accent); color: var(--sp-accent); }
+/* рендеры существ и персонажей справа: в полный рост, по низу баннера */
+.dbb .dbx-beasts { left: auto; right: 2%; top: 8px; bottom: 0; width: 40%; max-width: 460px; animation-duration: 9s; }
+.dbb .dbx-beast { object-position: center bottom; height: 100%; bottom: 0; }
+.cp.db .dbb .dbx-cap { right: 16px; bottom: 14px; padding: 7px 12px; border-radius: var(--dbv-r-ctl); align-items: flex-end;
+  background: color-mix(in srgb, var(--sp-base) 78%, transparent); box-shadow: inset 0 0 0 1px var(--dbv-line);
+  color: var(--sp-text); font: 800 13px/1.3 var(--font-body); font-style: normal; letter-spacing: 0; text-shadow: none; }
+.cp.db .dbb .dbx-cap small { font: 800 9.5px var(--font-body); letter-spacing: .12em; opacity: 1; }
+.cp.db .dbb .dbx-cap:hover { color: var(--sp-accent); }
+/* эффекты — деликатно: туман и искры, Барьер и руда, снег частично нарисованы на самом баннере */
+.dbb .dbx-fog { opacity: .55; }
+.dbb .dbx-embers { opacity: .8; }
+.dbb .dbx-barrier { opacity: .5; }
+.dbb .dbx-ore i { width: 4px; height: 4px; }
+.dbb .dbx-ore { opacity: .7; }
+.dbb .dbx-snow { opacity: .6; }
+.dbb .dbx-snow i { width: 3px !important; height: 3px !important; }
+.dbb .dbx-snow i:nth-child(3n) { width: 2px !important; height: 2px !important; }
+@media (max-width: 760px) {
+  .cp.db .dbx.dbb { display: block; min-height: 0; }
+  .dbb .dbx-in { width: 100%; padding: 22px 18px 20px; }
+  .dbb .dbx-fx::after { background: linear-gradient(0deg, color-mix(in srgb, var(--sp-base) 88%, transparent) 0%, color-mix(in srgb, var(--sp-base) 55%, transparent) 55%, transparent 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--sp-base) 70%, transparent), transparent 80%); }
+  .cp.db .dbb h1 { font-size: 26px; }
+  .cp.db .dbb .dbx-lead { font-size: 13px; max-width: 64%; }
+  .dbb:has(.dbx-beasts) .dbx-in { padding-right: 34%; }
+  .cp.db .dbb:has(.dbx-beasts) .dbx-lead { max-width: none; }
+  .dbb .dbx-beasts { width: 42%; right: -2%; top: 12px; opacity: 1; }
+  .dbb .dbx-sheet { width: 40%; }
+  .cp.db .dbb .dbx-cap { top: auto; bottom: 10px; right: 10px; padding: 5px 9px; font-size: 11.5px; }
+  .cp.db .dbx-acts .dbx-rnd span { display: none; }
+  .cp.db .dbx-acts .dbx-rnd { width: 44px; padding: 0; justify-content: center; }
+  .dbx-acts { margin-top: 18px; }
+}
+@media (max-width: 420px) {
+  .dbb:has(.dbx-beasts) .dbx-in { padding-right: 36%; }
+  .cp.db .dbb h1 { font-size: 22px; }
+}
+/* Gothic: наброски глоссария на рваном пергаменте */
+.dbb .dbx-sheet { top: 16%; bottom: 16%; right: 4%; width: 38%; max-width: 440px; animation: none; -webkit-mask-image: none; mask-image: none; }
+.dbb .dbx-sheet .dbx-beast { object-fit: cover; object-position: center; height: 100%; }
+
+/* ================= каталог: разделы слева, результаты справа ================= */
+.dbc { display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 24px; align-items: start; }
+.dbc-side { position: sticky; top: calc(var(--bx-top-h, 72px) + 12px); max-height: calc(100vh - var(--bx-top-h, 72px) - 24px); overflow-y: auto; scrollbar-width: thin;
+  padding: 10px; border-radius: var(--dbv-r-panel); background: var(--dbv-panel); box-shadow: inset 0 0 0 1px var(--dbv-line); box-sizing: border-box; }
+.dbc-side-h { margin: 4px 10px 6px; color: var(--sp-muted); font: 800 10px var(--font-body); letter-spacing: .15em; text-transform: uppercase; }
+.cp.db .dbc .db-tabs { display: block; margin: 0; padding: 0; list-style: none; }
+.cp.db .dbc .db-tabs li { margin: 0; padding: 0; }
+.cp.db .dbc .db-tabs li::before { content: none; }
+.cp.db .dbc .db-tabs a { display: flex; flex-direction: row; align-items: center; gap: 10px; min-height: 40px; margin: 1px 0; padding: 6px 10px;
+  border-radius: var(--dbv-r-ctl); background: none; box-shadow: none; color: var(--sp-text); text-align: left; text-decoration: none; transform: none; transition: background .15s, color .15s; }
+.cp.db .dbc .db-tabs a:hover { background: var(--dbv-panel-hi); color: var(--sp-accent); transform: none; }
+.cp.db .dbc .db-tabs a[aria-current="page"] { background: var(--dbv-panel-hi); color: var(--sp-accent); box-shadow: inset 3px 0 0 var(--sp-accent); }
+.cp.db .dbc .db-tabs :is(img, .db-qi) { flex: none; width: 24px; height: 24px; font-size: 15px; }
+.cp.db .dbc .db-tabs img.dbt-bestiary, .cp.db .dbc .db-tabs img.dbt-characters { box-shadow: none; }
+.cp.db .dbc .db-tabs span { flex: 1; min-width: 0; font: 600 13px/1.25 var(--font-body); letter-spacing: 0; text-transform: none; }
+.cp.db .dbc .db-tabs small { flex: none; color: var(--sp-muted); font: 600 11px var(--font-body); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.cp.db .dbc .db-tabs a[aria-current="page"] small { color: inherit; }
+.cp.db .dbc .db-tabs a.is-zero { opacity: .5; }
+.dbc-note { margin: 10px 4px 2px; padding: 12px 6px 4px; border-top: 1px solid var(--dbv-line); color: var(--sp-muted); font-size: 11.5px; line-height: 1.5; }
+.dbc-main { min-width: 0; }
+
+/* поиск — над результатами, закреплён под шапкой сайта */
+.db-qbox { position: sticky; top: calc(var(--bx-top-h, 72px) + 10px); z-index: 30; display: flex; align-items: center; margin: 0 0 12px; }
+.db-qfield { flex: 1; display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 48px 0 16px; border-radius: var(--dbv-r-ctl);
+  background: linear-gradient(var(--dbv-panel-hi), var(--dbv-panel-hi)), var(--sp-base); box-shadow: inset 0 0 0 1px var(--dbv-line-hi), 0 8px 24px rgba(0, 0, 0, .28); box-sizing: border-box; } /* sp-ok: тень закреплённого поиска */
+.db-qfield:focus-within { box-shadow: inset 0 0 0 1.5px var(--sp-accent), 0 8px 24px rgba(0, 0, 0, .28); } /* sp-ok */
+.db-qfield svg { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--sp-accent); stroke-width: 2; stroke-linecap: round; }
+.cp.db .db-qfield .db-search { flex: 1; min-width: 0; height: 48px; padding: 0; border: 0; background: none; box-shadow: none; outline: none; color: var(--sp-text); font: 500 16px var(--font-body); }
+.db-qfield .db-search::-webkit-search-cancel-button { display: none; }
+.db-qclear { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 0; border-radius: var(--dbv-r-ctl);
+  background: none; color: var(--sp-muted); cursor: pointer; }
+.db-qclear svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.db-qclear:hover { color: var(--sp-accent); background: var(--dbv-panel); }
+.db-qbox .db-sug { top: calc(100% + 6px); left: 0; right: 0; border-radius: var(--dbv-r-ctl); }
+
+/* подразделы и типы */
+.cp.db .dbc .db-chips { gap: 6px; margin: 0 0 8px; }
+.cp.db .dbc .db-chips button { min-height: 34px; padding: 5px 12px; border: 1px solid var(--dbv-line); border-radius: var(--dbv-r-ctl); background: var(--dbv-panel); box-shadow: none;
+  color: var(--sp-text); font: 600 12.5px var(--font-body); letter-spacing: 0; text-transform: none; }
+.cp.db .dbc .db-chips button small { font: 600 11px var(--font-body); font-variant-numeric: tabular-nums; }
+.cp.db .dbc .db-chips button:hover { border-color: var(--sp-accent); color: var(--sp-accent); }
+.cp.db .dbc .db-chips button[aria-pressed="true"] { border-color: transparent; background: var(--sp-accent); color: var(--dbv-on-accent); box-shadow: none; }
+.cp.db .dbc .db-chips2 { padding-left: 10px; border-left: 2px solid color-mix(in srgb, var(--sp-accent) 45%, transparent); }
+.cp.db .dbc .db-chips2 button { min-height: 30px; padding: 3px 10px; font-size: 12px; }
+
+/* панель инструментов: «Есть на карте», фильтры, сброс | сортировка, вид */
+.cp.db .dbc .db-tools { gap: 8px; margin: 4px 0 12px; padding: 0; }
+.db-tools-gap { flex: 1; }
+.cp.db .dbc .db-tools :is(.db-onmap, .db-fbtn, .db-freset), .cp.db .dbc .db-sort { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 12px;
+  border: 1px solid var(--dbv-line); border-radius: var(--dbv-r-ctl); background: var(--dbv-panel); box-shadow: none; color: var(--sp-text);
+  font: 600 12.5px var(--font-body); letter-spacing: 0; text-transform: none; cursor: pointer; }
+.cp.db .dbc .db-tools :is(.db-onmap, .db-fbtn) .sp-ico { width: 15px; height: 15px; padding: 0; color: var(--sp-accent); fill: none; stroke: currentColor; stroke-width: 2; }
+.cp.db .dbc .db-tools :is(.db-onmap, .db-fbtn, .db-freset):hover, .cp.db .dbc .db-sort:hover { border-color: var(--sp-accent); color: var(--sp-accent); }
+.cp.db .dbc .db-tools .db-onmap[aria-pressed="true"], .cp.db .dbc .db-fbtn[aria-expanded="true"] { border-color: transparent; background: var(--sp-accent); color: var(--dbv-on-accent); }
+.cp.db .dbc .db-tools .db-onmap[aria-pressed="true"] .sp-ico, .cp.db .dbc .db-fbtn[aria-expanded="true"] .sp-ico { color: inherit; }
+.cp.db .dbc .db-freset { color: var(--sp-muted); border-style: dashed; }
+.cp.db .dbc .db-fbadge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--dbv-r-tag); background: var(--sp-accent); color: var(--dbv-on-accent); font: 800 11px/18px var(--font-body); text-align: center; box-sizing: border-box; }
+.cp.db .dbc .db-fbtn[aria-expanded="true"] .db-fbadge { background: var(--dbv-on-accent); color: var(--sp-accent); }
+.db-sortbox { display: inline-flex; }
+.db-sortbox[hidden] { display: none; }
+.cp.db .dbc .db-sort { padding-right: 28px; }
+.cp.db .dbc .db-view { margin: 0; padding: 3px; border-radius: var(--dbv-r-ctl); background: var(--dbv-panel); box-shadow: inset 0 0 0 1px var(--dbv-line); }
+.cp.db .dbc .db-view button { min-height: 32px; padding: 0 12px; border-radius: var(--dbv-r-tag); font: 600 12.5px var(--font-body); letter-spacing: 0; text-transform: none; }
+.cp.db .dbc .db-view button[aria-pressed="true"] { background: var(--sp-accent); color: var(--dbv-on-accent); box-shadow: none; }
+.cp.db .dbc .db-fpanel { margin: 0 0 14px; padding: 14px 16px; border-radius: var(--dbv-r-panel); background: var(--dbv-panel); box-shadow: inset 0 0 0 1px var(--dbv-line); }
+.cp.db .dbc .db-fpanel .db-ff-l { font: 800 10px var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--sp-muted); }
+.cp.db .dbc .db-fpanel :is(.db-seg button, .db-onvar) { border-radius: var(--dbv-r-tag); font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+
+/* заголовок списка и понятный счётчик */
+.dbc-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin: 8px 0 12px; }
+.cp.db .dbc-h { margin: 0; font: 700 18px/1.3 var(--font-display); letter-spacing: 0; text-transform: none; color: var(--sp-text); }
+.cp.db .dbc .db-count { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px 8px; margin: 0; color: var(--sp-muted); font: 500 12.5px var(--font-body); font-variant-numeric: tabular-nums; }
+.cp.db .dbc .db-count b { color: var(--sp-text); font-weight: 700; }
+.cp.db .dbc .db-showvar { min-height: 30px; padding: 0 10px; border: 1px solid var(--dbv-line-hi); border-radius: var(--dbv-r-tag); background: none; box-shadow: none;
+  color: var(--sp-accent); font: 700 12px var(--font-body); letter-spacing: 0; text-transform: none; cursor: pointer; }
+.cp.db .dbc .db-showvar:hover { border-color: var(--sp-accent); }
+.cp.db .dbc .db-also { margin: 0 0 12px; padding: 10px 13px; border-radius: var(--dbv-r-tag); background: none; box-shadow: inset 0 0 0 1px var(--dbv-line), inset 2px 0 0 var(--sp-accent); font-size: 12.5px; }
+
+/* пустая выдача и ошибка */
+.cp.db .dbc .db-grid > li.db-empty { padding: 36px 20px; border-radius: var(--dbv-r-panel); background: var(--dbv-panel); box-shadow: inset 0 0 0 1px var(--dbv-line); text-align: center; color: var(--sp-muted); }
+.db-empty b { display: block; color: var(--sp-text); font: 700 16px/1.35 var(--font-display); }
+.db-empty p { max-width: 480px; margin: 8px auto 0; font-size: 13px; }
+.db-empty-acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+.cp.db .db-empty-acts button { min-height: 40px; padding: 0 16px; border: 1px solid var(--dbv-line-hi); border-radius: var(--dbv-r-ctl); background: var(--dbv-panel-hi); color: var(--sp-text); font: 700 13px var(--font-body); cursor: pointer; }
+.cp.db .db-empty-acts button:hover { border-color: var(--sp-accent); color: var(--sp-accent); }
+.cp.db .db-empty-acts button:first-child { border-color: transparent; background: var(--sp-accent); color: var(--dbv-on-accent); }
+
+/* плитки: плотнее, панели — радиус 16 */
+.cp.db .dbc .db-g-tile { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+.cp.db .dbc .db-card { border-radius: var(--dbv-r-panel); }
+.cp.db .dbc .db-v-tile .db-pic { border-radius: var(--dbv-r-ctl); }
+.cp.db .dbc .db-card b { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+.cp.db .dbc .db-pic { position: relative; }
+.db-onmap-b { position: absolute; left: 6px; bottom: 6px; display: grid; place-items: center; width: 20px; height: 20px; border-radius: var(--dbv-r-tag);
+  background: color-mix(in srgb, var(--sp-base) 78%, transparent); color: var(--sp-accent); box-shadow: inset 0 0 0 1px var(--dbv-line); }
+.db-onmap-b svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.2; }
+.db-v-fig .db-onmap-b, .db-v-scene .db-onmap-b { left: 8px; top: 8px; bottom: auto; }
+.db-v-row .db-onmap-b { display: none; }
+.cp.db .dbc :is(.db-tier, .db-vcount) { border-radius: var(--dbv-r-tag); font-family: var(--font-body); letter-spacing: 0; }
+
+/* таблица: прокрутка внутри блока, тонкие линии, сортировка по заголовкам */
+.cp.db .dbc .db-tablewrap { overflow-x: auto; border-radius: var(--dbv-r-panel); background: var(--dbv-panel); box-shadow: inset 0 0 0 1px var(--dbv-line); overscroll-behavior-x: contain; }
+.cp.db .dbc .db-tablewrap:focus-visible { outline: 2px solid var(--sp-accent); outline-offset: 2px; }
+.cp.db .dbc .db-itable { min-width: 760px; font: 500 13px var(--font-body); font-variant-numeric: tabular-nums; }
+.cp.db .dbc .db-itable th { padding: 0 10px; height: 42px; background: var(--dbv-panel-hi); border-bottom: 1px solid var(--dbv-line-hi);
+  color: var(--sp-muted); font: 800 10.5px var(--font-body); letter-spacing: .08em; text-transform: uppercase; }
+.cp.db .dbc .db-itable th button { min-height: 32px; font: inherit; letter-spacing: inherit; text-transform: inherit; }
+.cp.db .dbc .db-itable td { padding: 6px 10px; border-bottom: 1px solid var(--dbv-line); }
+.cp.db .dbc .db-itable tbody tr:last-child td { border-bottom: 0; }
+.cp.db .dbc .db-itable td:first-child { min-width: 220px; }
+.cp.db .dbc .db-itable td:first-child .db-tlink { flex-wrap: wrap; gap: 4px 10px; }
+.db-vbadge { padding: 2px 7px; border-radius: var(--dbv-r-tag); background: color-mix(in srgb, var(--sp-accent) 14%, transparent); color: var(--sp-accent); font: 700 10.5px var(--font-body); font-style: normal; white-space: nowrap; }
+.cp.db .db-itable .db-tmap { white-space: nowrap; color: var(--sp-muted); font-size: 12px; }
+.cp.db .db-itable .db-tmap.is-on { color: var(--sp-accent); font-weight: 700; }
+.cp.db .db-itable .db-tmapgo { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; border-radius: var(--dbv-r-tag);
+  color: var(--sp-accent); text-decoration: none; background: color-mix(in srgb, var(--sp-accent) 12%, transparent); }
+.cp.db .db-itable .db-tmapgo svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.cp.db .db-itable .db-tmapgo:hover { background: color-mix(in srgb, var(--sp-accent) 22%, transparent); }
+.cp.db .dbc .db-more { min-height: 44px; padding: 0 22px; border: 1px solid var(--dbv-line-hi); border-radius: var(--dbv-r-ctl); background: var(--dbv-panel); box-shadow: none; font: 700 13px var(--font-body); }
+.cp.db .dbc .db-more:hover { border-color: var(--sp-accent); }
+.cp.db .dbc .db-recent { margin-top: 24px; border-radius: var(--dbv-r-panel); }
+
+@media (min-width: 1100px) { .cp.db .dbc .db-g-tile { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); } }
+@media (max-width: 1000px) { .dbc { grid-template-columns: 184px minmax(0, 1fr); gap: 16px; } }
+/* телефон и узкий планшет: разделы — горизонтальная лента над поиском */
+@media (max-width: 760px) {
+  .dbc { display: block; }
+  .dbc-side { position: static; max-height: none; overflow: visible; padding: 0; background: none; box-shadow: none; margin: 0 0 12px; }
+  .dbc-side-h { display: none; }
+  .cp.db .dbc .db-tabs { display: flex; gap: 6px; overflow-x: auto; margin-inline: -16px; padding: 2px 16px 6px; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .cp.db .dbc .db-tabs::-webkit-scrollbar { display: none; }
+  .cp.db .dbc .db-tabs li { flex: none; scroll-snap-align: start; }
+  .cp.db .dbc .db-tabs a { min-height: 40px; margin: 0; padding: 0 12px; gap: 8px; border: 1px solid var(--dbv-line); background: var(--dbv-panel); white-space: nowrap; }
+  .cp.db .dbc .db-tabs a[aria-current="page"] { border-color: transparent; background: var(--sp-accent); color: var(--dbv-on-accent); box-shadow: none; }
+  .cp.db .dbc .db-tabs :is(img, .db-qi) { width: 20px; height: 20px; font-size: 13px; }
+  .dbc-note { margin: 6px 0 0; padding: 0; border: 0; font-size: 11px; }
+  .db-qbox { top: calc(var(--bx-top-h, 64px) + 8px); }
+  .dbc-head { margin-top: 4px; }
+  .cp.db .dbc .db-count { justify-content: flex-start; }
+  .cp.db .dbc .db-g-tile { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+  .cp.db .dbc .db-tools .db-tools-gap { display: none; }
+  .cp.db .dbc .db-tools .db-view { margin-left: auto; }
+}
+@media (max-width: 480px) { .cp.db .dbc .db-tabs { margin-inline: -14px; padding-inline: 14px; } }
+
+/* ================= страницы записей: полоса игры — лента с баннером ================= */
+.cp.db .dbs { position: relative; isolation: isolate; overflow: hidden; margin: 4px 0 16px; padding: 14px 16px 10px; border-radius: var(--dbv-r-panel);
+  background: var(--sp-base); box-shadow: inset 0 0 0 1px var(--dbv-line); }
+.cp.db .dbs::before { content: ""; position: absolute; inset: 0; z-index: -2; background: var(--dbv-banner, none) right center / cover no-repeat; opacity: .75; }
+.cp.db .dbs::after { content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sp-base) 90%, transparent) 0%, color-mix(in srgb, var(--sp-base) 62%, transparent) 55%, color-mix(in srgb, var(--sp-base) 35%, transparent) 100%); }
+.cp.db .dbs .dbs-game small { font: 800 10px var(--font-body); letter-spacing: .15em; text-transform: uppercase; color: var(--sp-accent); }
+.cp.db .dbs .dbs-game b { font: 700 18px/1.2 var(--font-display); letter-spacing: 0; text-transform: none; }
+.cp.db .dbs .dbs-search { border-radius: var(--dbv-r-ctl); }
+.cp.db .dbs :is(.dbs-go, .dbs-map, .dbs-rnd) { border-radius: var(--dbv-r-ctl); font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+.cp.db .dbs .dbs-tabs a { border-radius: var(--dbv-r-ctl); font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+.cp.db .dbs .dbs-tabs a :is(span, small) { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+.dbs-fix :is(a, span, small, b) { font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+/* заголовки и панели записи — шрифты и радиусы сайта; таблицы вариантов (.db-mtable) не трогаем */
+html[data-game] .cp.db :is(h1, h2, h3):not(.dbx h1) { font-family: var(--font-display); letter-spacing: 0; text-transform: none; }
+html[data-game] .cp.db h1:not(.dbx h1) { font-weight: 700; }
+html[data-game] .cp.db :is(h2, h3) { font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dbb .dbx-beasts { animation: none; }
+  .cp.db .dbx-acts a.dbx-map, .cp.db .dbc .db-tabs a { transition: none; }
+  .cp.db .dbx-acts a.dbx-map:hover { transform: none; }
+}
+
+/* ================= перебивки старых правил db.css ================= */
+.db-qclear[hidden] { display: none; }
+.cp.db .dbc .db-sort { width: auto; max-width: 100%; text-align: left; text-align-last: left; }
+html[data-game] .cp.db .dbx-in h1::after, html[data-game] .cp.db .dbc-h::after { content: none; display: none; }
+html[data-game] .cp.db .dbc .dbc-h { display: block; text-transform: none; letter-spacing: -.01em; font-family: var(--font-display); }
+html[data-game="skyrim"] .cp.db .dbx.dbb h1, html[data-game="gothic"] .cp.db .dbx.dbb h1 { text-transform: none; letter-spacing: -.01em; font-family: var(--font-display); }
+html[data-game] .cp.db .dbc :is(.db-chip, .db-chips button, .db-chips2 button, .db-tabs a, .db-tabs a span) { text-transform: none; letter-spacing: 0; font-family: var(--font-body); }
+.cp.db .dbb .dbx-beasts.dbx-sheet.dbx-sheet { inset: auto; top: 50%; right: 4%; bottom: auto; width: min(36%, 420px); height: auto; aspect-ratio: 500 / 264; transform: translateY(-50%) rotate(-2deg); opacity: 1; }
+@media (max-width: 760px) {
+  .cp.db .dbb .dbx-beasts.dbx-sheet.dbx-sheet { top: auto; bottom: 62px; right: -2%; width: 48%; transform: rotate(-2deg); }
+  html[data-game="gothic"] .cp.db .dbb .dbx-in { padding-top: 22px; }
+}
+.cp.db .dbc .db-chips2:empty { display: none; }
+@media (max-width: 760px) {
+  html[data-game="gothic"] .cp.db .dbb .dbx-cap { top: auto; bottom: 12px; }
+  .cp.db .dbc .db-tools { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cp.db .dbc .db-tools > :is(.db-onmap, .db-fbtn, .db-freset) { order: 1; flex: 1 1 40%; justify-content: center; }
+  .cp.db .dbc .db-sortbox { order: 2; flex: 1 1 100%; }
+  .cp.db .dbc .db-tools .db-view { order: 3; }
+  .cp.db .dbc .db-tools .db-sort { flex: 1 1 auto; width: 100%; font-size: 14px; padding: 0 30px 0 12px; }
+  .cp.db .dbc .db-tools .db-view { flex: 1 1 100%; margin-left: 0; }
+}
+@media (max-width: 760px) { .cp.db .dbc .db-itable :is(th, td):first-child { min-width: 0; width: 46vw; max-width: 210px; } }
+/* видимый фокус с клавиатуры в новой оболочке */
+.cp.db :is(.dbb, .dbc) :is(a, button, select, summary):focus-visible { outline: 2px solid var(--sp-accent); outline-offset: 2px; }
+
+/* ================= хлебные крошки: один вид на /db/, в каталогах игр и в записях ================= */
+html .cp.db .db-crumbs[aria-label] { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 2px 0 14px; }
+html .cp.db .db-crumbs[aria-label] a { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; margin: 0; padding: 4px 12px;
+  border-radius: var(--dbv-r-ctl, 8px); background: color-mix(in srgb, var(--sp-base) 70%, transparent);
+  box-shadow: inset 0 0 0 1px var(--dbv-line, color-mix(in srgb, var(--sp-text) 13%, transparent));
+  color: var(--sp-text, var(--text-primary)); font: 600 13px var(--font-body); letter-spacing: 0; text-transform: none; text-decoration: none; transform: none; }
+html .cp.db .db-crumbs[aria-label] a:hover { color: var(--sp-accent, var(--text-primary)); box-shadow: inset 0 0 0 1px currentColor; transform: none; }
+html .cp.db .db-crumbs[aria-label] a:focus-visible { outline: 2px solid var(--sp-accent, currentColor); outline-offset: 2px; }
+html .cp.db .db-crumbs[aria-label] a:first-child::before { content: ""; }
+html .cp.db .db-crumbs[aria-label] .db-crumb-cur { padding: 4px 6px; color: var(--sp-muted, var(--text-secondary)); font: 600 13px var(--font-body); letter-spacing: 0; text-transform: none; }
+@media (max-width: 600px) {
+  html .cp.db .db-crumbs[aria-label] a { min-height: 30px; padding: 3px 10px; font-size: 12px; }
+  html .cp.db .db-crumbs[aria-label] .db-crumb-cur { font-size: 12px; flex: 1 1 8em; min-width: 8em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}

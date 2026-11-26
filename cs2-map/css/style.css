@@ -1,0 +1,208 @@
+/* CS2 — раскидки гранат: выбор карты/стороны, значки гранат на радаре, гайд-окно.
+   Общий каркас карты — css/map-base.css, палитра — :root[data-game="cs2"] в css/spatial.css. */
+:root { --cs-t: #de9b35; --cs-ct: #6f8fd0; --cs-glass: rgba(14, 18, 26, .86); --cs-line: rgba(255, 255, 255, .12); }
+html[data-game="cs2"] .header-top-row h1 .logo-main { font-size: 14cqi; }
+#map { background: #0b0d12; }
+
+/* ---------- загрузка ---------- */
+/* фон — арт игры под затемнением, карточка — стекло, эмблема — радар: прострел гранаты и раскрытие смока (SMIL в index.html) */
+.cs-spl { --font-display: Unbounded, Manrope, sans-serif; background: #07090d; }
+.cs-spl-bg { position: absolute; inset: -20px; background: url(../hero-art-960.webp) 62% 40% / cover no-repeat; filter: blur(6px) saturate(.9) brightness(.55); transform: scale(1.04); animation: cs-spl-zoom 14s ease-in-out infinite alternate; }
+.cs-spl-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(70% 70% at 50% 50%, rgba(7, 9, 13, .35), rgba(7, 9, 13, .92)), linear-gradient(180deg, transparent 60%, rgba(232, 163, 61, .08)); }
+@keyframes cs-spl-zoom { to { transform: scale(1.1); } }
+@media (max-width: 640px) { .cs-spl-bg { background-image: url(../hero-art-640.webp); } }
+.cs-spl::before, .cs-spl::after { z-index: 0; }
+.cs-spl .spl-card { background: color-mix(in srgb, var(--sp-card, #151a24) 72%, transparent); backdrop-filter: blur(14px); border: 1px solid rgba(232, 163, 61, .18); }
+.cs-spl-title { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 24px; letter-spacing: .06em; padding-left: .06em; }
+.cs-spl-title b { color: var(--sp-accent); text-shadow: 0 0 18px color-mix(in srgb, var(--sp-accent) 60%, transparent); }
+.cs-spl-title small { font: 600 12px/1.3 var(--font-display); letter-spacing: .26em; color: var(--sp-accent); }
+.cs-radar { background: radial-gradient(circle, #141b24 0, #0b0f15 75%); }
+.cs-radar svg { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cs-radar .grid { stroke: rgba(232, 163, 61, .16); stroke-width: .8; }
+.cs-radar .walls { stroke: rgba(238, 241, 246, .32); stroke-width: 2.2; }
+.cs-radar .arc { stroke: var(--sp-accent); stroke-width: 1.6; stroke-dasharray: 100; filter: drop-shadow(0 0 3px rgba(232, 163, 61, .7)); }
+.cs-radar .nade { fill: #fff; filter: drop-shadow(0 0 4px #fff); }
+.cs-radar .ct { fill: var(--cs-ct); stroke: #0b0f15; stroke-width: 1.5; }
+.cs-radar .t { fill: var(--cs-t); stroke: #0b0f15; stroke-width: 1.2; }
+
+/* ---------- выбор карты и стороны ---------- */
+.cs-pick { position: fixed; inset: 0; z-index: 600; overflow-y: auto; overscroll-behavior: contain; background: radial-gradient(120% 80% at 50% 0, #1a2230 0, #0b0d12 60%); padding: 28px 24px 40px; }
+.cs-pick[hidden] { display: none; }
+html.cs-picking { overflow: hidden; }
+.cs-pick-in { max-width: 1180px; margin: 0 auto; }
+.cs-pick-head { margin-bottom: 22px; }
+.cs-eyebrow { margin: 0 0 6px; color: var(--sp-accent); font: 600 12px/1.3 var(--font-body, Manrope, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+.cs-pick h2 { margin: 0; color: #fff; font: 700 clamp(24px, 4vw, 38px)/1.15 var(--font-display, Unbounded, sans-serif); }
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.cs-card { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; border: 1px solid var(--cs-line); background: #121722; text-decoration: none; transition: transform .18s, border-color .18s, box-shadow .18s; }
+.cs-card img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.9) brightness(.78); transition: filter .2s, transform .35s; }
+.cs-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(5, 7, 10, .92)); }
+.cs-card-name { position: absolute; left: 14px; bottom: 11px; z-index: 1; color: #fff; font: 700 18px/1.1 var(--font-display, Unbounded, sans-serif); letter-spacing: .02em; text-transform: uppercase; }
+.cs-card:hover, .cs-card:focus-visible { transform: translateY(-3px); border-color: var(--sp-accent); box-shadow: 0 10px 30px rgba(0, 0, 0, .5), 0 0 0 1px var(--sp-accent); outline: none; }
+.cs-card:hover img, .cs-card:focus-visible img { filter: saturate(1.05) brightness(.95); transform: scale(1.04); }
+
+.cs-side-in { position: relative; max-width: 720px; margin: 6vh auto 0; padding: 34px 28px 28px; border-radius: 20px; border: 1px solid var(--cs-line); background: var(--cs-glass); text-align: center; overflow: hidden; isolation: isolate; }
+.cs-side-in::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--bg) center / cover; opacity: .22; filter: blur(2px); }
+.cs-side-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 26px 0 14px; }
+.cs-side-pick { --c: var(--cs-t); display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); background: color-mix(in srgb, var(--c) 12%, rgba(10, 13, 19, .9)); color: #fff; cursor: pointer; text-align: left; transition: transform .15s, background .15s, box-shadow .15s; }
+.cs-side-pick[data-side="ct"] { --c: var(--cs-ct); }
+.cs-side-pick:hover, .cs-side-pick:focus-visible { transform: translateY(-2px); background: color-mix(in srgb, var(--c) 24%, rgba(10, 13, 19, .9)); box-shadow: 0 0 0 1px var(--c), 0 0 24px color-mix(in srgb, var(--c) 35%, transparent); outline: none; }
+.cs-side-badge { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px; background: var(--c); color: #10131a; font: 800 20px/1 var(--font-display, Unbounded, sans-serif); }
+.cs-side-txt b { display: block; font: 700 18px/1.2 var(--font-display, Unbounded, sans-serif); }
+.cs-side-txt small { color: var(--sp-muted); font-size: 13px; }
+.cs-side-note { margin: 0; color: var(--sp-muted); font-size: 13px; }
+.cs-back { margin-top: 16px; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--cs-line); background: transparent; color: var(--sp-text); cursor: pointer; }
+.cs-back:hover { border-color: var(--sp-accent); color: var(--sp-accent); }
+@media (max-width: 560px) {
+    .cs-pick { padding: 18px 16px 28px; }
+    .cs-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .cs-card-name { left: 10px; bottom: 8px; font-size: 13px; }
+    .cs-side-in { padding: 26px 16px 20px; margin-top: 2vh; }
+    .cs-side-row { grid-template-columns: 1fr; }
+}
+
+/* ---------- фильтры гранат в панели ---------- */
+.cs-types { display: grid; gap: 6px; }
+.cs-type { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.cs-type[hidden] { display: none !important; }
+.cs-type input { position: absolute; opacity: 0; pointer-events: none; }
+.cs-type .filter-name { flex: 1; }
+.cs-type:has(input:not(:checked)) { opacity: .45; }
+.cs-type:has(input:focus-visible) { outline: 2px solid var(--sp-accent); outline-offset: 2px; border-radius: 8px; }
+.cs-ico { --c: currentColor; display: inline-grid; place-items: center; width: 22px; height: 22px; flex: none; }
+.cs-ico svg { width: 18px; height: 18px; fill: var(--c); }
+.cs-type .cs-ico { color: var(--c); }
+.search-item .cs-ico { margin-right: 8px; vertical-align: middle; }
+
+/* ---------- панель на карте: сторона и уровень ---------- */
+.cs-bar { position: fixed; z-index: 500; top: 14px; left: calc(var(--sidebar-width, 320px) + 50%); transform: translateX(calc(-50% - var(--sidebar-width, 320px) / 2)); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; pointer-events: none; transition: left .3s, transform .3s; }
+body:has(#sidebar.collapsed) .cs-bar { left: 50%; transform: translateX(-50%); }
+.cs-bar > * { pointer-events: auto; }
+.cs-bar .cs-row { display: flex; gap: 8px; justify-content: center; flex-basis: 100%; pointer-events: none; }
+.cs-row > * { pointer-events: auto; }
+.cs-gtypes button svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+.cs-gtypes button[hidden], .cs-levels[hidden] { display: none; }
+.cs-gtypes button[aria-pressed="true"] { color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 55%, transparent); }
+.cs-gtypes button[aria-pressed="false"] { opacity: .55; }
+.cs-seg { display: flex; padding: 4px; gap: 4px; border-radius: 12px; background: var(--cs-glass); border: 1px solid var(--cs-line); backdrop-filter: blur(10px); box-shadow: 0 8px 24px rgba(0, 0, 0, .45); }
+.cs-seg button { display: flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 9px; background: transparent; color: var(--sp-muted); font: 600 13px/1 var(--font-body, Manrope, sans-serif); cursor: pointer; }
+.cs-seg button b { font: 800 13px/1 var(--font-display, Unbounded, sans-serif); }
+.cs-seg button:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+.cs-sides [data-side="t"][aria-pressed="true"] { background: var(--cs-t); color: #14100a; }
+.cs-sides [data-side="ct"][aria-pressed="true"] { background: var(--cs-ct); color: #0b1020; }
+.cs-levels [aria-pressed="true"] { background: var(--sp-accent); color: #14100a; }
+.cs-hint { flex-basis: 100%; text-align: center; color: #dfe4ee; font-size: 12px; text-shadow: 0 1px 3px #000, 0 0 8px #000; }
+@media (max-width: 900px) {
+    .cs-bar { left: 50%; transform: translateX(-50%); top: 8px; width: max-content; gap: 6px; max-width: calc(100vw - 24px); }
+    body:has(#sidebar:not(.collapsed)) .cs-bar { display: none; }
+    .cs-seg button span { display: none; }
+    .cs-bar .cs-row { display: contents; }
+    .cs-gtypes button { min-width: 40px; min-height: 34px; justify-content: center; padding: 0 8px; }
+    .cs-sides button { min-height: 34px; padding: 0 10px; }
+    .cs-hint { font-size: 11px; max-width: calc(100vw - 24px); margin: 0 auto; }
+}
+
+/* ---------- значки на радаре ---------- */
+.cs-target, .cs-origin { pointer-events: auto; position: absolute; transform: translate(-50%, -50%); border: 0; padding: 0; cursor: pointer; }
+.cs-target { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(10, 12, 18, .88); box-shadow: 0 0 0 2px var(--c), 0 3px 10px rgba(0, 0, 0, .6); transition: transform .12s, opacity .15s, box-shadow .15s; }
+.cs-target svg { width: 17px; height: 17px; fill: var(--c); }
+.cs-target i { position: absolute; top: -7px; right: -9px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--c); color: #0b0d12; font: 800 10px/17px var(--font-body, Manrope, sans-serif); font-style: normal; text-align: center; }
+.cs-target:hover, .cs-target:focus-visible { transform: translate(-50%, -50%) scale(1.15); outline: none; z-index: 2; }
+.cs-target.is-sel { transform: translate(-50%, -50%) scale(1.25); box-shadow: 0 0 0 3px var(--c), 0 0 18px var(--c); z-index: 3; }
+.cs-target.is-dim { opacity: .28; }
+.cs-origin { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--c); color: #0b0d12; font: 800 11px/1 var(--font-body, Manrope, sans-serif); box-shadow: 0 0 0 2px #0b0d12, 0 0 0 3.5px var(--c), 0 3px 10px rgba(0, 0, 0, .6); animation: cs-pop .18s ease-out; z-index: 4; }
+.cs-origin { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))); }
+.cs-origin:hover, .cs-origin:focus-visible { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(1.2); outline: none; }
+.cs-origin.is-other { opacity: .55; }
+@keyframes cs-pop { from { transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(.4); opacity: 0; } }
+.cs-tip { font-size: 12px; }
+@media (pointer: coarse) { .cs-target { width: 34px; height: 34px; } .cs-origin { width: 30px; height: 30px; } }
+#map-empty { pointer-events: none; display: grid; place-items: center; color: var(--sp-muted); font-size: 14px; opacity: 0; transition: opacity .2s; }
+#map-empty.show { opacity: 1; }
+
+/* ---------- гайд ---------- */
+.cs-guide { position: fixed; inset: 0; z-index: 1300; display: grid; place-items: center; padding: 16px; background: rgba(4, 6, 10, .72); backdrop-filter: blur(4px); }
+.cs-guide[hidden] { display: none; }
+html.cs-guide-open { overflow: hidden; }
+.cs-guide-box { width: min(1120px, 100%); max-height: calc(100dvh - 32px); display: flex; flex-direction: column; border-radius: 18px; border: 1px solid var(--cs-line); background: #10141c; box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 25%, transparent), 0 30px 80px rgba(0, 0, 0, .7); overflow: hidden; }
+.cs-guide-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--cs-line); }
+.cs-guide-ico { width: 38px; height: 38px; border-radius: 10px; background: color-mix(in srgb, var(--c) 16%, transparent); }
+.cs-guide-ico svg { width: 22px; height: 22px; fill: var(--c); }
+.cs-guide-title { flex: 1; min-width: 0; }
+.cs-guide-title small { color: var(--sp-muted); font-size: 12px; }
+.cs-guide-title h3 { margin: 2px 0 0; color: #fff; font: 700 17px/1.25 var(--font-display, Unbounded, sans-serif); overflow-wrap: anywhere; }
+.cs-nav, .cs-x { flex: none; width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--cs-line); background: rgba(255, 255, 255, .04); color: #fff; font-size: 18px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+.cs-nav { font-size: 24px; }
+.cs-nav:hover, .cs-x:hover { border-color: var(--sp-accent); color: var(--sp-accent); }
+.cs-guide-body { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; overflow-y: auto; }
+.cs-step h4 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; min-height: 32px; color: #fff; font: 700 14px/1.2 var(--font-body, Manrope, sans-serif); }
+.cs-step h4 b { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--c); color: #0b0d12; font-size: 12px; }
+.cs-shot { position: relative; margin: 0; border-radius: 12px; overflow: hidden; background: #000; cursor: zoom-in; }
+.cs-shot img { display: block; width: 100%; height: auto; }
+.cs-shot.is-big { position: fixed; inset: 12px; z-index: 5; display: grid; place-items: center; cursor: zoom-out; background: rgba(0, 0, 0, .94); }
+.cs-shot.is-big img { width: auto; height: auto; max-width: 100%; max-height: 100%; }
+.cs-shot.is-aim::after { content: ""; position: absolute; left: 50%; top: 50%; width: 7%; aspect-ratio: 1; transform: translate(-50%, -50%); border: 2px solid #c7ff3f; border-radius: 50%; box-shadow: 0 0 0 2px rgba(0, 0, 0, .55), 0 0 14px rgba(199, 255, 63, .7); pointer-events: none; animation: cs-aim 1.6s ease-in-out infinite; }
+.cs-shot.is-big.is-aim::after { display: none; }
+@keyframes cs-aim { 50% { transform: translate(-50%, -50%) scale(1.25); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .cs-shot.is-aim::after { animation: none; } }
+.cs-tech { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--sp-muted); }
+.cs-chip { padding: 4px 9px; border-radius: 8px; background: color-mix(in srgb, var(--c) 14%, transparent); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); color: #fff; font-size: 12px; }
+.cs-desc { margin: 10px 0 0; color: #cfd5df; font-size: 13px; line-height: 1.5; }
+.cs-video { border-radius: 12px; overflow: hidden; background: #000; aspect-ratio: 16 / 9; }
+.cs-video { position: relative; }
+.cs-video { container-type: inline-size; }
+html, body { font-family: var(--font-body, "Manrope", system-ui, sans-serif); }
+.cs-video iframe { display: block; width: 100%; height: 100%; border: 0; }
+.cs-moments { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+.cs-moments button { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 0 6px; border-radius: 10px; border: 1px solid var(--cs-line); background: rgba(255, 255, 255, .04); color: var(--sp-text); font: 600 12px/1.1 var(--font-body, Manrope, sans-serif); cursor: pointer; }
+.cs-moments button b { color: var(--c); }
+.cs-moments button:hover { border-color: var(--c); }
+.cs-moments button.is-on { background: color-mix(in srgb, var(--c) 22%, transparent); border-color: var(--c); color: #fff; }
+.cs-view { display: inline-flex; margin-left: auto; padding: 2px; gap: 2px; border-radius: 10px; border: 1px solid var(--cs-line); background: rgba(255, 255, 255, .04); }
+.cs-view button { min-height: 28px; padding: 0 12px; border: 0; border-radius: 8px; background: none; color: var(--sp-muted); font: 600 12px/1 var(--font-body, Manrope, sans-serif); cursor: pointer; }
+.cs-view button:hover { color: #fff; }
+.cs-view button.is-on { background: color-mix(in srgb, var(--c) 22%, transparent); color: #fff; }
+.cs-shot.is-collage img { max-height: min(62vh, 560px); width: 100%; object-fit: contain; }
+.cs-shot.is-big.is-collage img { max-height: 100%; width: auto; }
+.cs-novid { margin: 0; padding: 18px; border-radius: 12px; border: 1px dashed var(--cs-line); color: var(--sp-muted); font-size: 13px; }
+.cs-guide-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border-top: 1px solid var(--cs-line); }
+.cs-copy { padding: 8px 14px; border-radius: 10px; border: 1px solid var(--sp-accent); background: color-mix(in srgb, var(--sp-accent) 14%, transparent); color: #fff; font-size: 13px; cursor: pointer; }
+.cs-copy:hover { background: color-mix(in srgb, var(--sp-accent) 26%, transparent); }
+@media (max-width: 760px) {
+    .cs-guide { padding: 0; place-items: stretch; }
+    .cs-guide-box { max-height: 100dvh; height: 100dvh; border-radius: 0; }
+    .cs-guide-body { grid-template-columns: 1fr; padding: 12px; }
+    .cs-guide-head { padding: 10px 12px; }
+    .cs-guide-title h3 { font-size: 15px; }
+    .cs-moments button { font-size: 11px; flex-direction: column; gap: 2px; padding: 4px; }
+}
+
+/* сайдбар — базовая типографика как у остальных карт */
+#sidebar .category-group { margin-top: 14px; }
+#sidebar .category-header { margin: 0 0 6px; padding: 0 4px; color: var(--sp-muted); font: 700 12px/1 var(--font-body, "Manrope", sans-serif); letter-spacing: .16em; text-transform: uppercase; }
+.cs-type.filter-item { position: relative; display: flex; justify-content: space-between; width: 100%; padding: 8px 10px; border-radius: 10px; font: 600 15.5px/1.2 var(--font-body, "Manrope", sans-serif); color: var(--sp-text); }
+.cs-type.filter-item:hover { background: color-mix(in srgb, var(--c) 12%, transparent); }
+.cs-type .filter-name { display: inline-flex; align-items: center; gap: 10px; }
+.cs-type .filter-count { color: var(--sp-muted); font: 600 14px var(--font-body, "Manrope", sans-serif); font-variant-numeric: tabular-nums; }
+#sidebar .map-select { -webkit-appearance: none; appearance: none; width: 100%; padding: 8px 40px 8px 14px; font: 700 16px/1.2 var(--font-body, "Manrope", sans-serif); color: var(--sp-text); }
+#sidebar .section-label { font: 700 12px/1 var(--font-body, "Manrope", sans-serif); letter-spacing: .16em; text-transform: uppercase; }
+#sidebar .bp-credit { margin: 16px 4px 0; color: var(--sp-muted); font-size: 12.5px; line-height: 1.5; }
+.cs-bar-hint, .cs-hint { font-family: var(--font-body, "Manrope", sans-serif); }
+#sidebar .logo-main { display: block; margin: 8px 0 4px; font: 700 26px/1 "Tektur", var(--font-body, sans-serif); letter-spacing: .02em; white-space: nowrap; text-transform: uppercase; color: var(--sp-text); text-shadow: 0 0 14px color-mix(in srgb, var(--sp-accent) 45%, transparent); }
+#sidebar .logo-sub { display: block; color: var(--sp-muted); font: 500 14px/1.2 var(--font-body, sans-serif); }
+.search-wrap { position: relative; }
+.section input[type="search"] { width: 100%; padding: 9px 12px; font: 500 15px var(--font-body, sans-serif); outline: none; border-radius: 10px; }
+.search-results { display: none; flex-direction: column; max-height: 290px; margin-top: 6px; overflow-y: auto; border-radius: 10px; }
+.search-results.open { display: flex; }
+.search-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 10px; border: 0; border-bottom: 1px solid rgba(225, 236, 255, .08); background: transparent; color: var(--sp-text); font: 500 14.5px/1.25 var(--font-body, sans-serif); text-align: left; cursor: pointer; }
+.search-item:last-child { border-bottom: 0; }
+.search-item:hover, .search-item:focus-visible { background: color-mix(in srgb, var(--sp-accent) 14%, transparent); outline: none; }
+#filters-container { padding: 0 14px 0 12px; }
+#sidebar .bp-credit { margin: 16px 16px 0; }
+
+/* Язычок сворачивания: стекло Spatial, шеврон SVG по центру (смотрит наружу, когда меню скрыто) */
+html[data-game] #sidebar-toggle-btn { display: grid; place-items: center; border-radius: 0 var(--sp-r-sm, 10px) var(--sp-r-sm, 10px) 0; color: var(--sp-muted); cursor: pointer; }
+html[data-game] #sidebar-toggle-btn:hover { color: var(--sp-accent); }
+html[data-game] #sidebar-toggle-btn:focus-visible { outline: 2px solid var(--sp-accent); outline-offset: 2px; }
+#sidebar-toggle-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s ease; }
+body:has(#sidebar.collapsed) #sidebar-toggle-btn svg { transform: rotate(180deg); }

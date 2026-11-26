@@ -1,0 +1,59 @@
+# BroskiPlay
+
+> Интерактивные карты игровых миров на русском языке: метки на русском, поиск, фильтры, отметка найденного и синхронизация прогресса между устройствами. Плюс «База данных» — справочник предметов, заданий, существ, персонажей и локаций, связанный с метками на картах.
+
+Сайт бесплатный, исходный код открыт: https://github.com/broskiplay/my-interactive-maps
+При цитировании материалов, пожалуйста, ставьте ссылку на страницу-источник.
+
+## Карты
+
+- [Tainted Grail: The Fall of Avalon](https://broskiplay.ru/tainted-grail-map/)
+- [Skyrim](https://broskiplay.ru/skyrim-map/)
+- [Ведьмак 3](https://broskiplay.ru/witcher3-map/)
+- [Cyberpunk 2077](https://broskiplay.ru/cyberpunk2077-map/)
+- [Oblivion Remastered](https://broskiplay.ru/oblivion-remake-map/)
+- [Palworld](https://broskiplay.ru/palworld-map/)
+- [Stellar Blade](https://broskiplay.ru/stellar-blade-map/)
+- [Hogwarts Legacy](https://broskiplay.ru/hogwarts-legacy-map/)
+- [Phantom Blade Zero](https://broskiplay.ru/phantom-blade-zero-map/)
+- [Gothic 1 Remake](https://broskiplay.ru/gothic-remake-map/)
+- [Dimraeth](https://broskiplay.ru/dimraeth-map/)
+
+## База данных
+
+- [База данных](https://broskiplay.ru/db/): справочники по играм
+- [Tainted Grail](https://broskiplay.ru/db/tainted-grail/): предметы, рецепты, задания, бестиарий с характеристиками, персонажи, локации, таланты, эффекты, достижения с условиями получения, комплекты снаряжения, типы меток игры, лор, подсказки — тексты из файлов игры, у записей ссылки на точные метки на карте
+  - [Все предметы](https://broskiplay.ru/db/tainted-grail/items/)
+  - [Все задания](https://broskiplay.ru/db/tainted-grail/quests/)
+  - [Бестиарий](https://broskiplay.ru/db/tainted-grail/bestiary/)
+  - [Персонажи](https://broskiplay.ru/db/tainted-grail/characters/)
+  - [Локации](https://broskiplay.ru/db/tainted-grail/locations/)
+  - [Таланты](https://broskiplay.ru/db/tainted-grail/talents/)
+  - [Эффекты](https://broskiplay.ru/db/tainted-grail/effects/)
+  - [Книги и записки](https://broskiplay.ru/db/tainted-grail/books/)
+  - [Достижения](https://broskiplay.ru/db/tainted-grail/achievements/)
+  - [Комплекты снаряжения](https://broskiplay.ru/db/tainted-grail/sets/)
+  - [Метки на карте игры](https://broskiplay.ru/db/tainted-grail/markers/)
+  - [Лор](https://broskiplay.ru/db/tainted-grail/lore/)
+- [Gothic 1 Remake](https://broskiplay.ru/db/gothic-remake/): предметы с характеристиками и рецептами, книги и записки с полным текстом, задания с целями и записями журнала, бестиарий, персонажи, места Долины рудников — тексты из файлов игры, у записей ссылки на точные метки на карте
+  - [Все предметы](https://broskiplay.ru/db/gothic-remake/items/)
+  - [Все задания](https://broskiplay.ru/db/gothic-remake/quests/)
+  - [Бестиарий](https://broskiplay.ru/db/gothic-remake/bestiary/)
+  - [Персонажи](https://broskiplay.ru/db/gothic-remake/characters/)
+  - [Локации](https://broskiplay.ru/db/gothic-remake/locations/)
+  - [Книги и записки](https://broskiplay.ru/db/gothic-remake/books/)
+
+- [The Elder Scrolls V: Skyrim](https://broskiplay.ru/db/skyrim/): оружие, броня и предметы с характеристиками и рецептами кузницы, книги с полным текстом и иллюстрациями, задания с целями и записями журнала, перки всех навыков, заклинания и крики, существа, персонажи, локации Скайрима и Солстейма, подсказки экранов загрузки — русские тексты из файлов игры (включая Dawnguard, Hearthfire и Dragonborn), у записей ссылки на метки на карте
+  - [Все предметы](https://broskiplay.ru/db/skyrim/items/)
+  - [Книги и записки](https://broskiplay.ru/db/skyrim/books/)
+  - [Все задания](https://broskiplay.ru/db/skyrim/quests/)
+  - [Перки](https://broskiplay.ru/db/skyrim/talents/)
+  - [Заклинания и крики](https://broskiplay.ru/db/skyrim/spells/)
+  - [Существа](https://broskiplay.ru/db/skyrim/bestiary/)
+  - [Персонажи](https://broskiplay.ru/db/skyrim/characters/)
+  - [Локации](https://broskiplay.ru/db/skyrim/locations/)
+
+## Прочее
+
+- [Что нового](https://broskiplay.ru/updates/)
+- [Конфиденциальность](https://broskiplay.ru/privacy.html)

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru" data-game="dragonsword">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="tdm-reservation" content="1">
+    <meta name="description" content="Интерактивная карта DragonSword: Awakening на русском: Орбис и 56 подземелий, арен и башен испытаний. Сюжетные и динамические задания, сундуки, боссы, головоломки, статуи Органы, торговцы, материалы и монстры — с описаниями и прогрессом на всех устройствах.">
+    <meta name="theme-color" content="#0a0908">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="120x120" href="/favicon-120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <title>Интерактивная карта DragonSword: Awakening — BroskiPlay</title>
+    <link rel="canonical" href="https://broskiplay.ru/dragonsword-awakening-map/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ld:start — генерируется: python3 scripts/seo.py -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://broskiplay.ru/dragonsword-awakening-map/#app",
+          "name": "Интерактивная карта DragonSword: Awakening",
+          "url": "https://broskiplay.ru/dragonsword-awakening-map/",
+          "description": "Интерактивная карта DragonSword: Awakening на русском: Орбис и 56 подземелий, арен и башен испытаний. Сюжетные и динамические задания, сундуки, боссы, головоломки, статуи Органы, торговцы, материалы и монстры — с описаниями и прогрессом на всех устройствах.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Любой (браузер)",
+          "inLanguage": "ru",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "RUB"
+          },
+          "about": {
+            "@type": "VideoGame",
+            "name": "DragonSword: Awakening"
+          },
+          "isPartOf": {
+            "@id": "https://broskiplay.ru/#website"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "BroskiPlay",
+            "url": "https://broskiplay.ru/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Интерактивные карты",
+              "item": "https://broskiplay.ru/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Интерактивная карта DragonSword: Awakening",
+              "item": "https://broskiplay.ru/dragonsword-awakening-map/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+    <!-- ld:end -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BroskiPlay">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Интерактивная карта DragonSword: Awakening — BroskiPlay">
+    <meta property="og:description" content="Интерактивная карта DragonSword: Awakening на русском: Орбис и 56 подземелий, арен и башен испытаний. Сюжетные и динамические задания, сундуки, боссы, головоломки, статуи Органы, торговцы, материалы и монстры — с описаниями и прогрессом на всех устройствах.">
+    <meta property="og:image" content="https://broskiplay.ru/og/dragonsword-awakening.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Интерактивная карта DragonSword: Awakening на русском — BroskiPlay">
+    <meta property="og:url" content="https://broskiplay.ru/dragonsword-awakening-map/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://broskiplay.ru/og/dragonsword-awakening.jpg">
+    <meta name="twitter:image:alt" content="Интерактивная карта DragonSword: Awakening на русском — BroskiPlay">
+    <link rel="stylesheet" href="../vendor/maplibre/maplibre-gl.css">
+    <link rel="stylesheet" href="../css/bp-map.css?v=1">
+    <link rel="stylesheet" href="../fonts/fonts.css?v=4">
+    <!-- Тайлы и данные карты лежат на broskiplay.github.io/dragonsword-awakening-assets: соединение открываем заранее -->
+    <link rel="preconnect" href="https://broskiplay.github.io/dragonsword-awakening-assets">
+    <link rel="preconnect" href="https://broskiplay.github.io/dragonsword-awakening-assets" crossorigin>
+    <!-- early-data:start — список тайлов (manifest.json) и данные меток запрашиваем сразу, не дожидаясь скриптов карты.
+         Карту выбираем так же, как js/app.js; адреса совпадают с его fetch(), поэтому браузер берёт уже скачанное.
+         Сгенерировано scripts/early_data.py по настройкам карты: после изменения списка карт или путей запустите его снова. -->
+    <script>
+        (function () {
+            var C = {"maps":{"orbis":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/orbis/manifest.json","data/dragonsword_orbis_markers.json"],"altar-of-the-dragon":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/altar-of-the-dragon/manifest.json","data/dragonsword_altar-of-the-dragon_markers.json"],"fang-bandits-arena":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/fang-bandits-arena/manifest.json","data/dragonsword_fang-bandits-arena_markers.json"],"rock-tribe-base":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/rock-tribe-base/manifest.json","data/dragonsword_rock-tribe-base_markers.json"],"coastal-cliff-cave-outpost":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/coastal-cliff-cave-outpost/manifest.json","data/dragonsword_coastal-cliff-cave-outpost_markers.json"],"vanak-the-bloody-hook":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/vanak-the-bloody-hook/manifest.json","data/dragonsword_vanak-the-bloody-hook_markers.json"],"tower-of-amplitude":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/tower-of-amplitude/manifest.json","data/dragonsword_tower-of-amplitude_markers.json"],"tower-of-crushing":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/tower-of-amplitude/manifest.json","data/dragonsword_tower-of-crushing_markers.json"],"tower-of-gale":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/tower-of-amplitude/manifest.json","data/dragonsword_tower-of-gale_markers.json"],"endless-summoning-grounds":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/endless-summoning-grounds/manifest.json","data/dragonsword_endless-summoning-grounds_markers.json"],"ghagaroach-of-blazeflame":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_ghagaroach-of-blazeflame_markers.json"],"ghagaroach-of-thunderbolt":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_ghagaroach-of-thunderbolt_markers.json"],"ghagaroach-of-venom":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_ghagaroach-of-venom_markers.json"],"ghagaroach-of-frostbite":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_ghagaroach-of-frostbite_markers.json"],"gallore-the-collapse":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/gallore-the-collapse/manifest.json","data/dragonsword_gallore-the-collapse_markers.json"],"furcas-the-starving-ghost-of-corrosion":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/furcas-the-starving-ghost-of-corrosion/manifest.json","data/dragonsword_furcas-the-starving-ghost-of-corrosion_markers.json"],"ghoul-greed":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghoul-greed/manifest.json","data/dragonsword_ghoul-greed_markers.json"],"drosophia-of-breaker":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_drosophia-of-breaker_markers.json"],"drosophia-of-bloodburst":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_drosophia-of-bloodburst_markers.json"],"corrupted-cave":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/corrupted-cave/manifest.json","data/dragonsword_corrupted-cave_markers.json"],"sunken-ruins":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/sunken-ruins/manifest.json","data/dragonsword_sunken-ruins_markers.json"],"earthlander-of-the-ravenous-earth":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/earthlander-of-the-ravenous-earth/manifest.json","data/dragonsword_earthlander-of-the-ravenous-earth_markers.json"],"residual-worm-cleanup-zone":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/residual-worm-cleanup-zone/manifest.json","data/dragonsword_residual-worm-cleanup-zone_markers.json"],"forest-of-entangled-roots":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/forest-of-entangled-roots/manifest.json","data/dragonsword_forest-of-entangled-roots_markers.json"],"dragon-worshipper-hideout":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/dragon-worshipper-hideout/manifest.json","data/dragonsword_dragon-worshipper-hideout_markers.json"],"nest-of-the-great-worm":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/nest-of-the-great-worm/manifest.json","data/dragonsword_nest-of-the-great-worm_markers.json"],"mantius-of-amplitude":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_mantius-of-amplitude_markers.json"],"mantius-of-crushing":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ghagaroach-of-blazeflame/manifest.json","data/dragonsword_mantius-of-crushing_markers.json"],"mantius-of-gale":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/mantius-of-gale/manifest.json","data/dragonsword_mantius-of-gale_markers.json"],"where-the-giant-sleeps":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/where-the-giant-sleeps/manifest.json","data/dragonsword_where-the-giant-sleeps_markers.json"],"tomb-of-greed":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/tomb-of-greed/manifest.json","data/dragonsword_tomb-of-greed_markers.json"],"the-graveyard-where-tragedy-sleeps":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/the-graveyard-where-tragedy-sleeps/manifest.json","data/dragonsword_the-graveyard-where-tragedy-sleeps_markers.json"],"steelheart-fortress-defense-raid":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/steelheart-fortress-defense-raid/manifest.json","data/dragonsword_steelheart-fortress-defense-raid_markers.json"],"steelheart-fortress-defense-scenario":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/steelheart-fortress-defense-scenario/manifest.json","data/dragonsword_steelheart-fortress-defense-scenario_markers.json"],"steelheart-fortress-armory":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/steelheart-fortress-armory/manifest.json","data/dragonsword_steelheart-fortress-armory_markers.json"],"corrupted-bedchamber":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/corrupted-bedchamber/manifest.json","data/dragonsword_corrupted-bedchamber_markers.json"],"barduk-the-corrupted":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/barduk-the-corrupted/manifest.json","data/dragonsword_barduk-the-corrupted_markers.json"],"warg-cave":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/warg-cave/manifest.json","data/dragonsword_warg-cave_markers.json"],"goblin-bandits-cave":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/goblin-bandits-cave/manifest.json","data/dragonsword_goblin-bandits-cave_markers.json"],"warg-enclosure":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/warg-enclosure/manifest.json","data/dragonsword_warg-enclosure_markers.json"],"chase-toward-the-end-raid":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/chase-toward-the-end-raid/manifest.json","data/dragonsword_chase-toward-the-end-raid_markers.json"],"chase-toward-the-end-scenario":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/chase-toward-the-end-scenario/manifest.json","data/dragonsword_chase-toward-the-end-scenario_markers.json"],"underground-goblin-village":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/underground-goblin-village/manifest.json","data/dragonsword_underground-goblin-village_markers.json"],"the-elemental-sanctuary":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/the-elemental-sanctuary/manifest.json","data/dragonsword_the-elemental-sanctuary_markers.json"],"collapsed-sanctuary":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/collapsed-sanctuary/manifest.json","data/dragonsword_collapsed-sanctuary_markers.json"],"cracked-crevice":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/cracked-crevice/manifest.json","data/dragonsword_cracked-crevice_markers.json"],"dragon-worshipper-ruins":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/dragon-worshipper-ruins/manifest.json","data/dragonsword_dragon-worshipper-ruins_markers.json"],"ancient-ruins":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ancient-ruins/manifest.json","data/dragonsword_ancient-ruins_markers.json"],"silver-tusk-bandits-supply-depot":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/silver-tusk-bandits-supply-depot/manifest.json","data/dragonsword_silver-tusk-bandits-supply-depot_markers.json"],"trace-of-the-giant":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/trace-of-the-giant/manifest.json","data/dragonsword_trace-of-the-giant_markers.json"],"rusted-tusk-bandits-treasure-vault":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/rusted-tusk-bandits-treasure-vault/manifest.json","data/dragonsword_rusted-tusk-bandits-treasure-vault_markers.json"],"dark-swamp":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/dark-swamp/manifest.json","data/dragonsword_dark-swamp_markers.json"],"ashen-ruins":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/ashen-ruins/manifest.json","data/dragonsword_ashen-ruins_markers.json"],"mercenary-crew-promotion-exam-veteran":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/mercenary-crew-promotion-exam-veteran/manifest.json","data/dragonsword_mercenary-crew-promotion-exam-veteran_markers.json"],"mercenary-crew-promotion-exam-novice":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/mercenary-crew-promotion-exam-novice/manifest.json","data/dragonsword_mercenary-crew-promotion-exam-novice_markers.json"],"mercenary-crew-promotion-exam-intermediate":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/mercenary-crew-promotion-exam-intermediate/manifest.json","data/dragonsword_mercenary-crew-promotion-exam-intermediate_markers.json"],"eroded-underground-cemetery":["https://broskiplay.github.io/dragonsword-awakening-assets/tiles/eroded-underground-cemetery/manifest.json","data/dragonsword_eroded-underground-cemetery_markers.json"]},"def":"orbis","last":"dsa_last_map"};
+            // Карта — из адреса /<игра>/<карта>/ (у страниц локаций <base href="../">, поэтому "." — папка игры)
+            var home = new URL(".", document.baseURI).pathname, seg = location.pathname.slice(home.length).split("/")[0];
+            var u = new URLSearchParams(location.search), q = u.get("map");
+            if (q !== null) {
+                // Старые ссылки ?map=<id>: переходим на страницу локации, у одной карты — просто убираем параметр
+                u.delete("map");
+                var rest = u.toString() ? "?" + u.toString() : "";
+                if (!C.single && C.maps[q] && !C.maps[seg]) { location.replace(home + q + "/" + rest + location.hash); return; }
+                try { history.replaceState(history.state, "", location.pathname + rest + location.hash); } catch (e) { /* без History API */ }
+            }
+            var id = C.single ? C.def : C.maps[seg] ? seg : null;
+            if (!id && C.last) { try { var l = localStorage.getItem(C.last); id = C.maps[l] ? l : (C.legacy && C.legacy[l]) || null; } catch (e) { /* нет доступа */ } }
+            (C.maps[id || C.def] || []).forEach(function (u) {
+                var e = document.createElement("link");
+                e.rel = "preload"; e.as = "fetch"; e.crossOrigin = "anonymous"; e.href = u;
+                document.head.appendChild(e);
+            });
+        })();
+    </script>
+    <!-- early-data:end -->
+    <!-- Основной шрифт (им набран список фильтров) — заранее, чтобы список не «прыгал» при подмене шрифта -->
+    <link rel="preload" href="../fonts/alegreya-cyrillic-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/cormorant-sc-cyrillic-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/style.css?v=dark1">
+    <link rel="stylesheet" href="../css/spatial.css?v=dark2">
+    <link rel="stylesheet" href="../css/map-nm.css?v=34s">
+    <link rel="stylesheet" href="../css/map-ux.css?v=26">
+    <link rel="stylesheet" href="../css/marker-stack.css?v=2">
+    <script src="../js/report-marker.js?v=4" defer></script>
+    <link rel="stylesheet" href="../css/support-toast.css?v=6">
+    <script src="../js/support-toast.js?v=8" defer></script>
+    <link rel="stylesheet" href="../css/map-about.css?v=4">
+    <link rel="stylesheet" href="../css/brand-mark.css?v=2">
+    <script src="/js/metrika.js?v=1" defer></script>
+    <link rel="stylesheet" href="../css/sidebar-common.css?v=6">
+    <link rel="stylesheet" href="../css/map-base.css?v=11q">
+<link rel="stylesheet" href="../css/ui-system.css?v=dark4">
+</head>
+<body>
+
+<!-- Загрузочный экран: общий spatial-каркас (css/map-nm.css, .spl), эмблема (меч с золотыми крыльями) и шрифты игры — css/style.css -->
+<div id="map-loader" class="spl" role="status" aria-live="polite">
+    <div class="spl-card">
+        <div class="spl-emblem" aria-hidden="true">
+            <div class="spl-well dsl-emblem">
+            <svg viewBox="0 0 120 120">
+                <defs>
+                    <linearGradient id="ds-blade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9fb3d6"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#7d91b6"/></linearGradient>
+                    <linearGradient id="ds-wing" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a3"/><stop offset=".55" stop-color="#e8b64c"/><stop offset="1" stop-color="#9a6c1c"/></linearGradient>
+                </defs>
+                <circle class="dsl-ring" cx="60" cy="60" r="50"/>
+                <circle class="dsl-halo" cx="60" cy="60" r="40"/>
+                <path class="dsl-wing" d="M56 50C46 38 30 34 14 38c8 3 12 7 14 11-6-1-11 0-15 3 9 1 14 4 17 8-5 0-9 2-11 5 10-1 19 1 26 6 4-6 8-13 11-21z"/>
+                <path class="dsl-wing r" d="M64 50c10-12 26-16 42-12-8 3-12 7-14 11 6-1 11 0 15 3-9 1-14 4-17 8 5 0 9 2 11 5-10-1-19 1-26 6-4-6-8-13-11-21z"/>
+                <g class="dsl-sword">
+                    <path class="dsl-blade" d="M60 10l5 9v62h-10V19z"/>
+                    <path class="dsl-fuller" d="M60 22v56"/>
+                    <path class="dsl-glint" d="M61.5 16v64"/>
+                    <path class="dsl-guard" d="M42 80c6 0 12 1 18 4 6-3 12-4 18-4l-3 6c-5 0-10 1-15 3-5-2-10-3-15-3z"/>
+                    <circle class="dsl-gem" cx="60" cy="84.5" r="2.6"/>
+                    <rect class="dsl-hilt" x="57" y="88" width="6" height="16" rx="1.5"/>
+                    <circle class="dsl-pommel" cx="60" cy="107" r="4"/>
+                </g>
+            </svg>
+            </div>
+        </div>
+        <div class="spl-eyebrow">Аниме · фэнтези · экшен</div>
+        <div class="spl-title dsl-title">DragonSword<small>Awakening</small></div>
+        <div class="spl-track" aria-hidden="true"><i></i></div>
+        <div class="spl-status">Пробуждаем клинок…</div>
+    </div>
+</div>
+
+<!-- mtb:start — верхнее меню карты: генерируется python3 scripts/site_menu.py, не править вручную -->
+<header class="mtb" id="mtb">
+    <a class="mtb-pill mtb-home" href="/" aria-label="BroskiPlay — на главную"><img src="/icons/logo-badge-96.png" width="30" height="30" alt=""><span>Главная</span></a>
+    <button type="button" class="mtb-burger mtb-pill" id="mtb-burger" aria-expanded="false" aria-controls="mtb-panel" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+    <div class="mtb-panel" id="mtb-panel">
+        <nav class="mtb-pill mtb-nav" aria-label="Разделы сайта">
+            <div class="mtb-dd"><button type="button" class="mtb-link" aria-expanded="false" aria-controls="mtb-games" aria-haspopup="true">Игры<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><div class="mtb-menu" id="mtb-games" hidden><a href="/stellar-blade-map/">Stellar Blade</a><a href="/tainted-grail-map/">Tainted Grail</a><a href="/gothic-remake-map/">Gothic Remake</a><a href="/dimraeth-map/">Dimraeth</a><a href="/palworld-map/">Palworld</a><a href="/oblivion-remake-map/">Oblivion Remastered</a><a href="/skyrim-map/">Skyrim</a><a href="/witcher3-map/">Ведьмак 3</a><a href="/cyberpunk2077-map/">Cyberpunk 2077</a><a href="/hogwarts-legacy-map/">Hogwarts Legacy</a><a href="/phantom-blade-zero-map/">Phantom Blade Zero</a><a href="/rdr2-map/">Red Dead Redemption 2</a><a href="/gta6-map/">Grand Theft Auto VI</a><a href="/silver-palace-map/">Silver Palace</a><a href="/dragonsword-awakening-map/" aria-current="true">DragonSword: Awakening</a><a href="/mortal-shell-2-map/">Mortal Shell II</a><a href="/cs2-map/">CS 2</a><a class="mtb-all" href="/games/">Все игры</a></div></div>
+            <a class="mtb-link" href="/db/">База данных</a>
+        </nav>
+        <div class="mtb-pill mtb-actions">
+            <a href="https://www.twitch.tv/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-twitch" aria-label="Twitch BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 3.5H19.5v10.25l-3.75 3.75h-4l-3 3v-3H4.5V6.25z"/><path d="M11 8v4.25M15.25 8v4.25"/></svg>
+                <span>Twitch</span>
+            </a>
+<a href="https://youtube.com/@broskiplayt" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-youtube" aria-label="YouTube BroskiPlay">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path class="f" d="M10 9.2v5.6l4.8-2.8z"/></svg>
+                <span>YouTube</span>
+            </a>
+<a href="https://www.donationalerts.com/r/broskiplay" target="_blank" rel="noopener noreferrer" class="mtb-social social-btn social-donate" aria-label="Поддержать проект">
+                <svg class="sp-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.7c0 5.4-7.5 10-7.5 10Z"/></svg>
+                <span>Поддержать</span>
+            </a>
+            <div class="auth-mini-box">
+    <a class="auth-mini-cab" href="/cabinet/">Кабинет</a>
+    <div class="auth-mini-info">
+        <img id="auth-avatar" class="auth-mini-avatar" src="" alt="Аватар">
+        <div id="auth-status" class="auth-mini-text"><b>Локальный режим</b><br><span>Синхронизация выключена</span></div>
+    </div>
+    <button id="auth-btn" type="button" class="auth-mini-btn"></button>
+</div>
+        </div>
+    </div>
+</header>
+<!-- mtb:end -->
+
+<div id="sidebar">
+    <div class="scroll-body">
+        <div class="sidebar-header">
+<!-- mtb-side:start — кнопка меню сайта для телефона (генерируется scripts/site_menu.py) -->
+        <button type="button" class="mtb-side-btn" id="mtb-side-btn" aria-label="Меню сайта: игры, вход"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Меню сайта</span><small>игры · вход</small></button>
+        <!-- mtb-side:end -->
+            <div class="header-top-row">
+                <h1>
+                    <span class="logo-top">Орбис · подземелья · башни</span>
+                    <span class="logo-main">DragonSword: Awakening</span>
+                    <span class="logo-sub">Интерактивная карта</span>
+                </h1>
+            </div>
+
+        </div>
+
+        <div class="section">
+            <p class="section-label">Карта</p>
+            <div id="map-switch" class="map-switch"></div>
+
+            <div class="progress-card" aria-label="Общий прогресс">
+                <div class="progress-head"><span>Найдено меток</span><strong id="progress-value">0%</strong></div>
+                <div class="progress-track" role="progressbar" aria-label="Прогресс исследования карты" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><span id="progress-fill"></span></div>
+                <div class="progress-count" id="progress-count"></div>
+            </div>
+
+            <div class="search-wrap">
+                <input type="search" id="search-input" placeholder="Поиск: сундук, босс, статуя Органы…" autocomplete="off" aria-controls="search-results">
+                <div class="search-results" id="search-results" role="listbox" aria-label="Результаты поиска"></div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" id="show-all-btn">Показать все</button>
+                <button type="button" id="hide-all-btn">Скрыть все</button>
+                <button type="button" id="hide-found-btn" class="wide" aria-pressed="false">Скрыть отмеченные</button>
+            </div>
+
+            <button type="button" id="add-marker-btn" class="add-marker-btn">Добавить свою метку</button>
+
+            <div class="io-row">
+                <button type="button" id="export-progress-btn" title="Сохранить найденное и свои метки в JSON-файл">⬇ Экспорт прогресса</button>
+                <button type="button" id="import-progress-btn" title="Загрузить прогресс из JSON-файла">⬆ Импорт прогресса</button>
+            </div>
+            <input type="file" id="import-progress-input" accept="application/json,.json" hidden>
+            <p class="io-status" id="io-status" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="filters-list" id="filters-container"></div>
+
+        <p class="bp-credit">Метки основаны на открытых картах сообщества. Перевод, сверка и адаптация — BroskiPlay.</p>
+
+        <!-- about:start — генерируется: python3 scripts/build_map_about.py -->
+        <details class="bp-about" id="bp-about">
+            <summary>О карте</summary>
+            <h2>DragonSword: Awakening: что отмечено на карте «Долина Плачущего ручья»</h2>
+            <p>Интерактивная карта DragonSword: Awakening на русском. На карте «Долина Плачущего ручья» отмечено 316 меток в 45 категориях. Все карты: Долина Плачущего ручья, Багровый лес, Деревня Лу, Панчжэнь, Лагерь Союза, Озеро Мэйгу, Гора Заточения. Отмечайте найденное, ищите места по названию и добавляйте свои метки. Прогресс сохраняется в браузере, а после входа через Google синхронизируется между устройствами.</p>
+            <ul>
+                <li><strong>Интересные места</strong> (44): Колокол (23), Переход (1), Объект взаимодействия (19), Испытание (1).</li>
+                <li><strong>Ключевые предметы</strong> (90): Оружие (4), Фантомный коготь (3), Аксессуар (10), Снадобье (2), Янтарь Ша-Ци (4), Чёрный камень (4), Ключ (5), Предмет задания (10) и ещё 3.</li>
+                <li><strong>Предметы</strong> (16): Печать перемещения (6), Талисман перековки оружия (6), Талисман перековки Фантомного когтя (4).</li>
+                <li><strong>Персонажи</strong> (15): Босс (7), Торговец (1), Кузнец (1), Персонаж (6).</li>
+                <li><strong>Задания</strong> (14): Основное сюжетное задание (2), Побочное сюжетное задание (5), История (7).</li>
+                <li><strong>Материалы</strong> (135): Пыль сознания (55), Кузнечный металл (11), Безупречный кузнечный металл (2), Парный металл (9), Листовой металл (11), Растворитель (12), Безупречный парный металл (2), Слиток аномальной меди (6) и ещё 11.</li>
+                <li><strong>Другое</strong> (2): Разное (2).</li>
+            </ul>
+        <!-- cats:start — генерируется: python3 scripts/category_pages.py -->
+        <h3>Все категории DragonSword: Awakening</h3>
+        <ul class="bp-cats">
+            <li><strong>Сюжетные задания:</strong> <a href="c/story-quests/">Сюжетные задания</a>.</li>
+            <li><strong>Динамические задания:</strong> <a href="c/area-quests/">Задания области</a>, <a href="c/area-quests-step/">Поручения заданий области</a>, <a href="c/area-quests-objective/">Цели заданий области</a>.</li>
+            <li><strong>Торговцы:</strong> <a href="c/svc-cooking-ingredient-merchant/">Торговец кулинарными ингредиентами</a>.</li>
+            <li><strong>Услуги:</strong> <a href="c/svc-vicar-of-the-saintess/">Заместитель Святой</a>.</li>
+            <li><strong>Перемещение:</strong> <a href="c/warp-statues/">Статуя телепортации</a>, <a href="c/warp-waypoints/">Путевая точка</a>, <a href="c/warp-eona/">Наследие Эоны</a>.</li>
+            <li><strong>Подземелья:</strong> <a href="c/warp-dungeons/">Вход в подземелье</a>, <a href="c/world-crack/">Подземелье разлома</a>.</li>
+            <li><strong>Достопримечательности:</strong> <a href="c/poi-fieldbosses/">Полевой босс</a>, <a href="c/poi-lorebooks/">Книги</a>, <a href="c/poi-bounties/">Награды за головы</a>.</li>
+            <li><strong>Сундуки с сокровищами:</strong> <a href="c/chests-grade3/">Редкий ящик</a>, <a href="c/chests-grade2/">Улучшенный ящик</a>, <a href="c/chests-grade1/">Обычный ящик</a>, <a href="c/chests-key/">Сундук с ключом</a>, <a href="c/chests-grade4/">Ящик героя</a>, <a href="c/chests-grade5/">Легендарный ящик</a>, <a href="c/chests-puzzle/">Сундук-головоломка</a>, <a href="c/chests-map/">Сундук с карты сокровищ</a>.</li>
+            <li><strong>Разрушаемые объекты:</strong> <a href="c/breakable-explosive/">Взрывная бочка</a>, <a href="c/breakable-crate/">Ящики и горшки</a>, <a href="c/breakable-rock/">Разрушаемая скала</a>, <a href="c/breakable-barrel/">Бочка</a>, <a href="c/breakable-pumpkin/">Тыква</a>.</li>
+            <li><strong>Король Сурков:</strong> <a href="c/minigame-mole/">Крот</a>, <a href="c/minigame-fly/">Полёт</a>, <a href="c/minigame-wave/">Волна</a>.</li>
+            <li><strong>Головоломки:</strong> <a href="c/puzzle-set-pressure/">Головоломка с нажимными плитами</a>, <a href="c/puzzle-set-pillar/">Головоломка с колоннами</a>, <a href="c/puzzle-switch/">Переключатель</a>, <a href="c/puzzle-rock/">Переносной камень</a>, <a href="c/puzzle-object/">Объект головоломки</a>, <a href="c/puzzle-plate/">Нажимная плита</a>.</li>
+            <li><strong>Кулинарные ингредиенты:</strong> <a href="c/ingredients-aged-game-meat/">Выдержанное мясо зверя</a>, <a href="c/ingredients-rice/">Рис</a>, <a href="c/ingredients-wheat/">Пшеница</a>, <a href="c/ingredients-dried-maneflower/">Сухой гривоцвет</a>, <a href="c/ingredients-bellonea/">Беллонея</a>, <a href="c/ingredients-salmon-fillet/">Филе лосося</a>, <a href="c/ingredients-cave-mushroom/">Пещерный гриб</a>, <a href="c/ingredients-aqualily/">Голубая лилия</a>, <a href="c/ingredients-silverwing-fillet/">Мясо Сильверуинга</a>, <a href="c/ingredients-grave-bellherb/">Кладбищенский колокольчик</a>, <a href="c/ingredients-dwarf-potato/">Карликовый картофель</a>, <a href="c/ingredients-bird-eggs/">Птичье яйцо</a>, <a href="c/ingredients-leaf-of-vigor/">Лист жизненной силы</a>, <a href="c/ingredients-conch/">Рапана</a>, <a href="c/ingredients-shellfish/">Ракушка</a>, <a href="c/ingredients-sand-crab/">Песчаный краб</a>, <a href="c/ingredients-trout-fillet/">Филе форели</a>, <a href="c/ingredients-white-dewblossom/">Белый росоцвет</a>, <a href="c/ingredients-rock-mushroom/">Каменный гриб</a>, <a href="c/ingredients-tree-sap-mushroom/">Гриб древесной смолы</a>, <a href="c/ingredients-goose-eggs/">Гусиное яйцо</a>, <a href="c/ingredients-honey/">Мёд</a>, <a href="c/ingredients-drop-of-purity/">Капля чистоты</a>, <a href="c/ingredients-fruit-of-vitality/">Плод жизненной силы</a>, <a href="c/ingredients-primordial-seed/">Семя древности</a>, <a href="c/ingredients-lantern-gourd/">Фонарная тыква</a>, <a href="c/ingredients-whitebloom-carrot/">Морковь с белыми цветами</a>, <a href="c/ingredients-dawn-lanternleaf/">Рассветный фонарик</a>, <a href="c/ingredients-waveleaf-cabbage/">Волнистая капуста</a>, <a href="c/ingredients-round-eggplant/">Круглый баклажан</a>, <a href="c/ingredients-leaflet-tomato/">Листовой томат</a>, <a href="c/ingredients-blue-lotus-mushroom/">Синий лотосовый гриб</a>, <a href="c/ingredients-shrimp-flesh/">Мясо креветки</a>, <a href="c/ingredients-wild-onion/">Черемшовый лук</a>, <a href="c/ingredients-radish/">Редис</a>, <a href="c/ingredients-fermented-gnoll-berry/">Забродивший плод гноллов</a>, <a href="c/ingredients-shining-dawn-lanternleaf/">Сияющий рассветный фонарик</a>, <a href="c/ingredients-shining-blue-lotus-mushroom/">Светящийся синий лотосовый гриб</a>, <a href="c/ingredients-fragrant-herbs/">Ароматная трава</a>, <a href="c/ingredients-well-grown-waveleaf-cabbage/">Отборная волнистая капуста</a>, <a href="c/ingredients-well-grown-mildwild-onion/">Отборный черемшовый лук</a>, <a href="c/ingredients-useful-iron-ore/">Приличная железная руда</a>.</li>
+            <li><strong>Материалы для крафта:</strong> <a href="c/materials-gold/">Золото</a>, <a href="c/materials-crystal-of-reverie/">Кристалл воспоминания</a>, <a href="c/materials-new-rice/">Свежий рис</a>, <a href="c/materials-basic-combat-text/">Учебник основ боя</a>, <a href="c/materials-mana-shard/">Осколок магии</a>, <a href="c/materials-piercing-crystal/">Клиновидный кристалл</a>, <a href="c/materials-binding-crystal/">Кристалл единства</a>, <a href="c/materials-crystal-of-recollection/">Кристалл воспоминаний</a>, <a href="c/materials-crystal-of-oblivion/">Кристалл забвения</a>, <a href="c/materials-vein-crystal/">Кристалл лей-линии</a>, <a href="c/materials-crystal-of-remembrance/">Кристалл памяти</a>, <a href="c/materials-well-grown-wheat/">Отборная пшеница</a>, <a href="c/materials-undergrown-dawn-lanternleaf/">Недоросший рассветный фонарик</a>, <a href="c/materials-nutrient-deficient-wheat-sprouts/">Ростки пшеницы с дефицитом питательных веществ</a>.</li>
+            <li><strong>Статуя Органы:</strong> <a href="c/organa-right-leg/">Правая нога</a>, <a href="c/organa-left-wing/">Левое крыло</a>, <a href="c/organa-right-wing/">Правое крыло</a>, <a href="c/organa-left-arm/">Левая рука</a>, <a href="c/organa-head/">Голова</a>, <a href="c/organa-statue/">Статуя Органы</a>.</li>
+            <li><strong>Боссы и элита:</strong> <a href="c/elites/">Элита</a>, <a href="c/boss-named/">Боссы и именные</a>, <a href="c/raid-bosses/">Рейдовые боссы</a>, <a href="c/big-bosses/">Большие боссы</a>.</li>
+            <li><strong>Гоблины:</strong> <a href="c/monster-goblin-warrior/">Гоблин-воин</a>, <a href="c/monster-goblin/">Гоблин</a>, <a href="c/monster-goblin-berserker/">Гоблин-берсерк</a>, <a href="c/monster-kuaku-the-mad/">Безумный Куаку</a>, <a href="c/monster-goblin-barbarian/">Гоблин-варвар</a>, <a href="c/monster-goblin-tribal-hero/">Гоблин — герой племени</a>.</li>
+            <li><strong>Гноллы:</strong> <a href="c/monster-gnoll-warrior/">Гнолл-воин</a>, <a href="c/monster-gnoll-spearman/">Гнолл-метатель дротиков</a>.</li>
+            <li><strong>Гончие:</strong> <a href="c/monster-hound/">Варг</a>, <a href="c/monster-armored-warg/">Железнобокий Варг</a>.</li>
+            <li><strong>Орки:</strong> <a href="c/monster-orc-warrior/">Орк-воин</a>, <a href="c/monster-orc-rock-thrower-warrior/">Орк-метатель камней</a>, <a href="c/monster-orc-barbarian/">Орк-варвар</a>, <a href="c/monster-vash-the-tribal-warrior/">Баш — племенной герой</a>, <a href="c/monster-heavy-armored-orc/">Орк в тяжёлой броне</a>, <a href="c/monster-orc-assault-captain/">Орк-капитан штурмовиков</a>.</li>
+            <li><strong>Скелеты:</strong> <a href="c/monster-skeleton-soldier/">Скелет-солдат</a>, <a href="c/monster-skeleton-axe-soldier/">Скелет-метатель топоров</a>, <a href="c/monster-ordered-skeleton-axesoldier/">Ordered Skeleton Axesoldier</a>, <a href="c/monster-wave-skeleton-soldier/">Wave Skeleton Soldier</a>, <a href="c/monster-skeleton-commander/">Скелет-центурион</a>.</li>
+            <li><strong>Гарпии:</strong> <a href="c/monster-harpy/">Гарпия</a>.</li>
+            <li><strong>Жуки:</strong> <a href="c/monster-mantius-of-amplitude/">Мантиас Вибрации</a>, <a href="c/monster-ghagaroach-of-frostbite/">Гагарочи Хладолёда</a>, <a href="c/monster-mantius-of-crushing/">Мантиас Сокрушения</a>, <a href="c/monster-drosophia-of-breaker/">Драсофир Ударной волны</a>, <a href="c/monster-mantius-of-gale/">Мантиас Шквала</a>, <a href="c/monster-drosophia-of-bloodburst/">Драсофир Ярости</a>, <a href="c/monster-ghagaroach-of-blazeflame/">Гагарочи Алого Пламени</a>, <a href="c/monster-ghagaroach-of-thunderbolt/">Гагарочи Молнии</a>, <a href="c/monster-ghagaroach-of-venom/">Гагарочи Мутности</a>.</li>
+            <li><strong>Пчёлы:</strong> <a href="c/monster-killer-hornet/">Шершень-убийца</a>, <a href="c/monster-killer-honeybee/">Пчела-убийца</a>, <a href="c/monster-killer-mosquito-small/">Killer Mosquito Small</a>.</li>
+            <li><strong>Слизни:</strong> <a href="c/monster-slime/">Слизень</a>, <a href="c/monster-giant-slime/">Гигантский слизень</a>.</li>
+            <li><strong>Черви:</strong> <a href="c/monster-baby-worm/">Baby Worm</a>, <a href="c/monster-fierce-saw-teeth-baby-worm/">Fierce Saw Teeth Baby Worm</a>.</li>
+            <li><strong>Гули:</strong> <a href="c/monster-ghoul/">Ghoul</a>.</li>
+            <li><strong>Пауки:</strong> <a href="c/monster-spider-hunter/">Паук-охотник</a>.</li>
+            <li><strong>Големы:</strong> <a href="c/monster-rock-golem/">Rock Golem</a>, <a href="c/monster-vanak-the-bloody-hook/">Банак Кровавый Крюк</a>.</li>
+            <li><strong>Тролли:</strong> <a href="c/monster-troll/">Troll</a>.</li>
+            <li><strong>Энты:</strong> <a href="c/monster-ent-no-bird/">Ent No Bird</a>.</li>
+            <li><strong>Ламии:</strong> <a href="c/monster-lamia-blood-blade/">Lamia Blood Blade</a>, <a href="c/monster-lamia-warrior/">Lamia Warrior</a>.</li>
+            <li><strong>Призраки:</strong> <a href="c/monster-sargon-the-scream-devourer/">Саргон, Пожиратель криков</a>.</li>
+            <li><strong>Личи:</strong> <a href="c/monster-lich-orb/">Lich Orb</a>.</li>
+            <li><strong>Драконы:</strong> <a href="c/monster-furcas-the-starving-ghost-of-corrosion/">Голодный дух коррозии Фуркас</a>.</li>
+            <li><strong>Фанатики дракона:</strong> <a href="c/monster-dragon-worshipper/">Поклонник дракона</a>.</li>
+            <li><strong>Пугала:</strong> <a href="c/monster-training-dummy/">Тренировочное пугало</a>, <a href="c/monster-gallore-the-collapse/">Галор Распада</a>.</li>
+            <li><strong>Янтарные рыцари:</strong> <a href="c/monster-amber-trading-company-bodyguard/">Охранник Торгового дома «Амбер»</a>.</li>
+            <li><strong>Солдаты Орбиса:</strong> <a href="c/monster-orbis-soldier/">Солдат Орбиса</a>, <a href="c/monster-orbis-crossbow-soldier/">Orbis Crossbow Soldier</a>, <a href="c/monster-wounded-orvis-crossbowman/">Раненый арбалетчик Орбиса</a>.</li>
+            <li><strong>Наёмники:</strong> <a href="c/monster-mercenary-hunter/">Mercenary Hunter</a>, <a href="c/monster-mercenary/">Наёмник</a>, <a href="c/monster-corruption-mercenary/">Corruption Mercenary</a>.</li>
+            <li><strong>Орден Органы:</strong> <a href="c/monster-organa-soldier/">Organa Soldier</a>.</li>
+            <li><strong>Существа разлома:</strong> <a href="c/monster-crack-creep/">Crack Creep</a>, <a href="c/monster-crack-walker/">Crack Walker</a>.</li>
+            <li><strong>Особые монстры:</strong> <a href="c/monster-ornette/">Онет</a>, <a href="c/monster-roxy/">Рокси</a>, <a href="c/monster-alex/">Алекс</a>, <a href="c/monster-dana/">Дана</a>, <a href="c/monster-kalien/">Калиен</a>, <a href="c/monster-eileen/">Эйлин</a>, <a href="c/monster-johnny/">Джонни</a>, <a href="c/monster-tarte/">Тарте</a>, <a href="c/monster-reina/">Рейна</a>, <a href="c/monster-theresia/">Терезия</a>.</li>
+            <li><strong>Другие монстры:</strong> <a href="c/monster-unknown/">Монстр</a>, <a href="c/monster-flameling-fox/">Flameling Fox</a>, <a href="c/monster-aria/">Ария</a>.</li>
+            <li><strong>Дикие животные:</strong> <a href="c/animal-boar/">Кабан</a>, <a href="c/animal-fox/">Лиса</a>, <a href="c/animal-rabbit/">Кролик</a>, <a href="c/animal-squirrel/">Белка</a>, <a href="c/animal-sheep/">Овца</a>, <a href="c/animal-goose/">Гусь</a>, <a href="c/animal-thunder-squirrel/">Громовая белка</a>.</li>
+        </ul>
+        <!-- cats:end -->
+        </details>
+        <!-- about:end -->
+
+        <button type="button" class="sidebar-collapse-mobile" id="sidebar-collapse-mobile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg><span>Свернуть меню</span></button>
+    </div>
+</div>
+
+<button id="sidebar-toggle-btn" title="Скрыть / показать меню" aria-label="Скрыть / показать меню">◀</button>
+
+<main id="map" aria-label="Карта"></main>
+<div id="map-empty"></div>
+<div class="ds-toast" id="ds-toast" role="status" aria-live="polite"></div>
+
+<script src="../vendor/maplibre/maplibre-gl.js" defer></script>
+<script src="../js/bp-map.js?v=17" defer></script>
+<script src="../js/lightbox-zoom.js?v=3" defer></script>
+
+<script src="../js/marker-stack.js?v=2" defer></script>
+<script src="js/categories.js?v=1" defer></script>
+<script src="../js/nm-pin.js?v=2" defer></script>
+<script src="../js/firebase-lazy.js?v=1" defer></script>
+<script src="../js/map-extras.js?v=12" defer></script>
+<script src="../js/map-topbar.js?v=5" defer></script>
+<script src="../js/map-core.js?v=15" defer></script>
+<script src="../js/map-layers.js?v=2" defer></script>
+<script src="js/app.js?v=9" defer></script>
+<script src="../js/map-ux.js?v=18" defer></script>
+</body>
+</html>

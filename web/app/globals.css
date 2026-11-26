@@ -1,0 +1,44 @@
+/*
+ * Tailwind CSS v4 + токены shadcn/ui.
+ * Общие токены — /css/spatial.css; компоненты — shell.css, home-neo.css и ui-system.css.
+ * Обычные CSS-правила подключены вне слоёв Tailwind.
+ * Preflight (сброс стилей Tailwind) намеренно не подключён: он изменил бы вид страницы.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Токены с префиксом --ui-: имена --muted и --ring уже заняты в home.min.css.
+   Тема классов Tailwind/shadcn = цвета канала (как на главной): фон #0d111b, лайм #c7ff3f, циан #54dcff */
+:root {
+  --ui-background: var(--bg-base);
+  --ui-foreground: var(--text-primary);
+  --ui-primary: var(--accent-primary);
+  --ui-primary-foreground: var(--text-on-accent);
+  --ui-secondary: var(--bg-elevated);
+  --ui-secondary-foreground: var(--text-primary);
+  --ui-muted: var(--bg-input);
+  --ui-muted-foreground: var(--text-muted);
+  --ui-border: var(--border-default);
+  --ui-ring: var(--accent-secondary);
+  --ui-radius: var(--radius-lg);
+}
+
+@theme inline {
+  --color-background: var(--ui-background);
+  --color-foreground: var(--ui-foreground);
+  --color-primary: var(--ui-primary);
+  --color-primary-foreground: var(--ui-primary-foreground);
+  --color-secondary: var(--ui-secondary);
+  --color-secondary-foreground: var(--ui-secondary-foreground);
+  --color-muted: var(--ui-muted);
+  --color-muted-foreground: var(--ui-muted-foreground);
+  --color-border: var(--ui-border);
+  --color-ring: var(--ui-ring);
+  --color-lime: var(--accent-primary);
+  --color-cyan: var(--accent-secondary);
+  --color-ink: var(--bg-base);
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+}

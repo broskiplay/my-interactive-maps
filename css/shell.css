@@ -1,0 +1,425 @@
+/* =========================================================================================
+   КАРКАС САЙТА — общий для всех страниц (главная, карты, база, служебные): токены --bx-*, шапка, левая
+   навигация (на телефоне — нижняя панель), подвал, окно «О проекте», кнопки. Разметка — web/components/shell/*.tsx.
+   Образец — главная (css/home-neo.css: только её блоки). Стили страниц карт/базы каркас не трогают:
+   всё здесь — классы .bx-* и блок входа .auth-card в шапке.
+   ========================================================================================= */
+
+:root {
+    --bx-bg: var(--bg-base);
+    --bx-bg-2: var(--bg-base);
+    --bx-surface: var(--bg-surface);
+    --bx-surface-2: var(--bg-elevated);
+    --bx-surface-3: var(--bg-elevated);
+    --bx-line: var(--border-default);
+    --bx-line-2: var(--border-strong);
+    --bx-text: var(--text-primary);
+    --bx-muted: var(--text-secondary);
+    --bx-faint: var(--text-muted);
+    --bx-lime: var(--accent-primary);
+    --bx-lime-ink: var(--accent-primary);      /* лайм как цвет текста */
+    --bx-on-lime: var(--text-on-accent);
+    --bx-cyan: var(--accent-secondary);
+    --bx-cyan-ink: var(--accent-secondary);
+    --bx-live: #ff4d5e;
+    --bx-twitch: #9146ff;          /* фирменный фиолетовый Twitch — шапка во время эфира (js/twitch-live.js) */
+    --bx-twitch-ink: #bf94ff;      /* он же как цвет текста на тёмном */
+    --bx-white: #fff;
+    --bx-cta-bg: #03070d;          /* фон баннера «Начни играть» — под цвет картинки, в обеих темах */
+    --bx-cta-ink: #f3f6fb;
+    --bx-cta-muted: #a3afc2;
+    --bx-scrim: rgba(3, 6, 12, .72);
+    --bx-shade: rgba(0, 0, 0, .55);
+    --bx-sh-1: var(--shadow-card);
+    --bx-sh-2: var(--shadow-hover);
+    --bx-sh-pop: var(--shadow-hover);
+    --bx-glow-lime: var(--glow-lime);
+    --bx-glow-cyan: var(--glow-cyan);
+    --bx-r: var(--radius-xl);
+    --bx-r-lg: var(--radius-3xl);
+    --bx-top-h: 72px;
+    --bx-rail-w: 92px;
+    --bx-ease: cubic-bezier(.2, .7, .2, 1);
+    --bx-font: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --bx-font-display: "Unbounded", var(--bx-font);   /* заголовки и названия игр — фирменные шрифты (как 16.11.2026) */
+    color-scheme: dark;
+}
+
+/* ---------- каркас в палитре открытой игры: карта и база игры (<html data-game="…">) ----------
+   Шапка, левое меню (на телефоне — нижняя панель), подвал и окна берут цвета из палитры игры --sp-* (css/spatial.css,
+   а для базы — её уточнения в css/db.css). Новая игра со строкой в spatial.css подхватится сама.
+   Токены задаём на самих блоках каркаса, а не на :root: базовые --bg-*, --text-*, --accent-* использует и страница карты,
+   а css/ui-system.css красит ими кнопки, поиск и вход в шапке.
+   Тот же каркас внутри блока data-sp-scope="<игра>" — образец в справочнике /design/ (раздел «Палитры карт»). */
+:is(:root[data-game], [data-sp-scope]:not([data-sp-scope="home"])) :is(.bx-top, .bx-rail, .bx-footer, .bx-dialog) {
+    --bg-base: var(--sp-base);
+    --bg-surface: color-mix(in srgb, var(--sp-tint) 6%, var(--sp-base));
+    --bg-elevated: color-mix(in srgb, var(--sp-tint) 10%, var(--sp-base));
+    --bg-input: color-mix(in srgb, var(--sp-tint) 4%, var(--sp-base));
+    --text-primary: var(--sp-text);
+    --text-secondary: color-mix(in srgb, var(--sp-text) 55%, var(--sp-muted));
+    --text-muted: var(--sp-muted);
+    --border-default: color-mix(in srgb, var(--sp-text) 14%, var(--sp-base));
+    --border-strong: color-mix(in srgb, var(--sp-text) 24%, var(--sp-base));
+    --accent-primary: var(--sp-accent);
+    --accent-secondary: var(--sp-accent);
+    --text-on-accent: var(--sp-base);
+    --glow-lime: 0 0 20px color-mix(in srgb, var(--sp-accent) 14%, transparent);
+    --glow-cyan: var(--glow-lime);
+
+    --bx-bg: var(--bg-base);
+    --bx-bg-2: var(--bg-base);
+    --bx-surface: var(--bg-surface);
+    --bx-surface-2: var(--bg-elevated);
+    --bx-surface-3: color-mix(in srgb, var(--sp-tint) 14%, var(--sp-base));
+    --bx-line: color-mix(in srgb, var(--sp-text) 12%, transparent);
+    --bx-line-2: color-mix(in srgb, var(--sp-text) 22%, transparent);
+    --bx-text: var(--sp-text);
+    --bx-muted: var(--sp-muted);
+    --bx-faint: color-mix(in srgb, var(--sp-muted) 70%, var(--sp-base));
+    --bx-lime: var(--sp-accent);
+    --bx-lime-ink: var(--sp-accent);
+    --bx-on-lime: var(--sp-base);
+    --bx-cyan: var(--sp-accent);
+    --bx-cyan-ink: var(--sp-accent);
+    --bx-scrim: rgba(var(--sp-shade), .6);
+    --bx-sh-1: var(--sp-raise);
+    --bx-sh-2: var(--sp-raise-up);
+    --bx-sh-pop: var(--sp-raise-up);
+    --bx-glow-lime: 0 0 0 1px color-mix(in srgb, var(--sp-accent) 60%, transparent), 0 10px 28px -12px color-mix(in srgb, var(--sp-accent) 50%, transparent);
+    --bx-glow-cyan: var(--bx-glow-lime);
+    color-scheme: dark;
+}
+/* свиток — светлая бумага только у Oblivion; Skyrim (карта и база) — тёмная палитра меню игры */
+:is(:root[data-game="oblivion"], [data-sp-scope="oblivion"]) :is(.bx-top, .bx-rail, .bx-footer, .bx-dialog) { color-scheme: light; }
+/* надпись BROSKIPLAY — фирменные лайм и циан в любой палитре; на светлой бумаге свитков — тёмные оттенки */
+:is(:root[data-game], [data-sp-scope]:not([data-sp-scope="home"])) .bx-brand-name span:first-child { color: #c7ff3f; } /* sp-ok: фирменный цвет логотипа */
+:is(:root[data-game], [data-sp-scope]:not([data-sp-scope="home"])) .bx-brand-name span + span { color: #54dcff; } /* sp-ok: фирменный цвет логотипа */
+:is(:root[data-game="oblivion"], [data-sp-scope="oblivion"]) .bx-brand-name span:first-child { color: #4a7a00; } /* sp-ok: фирменный цвет логотипа на бумаге */
+:is(:root[data-game="oblivion"], [data-sp-scope="oblivion"]) .bx-brand-name span + span { color: #0b86a8; } /* sp-ok: фирменный цвет логотипа на бумаге */
+
+/* ---------- основа каркаса: на главной то же задаёт body, на картах и в базе — свои стили страницы ---------- */
+.bx-top, .bx-rail, .bx-footer, .bx-dialog { font-family: var(--bx-font); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.bx-top, .bx-rail, .bx-dialog { font-size: 15px; color: var(--bx-text); }
+/* :where — без веса, чтобы классы каркаса (.auth-avatar, .auth-btn…) перекрывали эту основу */
+:where(.bx-top, .bx-rail, .bx-footer, .bx-dialog), :where(.bx-top, .bx-rail, .bx-footer, .bx-dialog) *, :where(.bx-top, .bx-rail, .bx-footer, .bx-dialog) ::before, :where(.bx-top, .bx-rail, .bx-footer, .bx-dialog) ::after { box-sizing: border-box; }
+:where(.bx-top, .bx-rail, .bx-footer) a { color: inherit; text-decoration: none; }
+:where(.bx-top, .bx-rail, .bx-footer, .bx-dialog) :where(button, input) { font: inherit; color: inherit; }
+:where(.bx-top, .bx-rail, .bx-footer) img { max-width: 100%; display: block; }
+:where(.bx-top, .bx-rail, .bx-footer, .bx-dialog) svg { flex: none; }
+:where(.bx-top, .bx-footer, .bx-dialog) :where(h1, h2, h3, p) { margin: 0; }
+:is(.bx-top, .bx-rail, .bx-footer) [hidden] { display: none !important; }
+
+/* ---------- кнопки ---------- */
+.bx-btn {
+    display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 24px;
+    border-radius: var(--radius-xl); border: 1px solid var(--bx-line-2); font-weight: 700; font-size: 15px; white-space: nowrap;
+    background: var(--bx-surface-2); color: var(--bx-text);
+    transition: transform .2s var(--bx-ease), box-shadow .2s var(--bx-ease), background .2s, border-color .2s;
+}
+.bx-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.bx-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--bx-cyan) 50%, var(--bx-line-2)); }
+.bx-btn:active { transform: translateY(0) scale(.98); }
+.bx-btn-primary { background: var(--bx-lime); color: var(--bx-on-lime); border-color: transparent; box-shadow: var(--bx-glow-lime); }
+.bx-btn-primary:hover { border-color: transparent; box-shadow: 0 0 0 1px var(--bx-lime), 0 14px 40px -10px var(--bx-lime); }
+.bx-btn-primary .f { fill: currentColor; stroke: none; }
+.bx-round {
+    display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: var(--radius-lg);
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); color: var(--bx-text);
+    transition: border-color .2s, color .2s, transform .2s var(--bx-ease);
+}
+.bx-round svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.bx-round:hover { border-color: var(--bx-lime); color: var(--bx-lime-ink); transform: translateY(-1px); }
+.bx-link { padding: 0; border: 0; background: none; color: inherit; font: inherit; }
+
+/* ---------- шапка ---------- */
+.bx-top {
+    position: sticky; top: 0; z-index: 50; height: var(--bx-top-h);
+    display: grid; grid-template-columns: calc(var(--bx-rail-w) + 120px) minmax(0, 1fr) auto; align-items: center; gap: 24px;
+    padding: 0 24px 0 20px;
+    background: var(--bx-bg); /* непрозрачная: сквозь полупрозрачную на телефоне просвечивал текст страницы */
+    border-bottom: 1px solid var(--bx-line);
+}
+.bx-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+.bx-brand img { width: 44px; height: 44px; border-radius: var(--radius-lg); }
+/* Название как на логотипе-значке: BROSKI — лайм, PLAY — циан, жирный Unbounded заглавными */
+.bx-brand-name { display: inline-flex; font-family: var(--bx-font-display); font-weight: 800; font-size: 16px; letter-spacing: .02em; text-transform: uppercase; line-height: 1; }
+.bx-brand-name span:first-child { color: var(--bx-lime-ink); }
+.bx-brand-name span + span { color: var(--bx-cyan-ink); }
+/* Эфир Twitch (js/twitch-live.js): логотип и название — фиолетовые, под названием ссылка «● В ЭФИРЕ».
+   Метка лежит поверх (absolute), название лишь сдвигается transform'ом — сетка шапки не меняется, ничего не прыгает. */
+.bx-brand-box { position: relative; display: flex; align-items: center; min-width: 0; }
+.bx-brand img, .bx-brand-name { transition: box-shadow .3s, transform .3s var(--bx-ease); }
+.bx-live {
+    position: absolute; left: 56px; top: calc(50% + 2px); display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 8px 3px 7px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--bx-twitch) 60%, transparent);
+    background: color-mix(in srgb, var(--bx-twitch) 22%, var(--bx-bg)); color: var(--bx-twitch-ink);
+    font: 800 10px/1 var(--bx-font); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+}
+.bx-live i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: bx-pulse 1.6s ease-in-out infinite; }
+.bx-live:hover { color: var(--bx-white); background: var(--bx-twitch); border-color: var(--bx-twitch); }
+.bx-live:focus-visible { outline: 2px solid var(--bx-twitch-ink); outline-offset: 2px; }
+.bx-top.is-twitch-live .bx-brand img { box-shadow: 0 0 0 2px var(--bx-twitch), 0 0 18px -2px var(--bx-twitch); }
+.bx-top.is-twitch-live .bx-brand-name { transform: translateY(-10px); }
+.bx-top.is-twitch-live .bx-brand .bx-brand-name > span:nth-child(n) { color: var(--bx-twitch-ink); text-shadow: 0 0 14px color-mix(in srgb, var(--bx-twitch) 75%, transparent); }
+@media (prefers-reduced-motion: reduce) { .bx-live i { animation: none; } }
+.bx-search {
+    position: relative; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 560px; height: 46px;
+    padding: 0 10px 0 16px; border-radius: var(--radius-lg); border: 1px solid var(--bx-line); background: var(--bx-surface);
+    transition: border-color .2s, box-shadow .2s;
+}
+.bx-search > svg { width: 18px; height: 18px; fill: none; stroke: var(--bx-muted); stroke-width: 2; stroke-linecap: round; }
+.bx-search input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: none; font-size: 15px; }
+.bx-search input::placeholder { color: var(--bx-muted); }
+.bx-search input::-webkit-search-cancel-button { filter: grayscale(1); }
+.bx-search:focus-within { border-color: color-mix(in srgb, var(--bx-cyan) 60%, transparent); box-shadow: var(--bx-glow-cyan); }
+.bx-search kbd {
+    display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 6px; border-radius: var(--radius-sm);
+    border: 1px solid var(--bx-line-2); color: var(--bx-muted); font: 600 12px var(--bx-font);
+}
+.bx-search:focus-within kbd { opacity: 0; }
+.bx-actions { display: flex; align-items: center; gap: 10px; }
+.bx-icon-btn {
+    position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%;
+    border: 1px solid var(--bx-line); background: var(--bx-surface); color: var(--bx-text);
+}
+.bx-icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bx-icon-btn:hover { border-color: var(--bx-line-2); color: var(--bx-cyan-ink); }
+.bx-icon-btn b {
+    position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: var(--radius-md);
+    background: var(--bx-lime); color: var(--bx-on-lime); font-size: 11px; line-height: 18px; text-align: center;
+}
+.bx-new[hidden] { display: none; }
+.bx-new { color: var(--bx-lime); }
+.bx-new i { position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--bx-lime); box-shadow: 0 0 8px var(--bx-lime); }
+.bx-search-btn { display: none; }
+/* поиск игры на страницах карт и базы (components/shell/game-search.tsx): выпадающий список под полем */
+.bx-find-list {
+    position: absolute; z-index: 60; top: calc(100% + 8px); left: 0; right: 0; max-height: min(420px, 70vh); overflow: auto;
+    margin: 0; padding: 6px; list-style: none; border: 1px solid var(--bx-line-2); border-radius: var(--radius-xl);
+    background: var(--bx-surface); box-shadow: var(--sp-raise);
+}
+.bx-find-list a { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: var(--radius-md); }
+.bx-find-list b { font-weight: 600; color: var(--bx-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bx-find-list span { flex: none; font-size: 12px; color: var(--bx-muted); }
+.bx-find-list [aria-selected="true"] a { background: var(--bx-surface-2); }
+.bx-find-list [aria-selected="true"] b { color: var(--bx-lime); }
+.bx-find-empty { padding: 12px; color: var(--bx-muted); font-size: 14px; }
+/* переключатель темы (создаёт ui-feedback.js; его встроенные стили перебиваем — без фиолетового) */
+
+/* вход (js/script.js меняет текст, кнопку и аватар) */
+.auth-card { display: flex; align-items: center; gap: 8px; }
+.auth-info {
+    display: flex; align-items: center; gap: 10px; height: 46px; padding: 4px 14px 4px 4px; max-width: 250px;
+    border-radius: var(--radius-full); border: 1px solid var(--bx-line); background: var(--bx-surface);
+    transition: border-color .2s;
+}
+.auth-info:hover { border-color: var(--bx-line-2); }
+.auth-guest, .auth-avatar { width: 36px; height: 36px; border-radius: 50%; flex: none; }
+.auth-guest { display: grid; place-items: center; background: color-mix(in srgb, var(--bx-cyan) 14%, var(--bx-surface-2)); color: var(--bx-cyan-ink); }
+.auth-guest svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.auth-avatar { display: none; object-fit: cover; }
+.auth-info.has-avatar .auth-avatar { display: block; }
+.auth-info.has-avatar .auth-guest { display: none; }
+.auth-text { min-width: 0; font-size: 12px; line-height: 1.3; color: var(--bx-muted); overflow: hidden; }
+.auth-text b { display: block; color: var(--bx-text); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.auth-text br { display: none; }
+.auth-text > span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+.auth-success-text { color: var(--bx-lime-ink); }
+.auth-btn {
+    display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px; border-radius: var(--radius-full);
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface-2); color: var(--bx-text); font-weight: 600; font-size: 14px; white-space: nowrap;
+    transition: border-color .2s, box-shadow .2s;
+}
+.auth-btn:hover { border-color: var(--bx-lime); box-shadow: var(--bx-glow-lime); }
+.auth-btn.logout { background: transparent; }
+.auth-btn.logout:hover { border-color: var(--bx-line-2); box-shadow: none; }
+.auth-btn.is-loading { opacity: .6; pointer-events: none; }
+.auth-btn svg { flex: none; }
+/* служебные страницы и категории карт подключают старый css/style.css: его карточка входа (рамка Google, свечение,
+   значок гостя) не должна проступать в шапке — гасим только то, что каркас сам не задаёт */
+html[data-shell] .bx-top .auth-card {
+    position: static; width: auto; max-width: none; margin: 0; padding: 0; justify-content: flex-start;
+    border: 0; border-radius: 0; background: none; box-shadow: none;
+}
+html[data-shell] .bx-top .auth-card::before, html[data-shell] .bx-top .auth-info::before, html[data-shell] .bx-top .auth-btn::before { display: none; }
+html[data-shell] .bx-top .auth-avatar { border: 0; box-shadow: none; min-width: 0; min-height: 0; }
+/* кегль кнопки входа один на всех страницах: старый style.css на служебных (кабинет, очередь правок) ставил 12,5px */
+html[data-shell] .bx-top .auth-btn { color: var(--bx-text); background-size: auto; font-size: 14px; font-weight: 600; letter-spacing: normal; }
+html[data-shell] .bx-top .auth-btn:not(:hover) { box-shadow: none; }
+html[data-shell] .bx-top .auth-btn.logout, html[data-shell] .bx-top .auth-btn.logout:hover { background: transparent; color: var(--bx-text); border-color: var(--bx-line-2); }
+
+/* html[data-shell] — чтобы перебить сброс выше (служебные страницы со старым style.css: кабинет, очередь правок) */
+/* вход — одна пилюля на всех страницах и в обоих состояниях:
+   гость [значок Кабинет | G Войти с Google], вошёл [аватар Имя · ● Личный кабинет | ⇥ Выйти].
+   Левая часть всегда ведёт в /cabinet/, правая — вход/выход. Состояние: .logout у кнопки (js/script.js, auth-lite.js, app.js карт) */
+.bx-top .auth-card, html[data-shell] .bx-top .auth-card {
+    gap: 0; height: var(--control-height); padding: 0; overflow: hidden;
+    border: 1px solid var(--bx-line-2); border-radius: var(--radius-lg); background: var(--bx-surface);
+    transition: border-color .2s, box-shadow .2s;
+}
+.bx-top .auth-card:hover, html[data-shell] .bx-top .auth-card:hover { border-color: var(--bx-lime); box-shadow: var(--bx-glow-lime); }
+.bx-top .auth-card .auth-info, html[data-shell] .bx-top .auth-card .auth-info {
+    height: 100%; max-width: 240px; gap: 8px; padding: 0 12px 0 5px; border: 0; border-radius: 0; background: none; transition: background .2s;
+}
+.bx-top .auth-card .auth-guest, .bx-top .auth-card .auth-avatar { width: 32px; height: 32px; }
+.bx-top .auth-card:has(.auth-btn:not(.logout)) .auth-text > span { display: none; }
+.bx-top .auth-card:has(.auth-btn:not(.logout)) .auth-text b { font-size: 14px; font-weight: 600; }
+.bx-top .auth-card .auth-text > span { font-size: 11.5px; max-width: 170px; }
+.bx-top .auth-card .auth-text .auth-online { color: var(--bx-lime-ink); }
+html[data-shell] .bx-top .auth-text > span::before { content: none; }
+html[data-shell] .bx-top .auth-text b { font-weight: 600; }
+.bx-top .auth-card .auth-btn, html[data-shell] .bx-top .auth-card .auth-btn,
+.bx-top .auth-card .auth-btn:hover, html[data-shell] .bx-top .auth-card .auth-btn:hover {
+    height: 100%; min-height: 0; padding: 0 16px 0 14px; border: 0; border-left: 1px solid var(--bx-line); border-radius: 0;
+    background: transparent; box-shadow: none; transform: none; transition: background .2s;
+}
+.bx-top .auth-card .auth-info:hover,
+.bx-top .auth-card .auth-btn:hover {
+    background: color-mix(in srgb, var(--bx-text) 6%, transparent);
+}
+
+/* ---------- боковая навигация ---------- */
+.bx-rail {
+    position: fixed; z-index: 40; top: var(--bx-top-h); left: 0; bottom: 0; width: var(--bx-rail-w);
+    display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 10px;
+    border-right: 1px solid var(--bx-line); background: var(--bx-bg);
+}
+.bx-rail-item {
+    position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; padding: 12px 4px;
+    border-radius: var(--radius-xl); color: var(--bx-muted); font-size: 11px; font-weight: 600; text-align: center;
+    transition: color .2s, background .2s;
+}
+.bx-rail-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bx-rail-item:hover { color: var(--bx-text); background: var(--bx-surface); }
+.bx-rail-item.is-active, .bx-rail-item.is-on {
+    color: var(--bx-lime-ink); background: color-mix(in srgb, var(--bx-lime) 9%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bx-lime) 32%, transparent);
+}
+.bx-rail-item.is-active::before {
+    content: ""; position: absolute; left: -10px; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0;
+    background: var(--bx-lime); box-shadow: 0 0 12px var(--bx-lime);
+}
+
+/* ---------- раскладка ---------- */
+.bx-body { margin-left: var(--bx-rail-w); padding: 28px clamp(16px, 3vw, 40px) 0; }
+.bx-main { max-width: 1320px; margin: 0 auto; }
+.bx-section { margin-top: 48px; }
+.bx-head { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; margin-bottom: 18px; }
+.bx-head h2 { font-size: 24px; font-weight: 800; }
+.bx-head-link { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border: 0; border-radius: var(--radius-md); background: none; color: var(--bx-cyan-ink); font-weight: 600; font-size: 14px; }
+.bx-head-link svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.bx-head-link:hover { background: var(--bx-surface); }
+
+/* страницы, которые генерирует Python (база /db/): каркас вокруг их разметки — web/scripts/assemble.mjs, html[data-shell] */
+html[data-shell] body { padding: 0; }
+.bx-app-page .bx-body { min-height: calc(100dvh - var(--bx-top-h)); padding-bottom: 40px; }
+
+/* ---------- подвал ---------- */
+.bx-footer { max-width: 1320px; margin: 56px auto 0; padding: 28px 0 32px; border-top: 1px solid var(--bx-line); display: grid; gap: 20px; }
+.bx-footer-row { display: flex; align-items: center; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; }
+.bx-footer .bx-brand img { width: 36px; height: 36px; border-radius: var(--radius-md); }
+.bx-footer .bx-brand-name { font-size: 16px; }
+.bx-footer-links { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--bx-muted); font-size: 14px; }
+.bx-footer-links a:hover, .bx-footer-links button:hover { color: var(--bx-text); }
+.bx-social { display: flex; align-items: center; gap: 8px; }
+.bx-social-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 40px; height: 40px; padding: 0 10px; border-radius: var(--radius-lg);
+    border: 1px solid var(--bx-line); background: var(--bx-surface); color: var(--bx-muted); font-size: 13px; font-weight: 700;
+    transition: color .2s, border-color .2s;
+}
+.bx-social-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.bx-social-btn:hover { color: var(--bx-cyan-ink); border-color: var(--bx-line-2); }
+.bx-twitch { padding: 0 14px 0 12px; }
+.bx-twitch.is-live { color: var(--bx-white); background: var(--bx-live); border-color: transparent; box-shadow: 0 0 0 1px var(--bx-live), 0 8px 24px -8px var(--bx-live); }
+.bx-twitch.is-live svg { animation: bx-pulse 1.6s ease-in-out infinite; }
+.bx-footer-sub { color: var(--bx-faint); font-size: 13px; }
+.bx-donate {
+    display: inline-flex; align-items: center; gap: 12px; padding: 8px 14px 8px 10px; border-radius: var(--radius-lg);
+    border: 1px solid var(--bx-line); background: var(--bx-surface); color: var(--bx-muted); font-size: 12px;
+    transition: border-color .2s;
+}
+.bx-donate:hover { border-color: color-mix(in srgb, var(--bx-lime) 50%, transparent); }
+.bx-donate > svg { width: 20px; height: 20px; color: var(--bx-lime-ink); fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.bx-donate-text { display: grid; }
+.bx-donate-text b { color: var(--bx-text); font-size: 13px; }
+.bx-donate-bar { width: 90px; height: 5px; border-radius: 5px; overflow: hidden; background: var(--bx-surface-3); }
+.bx-donate-bar i { display: block; height: 100%; border-radius: inherit; background: var(--bx-lime); }
+
+/* окно «О проекте» */
+.bx-dialog {
+    width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); padding: 24px 28px 28px; border-radius: var(--radius-3xl);
+    border: 1px solid var(--bx-line-2); background: var(--bx-surface); color: var(--bx-text); box-shadow: var(--bx-sh-pop);
+}
+.bx-dialog::backdrop { background: var(--bx-scrim); }
+.bx-dialog[open] { animation: bx-drop .25s var(--bx-ease); }
+.bx-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
+.bx-dialog h2 { font-size: 22px; font-weight: 800; }
+.bx-dialog h3 { margin: 18px 0 6px; font-size: 15px; color: var(--bx-cyan-ink); }
+.bx-dialog p { color: var(--bx-muted); font-size: 14px; line-height: 1.6; }
+.bx-dialog a { color: var(--bx-text); text-decoration: underline; text-decoration-color: var(--bx-line-2); text-underline-offset: 3px; }
+.bx-dialog a:hover { text-decoration-color: var(--bx-lime); }
+
+@keyframes bx-pulse { 50% { opacity: .45; } }
+@keyframes bx-drop { from { opacity: 0; transform: translateY(-6px); } }
+
+/* ---------- адаптив каркаса ---------- */
+@media (max-width: 1240px) {
+    .bx-top { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .bx-top .auth-text { display: none; }
+    .bx-top .auth-info { padding-right: 4px; }
+}
+@media (max-width: 860px) {
+    :root { --bx-top-h: 64px; --bx-rail-w: 0px; }
+    .bx-top { gap: 12px; padding: 0 16px; }
+    .bx-brand-name { display: none; }
+    /* без названия — кнопкой справа от значка, высота и скругление как у кнопок шапки (на ≤680 px средняя колонка шапки пустая) */
+    .bx-brand-box { gap: 10px; }
+    .bx-live { position: static; height: var(--icon-size); border-radius: var(--radius-lg); padding: 0 11px 0 10px; gap: 6px; font-size: 10.5px; letter-spacing: .06em; color: var(--bx-white); background: var(--bx-twitch); border-color: var(--bx-twitch); }
+    .bx-live i { width: 6px; height: 6px; }
+    /* навигация — нижняя панель */
+    .bx-rail {
+        top: auto; right: 0; width: auto; height: calc(64px + env(safe-area-inset-bottom)); flex-direction: row; justify-content: space-around; gap: 0;
+        padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); border-right: 0; border-top: 1px solid var(--bx-line);
+        background: var(--bx-bg);
+    }
+    .bx-rail-item { padding: 6px 2px; gap: 3px; font-size: 10.5px; max-width: 84px; }
+    .bx-rail-item.is-active::before { left: 30%; right: 30%; top: -7px; bottom: auto; width: auto; height: 3px; border-radius: 0 0 3px 3px; }
+    .bx-body { padding: 20px 16px 0; padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+    .bx-section { margin-top: 36px; }
+}
+@media (max-width: 680px) {
+    .bx-top { grid-template-columns: auto 1fr auto; }
+    .bx-search { display: none; }
+    .bx-search-btn { display: grid; }
+    .bx-actions { justify-self: end; gap: 8px; }
+    .bx-top.is-search { grid-template-columns: minmax(0, 1fr) auto; }
+    .bx-top.is-search .bx-brand-box, .bx-top.is-search .bx-actions > :not(.bx-search-btn) { display: none; }
+    .bx-top.is-search .bx-search { display: flex; max-width: none; }
+    .bx-search kbd { display: none; }
+    /* только в шапке: класс .auth-btn носят и кнопки на страницах («Открыть на карте» в категориях, 404) */
+    .bx-top .auth-btn { width: 44px; padding: 0; justify-content: center; }
+    /* текст прячем визуально, но не от экранных дикторов: он остаётся доступным названием кнопки (вход/выход меняет его сам) */
+    .bx-top .auth-btn span { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+    /* ссылка в кабинет остаётся всегда: круглый значок — аватар, а если его нет или он не загрузился, значок гостя */
+    /* пилюля [значок кабинета или аватар | G или ⇥] */
+    .bx-top .auth-card .auth-info { width: auto; padding: 0 5px; }
+    .bx-top .auth-card .auth-btn,
+    .bx-top .auth-card .auth-btn:hover { width: 42px; padding: 0; justify-content: center; }
+    .bx-footer-row { justify-content: flex-start; }
+}
+@media (max-width: 560px) {
+    .bx-donate { width: 100%; }
+    .bx-donate-bar { margin-left: auto; }
+    .bx-social { flex-wrap: wrap; }
+}
+
+/* Web Interface Guidelines (26.11.2026): «К содержимому» на всех страницах каркаса */
+.bx-skip {
+    position: fixed; top: 8px; left: 8px; z-index: 1000; padding: 10px 16px; border-radius: 10px;
+    background: var(--bx-lime); color: var(--bx-on-lime); font: 700 14px var(--bx-font); text-decoration: none;
+    transform: translateY(-160%); transition: transform .2s ease;
+}
+.bx-skip:focus-visible { transform: none; outline: 2px solid var(--bx-cyan, #54dcff); outline-offset: 2px; }
+#bx-content:focus { outline: none; }
+@media (prefers-reduced-motion: reduce) { .bx-skip { transition: none; } }
